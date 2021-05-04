@@ -1,0 +1,14 @@
+^simtrial\.Rproj$
+^\.Rproj\.user$
+^doc$
+^Meta$
+^docs$
+^codecov\.yml$
+.travis.yml
+^.*\.yml$
+^\.github$
+^cran-comments\.md$
+^revdep$
+^CRAN-RELEASE$
+..Rcheck
+^_pkgdown\.yml$

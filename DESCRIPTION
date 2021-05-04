@@ -1,0 +1,40 @@
+Package: simtrial
+Type: Package
+Title: Clinical Trial Simulation
+Version: 0.2.0
+Authors@R: c(
+           person(given = "Keaven", family = "Anderson", email = "keaven_anderson@merck.com", role = c('aut','cre')),
+           person("Yilong", "Zhang", email = "yilong.zhang@merck.com", role = c("aut")),
+           person("Amin", "Shirazi", email = "ashirazist@gmail.com", role = c("ctb")),
+           person("Ruixue", "Wang", email = "ruixue.wang@merck.com", role = c("ctb")),
+           person("Yi", "Cui", email = "yi.cui@merck.com", role = c("ctb")),
+           person("Ping", "Yang", email = "ping.yang1@merck.com", role = c("ctb")),
+           person("Yalin", "Zho", email = "yalin.zhu@merck.com", role = c("ctb")),
+           person("Heng", "Zhou", email = "heng.zhou@merck.com", role = c("ctb")),
+           person("Merck Sharp & Dohme Corp", role = "cph")
+           )
+Maintainer: Yilong Zhang <yilong.zhang@merck.com>
+Description: This package provides some basic routines for simulating a clinical trial. 
+    The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. 
+    Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used 
+    to simulate a broad range of scenarios.
+    However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
+License: GPL (>= 3) + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 2.10)
+Imports: dplyr,
+         tibble,
+         tidyr,
+         survival,
+         mvtnorm
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
+    modestWLRT,
+    ggplot2,
+    bshazard
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+
