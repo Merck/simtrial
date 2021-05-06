@@ -1,27 +1,22 @@
----
-simtrial: Clinical Trial Simulation for Time-to-Event Endpoints
-output: github_document
----
+<!-- badges: start -->
+[![R build status](https://github.com/Merck/simtrial/workflows/R-CMD-check/badge.svg)](https://github.com/Merck/simtrial/actions)
+<!-- badges: end -->
 
 
-```{r setup, echo=FALSE, results='hide'}
-knitr::opts_chunk$set(echo = TRUE)
-```
+## Installation
 
-
-## Installation 
-
-You can install `simtrial` with:
+You can install the package via CRAN:
 
 ```r
-remotes::install_git(
-  "https://stash.merck.com/scm/bards/simtrial.git",
-  credentials = git2r::cred_user_pass(
-    rstudioapi::showPrompt("ISID", message = "Enter your ISID"),
-    rstudioapi::askForPassword()
-  )
-)
+install.packages("simtrial")
 ```
+
+Or, install from GitHub:
+
+```r
+remotes::install_github("Merck/simtrial")
+```
+
 
 ## Overview
 
