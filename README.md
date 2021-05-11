@@ -1,8 +1,6 @@
 <!-- badges: start -->
 [![R build status](https://github.com/Merck/simtrial/workflows/R-CMD-check/badge.svg)](https://github.com/Merck/simtrial/actions)
 <!-- badges: end -->
-
-
 ## Installation
 
 You can install the package via CRAN:
