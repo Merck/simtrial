@@ -3,8 +3,8 @@ Type: Package
 Title: Clinical Trial Simulation
 Version: 0.2.0
 Authors@R: c(
-           person(given = "Keaven", family = "Anderson", email = "keaven_anderson@merck.com", role = c('aut','cre')),
-           person("Yilong", "Zhang", email = "yilong.zhang@merck.com", role = c("aut")),
+           person(given = "Keaven", family = "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
+           person("Yilong", "Zhang", email = "yilong.zhang@merck.com", role =  c("aut","cre")),
            person("Amin", "Shirazi", email = "ashirazist@gmail.com", role = c("ctb")),
            person("Ruixue", "Wang", email = "ruixue.wang@merck.com", role = c("ctb")),
            person("Yi", "Cui", email = "yi.cui@merck.com", role = c("ctb")),
