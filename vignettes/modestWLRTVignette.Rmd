@@ -1,12 +1,10 @@
 ---
 title: Using the Magirr-Burman weights for testing
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
   %\VignetteIndexEntry{Magirr-Burman weights}
   %\VignetteEngine{knitr::rmarkdown} 
-  %\VignetteEncoding[UTF-8]{inputenc}
 ---
 
 ```{r setup, include = FALSE,message=FALSE,warning=FALSE}
@@ -84,7 +82,7 @@ axis(1, xaxp=c(0, 36, 6))
 
 We perform a logrank and weighted logrank tests as follows:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 xx <- MBdelay %>% 
     tensurv(txval="Experimental") %>%
     tenFHcorr(rg=tibble(rho=c(0,0,1),gamma=c(0,1,1))) %>%
@@ -94,7 +92,7 @@ xx
 
 Now for a MaxCombo test with the above compoenent tests, we have  p-value of
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 xx %>% pMaxCombo()
 ```
 

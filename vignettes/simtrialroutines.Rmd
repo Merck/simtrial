@@ -7,7 +7,6 @@ bibliography: simtrial.bib
 vignette: >
   %\VignetteIndexEntry{simtrial basic examples}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -204,7 +203,7 @@ x %>% kable(digits=2)
 
 We can compute a p-value for the MaxCombo as follows using the `pmvnorm` function from the `mvtnorm` package. Note the arguments for `GenzBretz` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
 
-```{r}
+```{r,message=FALSE}
 # compute p-value for MaxCombo
 pMaxCombo(x)
 ```

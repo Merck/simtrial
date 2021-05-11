@@ -9,7 +9,7 @@ Authors@R: c(
            person("Ruixue", "Wang", email = "ruixue.wang@merck.com", role = c("ctb")),
            person("Yi", "Cui", email = "yi.cui@merck.com", role = c("ctb")),
            person("Ping", "Yang", email = "ping.yang1@merck.com", role = c("ctb")),
-           person("Yalin", "Zho", email = "yalin.zhu@merck.com", role = c("ctb")),
+           person("Yalin", "Zhu", email = "yalin.zhu@merck.com", role = c("ctb")),
            person("Heng", "Zhou", email = "heng.zhou@merck.com", role = c("ctb")),
            person("Merck Sharp & Dohme Corp", role = "cph")
            )

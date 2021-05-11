@@ -59,7 +59,7 @@ tenFHcorr <- function(x=simPWSurv(n=200) %>% cutDataAtCount(100) %>%
                         tensurv(txval = "Experimental"),
                       rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)),
                       corr=TRUE
-                     ){
+){
   # Get average rho and gamma for FH covariance matrix
   # We want rhoave[i,j] = (rho[i]+rho[j])/2
   # and     gamave[i,j] = (gamma[i]+gamma[j])/2
@@ -82,8 +82,7 @@ tenFHcorr <- function(x=simPWSurv(n=200) %>% cutDataAtCount(100) %>%
   if (corr) c <- stats::cov2cor(c)
   names(c) <- paste("V",1:ncol(c),sep="")
   # return combined values
-  mat = cbind(rg, Z, tibble(c))
-  return(mat) 
+  cbind(rg,Z,as_tibble(c))
 }
 #' @rdname tenFHcorr
 #' @export
