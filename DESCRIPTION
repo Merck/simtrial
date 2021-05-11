@@ -19,10 +19,8 @@ Description: This package provides some basic routines for simulating a clinical
     Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used 
     to simulate a broad range of scenarios.
     However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
-License: GPL (>= 3) + file LICENSE
-Encoding: UTF-8
-LazyData: true
-Depends: R (>= 2.10)
+License: GPL-3
+Depends: R (>= 3.5.0)
 Imports: dplyr,
          tibble,
          tidyr,
@@ -34,8 +32,11 @@ Suggests:
     testthat,
     modestWLRT,
     ggplot2,
-    bshazard
-VignetteBuilder: knitr
+    bshazard, 
+    markdown
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)  
+Rmarkdown: echo = TRUE
 RoxygenNote: 7.1.1
-Config/testthat/edition: 3
-
+VignetteBuilder: knitr

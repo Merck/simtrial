@@ -1,7 +1,9 @@
 .Rproj.user
+doc
+docs
+Meta
+inst/doc
+.Rprofile
 .Rhistory
 .RData
 .Ruserdata
-.Rprofile
-simtrial.Rproj
-NAMESPACE
