@@ -13,32 +13,32 @@ PE <- gsDesign::nSurv(alpha = alpha, beta = c(1-0.93), sided = 1, lambdaC = log(
                       eta = -log(1-dropout)/12, gamma = gamma, R = R, T=18)
 
 #test for power comparing simfix results with simple study design
-# set.seed(1234)
-# test2<-simfix(nsim=1000,
-#               sampleSize=434,
-#               targetEvents=227,
-#               strata = tibble::tibble(Stratum = "All", p = 1),
-#               enrollRates=tibble::tibble(duration=c(1,1,9),
-#                                          rate= c(5,5,47)),
-#               failRates=tibble::tibble(Stratum="All",
-#                                        duration=c(100),
-#                                        failRate=log(2)/7,
-#                                        hr=0.65,
-#                                        dropoutRate=-log(1-0.05)/12),
-#               totalDuration=18,
-#               block=rep(c("Experimental","Control"),2),
-#               timingType=1:5,
-#               rg=tibble::tibble(rho=0,gamma=0)
-# )
-load("./fixtures/test_data_simfix.Rdata")
+set.seed(1234)
+test2<-simfix(nsim=100,
+              sampleSize=434,
+              targetEvents=227,
+              strata = tibble::tibble(Stratum = "All", p = 1),
+              enrollRates=tibble::tibble(duration=c(1,1,9),
+                                         rate= c(5,5,47)),
+              failRates=tibble::tibble(Stratum="All",
+                                       duration=c(100),
+                                       failRate=log(2)/7,
+                                       hr=0.65,
+                                       dropoutRate=-log(1-0.05)/12),
+              totalDuration=18,
+              block=rep(c("Experimental","Control"),2),
+              timingType=1:5,
+              rg=tibble::tibble(rho=0,gamma=0)
+)
+#load("./fixtures/test_data_simfix.Rdata")
 testthat::test_that("test for simfix power comparing to gsDesign results with fixed duration in timingType=1",{
   tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
-  expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/1000, expected=0.93, tolerance=0.02)
+  expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/100, expected=0.93, tolerance=0.02)
 })
 
 testthat::test_that("test for simfix power comparing to gsDesign results with target events in timingType=2",{
   tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
-  expect_equal(object=sum(as.integer(tt2test$Z<(-1.96)))/1000, expected=0.90, tolerance=0.02)
+  expect_equal(object=sum(as.integer(tt2test$Z<(-1.96)))/100, expected=0.90, tolerance=0.02)
 })
 
 testthat::test_that("test for events in the correct directions in timingType=3 comparing to timingType=2",{
