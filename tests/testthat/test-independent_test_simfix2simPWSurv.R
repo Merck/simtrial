@@ -1,5 +1,3 @@
-context("Independent testing for simfix2simPWSurv.R")
-
 failRates <- tibble::tibble(Stratum=c(rep("Low",3),rep("High",3)),
                             duration=rep(c(4,10,100),2),
                             failRate=c(.04,.1,.06,

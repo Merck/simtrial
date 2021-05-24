@@ -1,5 +1,3 @@
-context("Independent testing for rpwexp.R")
-
 test_that("rpwexp handles 0 failrate for final period", { 
   # 0 failure rate for last period 
   s <- simtrial::rpwexp(n=100,

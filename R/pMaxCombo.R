@@ -46,10 +46,10 @@ NULL
 #' mean(p<.025)
 #' @export
 pMaxCombo <- function(Z,dummyvar, algorithm=GenzBretz(maxpts=50000,abseps=0.00001)){
-MaxCombo <- as.numeric(min(Z$Z))
-# correlation matrix
-corr <- data.matrix(Z %>% select(starts_with("V")))
-as.numeric(1-mvtnorm::pmvnorm(lower=rep(MaxCombo,nrow(Z)),
-                   corr=corr,
-                   algorithm=algorithm)[1])
+  MaxCombo <- as.numeric(min(Z$Z))
+  # correlation matrix
+  corr <- Z$c
+  as.numeric(1-mvtnorm::pmvnorm(lower=rep(MaxCombo,nrow(Z)),
+                                corr=corr,
+                                algorithm=algorithm)[1])
 }

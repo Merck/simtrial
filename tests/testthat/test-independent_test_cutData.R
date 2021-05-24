@@ -1,5 +1,3 @@
-context("Independent testing for cutData.R")
-
 x <- simPWSurv(n=200)
 
 test_that("x is a time-to-event data set", {

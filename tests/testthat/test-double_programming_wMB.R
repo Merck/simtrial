@@ -1,5 +1,3 @@
-context("Double programming for wMB.R")
-
 test_wMB <- function(x, delay = 4){
   out <- NULL
   for (i in unique(x$Stratum)){

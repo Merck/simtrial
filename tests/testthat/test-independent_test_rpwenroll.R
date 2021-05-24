@@ -1,5 +1,3 @@
-context("Independent testing for rpwenroll.R")
-
 test_that("rpwenroll handles 0 enrollment rate properly for 1st enrollment period (with duration of 1 time unit)", {
   n <- 50
   enrollRates <- tibble(duration = c(1, 2), rate = c(0, 5))

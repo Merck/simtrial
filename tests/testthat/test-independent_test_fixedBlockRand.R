@@ -1,5 +1,3 @@
-context("Independent testing for fixedBlockRand.R")
-
 test_that("fixedBlockRand returns an appropriate object: a vector of length n of treatment group",{
   s <- fixedBlockRand(n=10)
   expect_equal(length(s),10)
