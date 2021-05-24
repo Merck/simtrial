@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  arbitraryhazard: arbitraryhazard.html
+  modestWLRTVignette: modestWLRTVignette.html
+  pMaxComboVignette: pMaxComboVignette.html
+  simtrialroutines: simtrialroutines.html
+last_built: 2021-05-24T23:50Z
+
