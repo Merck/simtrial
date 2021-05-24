@@ -34,7 +34,8 @@ Suggests:
     ggplot2,
     bshazard, 
     markdown,
-    survMisc
+    survMisc,
+    gsDesign
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)  
