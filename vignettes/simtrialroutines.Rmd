@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
-  %\VignetteIndexEntry{simtrial basic examples}
+  %\VignetteIndexEntry{Basic tools for time-to-event trial simulation and testing}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
