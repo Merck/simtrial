@@ -8,3 +8,5 @@
 ^LICENSE$
 ^LICENSES_THIRD_PARTY$
 ^codecov\.yml$
+^doc$
+^data-raw$
