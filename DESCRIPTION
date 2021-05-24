@@ -14,7 +14,7 @@ Authors@R: c(
            person("Merck Sharp & Dohme Corp", role = "cph")
            )
 Maintainer: Yilong Zhang <yilong.zhang@merck.com>
-Description: This package provides some basic routines for simulating a clinical trial. 
+Description: simtrial provides some basic routines for simulating a clinical trial. 
     The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. 
     Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used 
     to simulate a broad range of scenarios.
@@ -35,7 +35,9 @@ Suggests:
     bshazard, 
     markdown,
     survMisc,
-    gsDesign
+    gsDesign,
+    stringr,
+    Matrix
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)  
