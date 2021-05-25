@@ -1,9 +1,4 @@
 destination: docs
-development:
-  mode: release
-  destination: dev
-  version_label: danger
-  version_tooltip: "Regulatory/Industry Training Version"
 template:
   package: simtrial
   params:
