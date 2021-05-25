@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simtrial</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Regulatory/Industry Training Version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -144,12 +144,12 @@
 <span class="co">#&gt; # Groups:   Stratum, Treatment [1]</span>
 <span class="co">#&gt;     tte event Stratum Treatment   </span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 0.900     1 All     Log-logistic</span>
-<span class="co">#&gt; 2 0.770     1 All     Log-logistic</span>
-<span class="co">#&gt; 3 0.539     1 All     Log-logistic</span>
-<span class="co">#&gt; 4 0.391     1 All     Log-logistic</span>
-<span class="co">#&gt; 5 0.260     1 All     Log-logistic</span>
-<span class="co">#&gt; 6 0.673     0 All     Log-logistic</span></code></pre></div>
+<span class="co">#&gt; 1 0.449     1 All     Log-logistic</span>
+<span class="co">#&gt; 2 0.764     1 All     Log-logistic</span>
+<span class="co">#&gt; 3 0.646     1 All     Log-logistic</span>
+<span class="co">#&gt; 4 1.13      1 All     Log-logistic</span>
+<span class="co">#&gt; 5 2.99      0 All     Log-logistic</span>
+<span class="co">#&gt; 6 0.296     1 All     Log-logistic</span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
@@ -159,18 +159,12 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>
 <span class="co">#&gt; Iterations: relative error in phi-hat = 1e-04 </span>
-<span class="co">#&gt; phi= 2.764174   sv2= 0.01938324   df= 24.12327   lambda= 142.6064 </span>
-<span class="co">#&gt; phi= 2.842202   sv2= 0.002842942   df= 12.97828   lambda= 999.7399 </span>
-<span class="co">#&gt; phi= 2.948131   sv2= 0.0007835056   df= 8.314785   lambda= 3762.744 </span>
-<span class="co">#&gt; phi= 3.02349   sv2= 0.0004845552   df= 6.225281   lambda= 6239.722 </span>
-<span class="co">#&gt; phi= 3.046113   sv2= 0.0004175297   df= 5.600022   lambda= 7295.56 </span>
-<span class="co">#&gt; phi= 3.051609   sv2= 0.0003980452   df= 5.42288   lambda= 7666.49 </span>
-<span class="co">#&gt; phi= 3.053185   sv2= 0.0003919493   df= 5.36817   lambda= 7789.744 </span>
-<span class="co">#&gt; phi= 3.053674   sv2= 0.000389997   df= 5.350724   lambda= 7829.993 </span>
-<span class="co">#&gt; phi= 3.05383   sv2= 0.000389367   df= 5.345102   lambda= 7843.063 </span>
-<span class="co">#&gt; phi= 3.053881   sv2= 0.0003891632   df= 5.343284   lambda= 7847.3 </span>
-<span class="co">#&gt; phi= 3.053897   sv2= 0.0003890973   df= 5.342696   lambda= 7848.672 </span>
-<span class="co">#&gt; phi= 3.053902   sv2= 0.0003890759   df= 5.342505   lambda= 7849.117</span>
+<span class="co">#&gt; phi= 3.413663   sv2= 0.02420317   df= 22.06252   lambda= 141.042 </span>
+<span class="co">#&gt; phi= 3.574342   sv2= 0.003367834   df= 12.27047   lambda= 1061.318 </span>
+<span class="co">#&gt; phi= 3.695248   sv2= 0.00106892   df= 7.901102   lambda= 3456.992 </span>
+<span class="co">#&gt; phi= 3.776614   sv2= 0.0005749439   df= 6.147438   lambda= 6568.665 </span>
+<span class="co">#&gt; phi= 3.835755   sv2= 0.0004215294   df= 5.385141   lambda= 9099.615 </span>
+<span class="co">#&gt; phi= 3.871178   sv2= 0.0003644475   df= 5.042053   lambda= 10622.05</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>,conf.int<span class="op">=</span><span class="cn">TRUE</span>,xlab<span class="op">=</span><span class="st">'Time'</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2.5</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">times</span>,y<span class="op">=</span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>,col<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-6-1.png" width="720"></p>

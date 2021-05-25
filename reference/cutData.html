@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simtrial</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Regulatory/Industry Training Version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -161,30 +161,30 @@ at which dataset is to be cut off for analysis</p></td>
 <span class='co'># of randomization</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='fu'><a href='simPWSurv.html'>simPWSurv</a></span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>20</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>cutData</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   Stratum, Treatment [2]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span>
+#&gt; <span style='color: #949494;'># Groups:   Stratum, Treatment [2]</span>
 #&gt;      tte event Stratum Treatment   
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 4.78      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 4.24      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 4.07      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 3.96      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 3.88      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 3.74      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 3.74      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1.85      1 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 3.65      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 3.61      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> 3.36      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> 3.33      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> 1.98      1 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> 3.25      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> 3.20      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> 2.96      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'>17</span><span> 2.92      0 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>18</span><span> 2.86      0 All     Control     
-#&gt; </span><span style='color: #BCBCBC;'>19</span><span> 0.137     1 All     Experimental
-#&gt; </span><span style='color: #BCBCBC;'>20</span><span> 2.65      0 All     Control     </div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       
+#&gt; <span style='color: #BCBCBC;'> 1</span> 4.78      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'> 2</span> 4.24      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'> 3</span> 4.07      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'> 4</span> 3.96      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'> 5</span> 3.88      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'> 6</span> 3.74      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'> 7</span> 3.74      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'> 8</span> 1.85      1 All     Control     
+#&gt; <span style='color: #BCBCBC;'> 9</span> 3.65      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>10</span> 3.61      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'>11</span> 3.36      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'>12</span> 3.33      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>13</span> 1.98      1 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>14</span> 3.25      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>15</span> 3.20      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'>16</span> 2.96      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'>17</span> 2.92      0 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>18</span> 2.86      0 All     Control     
+#&gt; <span style='color: #BCBCBC;'>19</span> 0.137     1 All     Experimental
+#&gt; <span style='color: #BCBCBC;'>20</span> 2.65      0 All     Control     </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
