@@ -144,12 +144,12 @@
 <span class="co">#&gt; # Groups:   Stratum, Treatment [1]</span>
 <span class="co">#&gt;     tte event Stratum Treatment   </span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 0.412     1 All     Log-logistic</span>
-<span class="co">#&gt; 2 0.927     1 All     Log-logistic</span>
-<span class="co">#&gt; 3 0.374     1 All     Log-logistic</span>
-<span class="co">#&gt; 4 0.408     1 All     Log-logistic</span>
-<span class="co">#&gt; 5 1.17      1 All     Log-logistic</span>
-<span class="co">#&gt; 6 0.435     1 All     Log-logistic</span></code></pre></div>
+<span class="co">#&gt; 1 0.278     1 All     Log-logistic</span>
+<span class="co">#&gt; 2 0.712     1 All     Log-logistic</span>
+<span class="co">#&gt; 3 0.541     1 All     Log-logistic</span>
+<span class="co">#&gt; 4 0.707     1 All     Log-logistic</span>
+<span class="co">#&gt; 5 1.68      1 All     Log-logistic</span>
+<span class="co">#&gt; 6 1.06      1 All     Log-logistic</span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
@@ -159,9 +159,9 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>
 <span class="co">#&gt; Iterations: relative error in phi-hat = 1e-04 </span>
-<span class="co">#&gt; phi= 12.24113   sv2= 0.02749363   df= 23.73022   lambda= 445.2349 </span>
-<span class="co">#&gt; phi= 12.39168   sv2= 0.001926904   df= 10.18579   lambda= 6430.877 </span>
-<span class="co">#&gt; phi= 13.06921   sv2= 0.0003726621   df= 5.78088   lambda= 35069.87</span>
+<span class="co">#&gt; phi= 11.93306   sv2= 0.01822946   df= 24.02856   lambda= 654.6033 </span>
+<span class="co">#&gt; phi= 12.74598   sv2= 0.001653816   df= 9.377359   lambda= 7707.015 </span>
+<span class="co">#&gt; phi= 12.48766   sv2= 0.0003776889   df= 5.562495   lambda= 33063.35</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>,conf.int<span class="op">=</span><span class="cn">TRUE</span>,xlab<span class="op">=</span><span class="st">'Time'</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2.5</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">times</span>,y<span class="op">=</span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>,col<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-6-1.png" width="720"></p>
