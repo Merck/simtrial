@@ -1,7 +1,10 @@
+# simtrial
+
 <!-- badges: start -->
 [![R build status](https://github.com/Merck/simtrial/workflows/R-CMD-check/badge.svg)](https://github.com/Merck/simtrial/actions)
 [![Codecov test coverage](https://codecov.io/gh/Merck/simtrial/branch/main/graph/badge.svg)](https://codecov.io/gh/Merck/simtrial?branch=main)
 <!-- badges: end -->
+
 ## Installation
 
 You can install from GitHub:
@@ -9,7 +12,6 @@ You can install from GitHub:
 ```r
 remotes::install_github("Merck/simtrial")
 ```
-
 
 ## Overview
 
