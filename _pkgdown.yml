@@ -1,3 +1,23 @@
 destination: docs
+
+url: https://merck.github.io/simtrial/
+
 template:
-  package: simtrial
+  bootstrap: 5
+  bslib:
+    primary: "#00857c"
+    navbar-light-brand-color: "#fff"
+    navbar-light-brand-hover-color: "#fff"
+    navbar-light-color: "#fff"
+    navbar-light-hover-color: "#fff"
+    navbar-light-active-color: "#fff"
+    dropdown-link-hover-color: "#fff"
+    dropdown-link-hover-bg: "#00857c"
+
+footer:
+  structure:
+    left: [developed_by, built_with, legal]
+    right: [blank]
+  components:
+    legal: "<br>Copyright &copy; Merck Sharp & Dohme Corp., a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA."
+    blank: "<span></span>"
