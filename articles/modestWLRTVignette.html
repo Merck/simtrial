@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="simtrial">
 <title>Using the Magirr-Burman weights for testing • simtrial</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Using the Magirr-Burman weights for testing">
 <meta property="og:description" content="simtrial">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -19,92 +19,70 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">simtrial</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">simtrial</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
-    </li>
-    <li>
-      <a href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
-    </li>
-    <li>
-      <a href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
-    </li>
-    <li>
-      <a href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/Merck/simtrial/">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
+    <a class="dropdown-item" href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
+    <a class="dropdown-item" href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
+    <a class="dropdown-item" href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
   </div>
-<!--/.container -->
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Merck/simtrial/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
-
-      </header><script src="modestWLRTVignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Using the Magirr-Burman weights for testing</h1>
+    
+  </div>
+</nav><div class="container template-article">
+<script src="modestWLRTVignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Using the Magirr-Burman weights for testing</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/master/vignettes/modestWLRTVignette.Rmd"><code>vignettes/modestWLRTVignette.Rmd</code></a></small>
-      <div class="hidden name"><code>modestWLRTVignette.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/modestWLRTVignette.Rmd" class="external-link"><code>vignettes/modestWLRTVignette.Rmd</code></a></small>
+      <div class="d-none name"><code>modestWLRTVignette.Rmd</code></div>
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p><span class="citation">Magirr and Burman (2019)</span> implemented a modestly weighted logrank test with the following claim: `<code>Tests from this new class can be constructed to have high power under a delayed-onset treatment effect scenario, as well as being almost as efficient as the standard logrank test under proportional hazards.'' They have implemented this in the package \strong{modestWLRT} available at Github.com. Since the implementation is relatively straightforward, we have added this functionality to the \strong{simtrial} package and explain how to use it here with the</code>wMB()` function.</p>
 <p>We consider two examples:</p>
 <ul>
@@ -113,47 +91,47 @@
 </ul>
 <p>Packages used are as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="single-stratum-examples" class="section level1">
-<h1 class="hasAnchor">
-<a href="#single-stratum-examples" class="anchor"></a>Single stratum examples</h1>
-<div id="magirr-and-burman-delayed-effect-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#magirr-and-burman-delayed-effect-example" class="anchor"></a>Magirr and Burman delayed effect example</h2>
+<div class="section level1">
+<h1 id="single-stratum-examples">Single stratum examples<a class="anchor" aria-label="anchor" href="#single-stratum-examples"></a>
+</h1>
+<div class="section level2">
+<h2 id="magirr-and-burman-delayed-effect-example">Magirr and Burman delayed effect example<a class="anchor" aria-label="anchor" href="#magirr-and-burman-delayed-effect-example"></a>
+</h2>
 <p>First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached. For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019). The control group has an exponential failure rate with a median of 15 months. For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter. This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">studyDuration</span> <span class="op">=</span> <span class="fl">36</span>
 <span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="fl">200</span>
-<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">12</span>, rate <span class="op">=</span> <span class="fl">200</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span>
-<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span>
+<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">12</span>, rate <span class="op">=</span> <span class="fl">200</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span>
+<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
   <span class="op">~</span><span class="va">Stratum</span>,  <span class="op">~</span><span class="va">duration</span>, <span class="op">~</span><span class="va">failRate</span>, <span class="op">~</span><span class="va">hr</span>, <span class="op">~</span><span class="va">dropoutRate</span>,
-  <span class="st">"All"</span>,     <span class="fl">6</span>,         <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">15</span>,  <span class="fl">1</span>,  <span class="fl">0</span>,
-  <span class="st">"All"</span>,     <span class="fl">36</span>,        <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">15</span>,  <span class="fl">.7</span>, <span class="fl">0</span>
+  <span class="st">"All"</span>,     <span class="fl">6</span>,         <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">15</span>,  <span class="fl">1</span>,  <span class="fl">0</span>,
+  <span class="st">"All"</span>,     <span class="fl">36</span>,        <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">15</span>,  <span class="fl">.7</span>, <span class="fl">0</span>
 <span class="op">)</span></code></pre></div>
 <p>Now we generate a single dataset with the above characteristics and cut data for analysis at 36 months post start of enrollment. Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span>
 <span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simPWSurv.html">simfix2simPWSurv</a></span><span class="op">(</span><span class="va">failRates</span><span class="op">)</span>
 <span class="va">MBdelay</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sampleSize</span>, 
-                     strata <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-                     block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
+                     strata <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+                     block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
                      enrollRates <span class="op">=</span> <span class="va">enrollRates</span>,
                      failRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">failRates</span>, 
-                     dropoutRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">dropoutRates</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+                     dropoutRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">dropoutRates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
            <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">studyDuration</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>,<span class="va">event</span><span class="op">)</span><span class="op">~</span><span class="va">Treatment</span>,data<span class="op">=</span><span class="va">MBdelay</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>,col<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,mark<span class="op">=</span><span class="st">"|"</span>, xaxt<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>,<span class="va">event</span><span class="op">)</span><span class="op">~</span><span class="va">Treatment</span>,data<span class="op">=</span><span class="va">MBdelay</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>,col<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,mark<span class="op">=</span><span class="st">"|"</span>, xaxt<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="modestWLRTVignette_files/figure-html/unnamed-chunk-3-1.png" width="720"></p>
 <p>We perform a logrank and weighted logrank tests as follows:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xx</span>
 <span class="co">#&gt;   rho gamma         Z        V1        V2        V3</span>
 <span class="co">#&gt; 1   0     0 -1.623630 1.0000000 0.8620167 0.9318306</span>
@@ -165,23 +143,23 @@
 <span class="co">#&gt; 3 0.01900102</span></code></pre></div>
 <p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.02050061</span></code></pre></div>
 <p>Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months. This requires generating weights and then computing the test.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ZMB</span> <span class="op">&lt;-</span>  <span class="va">MBdelay</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>S<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">wMB</span><span class="op">)</span>,V<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,Z<span class="op">=</span><span class="va">S</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ZMB</span> <span class="op">&lt;-</span>  <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">wMB</span><span class="op">)</span>,V<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,Z<span class="op">=</span><span class="va">S</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.0384576</span></code></pre></div>
 <p>Finally, we consider weighted logrank tests with less down-weighting. Results are quite similar to the results with greater down-weighting.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xx</span>
 <span class="co">#&gt;   rho gamma         Z        V1        V2        V3</span>
 <span class="co">#&gt; 1 0.0   0.0 -1.623630 1.0000000 0.9402251 0.9682455</span>
@@ -193,21 +171,21 @@
 <span class="co">#&gt; 3 0.02148424</span></code></pre></div>
 <p>Check vs tenFH().</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFH.html">tenFH</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFH.html">tenFH</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
 <span class="va">xx</span>
-<span class="co">#&gt; # A tibble: 3 x 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="co">#&gt;     rho gamma     Z</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1   0     0   -1.62</span>
-<span class="co">#&gt; 2   0     0.5 -2.15</span>
-<span class="co">#&gt; 3   0.5   0.5 -2.02</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   0     0   -<span style="color: #BB0000;">1.62</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   0     0.5 -<span style="color: #BB0000;">2.15</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   0.5   0.5 -<span style="color: #BB0000;">2.02</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xx</span>
 <span class="co">#&gt;   rho gamma         Z        V1        V2        V3</span>
 <span class="co">#&gt; 1 0.0   0.0 -1.623630 1.0000000 0.9402251 0.9682455</span>
@@ -221,46 +199,46 @@
 <span class="co">#&gt; 4 1.0000000 0.08966377</span></code></pre></div>
 <p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.02407911</span></code></pre></div>
 </div>
-<div id="freidlin-and-korn-strong-null-hypothesis-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#freidlin-and-korn-strong-null-hypothesis-example" class="anchor"></a>Freidlin and Korn strong null hypothesis example</h2>
+<div class="section level2">
+<h2 id="freidlin-and-korn-strong-null-hypothesis-example">Freidlin and Korn strong null hypothesis example<a class="anchor" aria-label="anchor" href="#freidlin-and-korn-strong-null-hypothesis-example"></a>
+</h2>
 <p>The underlying survival is worse for the experimental group is uniformly worse for the experimental group until the very end of the study. This was presented by <span class="citation">Freidlin and Korn (2019)</span>. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of</p>
 <p>First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached. For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019). The control group has an exponential failure rate with a median of 15 months. For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter. This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">studyDuration</span> <span class="op">=</span> <span class="fl">5</span>
 <span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="fl">2000</span>
 <span class="va">enrollDuration</span> <span class="op">&lt;-</span> <span class="fl">.0001</span>
-<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">enrollDuration</span>, rate <span class="op">=</span> <span class="va">sampleSize</span><span class="op">/</span><span class="va">enrollDuration</span><span class="op">)</span>
-<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="st">"All"</span>,
+<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">enrollDuration</span>, rate <span class="op">=</span> <span class="va">sampleSize</span><span class="op">/</span><span class="va">enrollDuration</span><span class="op">)</span>
+<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="st">"All"</span>,
                  failRate<span class="op">=</span><span class="fl">0.25</span>,
                  dropoutRate<span class="op">=</span><span class="fl">0</span>,
-                 hr<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">/</span><span class="fl">.25</span>,<span class="fl">.19</span><span class="op">/</span><span class="fl">.25</span><span class="op">)</span>,
-                 duration<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">4.9</span><span class="op">)</span>
+                 hr<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">/</span><span class="fl">.25</span>,<span class="fl">.19</span><span class="op">/</span><span class="fl">.25</span><span class="op">)</span>,
+                 duration<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">4.9</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>Now we generate a single dataset with the above characteristics and cut data for analysis at 36 months post start of enrollment. Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span>
 <span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simPWSurv.html">simfix2simPWSurv</a></span><span class="op">(</span><span class="va">failRates</span><span class="op">)</span>
 <span class="va">FHwn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sampleSize</span>, 
-                     strata <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-                     block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
+                     strata <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+                     block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
                      enrollRates <span class="op">=</span> <span class="va">enrollRates</span>,
                      failRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">failRates</span>, 
-                     dropoutRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">dropoutRates</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+                     dropoutRates <span class="op">=</span> <span class="va">xpar</span><span class="op">$</span><span class="va">dropoutRates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
            <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">studyDuration</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>,<span class="va">event</span><span class="op">)</span><span class="op">~</span><span class="va">Treatment</span>,data<span class="op">=</span><span class="va">FHwn</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>,col<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,mark<span class="op">=</span><span class="st">"|"</span>, xaxt<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>,<span class="va">event</span><span class="op">)</span><span class="op">~</span><span class="va">Treatment</span>,data<span class="op">=</span><span class="va">FHwn</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>,col<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,mark<span class="op">=</span><span class="st">"|"</span>, xaxt<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="modestWLRTVignette_files/figure-html/unnamed-chunk-12-1.png" width="720"></p>
 <p>We perform a logrank and weighted logrank tests as follows:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xx</span>
 <span class="co">#&gt;   rho gamma         Z        V1        V2        V3</span>
 <span class="co">#&gt; 1   0     0  4.617446 1.0000000 0.8655736 0.9370555</span>
@@ -272,23 +250,23 @@
 <span class="co">#&gt; 3 0.149243406</span></code></pre></div>
 <p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.01330616</span></code></pre></div>
 <p>Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months. This requires generating weights and then computing the test.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ZMB</span> <span class="op">&lt;-</span>  <span class="va">FHwn</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>S<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">wMB</span><span class="op">)</span>,V<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,Z<span class="op">=</span><span class="va">S</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ZMB</span> <span class="op">&lt;-</span>  <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">wMB</span><span class="op">)</span>,V<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,Z<span class="op">=</span><span class="va">S</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.7767713</span></code></pre></div>
 <p>Finally, we consider weighted logrank tests with less down-weighting. Results are quite similar to the results with greater down-weighting.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">.5</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xx</span>
 <span class="co">#&gt;   rho gamma          Z        V1        V2        V3</span>
 <span class="co">#&gt; 1 0.0   0.0  4.6174462 1.0000000 0.9422827 0.9715693</span>
@@ -300,13 +278,13 @@
 <span class="co">#&gt; 3 0.8288040</span></code></pre></div>
 <p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.4237883</span></code></pre></div>
 </div>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level1 unnumbered">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
 <div id="refs" class="references">
 <div id="ref-FKNPH2019">
 <p>Freidlin, Boris, and Edward L Korn. 2019. “Methods for Accommodating Nonproportional Hazards in Clinical Trials: Ready for the Primary Analysis?” <em>Journal of Clinical Oncology</em> 37 (35): 3455–9.</p>
@@ -316,29 +294,28 @@
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Keaven Anderson, Yilong Zhang. Site built with pkgdown 1.6.1.
-  </p>
-  <p>Copyright © 2021 Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
-      </footer>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p><span></span></p>
+</div>
+
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

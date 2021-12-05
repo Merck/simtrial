@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="simtrial">
 <title>Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test • simtrial</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test">
 <meta property="og:description" content="simtrial">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -19,98 +19,76 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">simtrial</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">simtrial</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
-    </li>
-    <li>
-      <a href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
-    </li>
-    <li>
-      <a href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
-    </li>
-    <li>
-      <a href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/Merck/simtrial/">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
+    <a class="dropdown-item" href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
+    <a class="dropdown-item" href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
+    <a class="dropdown-item" href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
   </div>
-<!--/.container -->
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Merck/simtrial/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
-
-      </header><script src="pMaxComboVignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</h1>
+    
+  </div>
+</nav><div class="container template-article">
+<script src="pMaxComboVignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</h1>
             
-            <h4 class="date">2021-06-11</h4>
+            <h4 data-toc-skip class="date">2021-12-05</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/master/vignettes/pMaxComboVignette.Rmd"><code>vignettes/pMaxComboVignette.Rmd</code></a></small>
-      <div class="hidden name"><code>pMaxComboVignette.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/pMaxComboVignette.Rmd" class="external-link"><code>vignettes/pMaxComboVignette.Rmd</code></a></small>
+      <div class="d-none name"><code>pMaxComboVignette.Rmd</code></div>
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p>This vignette demonstrates use of a simple routine to do simulations and testing using Fleming-Harrington weighted logrank tests and the MaxCombo test. In addition, we demonstrate how to perform these tests with a dataset not generated by simulation routines within the package. Note that all p-values computed here are one-sided with small values indicating that the experimental treatment is favored.</p>
 </div>
-<div id="defining-the-test" class="section level1">
-<h1 class="hasAnchor">
-<a href="#defining-the-test" class="anchor"></a>Defining the test</h1>
+<div class="section level1">
+<h1 id="defining-the-test">Defining the test<a class="anchor" aria-label="anchor" href="#defining-the-test"></a>
+</h1>
 <p>The MaxCombo test has been posed as the maximum of multiple Fleming-Harrington weighted logrank tests (<span class="citation">Harrington and Fleming (1982)</span>, <span class="citation">Fleming and Harrington (2011)</span>). Combination tests looking at a maximum of selected tests in this class have also been proposed; see <span class="citation">Lee (2007)</span>, <span class="citation">Roychoudhury et al. (2019)</span>, and <span class="citation">Lin et al. (2019)</span>. The Fleming-Harrington class is indexed by the parameters <span class="math inline">\(\rho\ge 0\)</span> and <span class="math inline">\(\gamma\ge 0\)</span>. We will denote these as FH(<span class="math inline">\(\rho,\gamma\)</span>). This class includes the logrank test as FH(0,0). Other tests of interest here include:</p>
 <ul>
 <li>FH(0,1): a test that down-weights early events</li>
@@ -118,20 +96,19 @@
 <li>FH(1,1): a test that down-weights events increasingly as their quantiles differ from the median</li>
 </ul>
 </div>
-<div id="executing-for-a-single-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#executing-for-a-single-dataset" class="anchor"></a>Executing for a single dataset</h1>
-<div id="generating-test-statistics-with-simfix" class="section level2">
-<h2 class="hasAnchor">
-<a href="#generating-test-statistics-with-simfix" class="anchor"></a>Generating test statistics with <code>simfix()</code>
+<div class="section level1">
+<h1 id="executing-for-a-single-dataset">Executing for a single dataset<a class="anchor" aria-label="anchor" href="#executing-for-a-single-dataset"></a>
+</h1>
+<div class="section level2">
+<h2 id="generating-test-statistics-with-simfix">Generating test statistics with <code>simfix()</code><a class="anchor" aria-label="anchor" href="#generating-test-statistics-with-simfix"></a>
 </h2>
 <p>We begin with a single trial simulation generated by the routine <code><a href="../reference/simfix.html">simfix()</a></code> using default arguments for that routine. <code><a href="../reference/simfix.html">simfix()</a></code> produces one record per test and data cutoff method per simulation. Here we choose 3 tests (logrank=FH(0,0), FH(0,1) and FH(1,1)). When more than one test is chosen the correlation between tests is computed as shown by <span class="citation">Karrison (2016)</span>, in this case in the columns <code>V1, V2, V3</code>. The columns <code>rho, gamma</code> indicate <span class="math inline">\(\rho\)</span> and <span class="math inline">\(\gamma\)</span> used to compute the test. <code>Z</code> is the FH(<span class="math inline">\(\rho,\gamma\)</span>) normal test statistic with variance 1 with a negative value favoring experimental treatment. The variable <code>cut</code> indicates how the data were cut for analysis, in this case at the maximum of the targeted minimum follow-up after last enrollment and the date at which the targeted event count was reached. <code>Sim</code> is a sequential index of the simulations performed.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/">knitr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">1</span>,timingType<span class="op">=</span><span class="fl">5</span>,rg<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">1</span>,timingType<span class="op">=</span><span class="fl">5</span>,rg<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Events</th>
@@ -149,41 +126,41 @@
 <tbody>
 <tr class="odd">
 <td align="right">362</td>
-<td align="right">-0.6</td>
+<td align="right">-0.42</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-5.64</td>
+<td align="right">-4.01</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="right">0.93</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">71.91</td>
+<td align="right">77.96</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">362</td>
-<td align="right">-0.6</td>
+<td align="right">-0.42</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-5.89</td>
+<td align="right">-3.75</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
-<td align="right">0.93</td>
+<td align="right">0.92</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">71.91</td>
+<td align="right">77.96</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">362</td>
-<td align="right">-0.6</td>
+<td align="right">-0.42</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-5.75</td>
+<td align="right">-4.56</td>
 <td align="right">0.93</td>
-<td align="right">0.93</td>
+<td align="right">0.92</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">71.91</td>
+<td align="right">77.96</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -191,16 +168,15 @@
 <p>Once you have this format, the MaxCombo p-value per <span class="citation">Karrison (2016)</span>, <span class="citation">Roychoudhury et al. (2019)</span> can be computed as follows (note that you will need to have the package <strong>mvtnorm</strong> installed):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.987189e-09</span></code></pre></div>
+<span class="co">#&gt; [1] 2.563989e-06</span></code></pre></div>
 </div>
-<div id="generating-data-with-simtrialsimpwsurv" class="section level2">
-<h2 class="hasAnchor">
-<a href="#generating-data-with-simtrialsimpwsurv" class="anchor"></a>Generating data with <code>simtrial::simPWSurv()</code>
+<div class="section level2">
+<h2 id="generating-data-with-simtrialsimpwsurv">Generating data with <code>simtrial::simPWSurv()</code><a class="anchor" aria-label="anchor" href="#generating-data-with-simtrialsimpwsurv"></a>
 </h2>
 <p>We begin with another simulation generated by <code><a href="../reference/simPWSurv.html">simtrial::simPWSurv()</a></code>. Again, we use defaults for that routine.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Stratum</th>
@@ -214,64 +190,64 @@
 <tbody>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.07</td>
+<td align="right">0.32</td>
 <td align="left">Experimental</td>
-<td align="right">118.03</td>
-<td align="right">295.09</td>
-<td align="right">118.10</td>
+<td align="right">11.78</td>
+<td align="right">2215.55</td>
+<td align="right">12.11</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.14</td>
+<td align="right">0.35</td>
 <td align="left">Control</td>
-<td align="right">3.26</td>
-<td align="right">104.73</td>
-<td align="right">3.40</td>
+<td align="right">9.78</td>
+<td align="right">1443.28</td>
+<td align="right">10.12</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.17</td>
+<td align="right">0.72</td>
 <td align="left">Experimental</td>
-<td align="right">33.70</td>
-<td align="right">247.40</td>
-<td align="right">33.87</td>
+<td align="right">39.77</td>
+<td align="right">1688.07</td>
+<td align="right">40.49</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.26</td>
+<td align="right">0.77</td>
 <td align="left">Control</td>
-<td align="right">8.49</td>
-<td align="right">1268.55</td>
-<td align="right">8.75</td>
+<td align="right">19.83</td>
+<td align="right">1181.81</td>
+<td align="right">20.60</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.29</td>
+<td align="right">0.88</td>
 <td align="left">Experimental</td>
-<td align="right">21.76</td>
-<td align="right">399.87</td>
-<td align="right">22.05</td>
+<td align="right">30.56</td>
+<td align="right">1109.77</td>
+<td align="right">31.44</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.34</td>
-<td align="left">Experimental</td>
-<td align="right">1.54</td>
-<td align="right">360.34</td>
-<td align="right">1.88</td>
+<td align="right">0.94</td>
+<td align="left">Control</td>
+<td align="right">4.74</td>
+<td align="right">545.44</td>
+<td align="right">5.67</td>
 <td align="right">1</td>
 </tr>
 </tbody>
 </table>
 <p>Once generated, we need to cut the data for analysis. Here we cut after 75 events.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">75</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">75</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">tte</th>
@@ -281,49 +257,49 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">29.24</td>
-<td align="right">0</td>
+<td align="right">11.78</td>
+<td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">3.26</td>
+<td align="right">9.78</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Control</td>
 </tr>
 <tr class="odd">
-<td align="right">29.15</td>
+<td align="right">29.33</td>
 <td align="right">0</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">8.49</td>
+<td align="right">19.83</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Control</td>
 </tr>
 <tr class="odd">
-<td align="right">21.76</td>
-<td align="right">1</td>
+<td align="right">29.17</td>
+<td align="right">0</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">1.54</td>
+<td align="right">4.74</td>
 <td align="right">1</td>
 <td align="left">All</td>
-<td align="left">Experimental</td>
+<td align="left">Control</td>
 </tr>
 </tbody>
 </table>
 <p>Now we can analyze this data. We begin with <code>s</code> to show how this can be done in a single line. In this case, we use the 4 test combination suggested in <span class="citation">Lin et al. (2019)</span>, <span class="citation">Roychoudhury et al. (2019)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Z</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">75</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-           <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-           <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">Z</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">Z</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">75</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+           <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+           <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">Z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">rho</th>
@@ -338,36 +314,36 @@
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.55</td>
+<td align="right">-2.77</td>
 <td align="right">1.00</td>
-<td align="right">0.85</td>
+<td align="right">0.86</td>
 <td align="right">0.95</td>
 <td align="right">0.93</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.44</td>
-<td align="right">0.85</td>
+<td align="right">-4.00</td>
+<td align="right">0.86</td>
 <td align="right">1.00</td>
-<td align="right">0.63</td>
-<td align="right">0.93</td>
+<td align="right">0.65</td>
+<td align="right">0.95</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-3.09</td>
+<td align="right">-1.60</td>
 <td align="right">0.95</td>
-<td align="right">0.63</td>
+<td align="right">0.65</td>
 <td align="right">1.00</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-3.77</td>
+<td align="right">-3.49</td>
 <td align="right">0.93</td>
-<td align="right">0.93</td>
+<td align="right">0.95</td>
 <td align="right">0.79</td>
 <td align="right">1.00</td>
 </tr>
@@ -376,19 +352,19 @@
 <p>Now we compute our p-value as before:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.0001566453</span></code></pre></div>
+<span class="co">#&gt; [1] 4.378492e-05</span></code></pre></div>
 <p>Suppose we want the p-value just based on the logrank and FH(0,1) and FH(1,0) as suggested by <span class="citation">Lee (2007)</span>. We remove the rows and columns associated with FH(0,0) and FH(1,1) and then apply <code><a href="../reference/pMaxCombo.html">pMaxCombo()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">Z</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">V1</span>,<span class="va">V4</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">rho</span><span class="op">==</span><span class="fl">0</span> <span class="op">&amp;</span> <span class="va">gamma</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">rho</span><span class="op">==</span><span class="fl">1</span> <span class="op">&amp;</span> <span class="va">gamma</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.0005602836</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">Z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">V1</span>,<span class="va">V4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">rho</span><span class="op">==</span><span class="fl">0</span> <span class="op">&amp;</span> <span class="va">gamma</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">rho</span><span class="op">==</span><span class="fl">1</span> <span class="op">&amp;</span> <span class="va">gamma</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 6.078369e-05</span></code></pre></div>
 </div>
-<div id="using-survival-data-in-another-format" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-survival-data-in-another-format" class="anchor"></a>Using survival data in another format</h2>
+<div class="section level2">
+<h2 id="using-survival-data-in-another-format">Using survival data in another format<a class="anchor" aria-label="anchor" href="#using-survival-data-in-another-format"></a>
+</h2>
 <p>For a trial not generated by <code><a href="../reference/simfix.html">simfix()</a></code>, the process is slightly more involved. We consider survival data not in the <strong>simtrial</strong> format and show the transformation needed. In this case we use the small <code>aml</code> dataset from the <strong>survival</strong> package.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">aml</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aml</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">time</th>
@@ -430,8 +406,8 @@
 </table>
 <p>We rename variables and create a stratum variable as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">aml</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">transmute</a></span><span class="op">(</span>tte<span class="op">=</span><span class="va">time</span>,event<span class="op">=</span><span class="va">status</span>,Stratum<span class="op">=</span><span class="st">"All"</span>,Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">aml</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span>tte<span class="op">=</span><span class="va">time</span>,event<span class="op">=</span><span class="va">status</span>,Stratum<span class="op">=</span><span class="st">"All"</span>,Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">tte</th>
@@ -480,29 +456,29 @@
 </table>
 <p>Now we analyze the data with a MaxCombo with the logrank and FH(0,1) and compute a p-value.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Maintained"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fl">0</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Maintained"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fl">0</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.0491509</span></code></pre></div>
 </div>
 </div>
-<div id="simulation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simulation" class="anchor"></a>Simulation</h1>
+<div class="section level1">
+<h1 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
+</h1>
 <p>We now consider the example simulation from the <code><a href="../reference/pMaxCombo.html">pMaxCombo()</a></code> help file to demonstrate how to simulate power for the MaxCombo test. However, we increase the number of simulations to 100 in this case; a larger number should be used (e.g., 1000) for a better estimate of design properties. Here we will test at the <span class="math inline">\(\alpha=0.001\)</span> level.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only use cut events + min follow-up</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">100</span>,timingType<span class="op">=</span><span class="fl">5</span>,rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">100</span>,timingType<span class="op">=</span><span class="fl">5</span>,rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.001</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.79</span></code></pre></div>
-<p>We note the use of <code>group_map</code> in the above produces a list of p-values for each simulation. It would be nice to have something that worked more like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize()</a></code> to avoid <code><a href="https://rdrr.io/r/base/unlist.html">unlist()</a></code> and to allow evaluating, say, multiple data cutoff methods. The latter can be done without having to re-run all simulations as follows, demonstrated with a smaller number of simulations.</p>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.001</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.82</span></code></pre></div>
+<p>We note the use of <code>group_map</code> in the above produces a list of p-values for each simulation. It would be nice to have something that worked more like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarize()</a></code> to avoid <code><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist()</a></code> and to allow evaluating, say, multiple data cutoff methods. The latter can be done without having to re-run all simulations as follows, demonstrated with a smaller number of simulations.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only use cuts for events and events + min follow-up</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">100</span>,timingType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span>,rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fl">0</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim<span class="op">=</span><span class="fl">100</span>,timingType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span>,rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fl">0</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Events</th>
@@ -519,74 +495,74 @@
 <tbody>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.27</td>
+<td align="right">-0.49</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-2.48</td>
+<td align="right">-4.56</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">73.52</td>
+<td align="right">71.68</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.27</td>
+<td align="right">-0.49</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.39</td>
+<td align="right">-4.42</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">73.52</td>
+<td align="right">71.68</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">361</td>
-<td align="right">-0.29</td>
+<td align="right">356</td>
+<td align="right">-0.50</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-2.71</td>
+<td align="right">-4.66</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">75.11</td>
+<td align="right">73.62</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">361</td>
-<td align="right">-0.29</td>
+<td align="right">356</td>
+<td align="right">-0.50</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.69</td>
+<td align="right">-4.52</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">75.11</td>
+<td align="right">73.62</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.47</td>
+<td align="right">-0.28</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-4.41</td>
+<td align="right">-2.63</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">71.15</td>
+<td align="right">68.42</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.47</td>
+<td align="right">-0.28</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-4.20</td>
+<td align="right">-3.41</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">71.15</td>
+<td align="right">68.42</td>
 <td align="right">2</td>
 </tr>
 </tbody>
@@ -594,19 +570,19 @@
 <p>Now we compute a p-value separately for each cut type, first for targeted event count.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># subset to targeted events cutoff tests</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span><span class="op">==</span><span class="st">"Targeted events"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.025</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cut</span><span class="op">==</span><span class="st">"Targeted events"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.025</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.98</span></code></pre></div>
 <p>Now we use the later of targeted events and minimum follow-up cutoffs.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># subset to targeted events cutoff tests</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span><span class="op">!=</span><span class="st">"Targeted events"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.025</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.97</span></code></pre></div>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cut</span><span class="op">!=</span><span class="st">"Targeted events"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.025</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.98</span></code></pre></div>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level1 unnumbered">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
 <div id="refs" class="references">
 <div id="ref-FH2011">
 <p>Fleming, Thomas R, and David P Harrington. 2011. <em>Counting Processes and Survival Analysis</em>. Vol. 169. John Wiley &amp; Sons.</p>
@@ -628,29 +604,28 @@
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Keaven Anderson, Yilong Zhang. Site built with pkgdown 1.6.1.
-  </p>
-  <p>Copyright © 2021 Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
-      </footer>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p><span></span></p>
+</div>
+
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

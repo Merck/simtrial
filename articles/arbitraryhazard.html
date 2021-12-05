@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="simtrial">
 <title>Approximating an arbitrary hazard function • simtrial</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Approximating an arbitrary hazard function">
 <meta property="og:description" content="simtrial">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -19,97 +19,75 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">simtrial</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">simtrial</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
-    </li>
-    <li>
-      <a href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
-    </li>
-    <li>
-      <a href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
-    </li>
-    <li>
-      <a href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/Merck/simtrial/">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
+    <a class="dropdown-item" href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
+    <a class="dropdown-item" href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
+    <a class="dropdown-item" href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
   </div>
-<!--/.container -->
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Merck/simtrial/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
-
-      </header><script src="arbitraryhazard_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Approximating an arbitrary hazard function</h1>
+    
+  </div>
+</nav><div class="container template-article">
+<script src="arbitraryhazard_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Approximating an arbitrary hazard function</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/master/vignettes/arbitraryhazard.Rmd"><code>vignettes/arbitraryhazard.Rmd</code></a></small>
-      <div class="hidden name"><code>arbitraryhazard.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/arbitraryhazard.Rmd" class="external-link"><code>vignettes/arbitraryhazard.Rmd</code></a></small>
+      <div class="d-none name"><code>arbitraryhazard.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">bshazard</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bshazard</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: splines</span>
 <span class="co">#&gt; Loading required package: survival</span>
 <span class="co">#&gt; Loading required package: Epi</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -118,91 +96,84 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></code></pre></div>
 <p>We simulate a log-logistic distribution as an example of how to simulate a trial with an arbitrary distribution. We begin by showing hazard rates that can be used to approximate this distribution.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dloglogis</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">alpha</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">beta</span> <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">{</span>
   <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="va">alpha</span><span class="op">)</span><span class="op">^</span><span class="va">beta</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="va">times</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span><span class="op">)</span> <span class="op">/</span> <span class="fl">50</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Times<span class="op">=</span><span class="va">times</span>,Survival<span class="op">=</span><span class="fu">dloglogis</span><span class="op">(</span><span class="va">times</span>,alpha<span class="op">=</span><span class="fl">.5</span>,beta<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">Times</span><span class="op">-</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="va">Times</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span>,
-                 H <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Survival</span><span class="op">)</span>,
-                 rate <span class="op">=</span> <span class="op">(</span><span class="va">H</span><span class="op">-</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="va">H</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">duration</span> <span class="op">/</span> <span class="fl">3</span>
-                 <span class="op">)</span> <span class="op">%&gt;%</span>
-          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">duration</span>,<span class="va">rate</span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>,y<span class="op">=</span><span class="va">rate</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Times<span class="op">=</span><span class="va">times</span>,Survival<span class="op">=</span><span class="fu">dloglogis</span><span class="op">(</span><span class="va">times</span>,alpha<span class="op">=</span><span class="fl">.5</span>,beta<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">Times</span><span class="op">-</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">Times</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span>,
+                 H <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">Survival</span><span class="op">)</span>,
+                 rate <span class="op">=</span> <span class="op">(</span><span class="va">H</span><span class="op">-</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">H</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">duration</span> <span class="op">/</span> <span class="fl">3</span>
+                 <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">duration</span>,<span class="va">rate</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>,y<span class="op">=</span><span class="va">rate</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-2-1.png" width="720"></p>
 <p>We assume the time scale above is in years and that enrollment occurs over the first half year at an even rate of 500 per year. We assume that observations are censored at an exponential rate of about 5% per year.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tx</span> <span class="op">&lt;-</span> <span class="st">"Log-logistic"</span>
-<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">.5</span>, rate <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
-<span class="va">dropoutRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>Treatment <span class="op">=</span> <span class="va">tx</span>, duration <span class="op">=</span> <span class="fl">3</span>, rate <span class="op">=</span> <span class="fl">.05</span>, period <span class="op">=</span> <span class="fl">1</span>, Stratum <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span>
-<span class="va">block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">tx</span>,<span class="fl">2</span><span class="op">)</span>
+<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">.5</span>, rate <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">dropoutRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Treatment <span class="op">=</span> <span class="va">tx</span>, duration <span class="op">=</span> <span class="fl">3</span>, rate <span class="op">=</span> <span class="fl">.05</span>, period <span class="op">=</span> <span class="fl">1</span>, Stratum <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span>
+<span class="va">block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">tx</span>,<span class="fl">2</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">250</span>, <span class="co"># sample size</span>
                block <span class="op">=</span> <span class="va">block</span>,
                enrollRates <span class="op">=</span> <span class="va">enrollRates</span>,
-               failRates <span class="op">=</span> <span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="st">"All"</span>, Treatment<span class="op">=</span><span class="va">tx</span>, period<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, Stratum <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span>,
+               failRates <span class="op">=</span> <span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="st">"All"</span>, Treatment<span class="op">=</span><span class="va">tx</span>, period<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, Stratum <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span>,
                dropoutRates <span class="op">=</span> <span class="va">dropoutRates</span><span class="op">)</span></code></pre></div>
 <p>We assume the entire study lasts 3 years</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 x 4</span>
-<span class="co">#&gt; # Groups:   Stratum, Treatment [1]</span>
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   Stratum, Treatment [1]</span></span>
 <span class="co">#&gt;     tte event Stratum Treatment   </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 0.509     1 All     Log-logistic</span>
-<span class="co">#&gt; 2 0.422     1 All     Log-logistic</span>
-<span class="co">#&gt; 3 0.477     1 All     Log-logistic</span>
-<span class="co">#&gt; 4 0.545     1 All     Log-logistic</span>
-<span class="co">#&gt; 5 0.485     1 All     Log-logistic</span>
-<span class="co">#&gt; 6 0.595     1 All     Log-logistic</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 3.00      0 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1.73      1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0.934     1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2.66      1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0.354     1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2.57      1 All     Log-logistic</span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>, mark<span class="op">=</span><span class="st">"|"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, mark<span class="op">=</span><span class="st">"|"</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-5-1.png" width="720"></p>
 <p>Finally, we plot the estimated hazard rate and its confidence interval as a function of time. We overlay the actual rates in red.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html" class="external-link">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>
 <span class="co">#&gt; Iterations: relative error in phi-hat = 1e-04 </span>
-<span class="co">#&gt; phi= 2.143612   sv2= 0.02108505   df= 25.36788   lambda= 101.665 </span>
-<span class="co">#&gt; phi= 2.294179   sv2= 0.002732067   df= 14.79106   lambda= 839.7226 </span>
-<span class="co">#&gt; phi= 2.419611   sv2= 0.0009391975   df= 9.137695   lambda= 2576.253 </span>
-<span class="co">#&gt; phi= 2.500663   sv2= 0.0006605505   df= 7.144666   lambda= 3785.726 </span>
-<span class="co">#&gt; phi= 2.524929   sv2= 0.0005845824   df= 6.581714   lambda= 4319.202 </span>
-<span class="co">#&gt; phi= 2.532527   sv2= 0.0005601031   df= 6.401431   lambda= 4521.537 </span>
-<span class="co">#&gt; phi= 2.535091   sv2= 0.000551755   df= 6.340252   lambda= 4594.595 </span>
-<span class="co">#&gt; phi= 2.535981   sv2= 0.0005488497   df= 6.319004   lambda= 4620.538 </span>
-<span class="co">#&gt; phi= 2.536292   sv2= 0.0005478311   df= 6.311561   lambda= 4629.697 </span>
-<span class="co">#&gt; phi= 2.536402   sv2= 0.0005474732   df= 6.308946   lambda= 4632.924 </span>
-<span class="co">#&gt; phi= 2.53644   sv2= 0.0005473472   df= 6.308026   lambda= 4634.06 </span>
-<span class="co">#&gt; phi= 2.536454   sv2= 0.0005473029   df= 6.307702   lambda= 4634.46</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span>,conf.int<span class="op">=</span><span class="cn">TRUE</span>,xlab<span class="op">=</span><span class="st">'Time'</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2.5</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">times</span>,y<span class="op">=</span><span class="op">(</span><span class="va">xx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>,col<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="co">#&gt; phi= 3.815533   sv2= 0.02795198   df= 23.58832   lambda= 136.5032 </span>
+<span class="co">#&gt; phi= 4.010702   sv2= 0.003326491   df= 13.17893   lambda= 1205.686 </span>
+<span class="co">#&gt; phi= 4.047873   sv2= 0.0007764775   df= 8.098117   lambda= 5213.123 </span>
+<span class="co">#&gt; phi= 4.02682   sv2= 0.0004232033   df= 5.925764   lambda= 9515.096 </span>
+<span class="co">#&gt; phi= 4.017846   sv2= 0.00033151   df= 5.244007   lambda= 12119.83</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>,conf.int<span class="op">=</span><span class="cn">TRUE</span>,xlab<span class="op">=</span><span class="st">'Time'</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2.5</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">times</span>,y<span class="op">=</span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Time<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>,default<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>,col<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-6-1.png" width="720"></p>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Keaven Anderson, Yilong Zhang. Site built with pkgdown 1.6.1.
-  </p>
-  <p>Copyright © 2021 Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
-      </footer>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p><span></span></p>
+</div>
+
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>
