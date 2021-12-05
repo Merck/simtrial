@@ -3,7 +3,7 @@ title: Using the Magirr-Burman weights for testing
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
-  %\VignetteIndexEntry{Magirr-Burman weights}
+  %\VignetteIndexEntry{Using the Magirr-Burman weights for testing}
   %\VignetteEngine{knitr::rmarkdown} 
 ---
 

@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
-  %\VignetteIndexEntry{MaxCombo p-value computation}
+  %\VignetteIndexEntry{Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test}
   %\VignetteEngine{knitr::rmarkdown} 
 ---
 
