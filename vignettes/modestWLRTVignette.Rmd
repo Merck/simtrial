@@ -7,28 +7,30 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown} 
 ---
 
-```{r setup, include = FALSE,message=FALSE,warning=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-options( width = 58 )
-
+options(width = 58)
 ```
 
-# Introduction
+## Introduction
 
-@MagirrBurman implemented a modestly weighted logrank test with the following claim: ``Tests from this new class can be constructed to have high power under a delayed-onset treatment effect scenario, as well as being almost as efficient as the standard logrank test under proportional hazards.''
-They have implemented this in the package \strong{modestWLRT} available at Github.com.
-Since the implementation is relatively straightforward, we have added this functionality to the \strong{simtrial} package and explain how to use it here with the `wMB()` function.
+@MagirrBurman implemented a modestly weighted logrank test with the following claim:
+
+> Tests from this new class can be constructed to have high power under a
+> delayed-onset treatment effect scenario, as well as being almost as efficient
+> as the standard logrank test under proportional hazards.
+
+They have implemented this in the package [modestWLRT](https://github.com/dominicmagirr/modestWLRT).
+Since the implementation is relatively straightforward, we have added this functionality to the `simtrial` package and explain how to use it here with the `wMB()` function.
 
 We consider two examples:
 
-
-- A single stratum example where we compare results with the \strong{modestWLRT} package.
-- A stratified example which was not implemented in \strong{modestWLRT}.
-
+- A single stratum example where we compare results with the `modestWLRT` package.
+- A stratified example which was not implemented in `modestWLRT`.
 
 Packages used are as follows:
 
@@ -38,11 +40,9 @@ library(dplyr)
 library(survival)
 ```
 
+## Single stratum examples
 
-
-# Single stratum examples
-
-## Magirr and Burman delayed effect example
+### Magirr and Burman delayed effect example
 
 First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached.
 For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019).
@@ -50,15 +50,14 @@ The control group has an exponential failure rate with a median of 15 months.
 For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter.
 This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
-
 ```{r, message=FALSE, warning=FALSE}
-studyDuration = 36
+studyDuration <- 36
 sampleSize <- 200
-enrollRates <- tibble::tibble(duration = 12, rate = 200/12)
+enrollRates <- tibble::tibble(duration = 12, rate = 200 / 12)
 failRates <- tibble::tribble(
-  ~Stratum,  ~duration, ~failRate, ~hr, ~dropoutRate,
-  "All",     6,         log(2)/15,  1,  0,
-  "All",     36,        log(2)/15,  .7, 0
+  ~Stratum, ~duration, ~failRate, ~hr, ~dropoutRate,
+  "All", 6, log(2) / 15, 1, 0,
+  "All", 36, log(2) / 15, .7, 0
 )
 ```
 
@@ -68,25 +67,27 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 ```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
 set.seed(7783)
 xpar <- simfix2simPWSurv(failRates)
-MBdelay <- simPWSurv(n = sampleSize, 
-                     strata = tibble::tibble(Stratum = "All", p = 1),
-                     block = c(rep("Control", 2), rep("Experimental", 2)),
-                     enrollRates = enrollRates,
-                     failRates = xpar$failRates, 
-                     dropoutRates = xpar$dropoutRates) %>% 
-           cutData(studyDuration)
-fit <- survfit(Surv(tte,event)~Treatment,data=MBdelay)
-plot(fit,col=1:2,mark="|", xaxt="n")
-axis(1, xaxp=c(0, 36, 6))
+MBdelay <- simPWSurv(
+  n = sampleSize,
+  strata = tibble::tibble(Stratum = "All", p = 1),
+  block = c(rep("Control", 2), rep("Experimental", 2)),
+  enrollRates = enrollRates,
+  failRates = xpar$failRates,
+  dropoutRates = xpar$dropoutRates
+) %>%
+  cutData(studyDuration)
+fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelay)
+plot(fit, col = 1:2, mark = "|", xaxt = "n")
+axis(1, xaxp = c(0, 36, 6))
 ```
 
 We perform a logrank and weighted logrank tests as follows:
 
 ```{r, message=FALSE, warning=FALSE}
-xx <- MBdelay %>% 
-    tensurv(txval="Experimental") %>%
-    tenFHcorr(rg=tibble(rho=c(0,0,1),gamma=c(0,1,1))) %>%
-    mutate(p=pnorm(Z))
+xx <- MBdelay %>%
+  tensurv(txval = "Experimental") %>%
+  tenFHcorr(rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
+  mutate(p = pnorm(Z))
 xx
 ```
 
@@ -100,10 +101,10 @@ Next, we consider the Magirr and Burman (2019) modestly weighted logrank test wi
 This requires generating weights and then computing the test.
 
 ```{r}
-ZMB <-  MBdelay %>% 
-        tensurv(txval="Experimental") %>% 
-        wMB(6) %>% 
-        summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+ZMB <- MBdelay %>%
+  tensurv(txval = "Experimental") %>%
+  wMB(6) %>%
+  summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)
 ```
@@ -112,30 +113,29 @@ Finally, we consider weighted logrank tests with less down-weighting.
 Results are quite similar to the results with greater down-weighting.
 
 ```{r}
-xx <- MBdelay %>% 
-    tensurv(txval="Experimental") %>%
-    tenFHcorr(rg=tibble(rho=c(0,0,.5),gamma=c(0,.5,.5))) %>%
-    mutate(p=pnorm(Z))
+xx <- MBdelay %>%
+  tensurv(txval = "Experimental") %>%
+  tenFHcorr(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
+  mutate(p = pnorm(Z))
 xx
 ```
 
 Check vs tenFH().
 
 ```{r}
-xx <- MBdelay %>% 
-    tensurv(txval="Experimental") %>%
-    tenFH(rg=tibble(rho=c(0,0,.5),gamma=c(0,.5,.5))) 
+xx <- MBdelay %>%
+  tensurv(txval = "Experimental") %>%
+  tenFH(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5)))
 xx
 ```
 
 ```{r}
-xx <- MBdelay %>% 
-    tensurv(txval="Experimental") %>%
-    tenFHcorr(rg=tibble(rho=c(0,0,.5,.5),gamma=c(0,.5,.5,0))) %>%
-    mutate(p=pnorm(Z))
+xx <- MBdelay %>%
+  tensurv(txval = "Experimental") %>%
+  tenFHcorr(rg = tibble(rho = c(0, 0, .5, .5), gamma = c(0, .5, .5, 0))) %>%
+  mutate(p = pnorm(Z))
 xx
 ```
-
 
 Now for a MaxCombo test with the above compoenent tests, we have  p-value of
 
@@ -143,7 +143,7 @@ Now for a MaxCombo test with the above compoenent tests, we have  p-value of
 xx %>% pMaxCombo()
 ```
 
-## Freidlin and Korn strong null hypothesis example
+### Freidlin and Korn strong null hypothesis example
 
 The underlying survival is worse for the experimental group is uniformly worse for the experimental group until the very end of the study.
 This was presented by @FKNPH2019. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of 
@@ -155,15 +155,16 @@ For the initial 6 months, the underlying hazard ratio is one followed by a hazar
 This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
 ```{r, message=FALSE, warning=FALSE}
-studyDuration = 5
+studyDuration <- 5
 sampleSize <- 2000
 enrollDuration <- .0001
-enrollRates <- tibble::tibble(duration = enrollDuration, rate = sampleSize/enrollDuration)
-failRates <- tibble::tibble(Stratum="All",
-                 failRate=0.25,
-                 dropoutRate=0,
-                 hr=c(4/.25,.19/.25),
-                 duration=c(.1,4.9)
+enrollRates <- tibble::tibble(duration = enrollDuration, rate = sampleSize / enrollDuration)
+failRates <- tibble::tibble(
+  Stratum = "All",
+  failRate = 0.25,
+  dropoutRate = 0,
+  hr = c(4 / .25, .19 / .25),
+  duration = c(.1, 4.9)
 )
 ```
 
@@ -173,25 +174,27 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 ```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
 set.seed(7783)
 xpar <- simfix2simPWSurv(failRates)
-FHwn <- simPWSurv(n = sampleSize, 
-                     strata = tibble::tibble(Stratum = "All", p = 1),
-                     block = c(rep("Control", 2), rep("Experimental", 2)),
-                     enrollRates = enrollRates,
-                     failRates = xpar$failRates, 
-                     dropoutRates = xpar$dropoutRates) %>% 
-           cutData(studyDuration)
-fit <- survfit(Surv(tte,event)~Treatment,data=FHwn)
-plot(fit,col=1:2,mark="|", xaxt="n")
-axis(1, xaxp=c(0, 36, 6))
+FHwn <- simPWSurv(
+  n = sampleSize,
+  strata = tibble::tibble(Stratum = "All", p = 1),
+  block = c(rep("Control", 2), rep("Experimental", 2)),
+  enrollRates = enrollRates,
+  failRates = xpar$failRates,
+  dropoutRates = xpar$dropoutRates
+) %>%
+  cutData(studyDuration)
+fit <- survfit(Surv(tte, event) ~ Treatment, data = FHwn)
+plot(fit, col = 1:2, mark = "|", xaxt = "n")
+axis(1, xaxp = c(0, 36, 6))
 ```
 
 We perform a logrank and weighted logrank tests as follows:
 
 ```{r}
-xx <- FHwn %>% 
-    tensurv(txval="Experimental") %>%
-    tenFHcorr(rg=tibble(rho=c(0,0,1),gamma=c(0,1,1))) %>%
-    mutate(p=pnorm(Z))
+xx <- FHwn %>%
+  tensurv(txval = "Experimental") %>%
+  tenFHcorr(rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
+  mutate(p = pnorm(Z))
 xx
 ```
 
@@ -205,10 +208,10 @@ Next, we consider the Magirr and Burman (2019) modestly weighted logrank test wi
 This requires generating weights and then computing the test.
 
 ```{r}
-ZMB <-  FHwn %>% 
-        tensurv(txval="Experimental") %>% 
-        wMB(6) %>% 
-        summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+ZMB <- FHwn %>%
+  tensurv(txval = "Experimental") %>%
+  wMB(6) %>%
+  summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)
 ```
@@ -217,10 +220,10 @@ Finally, we consider weighted logrank tests with less down-weighting.
 Results are quite similar to the results with greater down-weighting.
 
 ```{r}
-xx <- FHwn %>% 
-    tensurv(txval="Experimental") %>%
-    tenFHcorr(rg=tibble(rho=c(0,0,.5),gamma=c(0,.5,.5))) %>%
-    mutate(p=pnorm(Z))
+xx <- FHwn %>%
+  tensurv(txval = "Experimental") %>%
+  tenFHcorr(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
+  mutate(p = pnorm(Z))
 xx
 ```
 
@@ -230,6 +233,4 @@ Now for a MaxCombo test with the above compoenent tests, we have  p-value of
 xx %>% pMaxCombo()
 ```
 
-
-
-# References
+## References
