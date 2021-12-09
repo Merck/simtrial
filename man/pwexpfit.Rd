@@ -12,9 +12,9 @@ pwexpfit(
 \arguments{
 \item{Srv}{input survival object (see \code{Surv}); note that only 0=censored, 1=event for \code{Surv}}
 
-\item{intervals}{Vector containing positive values indicating interval lengths where the 
-exponential rates are assumed. 
-Note that a final infinite interval is added if any events occur after the final interval 
+\item{intervals}{Vector containing positive values indicating interval lengths where the
+exponential rates are assumed.
+Note that a final infinite interval is added if any events occur after the final interval
 specified.}
 }
 \value{

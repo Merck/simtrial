@@ -12,12 +12,12 @@ fixedBlockRand(n = 10, block = c(0, 0, 1, 1))
 \item{block}{Vector of treatments to be included in each block}
 }
 \value{
-A treatment group sequence (vector) of length `n` with treatments from `block` permuted within
-each block having block size equal to the length of `block`
+A treatment group sequence (vector) of length \code{n} with treatments from \code{block} permuted within
+each block having block size equal to the length of \code{block}
 }
 \description{
-Fixed block randomization. The `block` input should repeat each treatment code the number of
-times it is to be included within each block. The final block will be a partial block if `n` is not an
+Fixed block randomization. The \code{block} input should repeat each treatment code the number of
+times it is to be included within each block. The final block will be a partial block if \code{n} is not an
 exact multiple of the block length.
 }
 \examples{

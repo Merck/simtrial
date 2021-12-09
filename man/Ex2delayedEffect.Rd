@@ -6,10 +6,10 @@
 \title{Time-to-event data example 2 for non-proportional hazards working group}
 \format{
 Data frame with 4 variables:
-\describe{ 
+\describe{
 \item{id}{sequential numbering of unique identifiers}
 \item{month}{time-to-event}
-\item{event}{1 for event, 0 for censored} 
+\item{event}{1 for event, 0 for censored}
 \item{trt}{1 for experimental, 0 for control}
 }
 }
@@ -18,7 +18,7 @@ data(Ex2delayedEffect)
 }
 \description{
 Survival objects reverse-engineered datasets from published Kaplan-Meier
-curves. 
+curves.
 Individual trials are de-identified since the data are only
 approximations of the actual data.
 Data are intended to evaluate methods and designs for trials where

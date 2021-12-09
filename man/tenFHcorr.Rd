@@ -20,7 +20,7 @@ to zero, to specify one Fleming-Harrington weighted logrank test per row}
 \item{corr}{a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix}
 }
 \value{
-a `tibble` with \code{rg} as input, the FH test statistics specified
+a \code{tibble} with \code{rg} as input, the FH test statistics specified
 for the data in \code{Z}, and the correlation or covariance matrix for these tests in variables starting
 with \code{V}
 }

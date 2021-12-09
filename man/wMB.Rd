@@ -9,7 +9,7 @@ wMB(x, delay = 4)
 \arguments{
 \item{x}{a \code{tensurv}-class \code{tibble} with a counting process dataset}
 
-\item{delay}{The initial delay period where weights increase; 
+\item{delay}{The initial delay period where weights increase;
 after this, weights are constant at the final weigh in the delay period}
 }
 \value{
@@ -18,19 +18,18 @@ for the data in \code{x}
 }
 \description{
 Magirr and Burman (2019) have proposed a weighted logrank test to have better power than
-the logrank test when the treatment effect is delayed, but to still maintain good power under 
-a proportional hazards assumption. 
+the logrank test when the treatment effect is delayed, but to still maintain good power under
+a proportional hazards assumption.
 The weights for some early interval specified by the user are the inverse of the combined treatment group
-empirical survival distribution; see details. 
+empirical survival distribution; see details.
 After this initial period, weights are constant at the maximum of the previous weights.
 Another advantage of the test is that under strong null hypothesis that the underlying survival in the control group
-is greater than or equal to underlying survival in the experimental group, 
+is greater than or equal to underlying survival in the experimental group,
 Type I error is controlled as the specified level.
 }
 \details{
 This function computes Magirr-Burman weights and adds them to a dataset created by the \code{tensurv()} function.
 These weights can then be used to compute a Z-statistic for the modestly weighted logrank test proposed.
-
 
 We define \eqn{t^*} to be the input variable \code{delay}.
 This specifies an initial period during which weights increase.
@@ -51,7 +50,7 @@ ZMB <- x \%>\% wMB(6) \%>\%
 pnorm(ZMB$Z)
 }
 \references{
-Magirr, Dominic, and Carl‐Fredrik Burman. 
-"Modestly weighted logrank tests." 
+Magirr, Dominic, and Carl‐Fredrik Burman.
+"Modestly weighted logrank tests."
 \emph{Statistics in Medicine} 38.20 (2019): 3782-3790.
 }

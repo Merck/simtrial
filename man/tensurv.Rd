@@ -8,40 +8,34 @@ tensurv(x, txval)
 }
 \arguments{
 \item{x}{a tibble with no missing values and contain variables
-
-    \code{Stratum} (Stratum)
-
-    \code{Treatment} (Treatment group)
-
-    \code{tte} (Observed time)
-
-    \code{event} (Binary event indicator, 1 represents event, 0 represents censoring)}
+\itemize{
+\item \code{Stratum}: Stratum
+\item \code{Treatment}: Treatment group
+\item \code{tte}: Observed time
+\item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
+}}
 
 \item{txval}{value in the input \code{Treatment} column that indicates treatment group value.}
 }
 \value{
-A \code{tibble} grouped by
-\code{Stratum} and sorted within strata by \code{tte}.
-Remain rows with at least one event in the population, at least one subject is at risk in both treatment group and control group.
-Other variables in this represent the following within each stratum at each time at which one or more
-events are observed:
-
-\code{events} (Total number of events)
-
-\code{txevents} (Total number of events at treatment group)
-
-\code{atrisk} (Number of subjects at risk)
-
-\code{txatrisk} (Number of subjects at risk in treatment group)
-
-\code{S} (Left-continuous Kaplan-Meier survival estimate)
-
-\code{OminusE} (In treatment group, observed number of events minus expected number of events.
-          The expected number of events is estimated by assuming no treatment effect with hypergeometric distribution with
-          parameters total number of events, total number of events at treatment group and number of events at a time.
-          (Same assumption of log-rank test under the null hypothesis)
-
-\code{Var} (variance of OminusE under the same assumption).
+A \code{tibble} grouped by \code{Stratum} and sorted within strata by \code{tte}.
+Remain rows with at least one event in the population, at least one subject
+is at risk in both treatment group and control group.
+Other variables in this represent the following within each stratum at
+each time at which one or more events are observed:
+\itemize{
+\item \code{events}: Total number of events
+\item \code{txevents}: Total number of events at treatment group
+\item \code{atrisk}: Number of subjects at risk
+\item \code{txatrisk}: Number of subjects at risk in treatment group
+\item \code{S}: Left-continuous Kaplan-Meier survival estimate
+\item \code{OminusE}: In treatment group, observed number of events minus expected
+number of events. The expected number of events is estimated by assuming
+no treatment effect with hypergeometric distribution with parameters total
+number of events, total number of events at treatment group and number of
+events at a time. (Same assumption of log-rank test under the null hypothesis)
+\item \code{Var}: variance of \code{OminusE} under the same assumption.
+}
 }
 \description{
 Produces a tibble that is sorted by stratum and time.
