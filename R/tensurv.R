@@ -31,40 +31,28 @@ NULL
 #' The tie is handled by the Breslow's Method.
 #'
 #' @param x a tibble with no missing values and contain variables
+#' - `Stratum`: Stratum
+#' - `Treatment`: Treatment group
+#' - `tte`: Observed time
+#' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
+#' @param txval value in the input `Treatment` column that indicates treatment group value.
 #'
-#'     \code{Stratum} (Stratum)
-#'
-#'     \code{Treatment} (Treatment group)
-#'
-#'     \code{tte} (Observed time)
-#'
-#'     \code{event} (Binary event indicator, 1 represents event, 0 represents censoring)
-#'
-#' @param txval value in the input \code{Treatment} column that indicates treatment group value.
-#'
-#'
-#' @return A \code{tibble} grouped by
-#' \code{Stratum} and sorted within strata by \code{tte}.
-#' Remain rows with at least one event in the population, at least one subject is at risk in both treatment group and control group.
-#' Other variables in this represent the following within each stratum at each time at which one or more
-#' events are observed:
-#'
-#' \code{events} (Total number of events)
-#'
-#' \code{txevents} (Total number of events at treatment group)
-#'
-#' \code{atrisk} (Number of subjects at risk)
-#'
-#' \code{txatrisk} (Number of subjects at risk in treatment group)
-#'
-#' \code{S} (Left-continuous Kaplan-Meier survival estimate)
-#'
-#' \code{OminusE} (In treatment group, observed number of events minus expected number of events.
-#'           The expected number of events is estimated by assuming no treatment effect with hypergeometric distribution with
-#'           parameters total number of events, total number of events at treatment group and number of events at a time.
-#'           (Same assumption of log-rank test under the null hypothesis)
-#'
-#' \code{Var} (variance of OminusE under the same assumption).
+#' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
+#' Remain rows with at least one event in the population, at least one subject
+#' is at risk in both treatment group and control group.
+#' Other variables in this represent the following within each stratum at
+#' each time at which one or more events are observed:
+#' - `events`: Total number of events
+#' - `txevents`: Total number of events at treatment group
+#' - `atrisk`: Number of subjects at risk
+#' - `txatrisk`: Number of subjects at risk in treatment group
+#' - `S`: Left-continuous Kaplan-Meier survival estimate
+#' - `OminusE`: In treatment group, observed number of events minus expected
+#' number of events. The expected number of events is estimated by assuming
+#' no treatment effect with hypergeometric distribution with parameters total
+#' number of events, total number of events at treatment group and number of
+#' events at a time. (Same assumption of log-rank test under the null hypothesis)
+#' - `Var`: variance of `OminusE` under the same assumption.
 #'
 #' @examples
 #' library(dplyr)
@@ -122,4 +110,3 @@ tensurv <- function(x, txval){
                  Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) %>% #Variance of OminusE
                  select(-s)
 }
-
