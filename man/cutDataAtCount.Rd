@@ -12,11 +12,11 @@ cutDataAtCount(x, count)
 \item{count}{event count at which data cutoff is to be made}
 }
 \value{
-a \code{tibble} ready for survival analysis, including culumns time to event (`tte`), 
-`event`, the `stratum` and the `treatment.`
+a \code{tibble} ready for survival analysis, including culumns time to event (\code{tte}),
+\code{event}, the \code{stratum} and the \code{treatment.}
 }
 \description{
-`cutDataAtCount` takes a time-to-event data set and cuts the data at which an
+\code{cutDataAtCount} takes a time-to-event data set and cuts the data at which an
 event count is reached.
 }
 \examples{

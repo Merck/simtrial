@@ -1,7 +1,6 @@
 ---
 title: "Basic tools for time-to-event trial simulation and testing"
 author: "Keaven Anderson"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
@@ -9,7 +8,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-```{r setup, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -43,51 +42,54 @@ The package could be extended in many ways in the future, including:
 * Randomization schemes other than stratified, fixed-block
 * Poisson mixture or other survival distribution generation
 
-```{r, warning=FALSE, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(simtrial)
 library(knitr)
 library(tibble)
 library(dplyr)
 ```
 
-
 ## Randomization
 
 Fixed block randomization with an arbitrary block contents is performed as demonstrated below. In this case we have a block size of 5 with one string repeated twice in each block and three other strings appearing once each.
 
 ```{r}
-fixedBlockRand(n=10,block=c("A","Dog","Cat","Cat"))
+fixedBlockRand(n = 10, block = c("A", "Dog", "Cat", "Cat"))
 ```
 More normally, with a default of blocks of size four:
 
 ```{r}
-fixedBlockRand(n=20)
+fixedBlockRand(n = 20)
 ```
-
 
 ## Enrollment
 
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpwenroll(n = 20, enrollRates = tibble(duration = c(1, 2), 
-                                       rate = c(2,5)))
+rpwenroll(n = 20, enrollRates = tibble(
+  duration = c(1, 2),
+  rate = c(2, 5)
+))
 ```
-
 
 ## Time-to-event and time-to-dropout
 
 Time-to-event and time-to-dropout random number generation for observations is generated with piecewise exponential failure times. For a large number of observations, a log-plot of the time-to-failure 
 
 ```{r,fig.width=6}
-x <- rpwexp(10000, 
-            failRates=tibble(rate = c(1, 3, 10), 
-                             duration = c(.5,.5,1)))
-plot(sort(x),(10000:1)/10001,log="y", 
-     main="PW Exponential simulated survival curve",
-     xlab="Time", ylab="P{Survival}")
+x <- rpwexp(10000,
+  failRates = tibble(
+    rate = c(1, 3, 10),
+    duration = c(.5, .5, 1)
+  )
+)
+plot(sort(x), (10000:1) / 10001,
+  log = "y",
+  main = "PW Exponential simulated survival curve",
+  xlab = "Time", ylab = "P{Survival}"
+)
 ```
-
 
 ## Generating a trial
 
@@ -99,35 +101,39 @@ The methods used here have all be demonstrated above, but here they are combined
 First we set up input variables to make the later call to `simPWSurv()` more straightforward to read.
 
 ```{r}
-strata <- tibble(Stratum=c("Negative","Positive"), p=c(.5,.5))
+strata <- tibble(Stratum = c("Negative", "Positive"), p = c(.5, .5))
 
-block <- c(rep("Control",2),rep("Experimental",2))
+block <- c(rep("Control", 2), rep("Experimental", 2))
 
-enrollRates <- tibble(rate=c(3, 6, 9), duration=c(3,2,1))
+enrollRates <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
-failRates <- tibble(Stratum=c(rep("Negative",4),rep("Positive",4)),
-                    period=rep(1:2,4),
-                    Treatment=rep(c(rep("Control",2), rep("Experimental",2)),2),
-                    duration=rep(c(3,1),4),
-                    rate=log(2)/c(4,9,4.5,10,4,9,8,18))
-dropoutRates <- tibble(Stratum=c(rep("Negative",4),rep("Positive",4)),
-                       period=rep(1:2,4),
-                       Treatment=rep(c(rep("Control",2), rep("Experimental",2)),2),
-                       duration=rep(c(3,1),4),
-                       rate=rep(c(.001,.001),4))
+failRates <- tibble(
+  Stratum = c(rep("Negative", 4), rep("Positive", 4)),
+  period = rep(1:2, 4),
+  Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
+  duration = rep(c(3, 1), 4),
+  rate = log(2) / c(4, 9, 4.5, 10, 4, 9, 8, 18)
+)
+dropoutRates <- tibble(
+  Stratum = c(rep("Negative", 4), rep("Positive", 4)),
+  period = rep(1:2, 4),
+  Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
+  duration = rep(c(3, 1), 4),
+  rate = rep(c(.001, .001), 4)
+)
 ```
-
 
 ```{r}
-x <- simPWSurv(n=400,
-              strata = strata,
-              block = block,
-              enrollRates = enrollRates,
-              failRates=failRates,
-              dropoutRates=dropoutRates)
-head(x) %>% kable(digits=2)
+x <- simPWSurv(
+  n = 400,
+  strata = strata,
+  block = block,
+  enrollRates = enrollRates,
+  failRates = failRates,
+  dropoutRates = dropoutRates
+)
+head(x) %>% kable(digits = 2)
 ```
-
 
 ## Cutting data for analysis
 
@@ -136,25 +142,24 @@ The first uses a calendar cutoff date. The output only includes the time from ra
 Observations enrolled after the input `cutDate` are deleted and events and censoring from `x` that are after the `cutDate` are censored at the specified `cutDate`. 
 
 ```{r}
-y <- cutData(x,cutDate=5)
-head(y) %>% kable(digits=2)
+y <- cutData(x, cutDate = 5)
+head(y) %>% kable(digits = 2)
 ```
 
 For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `getCutDateForCount` function as follows:
 
 ```{r}
-cut50Positive <- getCutDateForCount(filter(x,Stratum=="Positive"),50)
-y50Positive <- cutData(x,cut50Positive)
-with(y50Positive,table(Stratum,event))
+cut50Positive <- getCutDateForCount(filter(x, Stratum == "Positive"), 50)
+y50Positive <- cutData(x, cut50Positive)
+with(y50Positive, table(Stratum, event))
 ```
 
 Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cutDataAtCount` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
 
 ```{r}
-y150 <- cutDataAtCount(x,150)
-table(y150$event,y150$Treatment)
+y150 <- cutDataAtCount(x, 150)
+table(y150$event, y150$Treatment)
 ```
-
 
 ## Generating a counting process dataset
 
@@ -162,8 +167,8 @@ Once we have cut data for analysis, we can create a dataset that is very simple 
 The counting process format is further discussed in the next section where we compute a weighted logrank test.
 
 ```{r}
-ten150 <- tensurv(y150,txval="Experimental")
-head(ten150) %>% kable(digits=2)
+ten150 <- tensurv(y150, txval = "Experimental")
+head(ten150) %>% kable(digits = 2)
 ```
 
 ## Logrank and weighted logrank testing
@@ -173,23 +178,23 @@ Now stratified logrank and stratified weighted logrank tests are easily generate
 To generate a stratified logrank test and a corresponding one-sided p-value, we simply do the following:
 
 ```{r}
-z <- with(ten150,sum(OminusE)/sqrt(sum(Var)))
-c(z,pnorm(z))
+z <- with(ten150, sum(OminusE) / sqrt(sum(Var)))
+c(z, pnorm(z))
 ```
 
 A Fleming-Harrington $\rho=1$, $\gamma=2$ is nearly as simple.
 We again compute a z-statistic and its corresponding one-sided p-value.
 
 ```{r}
-xx <- mutate(ten150,w=S*(1-S)^2)
-z <- with(xx,sum(OminusE*w)/sum(sqrt(Var*w^2)))
-c(z,pnorm(z))
+xx <- mutate(ten150, w = S * (1 - S)^2)
+z <- with(xx, sum(OminusE * w) / sum(sqrt(Var * w^2)))
+c(z, pnorm(z))
 ```
 
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-tenFH(x=ten150,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1))) %>% kable(digits=2)
+tenFH(x = ten150, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `tenFHcorr` to compute a correlation matrix for the above Z-statistics as follows.
@@ -197,14 +202,14 @@ Note that the ordering of `rg` and `g` in the argument list is opposite of the a
 The correlation matrix for the `Z`-values is now in `V1`-`V4`.
 
 ```{r,message=FALSE}
-x <- ten150 %>% tenFHcorr(rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-x %>% kable(digits=2)
+x <- ten150 %>% tenFHcorr(rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
+x %>% kable(digits = 2)
 ```
 
 We can compute a p-value for the MaxCombo as follows using the `pmvnorm` function from the `mvtnorm` package. Note the arguments for `GenzBretz` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
 
 ```{r,message=FALSE}
-# compute p-value for MaxCombo
+# Compute p-value for MaxCombo
 pMaxCombo(x)
 ```
 
@@ -215,15 +220,17 @@ Here the argument structure is meant to be simpler than for `simPWSurv()`.
 
 ```{r}
 strata <- tibble(Stratum = "All", p = 1)
-enrollRates <- tibble(duration = c(2, 2, 10), 
-                      rate = c(3, 6, 9)
-                     ) 
-failRates <- tibble(Stratum = "All", 
-                    duration = c(3, 100),
-                    failRate = log(2)/c(9, 18), 
-                    hr = c(0.9, 0.6), 
-                    dropoutRate = rep(0.001, 2)
-                   )
+enrollRates <- tibble(
+  duration = c(2, 2, 10),
+  rate = c(3, 6, 9)
+)
+failRates <- tibble(
+  Stratum = "All",
+  duration = c(3, 100),
+  failRate = log(2) / c(9, 18),
+  hr = c(0.9, 0.6),
+  dropoutRate = rep(0.001, 2)
+)
 block <- rep(c("Experimental", "Control"), 2)
 rg <- tibble(rho = 0, gamma = 0)
 ```
@@ -237,17 +244,18 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 5) the maximum of 2 and 3.
 
 ```{r}
-simfix(nsim = 2,                  # Number of simulations
-       sampleSize = 500,          # Trial sample size
-       targetEvents = 350,        # Targeted events at analysis
-       strata = strata,           # Study strata
-       enrollRates = enrollRates, # Enrollment rates
-       failRates = failRates,     # Failure rates
-       totalDuration = 30,        # Planned trial duration 
-       block = block,             # Block for treatment
-       timingType = 1:5,          # Use all possible data cutoff methods
-       rg = rg                    # FH test(s) to use; in this case, logrank
-) %>% kable(digits=2)
+simfix(
+  nsim = 2, # Number of simulations
+  sampleSize = 500, # Trial sample size
+  targetEvents = 350, # Targeted events at analysis
+  strata = strata, # Study strata
+  enrollRates = enrollRates, # Enrollment rates
+  failRates = failRates, # Failure rates
+  totalDuration = 30, # Planned trial duration
+  block = block, # Block for treatment
+  timingType = 1:5, # Use all possible data cutoff methods
+  rg = rg # FH test(s) to use; in this case, logrank
+) %>% kable(digits = 2)
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
@@ -257,14 +265,12 @@ To explain, we note that generally you will want `sampleSize` above to match the
 enrollRates %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-
 The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enrollRates`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
-totalDuration <- 30 # from above
+totalDuration <- 30 # From above
 totalDuration - sum(enrollRates$duration)
 ```
+
 It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with "Minimum follow-up" cutoff in the simulations above.
-The planned duration cutoff is given in the 'totalDuration' argument which results in a much earlier cutoff.
-
-
+The planned duration cutoff is given in the `totalDuration` argument which results in a much earlier cutoff.

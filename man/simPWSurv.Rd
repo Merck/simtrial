@@ -20,8 +20,8 @@ simPWSurv(
 \item{n}{Number of observations.
 If length(n) > 1, the length is taken to be the number required.}
 
-\item{strata}{A tibble with strata specified in `Stratum`, probability (incidence) of each stratum
-in `p`}
+\item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum
+in \code{p}}
 
 \item{block}{Vector of treatments to be included in each  block}
 

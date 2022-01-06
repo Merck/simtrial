@@ -25,10 +25,10 @@ simfix(
 
 \item{targetEvents}{Targeted event count for analysis.}
 
-\item{strata}{A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.}
+\item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
 
 \item{enrollRates}{Piecewise constant enrollment rates by time period.
-Note that these are overall population enrollment rates and the `strata` argument controls the
+Note that these are overall population enrollment rates and the \code{strata} argument controls the
 random distribution between strata.}
 
 \item{failRates}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
@@ -36,12 +36,12 @@ and dropout rates by stratum and time period.}
 
 \item{totalDuration}{Total follow-up from start of enrollment to data cutoff.}
 
-\item{block}{As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.}
+\item{block}{As in \code{simtrial::simPWSurv()}. Vector of treatments to be included in each block.}
 
 \item{timingType}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
 
-\item{rg}{As in `simtrial::tenFHCorr()`.
+\item{rg}{As in \code{simtrial::tenFHCorr()}.
 A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 }
@@ -54,7 +54,7 @@ If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {r
 are also included.
 }
 \description{
-`simfix()` provide simulations of a single endpoint two-arm trial
+\code{simfix()} provide simulations of a single endpoint two-arm trial
 where the enrollment, hazard ratio, and failure and dropout rates change over time.
 }
 \details{

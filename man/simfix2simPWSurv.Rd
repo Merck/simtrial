@@ -14,18 +14,18 @@ simfix2simPWSurv(
 and dropout rates by stratum and time period.}
 }
 \value{
-A \code{list} of two `tibble` components formatted for `simtrial::simPWSurv()`:
-`failRates` and `dropoutRates`.
+A \code{list} of two \code{tibble} components formatted for \code{simtrial::simPWSurv()}:
+\code{failRates} and \code{dropoutRates}.
 }
 \description{
-`simfix2simPWSurv()` converts failure rates and dropout rates entered in the simpler
-format for `simfix()` to that used for `simtrial::simPWSurv()`.
-The `failRates` argument for `simfix()` requires enrollment rates, failure rates
-hazard ratios and dropout rates by strata for a 2-arm trial, `simtrial::simPWSurv()`
+\code{simfix2simPWSurv()} converts failure rates and dropout rates entered in the simpler
+format for \code{simfix()} to that used for \code{simtrial::simPWSurv()}.
+The \code{failRates} argument for \code{simfix()} requires enrollment rates, failure rates
+hazard ratios and dropout rates by strata for a 2-arm trial, \code{simtrial::simPWSurv()}
 is in a more flexible but less obvious but more flexible format.
-Since `simfix()` automatically analyzes data and `simtrial::simPWSurv()` just produces
+Since \code{simfix()} automatically analyzes data and \code{simtrial::simPWSurv()} just produces
 a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
-individual simulations in ways that `simfix()` does not.
+individual simulations in ways that \code{simfix()} does not.
 }
 \examples{
 library(tidyr)
