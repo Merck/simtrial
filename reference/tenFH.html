@@ -82,40 +82,40 @@ estimated variance for weighted sum of observed minus expected; see details; Def
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a `tibble` with <code>rg</code> as input and the FH test statistic
+    <p>a <code>tibble</code> with <code>rg</code> as input and the FH test statistic
 for the data in <code>x</code>(<code>Z</code>, a directional square root of the usual weighted logrank test);
 if variance calculations are specified (e.g., to be used for covariances in a combination test),
 the this will be returned in the column <code>Var</code></p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The input value <code>x</code> produced by <code><a href="tensurv.html">tensurv()</a></code> produces a counting process dataset 
+    <p>The input value <code>x</code> produced by <code><a href="tensurv.html">tensurv()</a></code> produces a counting process dataset
 grouped by strata and sorted within strata by increasing times where events occur.</p><ul><li><p>\(Z\) - standardized normal Fleming-Harrington weighted logrank test</p></li>
 <li><p>\(i\)  - stratum index</p></li>
 <li><p>\(d_i\) - number of distinct times at which events occurred in stratum \(i\)</p></li>
-<li><p>\(t_{ij}\) - ordered times at which events in stratum \(i\), \(j=1,2,\ldots d_i\) were observed; 
+<li><p>\(t_{ij}\) - ordered times at which events in stratum \(i\), \(j=1,2,\ldots d_i\) were observed;
 for each observation, \(t_{ij}\) represents the time post study entry</p></li>
-<li><p>O_ij. - total number of events in stratum \(i\) that occurred at time \(t_{ij}\)</p></li>
-<li><p>O_ije - total number of events in stratum \(i\) in the experimental treatment group that occurred
+<li><p>\(O_{ij.}\) - total number of events in stratum \(i\) that occurred at time \(t_{ij}\)</p></li>
+<li><p>\(O_{ije}\) - total number of events in stratum \(i\) in the experimental treatment group that occurred
 at time \(t_{ij}\)</p></li>
-<li><p>N_ij. - total number of study subjects in stratum \(i\) who were followed for at least duration</p></li>
-<li><p>E_ije - expected observations in experimental treatment group given random selection of \(O_{ij.}\) 
+<li><p>\(N_{ij.}\) - total number of study subjects in stratum \(i\) who were followed for at least duration</p></li>
+<li><p>\(E_{ije}\) - expected observations in experimental treatment group given random selection of \(O_{ij.}\)
 from those in stratum \(i\) at risk at time \(t_{ij}\)</p></li>
-<li><p>V_ije - hypergeometric variance for \(E_{ije}\) as produced in <code>Var</code> 
+<li><p>\(V_{ije}\) - hypergeometric variance for \(E_{ije}\) as produced in <code>Var</code>
 from the <code><a href="tensurv.html">tensurv()</a></code> routine</p></li>
-<li><p>N_ije - total number of study subjects in stratum \(i\) in the experimental treatment group
+<li><p>\(N_{ije}\) - total number of study subjects in stratum \(i\) in the experimental treatment group
 who were followed for at least duration \(t_{ij}\)</p></li>
-<li><p>E_ije - expected observations in experimental group in stratum \(i\) at time \(t_{ij}\) 
-conditioning on the overall number of events and at risk populations at that time and sampling at risk 
+<li><p>\(E_{ije}\) - expected observations in experimental group in stratum \(i\) at time \(t_{ij}\)
+conditioning on the overall number of events and at risk populations at that time and sampling at risk
 observations without replacement:
 $$E_{ije} = O_{ij.} N_{ije}/N_{ij.}$$</p></li>
-<li><p>\(S_{ij}\) - Kaplan-Meier estimate of survival in combined treatment groups immediately prior 
+<li><p>\(S_{ij}\) - Kaplan-Meier estimate of survival in combined treatment groups immediately prior
 to time \(t_{ij}\)</p></li>
 <li><p>\(\rho, \gamma\) - real parameters for Fleming-Harrington test</p></li>
 <li><p>\(X_i\) - Numerator for signed logrank test in stratum \(i\)
-$$X_i = \sum_{j=1}^d_i S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})$$</p></li>
-<li><p>V_ij - variance used in denominator for Fleming-Harrington weighted logrank tests
-$$V_i = \sum_{j=1}^d_i (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})$$</p>
+$$X_i = \sum_{j=1}^{d_{i}} S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})$$</p></li>
+<li><p>\(V_{ij}\) - variance used in denominator for Fleming-Harrington weighted logrank tests
+$$V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})$$</p>
 <p>The stratified Fleming-Harrington weighted logrank test is then computed as:
 $$Z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
 </ul></div>
@@ -130,8 +130,8 @@ $$Z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma      Z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">0.708</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">0.538</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">0.992</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">1.53</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

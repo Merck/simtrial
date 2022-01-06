@@ -74,7 +74,6 @@
       <img src="" class="logo" alt=""><h1>Basic tools for time-to-event trial simulation and testing</h1>
                         <h4 data-toc-skip class="author">Keaven Anderson</h4>
             
-            <h4 data-toc-skip class="date">2021-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/simtrialroutines.Rmd" class="external-link"><code>vignettes/simtrialroutines.Rmd</code></a></small>
       <div class="d-none name"><code>simtrialroutines.Rmd</code></div>
@@ -127,36 +126,43 @@
 </h2>
 <p>Fixed block randomization with an arbitrary block contents is performed as demonstrated below. In this case we have a block size of 5 with one string repeated twice in each block and three other strings appearing once each.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fixedBlockRand.html">fixedBlockRand</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10</span>,block<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"Dog"</span>,<span class="st">"Cat"</span>,<span class="st">"Cat"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "A"   "Cat" "Dog" "Cat" "Cat" "Dog" "A"   "Cat" "Dog" "Cat"</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/fixedBlockRand.html">fixedBlockRand</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"Dog"</span>, <span class="st">"Cat"</span>, <span class="st">"Cat"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;  [1] "Dog" "Cat" "Cat" "A"   "A"   "Dog" "Cat" "Cat" "Dog" "A"</span></code></pre></div>
 <p>More normally, with a default of blocks of size four:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fixedBlockRand.html">fixedBlockRand</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">20</span><span class="op">)</span>
-<span class="co">#&gt;  [1] 0 0 1 1 0 0 1 1 0 0 1 1 0 1 0 1 1 0 0 1</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/fixedBlockRand.html">fixedBlockRand</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 1 0 1 0 0 1 1 0 1 1 0 0 0 0 1 1 0 0 1 1</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="enrollment">Enrollment<a class="anchor" aria-label="anchor" href="#enrollment"></a>
 </h2>
 <p>Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/rpwenroll.html">rpwenroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span>, enrollRates <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, 
-                                       rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;  [1] 0.2175519 0.2285585 1.0523830 1.2168519 1.6951177 1.9343723 2.3064942</span>
-<span class="co">#&gt;  [8] 2.3251566 2.7893787 2.8543591 2.8730724 3.1593599 3.2510715 3.3646447</span>
-<span class="co">#&gt; [15] 3.4745997 3.7935678 4.4952193 4.8764780 5.0939897 5.1638300</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/rpwenroll.html">rpwenroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span>, enrollRates <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 0.1779249 0.4844446 1.5098145 1.8199514 2.0236491 2.2864713 2.7236646</span>
+<span class="co">#&gt;  [8] 2.9002890 2.9631435 3.1542962 3.6087880 4.2671180 4.2894852 4.3378126</span>
+<span class="co">#&gt; [15] 4.6860628 4.9783559 5.0281671 5.8135435 5.9371821 6.1069741</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="time-to-event-and-time-to-dropout">Time-to-event and time-to-dropout<a class="anchor" aria-label="anchor" href="#time-to-event-and-time-to-dropout"></a>
 </h2>
 <p>Time-to-event and time-to-dropout random number generation for observations is generated with piecewise exponential failure times. For a large number of observations, a log-plot of the time-to-failure</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpwexp.html">rpwexp</a></span><span class="op">(</span><span class="fl">10000</span>, 
-            failRates<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">10</span><span class="op">)</span>, 
-                             duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">.5</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,<span class="op">(</span><span class="fl">10000</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">10001</span>,log<span class="op">=</span><span class="st">"y"</span>, 
-     main<span class="op">=</span><span class="st">"PW Exponential simulated survival curve"</span>,
-     xlab<span class="op">=</span><span class="st">"Time"</span>, ylab<span class="op">=</span><span class="st">"P{Survival}"</span><span class="op">)</span></code></pre></div>
-<p><img src="simtrialroutines_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpwexp.html">rpwexp</a></span><span class="op">(</span><span class="fl">10000</span>,
+  failRates <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+    rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">10</span><span class="op">)</span>,
+    duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">.5</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="op">(</span><span class="fl">10000</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10001</span>,
+  log <span class="op">=</span> <span class="st">"y"</span>,
+  main <span class="op">=</span> <span class="st">"PW Exponential simulated survival curve"</span>,
+  xlab <span class="op">=</span> <span class="st">"Time"</span>, ylab <span class="op">=</span> <span class="st">"P{Survival}"</span>
+<span class="op">)</span></code></pre></div>
+<p><img src="simtrialroutines_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div class="section level2">
 <h2 id="generating-a-trial">Generating a trial<a class="anchor" aria-label="anchor" href="#generating-a-trial"></a>
@@ -164,30 +170,36 @@
 <p>Ideally, this might be done with a routine where generation of randomization, and time-to-event data could be done in a modular fashion plugged into a general trial generation routine. For now, stratified randomization, piecewise constant enrollment, fixed block randomization and piecewise exponential failure rates support a flexible set of trial generation options for time-to-event endpoint trials. At present, follow this format very carefully as little checking of input has been developed to-date. The methods used here have all be demonstrated above, but here they are combined in a single routine to generate a trial. Note that in the generated output dataset, <code>cte</code> is the calendar time of an event or dropout, whichever comes first, and <code>fail</code> is an indicator that <code>cte</code> represents an event time.</p>
 <p>First we set up input variables to make the later call to <code><a href="../reference/simPWSurv.html">simPWSurv()</a></code> more straightforward to read.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Negative"</span>,<span class="st">"Positive"</span><span class="op">)</span>, p<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Negative"</span>, <span class="st">"Positive"</span><span class="op">)</span>, p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span>, duration<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span>, duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Negative"</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Positive"</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
-                    period<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,
-                    Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,
-                    duration<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>,
-                    rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">9</span>,<span class="fl">4.5</span>,<span class="fl">10</span>,<span class="fl">4</span>,<span class="fl">9</span>,<span class="fl">8</span>,<span class="fl">18</span><span class="op">)</span><span class="op">)</span>
-<span class="va">dropoutRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Negative"</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Positive"</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
-                       period<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,
-                       Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,
-                       duration<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>,
-                       rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.001</span>,<span class="fl">.001</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  Stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Negative"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Positive"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
+  period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,
+  Treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,
+  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>,
+  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">9</span>, <span class="fl">4.5</span>, <span class="fl">10</span>, <span class="fl">4</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">18</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">dropoutRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  Stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Negative"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Positive"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
+  period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,
+  Treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,
+  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>,
+  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.001</span>, <span class="fl">.001</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">400</span>,
-              strata <span class="op">=</span> <span class="va">strata</span>,
-              block <span class="op">=</span> <span class="va">block</span>,
-              enrollRates <span class="op">=</span> <span class="va">enrollRates</span>,
-              failRates<span class="op">=</span><span class="va">failRates</span>,
-              dropoutRates<span class="op">=</span><span class="va">dropoutRates</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span>
+  n <span class="op">=</span> <span class="fl">400</span>,
+  strata <span class="op">=</span> <span class="va">strata</span>,
+  block <span class="op">=</span> <span class="va">block</span>,
+  enrollRates <span class="op">=</span> <span class="va">enrollRates</span>,
+  failRates <span class="op">=</span> <span class="va">failRates</span>,
+  dropoutRates <span class="op">=</span> <span class="va">dropoutRates</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Stratum</th>
@@ -200,57 +212,57 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Positive</td>
-<td align="right">0.54</td>
+<td align="left">Negative</td>
+<td align="right">0.09</td>
 <td align="left">Experimental</td>
-<td align="right">3.16</td>
-<td align="right">586.61</td>
-<td align="right">3.70</td>
+<td align="right">3.20</td>
+<td align="right">860.79</td>
+<td align="right">3.29</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Negative</td>
-<td align="right">0.67</td>
-<td align="left">Experimental</td>
-<td align="right">16.74</td>
-<td align="right">788.41</td>
-<td align="right">17.42</td>
+<td align="right">0.17</td>
+<td align="left">Control</td>
+<td align="right">4.48</td>
+<td align="right">2451.79</td>
+<td align="right">4.65</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">Positive</td>
-<td align="right">0.87</td>
-<td align="left">Control</td>
-<td align="right">1.47</td>
-<td align="right">223.14</td>
-<td align="right">2.34</td>
+<td align="left">Negative</td>
+<td align="right">0.29</td>
+<td align="left">Experimental</td>
+<td align="right">5.68</td>
+<td align="right">3103.40</td>
+<td align="right">5.97</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Positive</td>
-<td align="right">1.07</td>
-<td align="left">Control</td>
-<td align="right">19.40</td>
-<td align="right">2773.56</td>
-<td align="right">20.47</td>
+<td align="right">1.60</td>
+<td align="left">Experimental</td>
+<td align="right">0.32</td>
+<td align="right">355.22</td>
+<td align="right">1.93</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">Positive</td>
-<td align="right">1.10</td>
-<td align="left">Experimental</td>
-<td align="right">1.33</td>
-<td align="right">1151.58</td>
-<td align="right">2.42</td>
+<td align="left">Negative</td>
+<td align="right">2.08</td>
+<td align="left">Control</td>
+<td align="right">1.58</td>
+<td align="right">39.62</td>
+<td align="right">3.66</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="left">Positive</td>
-<td align="right">1.35</td>
+<td align="left">Negative</td>
+<td align="right">2.49</td>
 <td align="left">Control</td>
-<td align="right">0.12</td>
-<td align="right">2602.43</td>
-<td align="right">1.47</td>
+<td align="right">7.43</td>
+<td align="right">16.84</td>
+<td align="right">9.92</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -261,8 +273,8 @@
 </h2>
 <p>There two ways to cut off data in the generated dataset <code>x</code> from above. The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (<code>tte</code>), and indicator that this represents and event (<code>event</code>), the stratum in which the observation was generated (<code>Stratum</code>) and the treatment group assigned (<code>Treatment</code>). Observations enrolled after the input <code>cutDate</code> are deleted and events and censoring from <code>x</code> that are after the <code>cutDate</code> are censored at the specified <code>cutDate</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">x</span>,cutDate<span class="op">=</span><span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">x</span>, cutDate <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">tte</th>
@@ -272,68 +284,68 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">3.16</td>
+<td align="right">3.20</td>
 <td align="right">1</td>
-<td align="left">Positive</td>
+<td align="left">Negative</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">4.33</td>
+<td align="right">4.48</td>
+<td align="right">1</td>
+<td align="left">Negative</td>
+<td align="left">Control</td>
+</tr>
+<tr class="odd">
+<td align="right">4.71</td>
 <td align="right">0</td>
 <td align="left">Negative</td>
 <td align="left">Experimental</td>
 </tr>
-<tr class="odd">
-<td align="right">1.47</td>
-<td align="right">1</td>
-<td align="left">Positive</td>
-<td align="left">Control</td>
-</tr>
 <tr class="even">
-<td align="right">3.93</td>
-<td align="right">0</td>
-<td align="left">Positive</td>
-<td align="left">Control</td>
-</tr>
-<tr class="odd">
-<td align="right">1.33</td>
+<td align="right">0.32</td>
 <td align="right">1</td>
 <td align="left">Positive</td>
 <td align="left">Experimental</td>
 </tr>
-<tr class="even">
-<td align="right">0.12</td>
+<tr class="odd">
+<td align="right">1.58</td>
 <td align="right">1</td>
-<td align="left">Positive</td>
+<td align="left">Negative</td>
+<td align="left">Control</td>
+</tr>
+<tr class="even">
+<td align="right">2.51</td>
+<td align="right">0</td>
+<td align="left">Negative</td>
 <td align="left">Control</td>
 </tr>
 </tbody>
 </table>
 <p>For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the <code>getCutDateForCount</code> function as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cut50Positive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCutDateForCount.html">getCutDateForCount</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">Stratum</span><span class="op">==</span><span class="st">"Positive"</span><span class="op">)</span>,<span class="fl">50</span><span class="op">)</span>
-<span class="va">y50Positive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">cut50Positive</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">y50Positive</span>,<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Stratum</span>,<span class="va">event</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cut50Positive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCutDateForCount.html">getCutDateForCount</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">Stratum</span> <span class="op">==</span> <span class="st">"Positive"</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span>
+<span class="va">y50Positive</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutData.html">cutData</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">cut50Positive</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">y50Positive</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Stratum</span>, <span class="va">event</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;           event</span>
 <span class="co">#&gt; Stratum     0  1</span>
-<span class="co">#&gt;   Negative 36 50</span>
-<span class="co">#&gt;   Positive 44 50</span></code></pre></div>
+<span class="co">#&gt;   Negative 33 57</span>
+<span class="co">#&gt;   Positive 56 50</span></code></pre></div>
 <p>Perhaps the most common way to cut data is with an event count for the overall population, which is done using the <code>cutDataAtCount</code> function. Note that if there are tied events at the date the <code>cte</code> the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y150</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="va">x</span>,<span class="fl">150</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y150</span><span class="op">$</span><span class="va">event</span>,<span class="va">y150</span><span class="op">$</span><span class="va">Treatment</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">y150</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">150</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y150</span><span class="op">$</span><span class="va">event</span>, <span class="va">y150</span><span class="op">$</span><span class="va">Treatment</span><span class="op">)</span>
 <span class="co">#&gt;    </span>
 <span class="co">#&gt;     Control Experimental</span>
-<span class="co">#&gt;   0      38           56</span>
-<span class="co">#&gt;   1      84           66</span></code></pre></div>
+<span class="co">#&gt;   0      28           57</span>
+<span class="co">#&gt;   1      89           61</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="generating-a-counting-process-dataset">Generating a counting process dataset<a class="anchor" aria-label="anchor" href="#generating-a-counting-process-dataset"></a>
 </h2>
 <p>Once we have cut data for analysis, we can create a dataset that is very simple to use for weighted logrank tests. A slightly more complex version could be developed in the future to enable Kaplan-Meier-based tests. We take the dataset <code>y150</code> from above and process it into this format. The counting process format is further discussed in the next section where we compute a weighted logrank test.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ten150</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span><span class="va">y150</span>,txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ten150</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ten150</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span><span class="va">y150</span>, txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ten150</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Stratum</th>
@@ -350,67 +362,67 @@
 <tr class="odd">
 <td align="left">Negative</td>
 <td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0.06</td>
-<td align="right">123</td>
-<td align="right">62</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">112</td>
+<td align="right">56</td>
 <td align="right">1.00</td>
-<td align="right">-0.50</td>
+<td align="right">0.5</td>
 <td align="right">0.25</td>
 </tr>
 <tr class="even">
 <td align="left">Negative</td>
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">0.08</td>
-<td align="right">122</td>
-<td align="right">62</td>
+<td align="right">0.04</td>
+<td align="right">111</td>
+<td align="right">55</td>
 <td align="right">0.99</td>
-<td align="right">-0.51</td>
+<td align="right">-0.5</td>
 <td align="right">0.25</td>
 </tr>
 <tr class="odd">
+<td align="left">Negative</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.05</td>
+<td align="right">110</td>
+<td align="right">55</td>
+<td align="right">0.98</td>
+<td align="right">0.5</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="even">
 <td align="left">Negative</td>
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">0.16</td>
-<td align="right">119</td>
-<td align="right">60</td>
-<td align="right">0.98</td>
-<td align="right">-0.50</td>
-<td align="right">0.25</td>
-</tr>
-<tr class="even">
-<td align="left">Negative</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0.27</td>
-<td align="right">116</td>
-<td align="right">59</td>
-<td align="right">0.98</td>
-<td align="right">0.49</td>
+<td align="right">0.11</td>
+<td align="right">109</td>
+<td align="right">54</td>
+<td align="right">0.97</td>
+<td align="right">-0.5</td>
 <td align="right">0.25</td>
 </tr>
 <tr class="odd">
 <td align="left">Negative</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">0.28</td>
-<td align="right">115</td>
-<td align="right">58</td>
-<td align="right">0.97</td>
-<td align="right">0.50</td>
+<td align="right">0.15</td>
+<td align="right">108</td>
+<td align="right">54</td>
+<td align="right">0.96</td>
+<td align="right">0.5</td>
 <td align="right">0.25</td>
 </tr>
 <tr class="even">
 <td align="left">Negative</td>
 <td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0.28</td>
-<td align="right">114</td>
-<td align="right">57</td>
+<td align="right">0</td>
+<td align="right">0.19</td>
+<td align="right">107</td>
+<td align="right">53</td>
 <td align="right">0.96</td>
-<td align="right">0.50</td>
+<td align="right">-0.5</td>
 <td align="right">0.25</td>
 </tr>
 </tbody>
@@ -422,18 +434,18 @@
 <p>Now stratified logrank and stratified weighted logrank tests are easily generated based on the counting process format. Each record in the counting process dataset represents a <code>tte</code> at which one or more events occurs; the results are stratum-specific. Included in the observation is the number of such events overall (<code>events</code>) and in the experimental treatment group (<code>txevents</code>), the number at risk overall (<code>atrisk</code>) and in the experimental treatment group (<code>txatrisk</code>) just before <code>tte</code>, the combined treatment group Kaplan-Meier survival estimate (left-continuous) at <code>tte</code>, the observed events in experimental group minus the expected at <code>tte</code> based on an assumption that all at risk observations are equally likely to have an event at any time, and the variance for this quantity (<code>Var</code>).</p>
 <p>To generate a stratified logrank test and a corresponding one-sided p-value, we simply do the following:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">ten150</span>,<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>,<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] -3.249351119  0.000578343</span></code></pre></div>
+<code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">ten150</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] -3.736228e+00  9.340082e-05</span></code></pre></div>
 <p>A Fleming-Harrington <span class="math inline">\(\rho=1\)</span>, <span class="math inline">\(\gamma=2\)</span> is nearly as simple. We again compute a z-statistic and its corresponding one-sided p-value.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ten150</span>,w<span class="op">=</span><span class="va">S</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">S</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">xx</span>,<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">w</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">w</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>,<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] -0.3112690  0.3777981</span></code></pre></div>
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ten150</span>, w <span class="op">=</span> <span class="va">S</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">S</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">xx</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span> <span class="op">*</span> <span class="va">w</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">Var</span> <span class="op">*</span> <span class="va">w</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] -0.2461590  0.4027796</span></code></pre></div>
 <p>For Fleming-Harrington tests, a routine has been built to do these tests for you:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tenFH.html">tenFH</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">ten150</span>,rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/tenFH.html">tenFH</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ten150</span>, rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">rho</th>
@@ -444,33 +456,33 @@
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.25</td>
+<td align="right">-3.74</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.19</td>
+<td align="right">-2.44</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-2.87</td>
+<td align="right">-3.95</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-3.04</td>
+<td align="right">-3.26</td>
 </tr>
 </tbody>
 </table>
 <p>If we wanted to take the minimum of these for a MaxCombo test, we would first use <code>tenFHcorr</code> to compute a correlation matrix for the above Z-statistics as follows. Note that the ordering of <code>rg</code> and <code>g</code> in the argument list is opposite of the above. The correlation matrix for the <code>Z</code>-values is now in <code>V1</code>-<code>V4</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">ten150</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg<span class="op">=</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,gamma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">ten150</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.</span>
 <span class="co">#&gt; Using compatibility `.name_repair`.</span>
 <span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
 <span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
-<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">rho</th>
@@ -485,36 +497,36 @@
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.25</td>
+<td align="right">-3.74</td>
 <td align="right">1.00</td>
 <td align="right">0.84</td>
-<td align="right">0.96</td>
+<td align="right">0.95</td>
 <td align="right">0.92</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.19</td>
+<td align="right">-2.44</td>
 <td align="right">0.84</td>
 <td align="right">1.00</td>
-<td align="right">0.65</td>
-<td align="right">0.95</td>
+<td align="right">0.62</td>
+<td align="right">0.93</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-2.87</td>
-<td align="right">0.96</td>
-<td align="right">0.65</td>
+<td align="right">-3.95</td>
+<td align="right">0.95</td>
+<td align="right">0.62</td>
 <td align="right">1.00</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-3.04</td>
+<td align="right">-3.26</td>
 <td align="right">0.92</td>
-<td align="right">0.95</td>
+<td align="right">0.93</td>
 <td align="right">0.79</td>
 <td align="right">1.00</td>
 </tr>
@@ -522,9 +534,9 @@
 </table>
 <p>We can compute a p-value for the MaxCombo as follows using the <code>pmvnorm</code> function from the <code>mvtnorm</code> package. Note the arguments for <code>GenzBretz</code> which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># compute p-value for MaxCombo</span>
+<code class="sourceCode R"><span class="co"># Compute p-value for MaxCombo</span>
 <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.001309166</span></code></pre></div>
+<span class="co">#&gt; [1] 7.323004e-05</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="simplification-for-2-arm-trials">Simplification for 2-arm trials<a class="anchor" aria-label="anchor" href="#simplification-for-2-arm-trials"></a>
@@ -532,15 +544,17 @@
 <p>The <code><a href="../reference/simfix.html">simfix()</a></code> routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately. Here the argument structure is meant to be simpler than for <code><a href="../reference/simPWSurv.html">simPWSurv()</a></code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span>, 
-                      rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span>
-                     <span class="op">)</span> 
-<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Stratum <span class="op">=</span> <span class="st">"All"</span>, 
-                    duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">100</span><span class="op">)</span>,
-                    failRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">18</span><span class="op">)</span>, 
-                    hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.6</span><span class="op">)</span>, 
-                    dropoutRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">2</span><span class="op">)</span>
-                   <span class="op">)</span>
+<span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span>,
+  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  Stratum <span class="op">=</span> <span class="st">"All"</span>,
+  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">100</span><span class="op">)</span>,
+  failRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">18</span><span class="op">)</span>,
+  hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.6</span><span class="op">)</span>,
+  dropoutRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="va">block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Experimental"</span>, <span class="st">"Control"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="va">rg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p>Now we simulate a trial 2 times and cut data for analysis based on <code>timingType = 1:5</code> which translates to:</p>
@@ -552,17 +566,18 @@
 <li>the maximum of 2 and 3.</li>
 </ol>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">2</span>,                  <span class="co"># Number of simulations</span>
-       sampleSize <span class="op">=</span> <span class="fl">500</span>,          <span class="co"># Trial sample size</span>
-       targetEvents <span class="op">=</span> <span class="fl">350</span>,        <span class="co"># Targeted events at analysis</span>
-       strata <span class="op">=</span> <span class="va">strata</span>,           <span class="co"># Study strata</span>
-       enrollRates <span class="op">=</span> <span class="va">enrollRates</span>, <span class="co"># Enrollment rates</span>
-       failRates <span class="op">=</span> <span class="va">failRates</span>,     <span class="co"># Failure rates</span>
-       totalDuration <span class="op">=</span> <span class="fl">30</span>,        <span class="co"># Planned trial duration </span>
-       block <span class="op">=</span> <span class="va">block</span>,             <span class="co"># Block for treatment</span>
-       timingType <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,          <span class="co"># Use all possible data cutoff methods</span>
-       rg <span class="op">=</span> <span class="va">rg</span>                    <span class="co"># FH test(s) to use; in this case, logrank</span>
-<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/simfix.html">simfix</a></span><span class="op">(</span>
+  nsim <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Number of simulations</span>
+  sampleSize <span class="op">=</span> <span class="fl">500</span>, <span class="co"># Trial sample size</span>
+  targetEvents <span class="op">=</span> <span class="fl">350</span>, <span class="co"># Targeted events at analysis</span>
+  strata <span class="op">=</span> <span class="va">strata</span>, <span class="co"># Study strata</span>
+  enrollRates <span class="op">=</span> <span class="va">enrollRates</span>, <span class="co"># Enrollment rates</span>
+  failRates <span class="op">=</span> <span class="va">failRates</span>, <span class="co"># Failure rates</span>
+  totalDuration <span class="op">=</span> <span class="fl">30</span>, <span class="co"># Planned trial duration</span>
+  block <span class="op">=</span> <span class="va">block</span>, <span class="co"># Block for treatment</span>
+  timingType <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="co"># Use all possible data cutoff methods</span>
+  rg <span class="op">=</span> <span class="va">rg</span> <span class="co"># FH test(s) to use; in this case, logrank</span>
+<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Events</th>
@@ -574,9 +589,9 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">101</td>
-<td align="right">-0.66</td>
-<td align="right">-3.25</td>
+<td align="right">97</td>
+<td align="right">-0.28</td>
+<td align="right">-1.35</td>
 <td align="left">Planned duration</td>
 <td align="right">30.00</td>
 <td align="right">1</td>
@@ -584,73 +599,73 @@
 <tr class="even">
 <td align="right">350</td>
 <td align="right">-0.49</td>
-<td align="right">-4.59</td>
+<td align="right">-4.52</td>
 <td align="left">Targeted events</td>
-<td align="right">69.42</td>
+<td align="right">72.65</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">356</td>
-<td align="right">-0.49</td>
-<td align="right">-4.56</td>
+<td align="right">349</td>
+<td align="right">-0.48</td>
+<td align="right">-4.44</td>
 <td align="left">Minimum follow-up</td>
-<td align="right">71.56</td>
+<td align="right">72.48</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
 <td align="right">-0.49</td>
-<td align="right">-4.59</td>
+<td align="right">-4.52</td>
 <td align="left">Max(planned duration, event cut)</td>
-<td align="right">69.42</td>
+<td align="right">72.65</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">356</td>
+<td align="right">350</td>
 <td align="right">-0.49</td>
-<td align="right">-4.56</td>
+<td align="right">-4.52</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">71.56</td>
+<td align="right">72.65</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">106</td>
-<td align="right">-0.34</td>
-<td align="right">-1.75</td>
+<td align="right">116</td>
+<td align="right">-0.20</td>
+<td align="right">-1.08</td>
 <td align="left">Planned duration</td>
 <td align="right">30.00</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.32</td>
-<td align="right">-2.99</td>
+<td align="right">-0.27</td>
+<td align="right">-2.50</td>
 <td align="left">Targeted events</td>
-<td align="right">68.18</td>
+<td align="right">69.11</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">365</td>
-<td align="right">-0.30</td>
-<td align="right">-2.86</td>
+<td align="right">358</td>
+<td align="right">-0.27</td>
+<td align="right">-2.59</td>
 <td align="left">Minimum follow-up</td>
-<td align="right">73.77</td>
+<td align="right">71.03</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.32</td>
-<td align="right">-2.99</td>
+<td align="right">-0.27</td>
+<td align="right">-2.50</td>
 <td align="left">Max(planned duration, event cut)</td>
-<td align="right">68.18</td>
+<td align="right">69.11</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">365</td>
-<td align="right">-0.30</td>
-<td align="right">-2.86</td>
+<td align="right">358</td>
+<td align="right">-0.27</td>
+<td align="right">-2.59</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">73.77</td>
+<td align="right">71.03</td>
 <td align="right">2</td>
 </tr>
 </tbody>
@@ -664,10 +679,10 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                                                   108</span></code></pre></div>
 <p>The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in <code>enrollRates</code> (14 months) at the input enrollment rates. To achieve the input <code>sampleSize</code> of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in <code>totalDuration</code>. The targeted minimum follow-up is</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">totalDuration</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="co"># from above</span>
+<code class="sourceCode R"><span class="va">totalDuration</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="co"># From above</span>
 <span class="va">totalDuration</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">enrollRates</span><span class="op">$</span><span class="va">duration</span><span class="op">)</span>
 <span class="co">#&gt; [1] 16</span></code></pre></div>
-<p>It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with “Minimum follow-up” cutoff in the simulations above. The planned duration cutoff is given in the ‘totalDuration’ argument which results in a much earlier cutoff.</p>
+<p>It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with “Minimum follow-up” cutoff in the simulations above. The planned duration cutoff is given in the <code>totalDuration</code> argument which results in a much earlier cutoff.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -75,32 +75,32 @@ sorted by Stratum and tte.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>a tibble with no missing values and contain variables</p>
-<p><code>Stratum</code> (Stratum)</p>
-<p><code>Treatment</code> (Treatment group)</p>
-<p><code>tte</code> (Observed time)</p>
-<p><code>event</code> (Binary event indicator, 1 represents event, 0 represents censoring)</p></dd>
+<dd><p>a tibble with no missing values and contain variables</p><ul><li><p><code>Stratum</code>: Stratum</p></li>
+<li><p><code>Treatment</code>: Treatment group</p></li>
+<li><p><code>tte</code>: Observed time</p></li>
+<li><p><code>event</code>: Binary event indicator, <code>1</code> represents event, <code>0</code> represents censoring</p></li>
+</ul></dd>
 <dt>txval</dt>
 <dd><p>value in the input <code>Treatment</code> column that indicates treatment group value.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>tibble</code> grouped by
-<code>Stratum</code> and sorted within strata by <code>tte</code>.
-Remain rows with at least one event in the population, at least one subject is at risk in both treatment group and control group.
-Other variables in this represent the following within each stratum at each time at which one or more
-events are observed:
-<code>events</code> (Total number of events)
-<code>txevents</code> (Total number of events at treatment group)
-<code>atrisk</code> (Number of subjects at risk)
-<code>txatrisk</code> (Number of subjects at risk in treatment group)
-<code>S</code> (Left-continuous Kaplan-Meier survival estimate)
-<code>OminusE</code> (In treatment group, observed number of events minus expected number of events.
-          The expected number of events is estimated by assuming no treatment effect with hypergeometric distribution with
-          parameters total number of events, total number of events at treatment group and number of events at a time.
-          (Same assumption of log-rank test under the null hypothesis)
-<code>Var</code> (variance of OminusE under the same assumption).</p>
-    </div>
+    <p>A <code>tibble</code> grouped by <code>Stratum</code> and sorted within strata by <code>tte</code>.
+Remain rows with at least one event in the population, at least one subject
+is at risk in both treatment group and control group.
+Other variables in this represent the following within each stratum at
+each time at which one or more events are observed:</p><ul><li><p><code>events</code>: Total number of events</p></li>
+<li><p><code>txevents</code>: Total number of events at treatment group</p></li>
+<li><p><code>atrisk</code>: Number of subjects at risk</p></li>
+<li><p><code>txatrisk</code>: Number of subjects at risk in treatment group</p></li>
+<li><p><code>S</code>: Left-continuous Kaplan-Meier survival estimate</p></li>
+<li><p><code>OminusE</code>: In treatment group, observed number of events minus expected
+number of events. The expected number of events is estimated by assuming
+no treatment effect with hypergeometric distribution with parameters total
+number of events, total number of events at treatment group and number of
+events at a time. (Same assumption of log-rank test under the null hypothesis)</p></li>
+<li><p><code>Var</code>: variance of <code>OminusE</code> under the same assumption.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function only considered two group situation.</p>
@@ -135,7 +135,7 @@ events are observed:
 <span class="r-in"><span class="co"># weighted logrank test (Z-value and 1-sided p-value)</span></span>
 <span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">OminusE</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">Var</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>,<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.08958844  0.01832739</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.92827844  0.02691025</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
