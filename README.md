@@ -24,7 +24,7 @@ Under proportional hazards, the assumptions are along the lines of those used by
 - Setting up data cutoffs for (interim and final) analyses.
 - Support for weighted logrank tests with arbitrary weighting schemes, specifically supporting the Fleming-Harrington set of tests, including the logrank test.
 
-# Future developments
+## Future developments
 
 Expectations for future development include:
 

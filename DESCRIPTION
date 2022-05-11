@@ -1,7 +1,7 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
     person(given = "Keaven", family = "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "yilong.zhang@merck.com", role =  c("aut","cre")),
