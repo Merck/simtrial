@@ -28,7 +28,8 @@ Imports:
     tibble,
     tidyr,
     survival,
-    mvtnorm
+    mvtnorm,
+    Rcpp
 Suggests: 
     knitr,
     rmarkdown,
@@ -48,3 +49,5 @@ RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Remotes: 
     dominicmagirr/modestWLRT
+LinkingTo: 
+    Rcpp
