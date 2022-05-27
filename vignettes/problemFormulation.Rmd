@@ -1,15 +1,17 @@
 ---
-title: "Problem Formulation"
+title: "Computational Enhancement of `rpwexp` "
 author: "Jianxiao Yang"
-date: "5/23/2022"
-output: html_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r, message=FALSE, warning=FALSE}
 library(simtrial)
 library(knitr)
 library(tibble)
@@ -17,9 +19,21 @@ library(dplyr)
 library(gt)
 library(profvis)
 library(bench)
+devtools::load_all()
 ```
 
+
 # Data
+
+In this example, we consider
+
+- 7 strata
+- 10 periods in enrollments
+- 4 periods in failure rates of the control arm per stratum
+- 5 periods in failure rates of the experimental arm per stratum
+- 4 periods in dropout rates of the control arm per stratum
+- 5 periods in dropout rates of the experimental arm per stratum
+
 ```{r}
 # 1.1 Set up Strata & Block
 strata <- tibble(
