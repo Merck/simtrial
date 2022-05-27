@@ -1,7 +1,6 @@
 ---
 title: "Computational Enhancement of `rpwexp` "
 author: "Jianxiao Yang"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
     code_folding: hide
@@ -231,6 +230,8 @@ x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob 
 
 utr <- unique(x$Treatment)
 usr <- unique(x$Stratum)
+x$failTime <- 0
+x$dropoutTime <- 0
 
 # # Reorder x, failRates, and dropoutRates
 # x1 <- x %>% arrange(Stratum, Treatment)
@@ -238,9 +239,11 @@ usr <- unique(x$Stratum)
 # dropoutRates1 <- dropoutRates %>% arrange(Stratum, Treatment)
 # utr <- unique(x1$Treatment)
 # usr <- unique(x1$Stratum)
+```
 
+## R
+```{r}
 set.seed(2022)
-# R
 profvis({
   for(sr in usr){for(tr in utr){
       indx <- x$Stratum==sr & x$Treatment==tr
@@ -248,8 +251,10 @@ profvis({
       x$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
   }}
 })
+```
 
-# C++
+## C++
+```{r}
 profvis({
   for(sr in usr){for(tr in utr){
       indx <- x$Stratum==sr & x$Treatment==tr
@@ -271,19 +276,24 @@ x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob 
 
 utr <- unique(x$Treatment)
 usr <- unique(x$Stratum)
+x$failTime <- 0
+x$dropoutTime <- 0
+
 sr <- usr[1]
 tr <- utr[1]
 indx <- x$Stratum==sr & x$Treatment==tr
 
 set.seed(2022)
-(mbm <- bench::mark(
+mbm <- bench::mark(
   # R
   rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr)),
   # C++
   rpwexpRcpp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr)),
   iterations = 100
-))
-plot(mbm)
+)
+mbm$expression[[1]] <- "R"
+mbm$expression[[2]] <- "C++"
+print(mbm %>% select(c("expression", "min", "median", "mem_alloc", "gc/sec", "n_itr", "n_gc", "total_time")), n = 10)
+# plot(mbm)
 ```
-
 
