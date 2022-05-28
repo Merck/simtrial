@@ -16,8 +16,11 @@ library(knitr)
 library(tibble)
 library(dplyr)
 library(gt)
+library(ggplot2)
 library(profvis)
 library(bench)
+library(microbenchmark)
+library(PWEALL)
 devtools::load_all()
 ```
 
@@ -219,7 +222,7 @@ dropoutRates <- bind_rows(
 ```
 
 
-# Profile `rpwexp`
+# Profile `simPWSurv`
 ```{r}
 n <- 1000
 x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob = strata$p)) %>%
@@ -241,7 +244,7 @@ x$dropoutTime <- 0
 # usr <- unique(x1$Stratum)
 ```
 
-## R
+## Profile using `profvis`
 ```{r}
 set.seed(2022)
 profvis({
@@ -253,47 +256,160 @@ profvis({
 })
 ```
 
-## C++
+## "Profile" using `microbenchmark`
 ```{r}
-profvis({
-  for(sr in usr){for(tr in utr){
-      indx <- x$Stratum==sr & x$Treatment==tr
-      x$failTime[indx] <- rpwexpRcpp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr))
-      x$dropoutTime[indx] <- rpwexpRcpp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
-  }}
-})
+# Select the first stratum and the first treatment
+sr <- usr[1]
+tr <- utr[1]
+x_indx <- x$Stratum==sr & x$Treatment==tr
+x_n <- sum(x_indx)
+f_indx <- failRates$Stratum==sr & failRates$Treatment==tr
+test_failRates <- filter(failRates, f_indx) %>% select(c("duration", "rate"))
+
+mbm0 <- microbenchmark(
+  # Get index of x
+  x$Stratum==sr & x$Treatment==tr,
+  # Count index of x
+  sum(x_indx),
+  # Get index of failRates,
+  failRates$Stratum==sr & failRates$Treatment==tr,
+  # Subset failRates
+  filter(failRates, f_indx),
+  # rpwexp
+  rpwexp(n = x_n, failRates = test_failRates),
+  times = 1000
+)
+levels(mbm0$expr) <- c("Get x_index", "Count x_index", "Get f_index", "Filter data", "rpwexp")
+mbm0
+```
+
+## Benchmark different ways of subsetting tibble
+```{r}
+mbm_subset <- bench::mark(
+  filter(failRates, f_indx),
+  subset(failRates, f_indx),
+  failRates[f_indx,],
+  iterations = 1000
+)
+mbm_subset
+plot(mbm_subset)
 ```
 
 
 # Benchmark `rpwexp`
+
+## `rpwexp` vs `rpwexpRcpp`
 ```{r}
-n <- 1000
-x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob = strata$p)) %>%
-  mutate(enrollTime = rpwenroll(n, enrollRates)) %>%
-  group_by(Stratum) %>% 
-  mutate(Treatment = fixedBlockRand(n = n(), block = block))  %>%
-  group_by(Stratum, Treatment)
-
-utr <- unique(x$Treatment)
-usr <- unique(x$Stratum)
-x$failTime <- 0
-x$dropoutTime <- 0
-
-sr <- usr[1]
-tr <- utr[1]
-indx <- x$Stratum==sr & x$Treatment==tr
-
 set.seed(2022)
-mbm <- bench::mark(
+mbm1 <- bench::mark(
   # R
-  rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr)),
+  rpwexp(n = x_n, failRates = test_failRates),
   # C++
-  rpwexpRcpp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr)),
+  rpwexpRcpp(n = x_n, failRates = test_failRates),
+  iterations = 1000
+)
+mbm1$expression[[1]] <- "rpwexp"
+mbm1$expression[[2]] <- "rpwexpRcpp"
+mbm1
+# print(mbm1 %>% select(c("expression", "min", "median", "mem_alloc", "gc/sec", "n_itr", "n_gc", "total_time")), n = 10)
+plot(mbm1)
+```
+
+## `simtrial` vs `PWEALL`
+```{r}
+# PWEALL requires time changing point
+tchange <- cumsum(c(0, test_failRates$duration))[1:(length(test_failRates$duration-1))] # exclusive prefix sum of duration
+
+mbm2 <- microbenchmark(
+  # R
+  rpwexp(n = x_n, failRates = test_failRates),
+  # C++
+  rpwexpRcpp(n = x_n, failRates = test_failRates),
+  # PWEALL
+  rpwe(n = x_n, rate = test_failRates$rate, tchange = tchange),
+  times = 1000
+)
+levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "PWEALL")
+mbm2
+```
+
+## Time comparison of generating random variable from piecewise Exponential distribution
+```{r}
+bm_rpwexp <- function(n, nr, itr = 1000) {
+  # simulate failRates
+  duration <- floor(runif(nr, 1, 5))
+  rate <- runif(nr, 0.0005, 0.095)
+  failTib <- tibble(duration, rate)
+  tchange <- cumsum(c(0, duration))[1:(length(duration-1))]
+
+  times <- rep(0, 3)
+  for (i in 1:itr) {
+    start_time <- Sys.time()
+    rpwexp(n = n, failRates = failTib)
+    end_time <- Sys.time()
+    times[1] = times[1] + end_time - start_time
+    
+    start_time <- Sys.time()
+    rpwexpRcpp(n = n, failRates = failTib)
+    end_time <- Sys.time()
+    times[2] = times[2] + end_time - start_time
+    
+    start_time <- Sys.time()
+    rpwe(n = n, rate = rate, tchange = tchange)
+    end_time <- Sys.time()
+    times[3] = times[3] + end_time - start_time
+  }
+
+  return (times/itr)
+}
+
+# fix n_rates = 5
+nr <- 5
+n_pool <- 100 * c(1, 5, 10, 20, 50, 100) # number of observations to be generated
+times <- data.frame(matrix(ncol = 4, nrow = length(n_pool)))
+colnames(times) <- c("n", "rpwexp", "rpwexpRcpp", "inverse")
+times$n <- n_pool
+
+for (i in 1:length(n_pool)) {
+  times[i, 2:4] <- bm_rpwexp(n_pool[i], nr)
+}
+
+df_times <- data.frame(x = times$n,                           
+                       y = c(times$rpwexp, times$rpwexpRcpp, times$inverse),
+                       group = c(rep("rpwexp", nrow(times)),
+                                 rep("rpwexpRcpp", nrow(times)),
+                                 rep("inverse", nrow(times))))
+ggplot(df_times, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_continuous(trans='log10') + 
+  labs(x = "number of observations to be generated", y = "time (s)")
+```
+
+
+# Benchmark `simPWSurv` vs `simPWSurvNew`
+
+Here `simPWSurvNew` use brackets to subset data when calling `rpwexp`.
+```{r, warning=FALSE}
+set.seed(2022)
+mbm_simPWSurv <- bench::mark(
+  simPWSurv(n = 1000, 
+            strata = strata,
+            block = block,
+            enrollRates = enrollRates,
+            failRates = failRates,
+            dropoutRates = dropoutRates),
+  simPWSurvNew(n = 1000, 
+               strata = strata,
+               block = block,
+               enrollRates = enrollRates,
+               failRates = failRates,
+               dropoutRates = dropoutRates),
   iterations = 100
 )
-mbm$expression[[1]] <- "R"
-mbm$expression[[2]] <- "C++"
-print(mbm %>% select(c("expression", "min", "median", "mem_alloc", "gc/sec", "n_itr", "n_gc", "total_time")), n = 10)
-# plot(mbm)
+mbm_simPWSurv$expression[[1]] <- "simPWSurv"
+mbm_simPWSurv$expression[[2]] <- "simPWSurvNew"
+mbm_simPWSurv
+plot(mbm_simPWSurv)
 ```
+
 
