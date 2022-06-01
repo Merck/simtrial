@@ -317,7 +317,7 @@ plot(mbm1)
 
 ## Generating piecewise Exponential random numbers
 
-### The inverse transform method
+### The inverse transform method using `rexp(1)`
 ```{r}
 rpwexph <- function(n, rate = 1, t = 1) {
   # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
@@ -331,12 +331,51 @@ rpwexph <- function(n, rate = 1, t = 1) {
   interval <- rep(1, n)
   if (n_piece > 1) {
     for (i in 2:(n_piece)) interval[y >= H[i]] <- i
+    # if rate[i-1] = 0 (i.e. H[i] == H[i-1]), no observation will fall in to [i-1, i)
   }
   y <- (y - H[interval]) / rate[interval] + t[interval]
-  
+  # if rate[n_piece] == 0, observations in final interval are Inf
   return (y)
 }
 ```
+
+### The inverse transform method using `runif` (as in `PWEALL`)
+```{r}
+rpwexpunif <- function(n, rate, t){
+  # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
+  n_piece <- length(rate)
+  # Get number of piecewise rates
+  H <- c(0, cumsum(rate * (t - dplyr::lag(t, default = 0))))[1:n_piece]
+  t <- c(0, t)[1:n_piece]
+  # Generate cumulative hazard for each observation
+  y <- -log(runif(n))
+  # Make a vector to record with interval each observation is in
+  interval <- rep(1, n)
+  if (n_piece > 1) {
+    for (i in 2:(n_piece)) {
+      interval[y >= H[i]] <- i
+    }
+  }
+  y <- (y - H[interval]) / rate[interval] + t[interval]
+  return (y)
+}
+```
+
+```{r}
+# simulate failRates
+n_rates <- 5
+duration <- floor(runif(n_rates, 1, 5))
+rate <- runif(n_rates, 0.0005, 0.095)
+rate[5] <- 0.0
+tchange1 <- cumsum(duration)
+tchange0 <- c(0, tchange1)[1:(length(duration-1))]
+
+set.seed(2)
+PWEALL::rpwe(n = 10, rate = rate, tchange = tchange0)
+set.seed(2)
+rpwexpunif(n = 10, rate = rate, t = tchange1)
+```
+
 
 ### Benchmark
 ```{r}
@@ -350,12 +389,14 @@ mbm2 <- microbenchmark(
   # C++
   rpwexpRcpp(n = x_n, failRates = test_failRates),
   # Inverse exp(1)
-  rpwexph(n = x_n, rate = test_failRates$rate, tchange1),
+  rpwexph(n = x_n, rate = test_failRates$rate, t = tchange1),
+  # Inverse unif
+  rpwexpunif(n = x_n, rate = test_failRates$rate, t = tchange1),
   # PWEALL
   PWEALL::rpwe(n = x_n, rate = test_failRates$rate, tchange = tchange0),
   times = 1000
 )
-levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexph", "PWEALL")
+levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexph", "rpwexpunif", "PWEALL")
 mbm2
 ```
 
@@ -369,7 +410,7 @@ bm_rpwexp <- function(n, nr, itr = 1000) {
   tchange0 <- cumsum(c(0, duration))[1:(length(duration-1))]
   tchange1 <- cumsum(duration)
 
-  times <- rep(0, 4)
+  times <- rep(0, 5)
   for (i in 1:itr) {
     start_time <- Sys.time()
     rpwexp(n = n, failRates = failTib)
@@ -382,15 +423,19 @@ bm_rpwexp <- function(n, nr, itr = 1000) {
     times[2] = times[2] + end_time - start_time
     
     start_time <- Sys.time()
-    rpwexph(n = n, rate, tchange1)
+    rpwexph(n = n, rate = rate, t = tchange1)
     end_time <- Sys.time()
     times[3] = times[3] + end_time - start_time
-    
+
     start_time <- Sys.time()
-    PWEALL::rpwe(n = n, rate = rate, tchange = tchange0)
+    rpwexpunif(n = n, rate = rate, t = tchange1)
     end_time <- Sys.time()
     times[4] = times[4] + end_time - start_time
 
+    start_time <- Sys.time()
+    PWEALL::rpwe(n = n, rate = rate, tchange = tchange0)
+    end_time <- Sys.time()
+    times[5] = times[5] + end_time - start_time
   }
 
   return (times/itr)
@@ -399,19 +444,20 @@ bm_rpwexp <- function(n, nr, itr = 1000) {
 # fix n_rates = 5
 nr <- 5
 n_pool <- 100 * c(1, 5, 10, 20, 50, 100) # number of observations to be generated
-times <- data.frame(matrix(ncol = 5, nrow = length(n_pool)))
-colnames(times) <- c("n", "rpwexp", "rpwexpRcpp", "rpwexph", "PWEALL")
+times <- data.frame(matrix(ncol = 6, nrow = length(n_pool)))
+colnames(times) <- c("n", "rpwexp", "rpwexpRcpp", "rpwexph", "rpwexpunif", "PWEALL")
 times$n <- n_pool
 
 for (i in 1:length(n_pool)) {
-  times[i, 2:5] <- bm_rpwexp(n_pool[i], nr)
+  times[i, 2:6] <- bm_rpwexp(n_pool[i], nr)
 }
 
 df_times <- data.frame(x = times$n,                           
-                       y = c(times$rpwexp, times$rpwexpRcpp, times$rpwexph, times$PWEALL),
+                       y = c(times$rpwexp, times$rpwexpRcpp, times$rpwexph, times$rpwexpunif, times$PWEALL),
                        group = c(rep("rpwexp", nrow(times)),
                                  rep("rpwexpRcpp", nrow(times)),
                                  rep("rpwexph (inverse)", nrow(times)),
+                                 rep("rpwexpunif", nrow(times)),
                                  rep("PWEALL", nrow(times))))
 ggplot(df_times, aes(x, y, col = group)) +
   geom_line() +
