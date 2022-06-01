@@ -21,6 +21,7 @@ library(profvis)
 library(bench)
 library(microbenchmark)
 library(PWEALL)
+library(parallel)
 devtools::load_all()
 ```
 
@@ -230,22 +231,15 @@ x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob 
   group_by(Stratum) %>% 
   mutate(Treatment = fixedBlockRand(n = n(), block = block))  %>%
   group_by(Stratum, Treatment)
+```
 
+## Profile using `profvis`
+```{r}
 utr <- unique(x$Treatment)
 usr <- unique(x$Stratum)
 x$failTime <- 0
 x$dropoutTime <- 0
 
-# # Reorder x, failRates, and dropoutRates
-# x1 <- x %>% arrange(Stratum, Treatment)
-# failRates1 <- failRates %>% arrange(Stratum, Treatment)
-# dropoutRates1 <- dropoutRates %>% arrange(Stratum, Treatment)
-# utr <- unique(x1$Treatment)
-# usr <- unique(x1$Stratum)
-```
-
-## Profile using `profvis`
-```{r}
 set.seed(2022)
 profvis({
   for(sr in usr){for(tr in utr){
@@ -283,7 +277,68 @@ levels(mbm0$expr) <- c("Get x_index", "Count x_index", "Get f_index", "Filter da
 mbm0
 ```
 
-## Benchmark different ways of subsetting tibble
+## Parallelization
+```{r}
+# Reorder x, failRates, and dropoutRates
+x1 <- x %>% arrange(Stratum, Treatment)
+x2 <- x %>% arrange(Stratum, Treatment)
+x3 <- x %>% arrange(Stratum, Treatment)
+utr <- unique(x1$Treatment)
+usr <- unique(x1$Stratum)
+
+# Old code in serial
+system.time({
+  x1$failTime <- 0
+  x1$dropoutTime <- 0
+  for (sr in usr) {
+    for (tr in utr) {
+      # set.seed(2022)
+      indx <- x1$Stratum==sr & x1$Treatment==tr
+      x1$failTime[indx] <- rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr))
+      x1$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
+    }
+  }
+})
+
+# Function to parallel
+generateTimes <- function(sr, tr) {
+  # set.seed(2022)
+  indx <- x3$Stratum==sr & x3$Treatment==tr
+  output <- tibble(failTime = rpwexp(n=sum(indx), 
+                                     failRates=filter(failRates,
+                                                      Stratum==sr&Treatment==tr)),
+                   dropoutTime = rpwexp(n=sum(indx),
+                                        failRates=filter(dropoutRates,
+                                                         Stratum==sr&Treatment==tr)))
+  return(output)
+}
+
+# Serial code
+system.time({
+  x2$failTime <- 0
+  x2$dropoutTime <- 0
+  for (sr in usr) {
+    for (tr in utr) {
+      indx <- x2$Stratum==sr & x2$Treatment==tr
+      x2[indx, c("failTime", "dropoutTime")] <- generateTimes(sr, tr)
+    }
+  }
+})
+
+# Parallel code (TODO unlist results and write to x)
+system.time({
+  x3$failTime <- 0
+  x3$dropoutTime <- 0
+  test <- mcmapply(generateTimes,
+                   rep(usr, each = length(utr), times = 1),
+                   rep(utr, each = 1, times = length(usr)),
+                   mc.cores = 8)
+})
+```
+
+## Manipulate input data
+
+### Filter rows
 ```{r}
 mbm_subset <- bench::mark(
   filter(failRates, f_indx),
