@@ -373,35 +373,18 @@ plot(mbm_subset_pull)
 ```
 
 
-# Benchmark `rpwexp`
+# Generating piecewise Exponential random numbers
 
-## `rpwexp` vs `rpwexpRcpp`
+## The inverse transform method
+
+### `rexp(1)`
 ```{r}
-set.seed(2022)
-mbm1 <- bench::mark(
-  # R
-  rpwexp(n = x_n, failRates = test_failRates),
-  # C++
-  rpwexpRcpp(n = x_n, failRates = test_failRates),
-  iterations = 1000
-)
-mbm1$expression[[1]] <- "rpwexp"
-mbm1$expression[[2]] <- "rpwexpRcpp"
-mbm1
-# print(mbm1 %>% select(c("expression", "min", "median", "mem_alloc", "gc/sec", "n_itr", "n_gc", "total_time")), n = 10)
-plot(mbm1)
-```
-
-## Generating piecewise Exponential random numbers
-
-### The inverse transform method using `rexp(1)`
-```{r}
-rpwexph <- function(n, rate = 1, t = 1) {
+rpwexpexp <- function(n, rate = 1, duration = 1) {
   # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
   n_piece <- length(rate)
   # Get number of piecewise rates
-  H <- c(0, cumsum(rate * (t - dplyr::lag(t, default = 0))))
-  t <- c(0, t)
+  H <- c(0, cumsum(rate * duration))[1:n_piece]
+  duration <- c(0, cumsum(duration))[1:n_piece]
   # Generate cumulative hazard for each observation
   y <- rexp(n = n, rate = 1)
   # Make a vector to record with interval each observation is in
@@ -410,20 +393,20 @@ rpwexph <- function(n, rate = 1, t = 1) {
     for (i in 2:(n_piece)) interval[y >= H[i]] <- i
     # if rate[i-1] = 0 (i.e. H[i] == H[i-1]), no observation will fall in to [i-1, i)
   }
-  y <- (y - H[interval]) / rate[interval] + t[interval]
+  y <- (y - H[interval]) / rate[interval] + duration[interval]
   # if rate[n_piece] == 0, observations in final interval are Inf
   return (y)
 }
 ```
 
-### The inverse transform method using `runif` (as in `PWEALL`)
+### `runif`
 ```{r}
-rpwexpunif <- function(n, rate, t){
+rpwexpunif <- function(n, rate, duration){
   # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
   n_piece <- length(rate)
   # Get number of piecewise rates
-  H <- c(0, cumsum(rate * (t - dplyr::lag(t, default = 0))))[1:n_piece]
-  t <- c(0, t)[1:n_piece]
+  H <- c(0, cumsum(rate * duration))[1:n_piece]
+  duration <- c(0, cumsum(duration))[1:n_piece]
   # Generate cumulative hazard for each observation
   y <- -log(runif(n))
   # Make a vector to record with interval each observation is in
@@ -433,47 +416,50 @@ rpwexpunif <- function(n, rate, t){
       interval[y >= H[i]] <- i
     }
   }
-  y <- (y - H[interval]) / rate[interval] + t[interval]
+  y <- (y - H[interval]) / rate[interval] + duration[interval]
   return (y)
 }
 ```
 
 ```{r}
 # simulate failRates
-n_rates <- 5
+n_rates <- 10
 duration <- floor(runif(n_rates, 1, 5))
 rate <- runif(n_rates, 0.0005, 0.095)
 rate[5] <- 0.0
+rate[10] <- 0.0
 tchange1 <- cumsum(duration)
 tchange0 <- c(0, tchange1)[1:(length(duration-1))]
 
+# Expect the same results
 set.seed(2)
 PWEALL::rpwe(n = 10, rate = rate, tchange = tchange0)
 set.seed(2)
-rpwexpunif(n = 10, rate = rate, t = tchange1)
+rpwexpunif(n = 10, rate = rate, duration = duration)
 ```
 
 
-### Benchmark
+## Benchmark
+
+### Generate 90 data points using 5 intervals
 ```{r}
 # PWEALL requires time changing point
 tchange0 <- cumsum(c(0, test_failRates$duration))[1:(length(test_failRates$duration-1))] # exclusive prefix sum of duration
-tchange1 <- cumsum(test_failRates$duration) # inclusive prefix sum of duration
 
 mbm2 <- microbenchmark(
   # R
   rpwexp(n = x_n, failRates = test_failRates),
   # C++
   rpwexpRcpp(n = x_n, failRates = test_failRates),
-  # Inverse exp(1)
-  rpwexph(n = x_n, rate = test_failRates$rate, t = tchange1),
-  # Inverse unif
-  rpwexpunif(n = x_n, rate = test_failRates$rate, t = tchange1),
-  # PWEALL
+  # Inverse exp(1) in R
+  rpwexpexp(n = x_n, rate = test_failRates$rate, duration = test_failRates$duration),
+  # Inverse unif in R
+  rpwexpunif(n = x_n, rate = test_failRates$rate, duration = test_failRates$duration),
+  # PWEALL (Inverse unif in Fortran)
   PWEALL::rpwe(n = x_n, rate = test_failRates$rate, tchange = tchange0),
   times = 1000
 )
-levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexph", "rpwexpunif", "PWEALL")
+levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexpexp", "rpwexpunif", "PWEALL")
 mbm2
 ```
 
