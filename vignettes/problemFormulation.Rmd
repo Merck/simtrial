@@ -477,7 +477,7 @@ levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexph", "rpwexpunif", "PWEALL"
 mbm2
 ```
 
-### Time comparison across different number of observations to be generated
+### Runtime comparison across different number of observations to be generated
 ```{r}
 bm_rpwexp <- function(n, nr, itr = 1000) {
   # simulate failRates
@@ -515,31 +515,87 @@ bm_rpwexp <- function(n, nr, itr = 1000) {
     times[5] = times[5] + end_time - start_time
   }
 
-  return (times/itr)
+  return (times * 1000 / itr)
 }
 
-# fix n_rates = 5
+nr_pool <- c(2, 4, 6, 8, 10, 20, 50, 100) # number of time intervals
+n_pool <- c(100, 200, 500, 1000, 1500, 2000, 5000, 10000) # number of observations to be generated
+
+##################################################################
+# Fix n_rates = 5
 nr <- 5
-n_pool <- 100 * c(1, 5, 10, 20, 50, 100) # number of observations to be generated
-times <- data.frame(matrix(ncol = 6, nrow = length(n_pool)))
-colnames(times) <- c("n", "rpwexp", "rpwexpRcpp", "rpwexph", "rpwexpunif", "PWEALL")
-times$n <- n_pool
 
+# Dataframe for storing timing results
+times_n <- data.frame(matrix(ncol = 6, nrow = length(n_pool)))
+colnames(times_n) <- c("n",
+                       "rpwexp",
+                       "rpwexpRcpp",
+                       "rpwexph",
+                       "rpwexpunif",
+                       "PWEALL")
+times_n$n <- n_pool
+
+# Benchmark
 for (i in 1:length(n_pool)) {
-  times[i, 2:6] <- bm_rpwexp(n_pool[i], nr)
+  times_n[i, 2:6] <- bm_rpwexp(n_pool[i], nr)
 }
 
-df_times <- data.frame(x = times$n,                           
-                       y = c(times$rpwexp, times$rpwexpRcpp, times$rpwexph, times$rpwexpunif, times$PWEALL),
-                       group = c(rep("rpwexp", nrow(times)),
-                                 rep("rpwexpRcpp", nrow(times)),
-                                 rep("rpwexph (inverse)", nrow(times)),
-                                 rep("rpwexpunif", nrow(times)),
-                                 rep("PWEALL", nrow(times))))
-ggplot(df_times, aes(x, y, col = group)) +
+# Reshape timing results for plot
+df_times_n <- data.frame(x = times_n$n,
+                         y = c(times_n$rpwexp,
+                               times_n$rpwexpRcpp,
+                               times_n$rpwexph,
+                               times_n$rpwexpunif,
+                               times_n$PWEALL),
+                         group = c(rep("rpwexp", nrow(times_n)),
+                                   rep("rpwexpRcpp", nrow(times_n)),
+                                   rep("rpwexph (inverse)", nrow(times_n)),
+                                   rep("rpwexpunif", nrow(times_n)),
+                                   rep("PWEALL", nrow(times_n))))
+ggplot(df_times_n, aes(x, y, col = group)) +
   geom_line() +
-  scale_x_continuous(trans='log10') + 
-  labs(x = "number of observations to be generated", y = "time (s)")
+  scale_x_log10(breaks = c(100, 200, 500, 1000, 2000, 5000, 10000)) +
+  # scale_x_continuous(trans='log10') + 
+  scale_y_continuous(trans='log10') + 
+  labs(x = "number of observations to be generated", y = "time (ms)")
+```
+
+### Runtime comparison across different number of intervals
+```{r}
+# Fix n = 1000
+n <- 1000
+
+# Dataframe for storing timing results
+times_nr <- data.frame(matrix(ncol = 6, nrow = length(nr_pool)))
+colnames(times_nr) <- c("n_rates",
+                        "rpwexp",
+                        "rpwexpRcpp",
+                        "rpwexph",
+                        "rpwexpunif",
+                        "PWEALL")
+times_nr$n_rates <- nr_pool
+
+# Benchmark
+for (i in 1:length(nr_pool)) {
+  times_nr[i, 2:6] <- bm_rpwexp(n, nr_pool[i])
+}
+
+# Reshape timing results for plot
+df_times_nr <- data.frame(x = times_nr$n_rates,
+                          y = c(times_nr$rpwexp,
+                                times_nr$rpwexpRcpp,
+                                times_nr$rpwexph,
+                                times_nr$rpwexpunif,
+                                times_nr$PWEALL),
+                          group = c(rep("rpwexp", nrow(times_nr)),
+                                    rep("rpwexpRcpp", nrow(times_nr)),
+                                    rep("rpwexph (inverse)", nrow(times_nr)),
+                                    rep("rpwexpunif", nrow(times_nr)),
+                                    rep("PWEALL", nrow(times_nr))))
+ggplot(df_times_nr, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_continuous(trans='log10') +
+  labs(x = "number of intervals", y = "time (ms)")
 ```
 
 
