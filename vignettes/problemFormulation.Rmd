@@ -350,6 +350,28 @@ mbm_subset
 plot(mbm_subset)
 ```
 
+### Select column
+```{r}
+mbm_pull <- bench::mark(
+  test_failRates %>% pull(rate),
+  test_failRates$rate,
+  iterations = 1000
+)
+mbm_pull
+plot(mbm_pull)
+```
+
+### Subset both rows and column
+```{r}
+mbm_subset_pull <- bench::mark(
+  filter(failRates, f_indx) %>% pull(rate),
+  failRates[f_indx, ]$rate,
+  iterations = 1000
+)
+mbm_subset_pull
+plot(mbm_subset_pull)
+```
+
 
 # Benchmark `rpwexp`
 
