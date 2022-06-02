@@ -2,7 +2,7 @@
 #include <random>
 using namespace Rcpp;
 
-#define SIMTRIAL_DEBUG
+// #define SIMTRIAL_DEBUG
 
 //' @param n Number of observations to be generated.
 //' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
