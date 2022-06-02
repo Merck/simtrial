@@ -455,11 +455,13 @@ mbm2 <- microbenchmark(
   rpwexpexp(n = x_n, rate = test_failRates$rate, duration = test_failRates$duration),
   # Inverse unif in R
   rpwexpunif(n = x_n, rate = test_failRates$rate, duration = test_failRates$duration),
+  # Inverse unif in C++
+  rpwexpinvRcpp(n = x_n, rate = test_failRates$rate, duration = test_failRates$duration),
   # PWEALL (Inverse unif in Fortran)
   PWEALL::rpwe(n = x_n, rate = test_failRates$rate, tchange = tchange0),
   times = 1000
 )
-levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexpexp", "rpwexpunif", "PWEALL")
+levels(mbm2$expr) <- c("rpwexp", "rpwexpRcpp", "rpwexpexp", "rpwexpunif", "rpwexpinvRcpp", "PWEALL")
 mbm2
 ```
 
@@ -471,37 +473,47 @@ bm_rpwexp <- function(n, nr, itr = 1000) {
   rate <- runif(nr, 0.0005, 0.095)
   failTib <- tibble(duration, rate)
   tchange0 <- cumsum(c(0, duration))[1:(length(duration-1))]
-  tchange1 <- cumsum(duration)
 
-  times <- rep(0, 5)
+  times <- rep(0, 6)
   for (i in 1:itr) {
+    # Old method in R
     start_time <- Sys.time()
     rpwexp(n = n, failRates = failTib)
     end_time <- Sys.time()
     times[1] = times[1] + end_time - start_time
-    
+
+    # Old method in C++
     start_time <- Sys.time()
     rpwexpRcpp(n = n, failRates = failTib)
     end_time <- Sys.time()
     times[2] = times[2] + end_time - start_time
-    
+
+    # Inverse CDF with exp(1) in R
     start_time <- Sys.time()
-    rpwexph(n = n, rate = rate, t = tchange1)
+    rpwexpexp(n = n, rate = rate, duration = duration)
     end_time <- Sys.time()
     times[3] = times[3] + end_time - start_time
 
+    # Inverse CDF with unif in R
     start_time <- Sys.time()
-    rpwexpunif(n = n, rate = rate, t = tchange1)
+    rpwexpunif(n = n, rate = rate, duration = duration)
     end_time <- Sys.time()
     times[4] = times[4] + end_time - start_time
 
+    # Inverse CDF with unif in C++
+    start_time <- Sys.time()
+    rpwexpinvRcpp(n = x_n, rate = rate, duration = duration)
+    end_time <- Sys.time()
+    times[5] = times[5] + end_time - start_time
+
+    # Inverse CDF with unif in Fortran
     start_time <- Sys.time()
     PWEALL::rpwe(n = n, rate = rate, tchange = tchange0)
     end_time <- Sys.time()
-    times[5] = times[5] + end_time - start_time
+    times[6] = times[6] + end_time - start_time
   }
 
-  return (times * 1000 / itr)
+  return (times * 1e6 / itr)
 }
 
 nr_pool <- c(2, 4, 6, 8, 10, 20, 50, 100) # number of time intervals
@@ -512,38 +524,41 @@ n_pool <- c(100, 200, 500, 1000, 1500, 2000, 5000, 10000) # number of observatio
 nr <- 5
 
 # Dataframe for storing timing results
-times_n <- data.frame(matrix(ncol = 6, nrow = length(n_pool)))
+times_n <- data.frame(matrix(ncol = 7, nrow = length(n_pool)))
 colnames(times_n) <- c("n",
                        "rpwexp",
                        "rpwexpRcpp",
-                       "rpwexph",
+                       "rpwexpexp",
                        "rpwexpunif",
+                       "rpwexpinvRcpp",
                        "PWEALL")
 times_n$n <- n_pool
 
 # Benchmark
 for (i in 1:length(n_pool)) {
-  times_n[i, 2:6] <- bm_rpwexp(n_pool[i], nr)
+  times_n[i, 2:7] <- bm_rpwexp(n_pool[i], nr)
 }
 
 # Reshape timing results for plot
 df_times_n <- data.frame(x = times_n$n,
                          y = c(times_n$rpwexp,
                                times_n$rpwexpRcpp,
-                               times_n$rpwexph,
+                               times_n$rpwexpexp,
                                times_n$rpwexpunif,
+                               times_n$rpwexpinvRcpp,
                                times_n$PWEALL),
-                         group = c(rep("rpwexp", nrow(times_n)),
-                                   rep("rpwexpRcpp", nrow(times_n)),
-                                   rep("rpwexph (inverse)", nrow(times_n)),
-                                   rep("rpwexpunif", nrow(times_n)),
-                                   rep("PWEALL", nrow(times_n))))
+                         group = c(rep("Old method in R", nrow(times_n)),
+                                   rep("Old method in C++", nrow(times_n)),
+                                   rep("Inverse CDF with exp(1) in R", nrow(times_n)),
+                                   rep("Inverse CDF with unif in R", nrow(times_n)),
+                                   rep("Inverse CDF with unif in C++", nrow(times_n)),
+                                   rep("Inverse CDF with unif in Fortran", nrow(times_n))))
 ggplot(df_times_n, aes(x, y, col = group)) +
   geom_line() +
   scale_x_log10(breaks = c(100, 200, 500, 1000, 2000, 5000, 10000)) +
   # scale_x_continuous(trans='log10') + 
   scale_y_continuous(trans='log10') + 
-  labs(x = "number of observations to be generated", y = "time (ms)")
+  labs(x = "number of observations to be generated", y = paste0("time (", "\U003BC", "s)"))
 ```
 
 ### Runtime comparison across different number of intervals
@@ -552,18 +567,19 @@ ggplot(df_times_n, aes(x, y, col = group)) +
 n <- 1000
 
 # Dataframe for storing timing results
-times_nr <- data.frame(matrix(ncol = 6, nrow = length(nr_pool)))
+times_nr <- data.frame(matrix(ncol = 7, nrow = length(nr_pool)))
 colnames(times_nr) <- c("n_rates",
                         "rpwexp",
                         "rpwexpRcpp",
                         "rpwexph",
                         "rpwexpunif",
+                        "rpwexpinvRcpp",
                         "PWEALL")
 times_nr$n_rates <- nr_pool
 
 # Benchmark
 for (i in 1:length(nr_pool)) {
-  times_nr[i, 2:6] <- bm_rpwexp(n, nr_pool[i])
+  times_nr[i, 2:7] <- bm_rpwexp(n, nr_pool[i])
 }
 
 # Reshape timing results for plot
@@ -572,16 +588,18 @@ df_times_nr <- data.frame(x = times_nr$n_rates,
                                 times_nr$rpwexpRcpp,
                                 times_nr$rpwexph,
                                 times_nr$rpwexpunif,
+                                times_nr$rpwexpinvRcpp,
                                 times_nr$PWEALL),
-                          group = c(rep("rpwexp", nrow(times_nr)),
-                                    rep("rpwexpRcpp", nrow(times_nr)),
-                                    rep("rpwexph (inverse)", nrow(times_nr)),
-                                    rep("rpwexpunif", nrow(times_nr)),
-                                    rep("PWEALL", nrow(times_nr))))
+                          group = c(rep("Old method in R", nrow(times_n)),
+                                    rep("Old method in C++", nrow(times_n)),
+                                    rep("Inverse CDF with exp(1) in R", nrow(times_n)),
+                                    rep("Inverse CDF with unif in R", nrow(times_n)),
+                                    rep("Inverse CDF with unif in C++", nrow(times_n)),
+                                    rep("Inverse CDF with unif in Fortran", nrow(times_n))))
 ggplot(df_times_nr, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(trans='log10') +
-  labs(x = "number of intervals", y = "time (ms)")
+  labs(x = "number of intervals", y = paste0("time (", "\U003BC", "s)"))
 ```
 
 

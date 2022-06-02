@@ -22,9 +22,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rpwexpinvRcpp
+NumericVector rpwexpinvRcpp(int n, NumericVector rate, NumericVector duration);
+RcppExport SEXP _simtrial_rpwexpinvRcpp(SEXP nSEXP, SEXP rateSEXP, SEXP durationSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type rate(rateSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type duration(durationSEXP);
+    rcpp_result_gen = Rcpp::wrap(rpwexpinvRcpp(n, rate, duration));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_simtrial_rpwexpRcpp", (DL_FUNC) &_simtrial_rpwexpRcpp, 2},
+    {"_simtrial_rpwexpinvRcpp", (DL_FUNC) &_simtrial_rpwexpinvRcpp, 3},
     {NULL, NULL, 0}
 };
 
