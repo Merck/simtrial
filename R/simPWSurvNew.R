@@ -124,8 +124,8 @@ simPWSurvNew <- function(n=100,
     x$dropoutTime <- 0
     for(sr in usr){for(tr in utr){
       indx <- x$Stratum==sr & x$Treatment==tr
-      x$failTime[indx] <- rpwexp(n=sum(indx),failRates=failRates[failRates$Stratum==sr&failRates$Treatment==tr,])
-      x$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=dropoutRates[dropoutRates$Stratum==sr&dropoutRates$Treatment==tr,])
+      x$failTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=failRates[failRates$Stratum==sr&failRates$Treatment==tr,])
+      x$dropoutTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=dropoutRates[dropoutRates$Stratum==sr&dropoutRates$Treatment==tr,])
     }}
     # set calendar time-to-event and failure indicator
     return(x %>% mutate(cte=pmin(dropoutTime,failTime)+enrollTime,

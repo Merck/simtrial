@@ -6,15 +6,14 @@ using namespace Rcpp;
 // #define SIMTRIAL_DEBUG
 
 //' @param n Number of observations to be generated.
-//' @param rate Failure rates during the corresponding interval duration
-//' specified in \code{duration}. The final interval is extended to be infinite
-//' to ensure all observations are generated.
-//' @param duration Duration of time intervals
+//' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
 //' @export
 // [[Rcpp::export]]
 NumericVector rpwexpinvRcpp(int n,
-                            NumericVector rate,
-                            NumericVector duration) {
+                            DataFrame failRates) {
+
+  NumericVector duration = failRates["duration"];
+  NumericVector rate = failRates["rate"];
   int n_rates = duration.size();
 
 #ifdef SIMTRIAL_DEBUG

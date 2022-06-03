@@ -9,12 +9,9 @@ rpwexpRcpp <- function(n, failRates) {
 }
 
 #' @param n Number of observations to be generated.
-#' @param rate Failure rates during the corresponding interval duration
-#' specified in \code{duration}. The final interval is extended to be infinite
-#' to ensure all observations are generated.
-#' @param duration Duration of time intervals
+#' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
 #' @export
-rpwexpinvRcpp <- function(n, rate, duration) {
-    .Call(`_simtrial_rpwexpinvRcpp`, n, rate, duration)
+rpwexpinvRcpp <- function(n, failRates) {
+    .Call(`_simtrial_rpwexpinvRcpp`, n, failRates)
 }
 
