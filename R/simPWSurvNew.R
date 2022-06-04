@@ -138,5 +138,5 @@ generateAllFailTime <- function(x, failRates, asr, atr) {
     return(rpwexpinvRcpp(n = sum(indx),
                          failRates = failRates[findx, ]))
   }
-  mapply(generateFailTime, asr, atr)
+  mapply(generateFailTime, asr, atr, SIMPLIFY = FALSE)
 }
