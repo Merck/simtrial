@@ -1097,4 +1097,67 @@ levels(mbm_simPWSurv$expr) <- c("simPWSurv", "simPWSurvNew")
 mbm_simPWSurv
 ```
 
+# Benchmark Example
+
+## Example 1: Biomarker Positive
+
+```{r}
+# 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
+strata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
+
+block <- c(rep("Control", 2), rep("Experimental", 2))
+
+# enrollment over 1 year, with ramp-up over first 6 months
+enrollRates <- tibble(rate = c(9, 2), duration = c(6, 6))
+
+# failure rate:
+# - biomarker negative: control is exponential with median of 12 months; experimental has HR = 1.2 for 4 months followed by HR=.65
+# - biomarker positive: control is exponential with median of 12 months; experimental has HR = .9 for 4 months followed by HR=.4)
+failRates <- tibble(
+  Stratum = c(rep("Biomarker Negative", 3), rep("Biomarker Positive", 3)),
+  period = c(1, 1:2, 1, 1:2),
+  Treatment = rep(c("Control", rep("Experimental", 2)), 2),
+  duration = c(12, 4, 8, 12, 4, 8), 
+  rate = c(log(2)/12, log(2)/12*1.2, log(2)/12*0.65, log(2)/12, log(2)/12*0.9, log(2)/12*0.4)
+)
+
+# dropout rate
+dropoutRates <- tibble(
+  Stratum = c(rep("Biomarker Negative", 4), rep("Biomarker Positive", 4)),
+  period = rep(1:2, 4),
+  Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
+  duration = rep(c(3, 1), 4),
+  rate = rep(c(.001, .001), 4)
+)
+```
+
+
+```{r}
+set.seed(2022)
+cum_event <- 0
+n_sim <- 3
+ans <- NULL
+
+for (sim in 1:n_sim) {
+   # simulate a stratified time-to-event outcome randomized trial
+   x <- simPWSurv(
+      n = 400,
+      strata = strata,
+      block = block,
+      enrollRates = enrollRates,
+      failRates = failRates,
+      dropoutRates = dropoutRates
+      )
+   
+   # cut data for analysis
+   # analyses would be performed when both populations reach targeted endpoints.
+   y <- cutDataAtCount(x, 150)
+   ten <- tensurv(y, txval = "Experimental")
+   
+   # generate a stratified (weighted) logrank test and a corresponding one-sided p-value
+   ans <- rbind(ans, tenFH(x = ten, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% mutate(pnorm(Z), sim_ID = sim))
+   
+   #cum_event <- cum_event + (y %>% ungroup() %>% summarise(n = sum(event)))$n
+}
+```
 
