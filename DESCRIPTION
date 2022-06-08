@@ -35,12 +35,13 @@ Suggests:
     testthat,
     modestWLRT,
     ggplot2,
-    bshazard, 
+    bshazard,
     markdown,
     survMisc,
     gsDesign,
     stringr,
-    Matrix
+    Matrix,
+    covr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)  
