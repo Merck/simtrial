@@ -72,7 +72,8 @@
 
 
 
-<script src="arbitraryhazard_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Approximating an arbitrary hazard function</h1>
             
@@ -126,12 +127,12 @@
 <span class="co">#&gt; <span style="color: #949494;"># Groups:   Stratum, Treatment [1]</span></span>
 <span class="co">#&gt;     tte event Stratum Treatment   </span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1.50      1 All     Log-logistic</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.922     1 All     Log-logistic</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0.557     1 All     Log-logistic</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0.361     1 All     Log-logistic</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0.452     1 All     Log-logistic</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0.275     1 All     Log-logistic</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1.81      1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.384     1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1.42      1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0.613     1 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0.548     0 All     Log-logistic</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1.96      1 All     Log-logistic</span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
@@ -141,10 +142,8 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html" class="external-link">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>
 <span class="co">#&gt; Iterations: relative error in phi-hat = 1e-04 </span>
-<span class="co">#&gt; phi= 3.708356   sv2= 0.02343357   df= 23.91894   lambda= 158.2498 </span>
-<span class="co">#&gt; phi= 4.314044   sv2= 0.002658997   df= 12.65119   lambda= 1622.433 </span>
-<span class="co">#&gt; phi= 4.713373   sv2= 0.0007227893   df= 7.5622   lambda= 6521.089 </span>
-<span class="co">#&gt; phi= 4.834911   sv2= 0.0004080166   df= 5.657985   lambda= 11849.79</span>
+<span class="co">#&gt; phi= 10.90577   sv2= 0.02703056   df= 23.9313   lambda= 403.4609 </span>
+<span class="co">#&gt; phi= 10.95007   sv2= 0.0009956813   df= 10.29504   lambda= 10997.57</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Time"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.5</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">times</span>, y <span class="op">=</span> <span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Time <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-7-1.png" width="720"></p>
