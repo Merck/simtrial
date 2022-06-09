@@ -1097,9 +1097,18 @@ levels(mbm_simPWSurv$expr) <- c("simPWSurv", "simPWSurvNew")
 mbm_simPWSurv
 ```
 
-# Benchmark Example
+# Benchmark Example for `simfix`
 
 ## Example 1: Biomarker Positive
+
+In this example, we consider
+
+- 2 strata
+- 2 periods in enrollments
+- 4 periods in failure rates of the control arm per stratum
+- 4 periods in failure rates of the experimental arm per stratum
+- 4 periods in dropout rates of the control arm per stratum
+- 4 periods in dropout rates of the experimental arm per stratum
 
 ```{r}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
@@ -1129,35 +1138,108 @@ dropoutRates <- tibble(
   duration = rep(c(3, 1), 4),
   rate = rep(c(.001, .001), 4)
 )
+
+# Create failRatesAll for simfix
+failRatesAll <- failRates[failRates$Treatment == "Experimental", ]
+failRatesAll$dropoutRate <- dropoutRates[dropoutRates$Treatment == "Experimental", ]$rate
+failRatesAll$hr <- c(rep(0.6, 2), rep(0.9, 2))
+failRatesAll <- failRatesAll %>%
+  mutate(failRate = rate/hr) %>%
+  select("Stratum", "duration", "failRate", "hr", "dropoutRate")
+rg <- tibble(rho = 0, gamma = 0)
 ```
 
-
+### One simulation: `simfix`
 ```{r}
-set.seed(2022)
-cum_event <- 0
-n_sim <- 3
-ans <- NULL
+ex_simfix1 <- microbenchmark(
+  simfix(
+    nsim = 1, # Number of simulations
+    sampleSize = 1000, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    strata = strata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  ),
+  simfixNew(
+    nsim = 1, # Number of simulations
+    sampleSize = 1000, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    strata = strata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  ),
+  times = 10
+)
+levels(ex_simfix1$expr) <- c("simfix", "simfixNew")
+ex_simfix1
+```
 
-for (sim in 1:n_sim) {
-   # simulate a stratified time-to-event outcome randomized trial
-   x <- simPWSurv(
-      n = 400,
-      strata = strata,
-      block = block,
-      enrollRates = enrollRates,
-      failRates = failRates,
-      dropoutRates = dropoutRates
-      )
-   
-   # cut data for analysis
-   # analyses would be performed when both populations reach targeted endpoints.
-   y <- cutDataAtCount(x, 150)
-   ten <- tensurv(y, txval = "Experimental")
-   
-   # generate a stratified (weighted) logrank test and a corresponding one-sided p-value
-   ans <- rbind(ans, tenFH(x = ten, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% mutate(pnorm(Z), sim_ID = sim))
-   
-   #cum_event <- cum_event + (y %>% ungroup() %>% summarise(n = sum(event)))$n
-}
+### One simulation: `simPWSurv`
+```{r}
+sampleSize = 1000 # Trial sample size
+
+# put failure rates into simPWSurv format
+xx <- simfix2simPWSurv(failRatesAll)
+fr <- xx$failRates
+dr <- xx$dropoutRates
+
+ex_simPWSurv <- microbenchmark(
+  simPWSurv(n = sampleSize,
+            strata = strata,
+            enrollRates = enrollRates,
+            failRates = fr,
+            dropoutRates = dr,
+            block = block),
+  simPWSurvNew(n = sampleSize,
+               strata = strata,
+               enrollRates = enrollRates,
+               failRates = fr,
+               dropoutRates = dr,
+               block = block),
+  times = 100
+)
+levels(ex_simPWSurv$expr) <- c("simPWSurv", "simPWSurvNew")
+ex_simPWSurv
+```
+
+### One hundred simulations
+```{r}
+system.time(
+    simfix(
+    nsim = 100, # Number of simulations
+    sampleSize = 1000, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    strata = strata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+)
+
+system.time(
+  simfixNew(
+    nsim = 100, # Number of simulations
+    sampleSize = 1000, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    strata = strata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+)
 ```
 
