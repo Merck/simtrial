@@ -611,7 +611,7 @@ rpwexpunif <- function(n, rate, duration){
   return (y)
 }
 
-# simulate failRates
+# Simulate failRates
 n_rates <- 10
 duration <- floor(runif(n_rates, 1, 5))
 rate <- runif(n_rates, 0.0005, 0.095)
@@ -622,9 +622,15 @@ tchange0 <- c(0, tchange1)[1:(length(duration-1))]
 
 # Expect the same results
 set.seed(2)
-PWEALL::rpwe(n = 10, rate = rate, tchange = tchange0)
+s1 <- PWEALL::rpwe(n = 10, rate = rate, tchange = tchange0)
 set.seed(2)
-rpwexpunif(n = 10, rate = rate, duration = duration)
+s2 <- rpwexpunif(n = 10, rate = rate, duration = duration)
+set.seed(2)
+s3 <- simtrial::rpwexpinvRcpp(n = 10, failRates = data.frame(duration = duration,
+                                                             rate = rate))
+
+all.equal(s1$r, s2)
+all.equal(s2, s3)
 ```
 
 ## Benchmark different methods for generating piecewise Exponential random numbers

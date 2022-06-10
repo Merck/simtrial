@@ -2,7 +2,6 @@
 #include <random>
 using namespace Rcpp;
 
-// #define SIMTRIAL_DEBUG
 
 //' @param n Number of observations to be generated.
 //' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
@@ -16,13 +15,6 @@ NumericVector rpwexpRcpp(int n,
 
   // Initialize failure times to Inf
   NumericVector times(n, R_PosInf);
-
-#ifdef SIMTRIAL_DEBUG
-  // Set seed for comparison
-  Environment base_env("package:base");
-  Function set_seed_r = base_env["set.seed"];
-  set_seed_r(2022);
-#endif
 
   if (n_rates == 1) {
     if (rate[0] != 0) {
