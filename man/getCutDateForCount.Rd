@@ -22,17 +22,17 @@ Get Date at Which an Event Count is Reached
 library(dplyr)
 # Use default enrollment and calendar cut date for 50 events in Positive stratum
 x <- simPWSurv(n=200,
-               strata = tibble::tibble(Stratum=c("Positive","Negative"), p = c(.5, .5)),
+               enrollStrata = tibble::tibble(Stratum=c("Positive","Negative"), p = c(.5, .5)),
                failRates = tibble::tibble(Stratum = rep(c("Positive","Negative"),2),
                                           period = rep(1, 4),
-                                          Treatment = c(rep("Control", 2), 
+                                          Treatment = c(rep("Control", 2),
                                                         rep("Experimental", 2)),
                                           duration = rep(1, 4),
                                           rate = log(2) / c(6, 9, 9, 12)
                                           ),
                dropoutRates = tibble::tibble(Stratum = rep(c("Positive","Negative"),2),
                                              period = rep(1, 4),
-                                             Treatment = c(rep("Control", 2), 
+                                             Treatment = c(rep("Control", 2),
                                                            rep("Experimental", 2)),
                                              duration = rep(1, 4),
                                              rate = rep(.001, 4)

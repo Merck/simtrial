@@ -29,7 +29,8 @@ Imports:
     tidyr,
     survival,
     mvtnorm,
-    Rcpp
+    Rcpp,
+    foreach
 Suggests: 
     knitr,
     rmarkdown,

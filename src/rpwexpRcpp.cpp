@@ -2,7 +2,8 @@
 #include <random>
 using namespace Rcpp;
 
-
+//' The Piecewise Exponential Distribution in C++
+//'
 //' @param n Number of observations to be generated.
 //' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
 //' @export

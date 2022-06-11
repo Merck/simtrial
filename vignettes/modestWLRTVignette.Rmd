@@ -69,7 +69,7 @@ set.seed(7783)
 xpar <- simfix2simPWSurv(failRates)
 MBdelay <- simPWSurv(
   n = sampleSize,
-  strata = tibble::tibble(Stratum = "All", p = 1),
+  enrollStrata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
   enrollRates = enrollRates,
   failRates = xpar$failRates,
@@ -176,7 +176,7 @@ set.seed(7783)
 xpar <- simfix2simPWSurv(failRates)
 FHwn <- simPWSurv(
   n = sampleSize,
-  strata = tibble::tibble(Stratum = "All", p = 1),
+  enrollStrata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
   enrollRates = enrollRates,
   failRates = xpar$failRates,

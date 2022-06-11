@@ -1086,13 +1086,13 @@ In this example, `mapply` is 3 times faster than the nested for loop.
 set.seed(2022)
 mbm_simPWSurv <- microbenchmark(
   simPWSurv(n = 1000, 
-            strata = strata,
+            enrollStrata = strata,
             block = block,
             enrollRates = enrollRates,
             failRates = failRates,
             dropoutRates = dropoutRates),
   simPWSurvNew(n = 1000, 
-               strata = strata,
+               enrollStrata = strata,
                block = block,
                enrollRates = enrollRates,
                failRates = failRates,
@@ -1162,7 +1162,7 @@ ex_simfix1 <- microbenchmark(
     nsim = 1, # Number of simulations
     sampleSize = 1000, # Trial sample size
     targetEvents = 350, # Targeted events at analysis
-    strata = strata, # Study strata
+    enrollStrata = strata, # Study strata
     enrollRates = enrollRates, # Enrollment rates
     failRates = failRatesAll, # Failure rates
     totalDuration = 30, # Planned trial duration
@@ -1199,13 +1199,13 @@ dr <- xx$dropoutRates
 
 ex_simPWSurv <- microbenchmark(
   simPWSurv(n = sampleSize,
-            strata = strata,
+            enrollStrata = strata,
             enrollRates = enrollRates,
             failRates = fr,
             dropoutRates = dr,
             block = block),
   simPWSurvNew(n = sampleSize,
-               strata = strata,
+               enrollStrata = strata,
                enrollRates = enrollRates,
                failRates = fr,
                dropoutRates = dr,
@@ -1219,11 +1219,11 @@ ex_simPWSurv
 ### One hundred simulations
 ```{r}
 system.time(
-    simfix(
+simfix(
     nsim = 100, # Number of simulations
     sampleSize = 1000, # Trial sample size
     targetEvents = 350, # Targeted events at analysis
-    strata = strata, # Study strata
+    enrollStrata = strata, # Study strata
     enrollRates = enrollRates, # Enrollment rates
     failRates = failRatesAll, # Failure rates
     totalDuration = 30, # Planned trial duration

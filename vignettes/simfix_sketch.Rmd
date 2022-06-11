@@ -26,6 +26,7 @@ library(bench)
 library(microbenchmark)
 library(PWEALL)
 library(parallel)
+library(doParallel)
 devtools::load_all()
 ```
 
@@ -42,7 +43,7 @@ In this example, we consider
 
 ```{r}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
-strata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
+enrollStrata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
@@ -79,29 +80,25 @@ failRatesAll <- failRatesAll %>%
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
-# 10000 simulations
+# Parallel Computing using `foreach` 
 ```{r}
-system.time(
-    simfix(
-    nsim = 10000, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
-    strata = strata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
-  )
-)
+detectCores()
+```
 
-system.time(
-  simfixNew(
-    nsim = 10000, # Number of simulations
+
+## 10000 simulations
+```{r}
+nsim = 1000
+
+# In series
+registerDoParallel(1)
+getDoParWorkers()
+system.time({
+  s1 <- simfix(
+    nsim = nsim, # Number of simulations
     sampleSize = 800, # Trial sample size
     targetEvents = 350, # Targeted events at analysis
-    strata = strata, # Study strata
+    enrollStrata = enrollStrata, # Study strata
     enrollRates = enrollRates, # Enrollment rates
     failRates = failRatesAll, # Failure rates
     totalDuration = 30, # Planned trial duration
@@ -109,5 +106,83 @@ system.time(
     timingType = 1:5, # Use all possible data cutoff methods
     rg = rg # FH test(s) to use; in this case, logrank
   )
-)
+})
+
+# In parallel with 2 cores
+registerDoParallel(2)
+getDoParWorkers()
+system.time({
+  s2 <- simfix(
+    nsim = nsim, # Number of simulations
+    sampleSize = 800, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    enrollStrata = enrollStrata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+})
+identical(s1, s2)
+
+# In parallel with 4 cores
+registerDoParallel(4)
+getDoParWorkers()
+system.time({
+  s4 <- simfix(
+    nsim = nsim, # Number of simulations
+    sampleSize = 800, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    enrollStrata = enrollStrata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+})
+identical(s1, s4)
+
+# In parallel with 6 cores
+registerDoParallel(6)
+getDoParWorkers()
+set.seed(2022)
+system.time({
+  s6 <- simfix(
+    nsim = nsim, # Number of simulations
+    sampleSize = 800, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    enrollStrata = enrollStrata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+})
+identical(s1, s6)
+
+# In parallel with 8 cores
+registerDoParallel(8)
+getDoParWorkers()
+set.seed(2022)
+system.time({
+  s8 <- simfix(
+    nsim = nsim, # Number of simulations
+    sampleSize = 800, # Trial sample size
+    targetEvents = 350, # Targeted events at analysis
+    enrollStrata = enrollStrata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = 30, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = 1:5, # Use all possible data cutoff methods
+    rg = rg # FH test(s) to use; in this case, logrank
+  )
+})
+identical(s1, s8)
 ```

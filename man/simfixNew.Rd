@@ -8,7 +8,7 @@ simfixNew(
   nsim = 1000,
   sampleSize = 500,
   targetEvents = 350,
-  strata = tibble::tibble(Stratum = "All", p = 1),
+  enrollStrata = tibble::tibble(Stratum = "All", p = 1),
   enrollRates = tibble::tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
   failRates = tibble::tibble(Stratum = "All", duration = c(3, 100), failRate =
     log(2)/c(9, 18), hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
@@ -25,10 +25,10 @@ simfixNew(
 
 \item{targetEvents}{Targeted event count for analysis.}
 
-\item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
+\item{enrollStrata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
 
 \item{enrollRates}{Piecewise constant enrollment rates by time period.
-Note that these are overall population enrollment rates and the \code{strata} argument controls the
+Note that these are overall population enrollment rates and the \code{enrollStrata} argument controls the
 random distribution between strata.}
 
 \item{failRates}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,

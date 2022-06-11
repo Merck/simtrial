@@ -18,6 +18,7 @@
 #' @import dplyr
 #' @import tibble
 #' @import survival
+#' @import foreach
 NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
@@ -27,9 +28,9 @@ NULL
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
 #' @param targetEvents Targeted event count for analysis.
-#' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
+#' @param enrollStrata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
 #' @param enrollRates Piecewise constant enrollment rates by time period.
-#' Note that these are overall population enrollment rates and the `strata` argument controls the
+#' Note that these are overall population enrollment rates and the `enrollStrata` argument controls the
 #' random distribution between strata.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
@@ -76,7 +77,7 @@ simfix <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
-                   strata = tibble::tibble(Stratum = "All", p = 1),
+                   enrollStrata = tibble::tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
                    enrollRates=tibble::tibble(duration=c(2,2,10),
                                               rate=c(3,6,9)),
@@ -103,7 +104,7 @@ simfix <- function(nsim=1000,
   if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix()` must contain failRate")}
   if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix()` must contain hr")}
   if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix()` must contain dropoutRate")}
-  
+
   # check input trial durations
   if(!is.numeric(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
   if(!is.vector(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
@@ -111,8 +112,8 @@ simfix <- function(nsim=1000,
   if(!min(totalDuration) > 0){stop("totalDuration in `simfix()` must be a single positive number")}
 
   strata2 <- names(table(failRates$Stratum))
-  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
-  for(s in strata$Stratum){ 
+  if(nrow(enrollStrata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+  for(s in enrollStrata$Stratum){
     if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
   }
 
@@ -122,11 +123,11 @@ simfix <- function(nsim=1000,
 
   if(!targetEvents > 0){stop("targetEvents in `simfix()` must be positive")}
   if(length(targetEvents) != 1){stop(("targetEvents in `simfix()` must be positive"))}
-  
+
   if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
   if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
-  
-  nstrata <- nrow(strata)
+
+  nstrata <- nrow(enrollStrata)
   doAnalysis <- function(d,rg,nstrata){
     if (nrow(rg)==1){Z = tibble::tibble(Z=(d %>%
                                            simtrial::tensurv(txval="Experimental") %>%
@@ -155,9 +156,17 @@ simfix <- function(nsim=1000,
   fr <- xx$failRates
   dr <- xx$dropoutRates
   results <- NULL
-  for(i in 1:nsim){
+
+  # parallel
+  `%op%` <- get_operator()
+  results <- foreach::foreach(
+    i = seq_len(nsim),
+    .combine = "rbind",
+    .errorhandling = "pass"
+  ) %op% {
+    # set.seed(2022 + i - 1) // TODO make it optional
     sim <- simtrial::simPWSurv(n = sampleSize,
-                               strata = strata,
+                               enrollStrata = enrollStrata,
                                enrollRates = enrollRates,
                                failRates = fr,
                                dropoutRates = dr,
@@ -213,7 +222,18 @@ simfix <- function(nsim=1000,
         addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
       }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
     }
-    results <- rbind(results, addit %>% mutate(Sim=i))
+    addit %>% mutate(Sim=i)
   }
   results
+}
+
+# Get operator (parallel or serial)
+get_operator <- function() {
+  is_par <- foreach::getDoParWorkers() > 1
+  if (is_par) {
+    res <- foreach::`%dopar%`
+  } else {
+    res <- foreach::`%do%`
+  }
+  res
 }
