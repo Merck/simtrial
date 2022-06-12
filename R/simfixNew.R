@@ -155,7 +155,15 @@ simfixNew <- function(nsim=1000,
   fr <- xx$failRates
   dr <- xx$dropoutRates
   results <- NULL
-  for(i in 1:nsim){
+
+  # parallel
+  `%op%` <- get_operator()
+  results <- foreach::foreach(
+    i = seq_len(nsim),
+    .combine = "rbind",
+    .errorhandling = "pass"
+  ) %op% {
+    set.seed(2022 + i - 1) # TODO make it optional
     sim <- simtrial::simPWSurvNew(n = sampleSize,
                                enrollStrata = enrollStrata,
                                enrollRates = enrollRates,
@@ -213,7 +221,19 @@ simfixNew <- function(nsim=1000,
         addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
       }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
     }
-    results <- rbind(results, addit %>% mutate(Sim=i))
+    addit %>% mutate(Sim=i)
   }
   results
+}
+
+# Get operator (parallel or serial)
+get_operator <- function() {
+  is_par <- foreach::getDoParWorkers() > 1
+  if (is_par) {
+    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
+    res <- foreach::`%dopar%`
+  } else {
+    res <- foreach::`%do%`
+  }
+  res
 }

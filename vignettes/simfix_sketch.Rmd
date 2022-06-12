@@ -85,104 +85,124 @@ rg <- tibble(rho = 0, gamma = 0)
 detectCores()
 ```
 
-
-## 10000 simulations
 ```{r}
-nsim = 1000
+# Functions for run simfix and simfixNew in serial and in parallel
 
-# In series
-registerDoParallel(1)
-getDoParWorkers()
-system.time({
-  s1 <- simfix(
+runSimfix <- function(nsim = 1000, # Number of simulations
+                      sampleSize = 800, # Trial sample size
+                      targetEvents = 350, # Targeted events at analysis
+                      totalDuration = 30, # Planned trial duration
+                      timingType = 1:5 # Use all possible data cutoff methods
+                      ) {
+  times <- rep(0, 5)
+  cores <- c(1, 2, 4, 6, 8)
+
+  # In serial
+  registerDoParallel(1)
+  start <- Sys.time()
+  s <- simfix(
     nsim = nsim, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
+    sampleSize = sampleSize, # Trial sample size
+    targetEvents = targetEvents, # Targeted events at analysis
     enrollStrata = enrollStrata, # Study strata
     enrollRates = enrollRates, # Enrollment rates
     failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
+    totalDuration = totalDuration, # Planned trial duration
     block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
+    timingType = timingType, # Use all possible data cutoff methods
     rg = rg # FH test(s) to use; in this case, logrank
   )
-})
+  times[1] <- Sys.time() - start
+  
+  # In parallel
+  for (i in 2:length(cores)) {
+    registerDoParallel(cores[i])
+    start <- Sys.time()
+    sp <- simfix(
+      nsim = nsim, # Number of simulations
+      sampleSize = sampleSize, # Trial sample size
+      targetEvents = targetEvents, # Targeted events at analysis
+      enrollStrata = enrollStrata, # Study strata
+      enrollRates = enrollRates, # Enrollment rates
+      failRates = failRatesAll, # Failure rates
+      totalDuration = totalDuration, # Planned trial duration
+      block = block, # Block for treatment
+      timingType = timingType, # Use all possible data cutoff methods
+      rg = rg # FH test(s) to use; in this case, logrank
+    )
+    times[i] <- Sys.time() - start
+    message("Results are identical: ", identical(s, sp))
+  }
 
-# In parallel with 2 cores
-registerDoParallel(2)
-getDoParWorkers()
-system.time({
-  s2 <- simfix(
+  return (times)
+}
+
+runSimfixNew <- function(nsim = 1000, # Number of simulations
+                         sampleSize = 800, # Trial sample size
+                         targetEvents = 350, # Targeted events at analysis
+                         totalDuration = 30, # Planned trial duration
+                         timingType = 1:5 # Use all possible data cutoff methods
+                         ) {
+  times <- rep(0, 5)
+  cores <- c(1, 2, 4, 6, 8)
+
+  # In serial
+  registerDoParallel(1)
+  start <- Sys.time()
+  s <- simfixNew(
     nsim = nsim, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
+    sampleSize = sampleSize, # Trial sample size
+    targetEvents = targetEvents, # Targeted events at analysis
     enrollStrata = enrollStrata, # Study strata
     enrollRates = enrollRates, # Enrollment rates
     failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
+    totalDuration = totalDuration, # Planned trial duration
     block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
+    timingType = timingType, # Use all possible data cutoff methods
     rg = rg # FH test(s) to use; in this case, logrank
   )
-})
-identical(s1, s2)
+  times[1] <- Sys.time() - start
+  
+  # In parallel
+  for (i in 2:length(cores)) {
+    registerDoParallel(cores[i])
+    start <- Sys.time()
+    sp <- simfixNew(
+      nsim = nsim, # Number of simulations
+      sampleSize = sampleSize, # Trial sample size
+      targetEvents = targetEvents, # Targeted events at analysis
+      enrollStrata = enrollStrata, # Study strata
+      enrollRates = enrollRates, # Enrollment rates
+      failRates = failRatesAll, # Failure rates
+      totalDuration = totalDuration, # Planned trial duration
+      block = block, # Block for treatment
+      timingType = timingType, # Use all possible data cutoff methods
+      rg = rg # FH test(s) to use; in this case, logrank
+    )
+    times[i] <- Sys.time() - start
+    message("Results are identical: ", identical(s, sp))
+  }
 
-# In parallel with 4 cores
-registerDoParallel(4)
-getDoParWorkers()
-system.time({
-  s4 <- simfix(
-    nsim = nsim, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
-    enrollStrata = enrollStrata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
-  )
-})
-identical(s1, s4)
-
-# In parallel with 6 cores
-registerDoParallel(6)
-getDoParWorkers()
-set.seed(2022)
-system.time({
-  s6 <- simfix(
-    nsim = nsim, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
-    enrollStrata = enrollStrata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
-  )
-})
-identical(s1, s6)
-
-# In parallel with 8 cores
-registerDoParallel(8)
-getDoParWorkers()
-set.seed(2022)
-system.time({
-  s8 <- simfix(
-    nsim = nsim, # Number of simulations
-    sampleSize = 800, # Trial sample size
-    targetEvents = 350, # Targeted events at analysis
-    enrollStrata = enrollStrata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = 30, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = 1:5, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
-  )
-})
-identical(s1, s8)
+  return (times)
+}
 ```
+
+## 1000 simulations
+```{r}
+n_sim <- 1000
+cores <- c(1, 2, 4, 6, 8)
+times_1000 <- runSimfix(nsim = n_sim)
+times_1000_new <- runSimfixNew(nsim = n_sim)
+
+# Reshape timing results for plot
+df_times_1000 <- data.frame(x = cores,
+                            y = c(times_1000,
+                                  times_1000_new),
+                            group = c(rep("simfix", length(cores)),
+                                      rep("simfixNew", length(cores))))
+ggplot(df_times_1000, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_continuous(breaks = cores) +
+  labs(x = "cores", y = paste0("time (min)"))
+```
+

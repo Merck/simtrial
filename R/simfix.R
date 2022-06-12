@@ -164,7 +164,7 @@ simfix <- function(nsim=1000,
     .combine = "rbind",
     .errorhandling = "pass"
   ) %op% {
-    # set.seed(2022 + i - 1) // TODO make it optional
+    # set.seed(2022 + i - 1) # TODO make it optional
     sim <- simtrial::simPWSurv(n = sampleSize,
                                enrollStrata = enrollStrata,
                                enrollRates = enrollRates,
@@ -231,6 +231,7 @@ simfix <- function(nsim=1000,
 get_operator <- function() {
   is_par <- foreach::getDoParWorkers() > 1
   if (is_par) {
+    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
     res <- foreach::`%dopar%`
   } else {
     res <- foreach::`%do%`
