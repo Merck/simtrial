@@ -91,7 +91,8 @@ simfixNew <- function(nsim=1000,
                    timingType=1:5, # select desired cutoffs for analysis (default is all types)
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
-                   rg=tibble::tibble(rho=0,gamma=0)
+                   rg=tibble::tibble(rho=0,gamma=0),
+                   setSeed = FALSE
 ){# check input values
   # check input enrollment rate assumptions
   if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
@@ -163,7 +164,7 @@ simfixNew <- function(nsim=1000,
     .combine = "rbind",
     .errorhandling = "pass"
   ) %op% {
-    set.seed(2022 + i - 1) # TODO make it optional
+    if (setSeed) set.seed(2022 + i - 1) # TODO make it optional
     sim <- simtrial::simPWSurvNew(n = sampleSize,
                                enrollStrata = enrollStrata,
                                enrollRates = enrollRates,

@@ -110,7 +110,6 @@ simPWSurvNew <- function(n=100,
                                               duration=rep(100,2),
                                               rate=rep(.001,2))
                       ){
-    set.seed(2022)
 # start tibble by generating strata and enrollment times
     #return(
     x<-  tibble::tibble(Stratum=sample(x=enrollStrata$Stratum,size=n,replace=TRUE,prob=enrollStrata$p)) %>%

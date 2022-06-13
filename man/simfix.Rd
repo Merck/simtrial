@@ -15,7 +15,8 @@ simfix(
   totalDuration = 30,
   block = rep(c("Experimental", "Control"), 2),
   timingType = 1:5,
-  rg = tibble::tibble(rho = 0, gamma = 0)
+  rg = tibble::tibble(rho = 0, gamma = 0),
+  setSeed = FALSE
 )
 }
 \arguments{

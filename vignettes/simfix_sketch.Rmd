@@ -41,7 +41,7 @@ In this example, we consider
 - 4 periods in dropout rates of the control arm per stratum
 - 4 periods in dropout rates of the experimental arm per stratum
 
-```{r}
+```{r data}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
 enrollStrata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
 
@@ -81,11 +81,11 @@ rg <- tibble(rho = 0, gamma = 0)
 ```
 
 # Parallel Computing using `foreach` 
-```{r}
+```{r detectCores}
 detectCores()
 ```
 
-```{r}
+```{r runSimfix}
 # Functions for run simfix and simfixNew in serial and in parallel
 
 runSimfix <- function(nsim = 1000, # Number of simulations
@@ -110,7 +110,8 @@ runSimfix <- function(nsim = 1000, # Number of simulations
     totalDuration = totalDuration, # Planned trial duration
     block = block, # Block for treatment
     timingType = timingType, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
+    rg = rg, # FH test(s) to use; in this case, logrank
+    setSeed = TRUE
   )
   times[1] <- Sys.time() - start
   
@@ -128,7 +129,8 @@ runSimfix <- function(nsim = 1000, # Number of simulations
       totalDuration = totalDuration, # Planned trial duration
       block = block, # Block for treatment
       timingType = timingType, # Use all possible data cutoff methods
-      rg = rg # FH test(s) to use; in this case, logrank
+      rg = rg, # FH test(s) to use; in this case, logrank
+      setSeed = TRUE
     )
     times[i] <- Sys.time() - start
     message("Results are identical: ", identical(s, sp))
@@ -159,7 +161,8 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
     totalDuration = totalDuration, # Planned trial duration
     block = block, # Block for treatment
     timingType = timingType, # Use all possible data cutoff methods
-    rg = rg # FH test(s) to use; in this case, logrank
+    rg = rg, # FH test(s) to use; in this case, logrank
+    setSeed = TRUE
   )
   times[1] <- Sys.time() - start
   
@@ -177,7 +180,8 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
       totalDuration = totalDuration, # Planned trial duration
       block = block, # Block for treatment
       timingType = timingType, # Use all possible data cutoff methods
-      rg = rg # FH test(s) to use; in this case, logrank
+      rg = rg, # FH test(s) to use; in this case, logrank
+      setSeed = TRUE
     )
     times[i] <- Sys.time() - start
     message("Results are identical: ", identical(s, sp))
@@ -187,22 +191,51 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
 }
 ```
 
-## 1000 simulations
-```{r}
-n_sim <- 1000
+## 100 simulations
+```{r 100sims}
+n_sim <- 100
 cores <- c(1, 2, 4, 6, 8)
-times_1000 <- runSimfix(nsim = n_sim)
-times_1000_new <- runSimfixNew(nsim = n_sim)
+
+times_100 <- runSimfix(nsim = n_sim)
+times_100_new <- runSimfixNew(nsim = n_sim)
 
 # Reshape timing results for plot
-df_times_1000 <- data.frame(x = cores,
-                            y = c(times_1000,
-                                  times_1000_new),
-                            group = c(rep("simfix", length(cores)),
-                                      rep("simfixNew", length(cores))))
-ggplot(df_times_1000, aes(x, y, col = group)) +
+df_times_100 <- data.frame(x = cores,
+                           y = c(times_100,
+                                 times_100_new),
+                           group = c(rep("simfix", length(cores)),
+                                     rep("simfixNew", length(cores))))
+ggplot(df_times_100, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_continuous(breaks = cores) +
+  labs(x = "cores", y = paste0("time (sec)"))
+
+# Table
+kable(t(data.frame(cores = as.character(cores),
+                   simfix = times_100,
+                   simfixNew = times_100_new)))
+```
+
+## 10000 simulations
+```{r 10000sims, cache = TRUE}
+n_sim <- 10000
+cores <- c(1, 2, 4, 6, 8)
+times_10000_new <- runSimfixNew(nsim = n_sim)
+times_10000 <- runSimfix(nsim = n_sim)
+
+# Reshape timing results for plot
+df_times_10000 <- data.frame(x = cores,
+                             y = c(times_10000,
+                                   times_10000_new),
+                             group = c(rep("simfix", length(cores)),
+                                       rep("simfixNew", length(cores))))
+ggplot(df_times_10000, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(breaks = cores) +
   labs(x = "cores", y = paste0("time (min)"))
-```
 
+# Table
+kable(t(data.frame(cores = as.character(cores),
+                   simfix = times_10000,
+                   simfixNew = times_10000_new)))
+```
