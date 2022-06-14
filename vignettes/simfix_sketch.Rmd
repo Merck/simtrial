@@ -242,7 +242,9 @@ kable(t(data.frame(cores = as.character(cores),
 ```
 
 
-# Profile one simulation
+# Optimize one simulation
+
+## Profile one simulation
 ```{r}
 sampleSize = 800
 targetEvents = 350
@@ -396,9 +398,9 @@ kable(data.frame(eval = c("simPWSurvNew",
                  time = times_iter/n_iter,
                  percent = round(times_iter / sum(times_iter) * 100, 2)))
 ```
-Overall `doAnalysis` take $70\%$ of the runtime in one simulation, but notice that `doAnalysis` is called 3 times in this example.
+Overall `doAnalysis` take $70\%$ of the runtime in one simulation.
 
-## `doAnalysis`
+### `doAnalysis`
 ```{r}
 d = d1
 
@@ -449,4 +451,9 @@ kable(data.frame(eval = c("tensurv",
 ```
 Further benchmark `doAnalysis`, we can see `tensurv` is the most time-consuming part.
 
-Both `tensurv` and `cutData` take $12\%$ to $20\%$ of the runtime in one simulation, but `tensurv` may be called multiple times (3 times in this example).
+Overall, the following functions take more than $10\%$ of the runtime in one simulation:
+
+- `tensurv`. A single call of `tensurv` takes ~$20\%$ of the runtime in one simulation, but `tensurv` may be called multiple times (3 times in this example) in one simulation.
+- `simPWSurvNew`. ~$10\%$. Only will be called once in one simulation.
+- `cutData`. A single call of `cutData` takes ~$4\%$ of the runtime in one simulation, but `cutData` may be called multiple times (3 times in this example) in one simulation.
+
