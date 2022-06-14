@@ -80,6 +80,7 @@ failRatesAll <- failRatesAll %>%
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
+
 # Parallel Computing using `foreach` 
 ```{r detectCores}
 detectCores()
@@ -217,7 +218,7 @@ kable(t(data.frame(cores = as.character(cores),
 ```
 
 ## 10000 simulations
-```{r 10000sims, cache = TRUE}
+```{r 10000sims, cache = TRUE, eval = FALSE}
 n_sim <- 10000
 cores <- c(1, 2, 4, 6, 8)
 times_10000_new <- runSimfixNew(nsim = n_sim)
@@ -239,3 +240,213 @@ kable(t(data.frame(cores = as.character(cores),
                    simfix = times_10000,
                    simfixNew = times_10000_new)))
 ```
+
+
+# Profile one simulation
+```{r}
+sampleSize = 800
+targetEvents = 350
+totalDuration = 30
+timingType = 1:5
+
+nstrata <- nrow(enrollStrata)
+doAnalysis <- function(d,rg,nstrata){
+  if (nrow(rg)==1) {
+    Z = tibble::tibble(Z=(d %>%
+                            simtrial::tensurv(txval="Experimental") %>%
+                            simtrial::tenFH(rg=rg))$Z)
+  } else {
+    Z = d %>%
+      simtrial::tensurv(txval="Experimental") %>%
+      simtrial::tenFHcorr(rg=rg,corr=TRUE)
+  }
+    r <- cbind(tibble::tibble(Events = sum(d$event),
+                              lnhr = as.numeric(ifelse(nstrata>1,
+                                                       survival::coxph(survival::Surv(tte,event)~
+                                                                         (Treatment=="Experimental")+
+                                                     survival::strata(Stratum),data=d)$coefficients,
+                                   survival::coxph(survival::Surv(tte,event)~
+                                                     (Treatment=="Experimental"),data=d)$coefficients))
+                           ),
+               Z
+    )
+  r
+}
+
+# compute minimum planned follow-up time
+minFollow <- max(0,totalDuration - sum(enrollRates$duration))
+# put failure rates into simPWSurv format
+xx <- simfix2simPWSurv(failRatesAll)
+fr <- xx$failRates
+dr <- xx$dropoutRates
+
+# Benchmark
+n_iter = 20
+times_iter <- rep(0, 6)
+for (i in 1:n_iter) {
+  set.seed(2022)
+
+  # simPWSurvNew
+  s1 <- Sys.time()
+  sim <- simtrial::simPWSurvNew(n = sampleSize,
+                               enrollStrata = enrollStrata,
+                               enrollRates = enrollRates,
+                               failRates = fr,
+                               dropoutRates = dr,
+                               block = block)
+  times_iter[1] = times_iter[1] + Sys.time() - s1
+
+  # getCutDateForCount
+  s2 <- Sys.time()
+  # study date that targeted event rate achieved
+  tedate <- sim %>% getCutDateForCount(targetEvents)
+  times_iter[2] = times_iter[2] + Sys.time() - s2
+
+  # Compute tests
+  s3 <- Sys.time()
+  # study data that targeted minimum follow-up achieved
+  tmfdate <- max(sim$enrollTime) + minFollow
+  # Compute tests for all specified cutoff options
+  r1 <- NULL ; r2 <- NULL; r3 <- NULL;
+  tests <- rep(FALSE,3)
+  ## Total planned trial duration or max of this and targeted events
+  if (max(1 == timingType)) tests[1] <- TRUE # planned duration cutoff
+  if (max(2 == timingType)) tests[2] <- TRUE # targeted events cutoff
+  if (max(3 == timingType)) tests[3] <- TRUE # minimum follow-up duration target
+  if (max(4 == timingType)){ # max of planned duration, targeted events
+    if (tedate > totalDuration){
+      tests[2] <- TRUE
+    }else tests[1] <- TRUE
+  }
+  if (max(5 == timingType)){ # max of minimum follow-up, targeted events
+    if (tedate > tmfdate){
+      tests[2] <- TRUE
+    }else tests[3] <- TRUE
+  }
+  times_iter[3] = times_iter[3] + Sys.time() - s3
+
+  # cutData
+  s4 <- Sys.time()
+    if (tests[1]){ # Total duration cutoff
+      d1 <- sim %>% cutData(totalDuration)
+      # r1 <- d %>% doAnalysis(rg,nstrata)
+    }
+    if (tests[2]){ # targeted events cutoff
+      d2 <- sim %>% cutData(tedate)
+      # r2 <- d %>% doAnalysis(rg,nstrata)
+    }
+    if (tests[3]){ # minimum follow-up cutoff
+      d3 <- sim %>% cutData(tmfdate)
+      # r3 <- d %>% doAnalysis(rg,nstrata)
+    }
+  times_iter[4] = times_iter[4] + Sys.time() - s4
+
+  # doAnalysis
+  s5 <- Sys.time()
+    if (tests[1]){ # Total duration cutoff
+      # d <- sim %>% cutData(totalDuration)
+      r1 <- d1 %>% doAnalysis(rg,nstrata)
+    }
+    if (tests[2]){ # targeted events cutoff
+      # d <- sim %>% cutData(tedate)
+      r2 <- d2 %>% doAnalysis(rg,nstrata)
+    }
+    if (tests[3]){ # minimum follow-up cutoff
+      # d <- sim %>% cutData(tmfdate)
+      r3 <- d3 %>% doAnalysis(rg,nstrata)
+    }
+  times_iter[5] = times_iter[5] + Sys.time() - s5
+
+  # Compute addit
+  s6 <- Sys.time()
+    addit <- NULL
+    # planned duration cutoff
+    if (max(1 == timingType)) addit <- rbind(addit,
+                                             r1 %>% mutate(cut="Planned duration",Duration=totalDuration))
+    # targeted events cutoff
+    if (max(2 == timingType)) addit <- rbind(addit, r2 %>% mutate(cut="Targeted events",Duration=tedate))
+    # minimum follow-up duration target
+    if (max(3 == timingType)) addit <- rbind(addit, r3 %>% mutate(cut="Minimum follow-up",Duration=tmfdate))
+    if (max(4 == timingType)){ # max of planned duration, targeted events
+      if (tedate > totalDuration){
+        addit <- rbind(addit, r2 %>% mutate(cut="Max(planned duration, event cut)",Duration=tedate))
+      }else addit <- rbind(addit, r1 %>% mutate(cut="Max(planned duration, event cut)",Duration=totalDuration))
+    }
+    if (max(5 == timingType)){ # max of minimum follow-up, targeted events
+      if (tedate > tmfdate){
+        addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
+      }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
+    }
+  times_iter[6] = times_iter[3] + Sys.time() - s6
+
+  # # Clean up
+  # rm(list = c("minFollow",
+  #             "xx", "dr", "fr",
+  #             "tests", "addit",
+  #             "d1", "d2", "d3",
+  #             "r1", "r2", "r3"))
+}
+
+kable(data.frame(eval = c("simPWSurvNew",
+                          "getCutDateForCount",
+                          "compute tests",
+                          "cutData",
+                          "doAnalysis",
+                          "compute addit"),
+                 time = times_iter/n_iter,
+                 percent = round(times_iter / sum(times_iter) * 100, 2)))
+```
+Overall `doAnalysis` take $70\%$ of the runtime in one simulation, but notice that `doAnalysis` is called 3 times in this example.
+
+## `doAnalysis`
+```{r}
+d = d1
+
+# Benchmark
+n_iter = 20
+times_do <- rep(0, 4)
+for (i in 1:n_iter) {
+
+  # tensurv
+  s1 <- Sys.time()
+  d11 <- d %>% simtrial::tensurv(txval="Experimental")
+  times_do[1] = times_do[1] + Sys.time() - s1
+
+  # tenFH
+  s2 <- Sys.time()
+  d12 <- d11 %>% simtrial::tenFH(rg=rg)
+  times_do[2] = times_do[2] + Sys.time() - s2
+
+  # Z tibble
+  s3 <- Sys.time()
+  Z = tibble::tibble(Z=d12$Z)
+  times_do[3] = times_do[3] + Sys.time() - s3
+
+  # cbind
+  s4 <- Sys.time()
+  r <- cbind(tibble::tibble(Events = sum(d$event),
+                            lnhr = as.numeric(ifelse(nstrata>1,
+                                                     survival::coxph(survival::Surv(tte,event)~
+                                                                       (Treatment=="Experimental")+
+                                                   survival::strata(Stratum),data=d)$coefficients,
+                                 survival::coxph(survival::Surv(tte,event)~
+                                                   (Treatment=="Experimental"),data=d)$coefficients))
+                         ),
+             Z
+  )
+  times_do[4] = times_do[3] + Sys.time() - s3
+
+# rm(list = c("d11", "d12",
+#             "Z", "r"))
+}
+
+kable(data.frame(eval = c("tensurv",
+                          "tenFH",
+                          "Z",
+                          "r"),
+                 time = times_do/n_iter,
+                 percent = round(times_do / sum(times_do) * 100, 2)))
+```
+Further benchmark `doAnalysis`, we can see `tensurv` is the most time-consuming part.
+
+Both `tensurv` and `cutData` take $12\%$ to $20\%$ of the runtime in one simulation, but `tensurv` may be called multiple times (3 times in this example).

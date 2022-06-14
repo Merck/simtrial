@@ -164,7 +164,7 @@ simfixNew <- function(nsim=1000,
     .combine = "rbind",
     .errorhandling = "pass"
   ) %op% {
-    if (setSeed) set.seed(2022 + i - 1) # TODO make it optional
+    if (setSeed) set.seed(2022 + i - 1)
     sim <- simtrial::simPWSurvNew(n = sampleSize,
                                enrollStrata = enrollStrata,
                                enrollRates = enrollRates,
