@@ -457,3 +457,91 @@ Overall, the following functions take more than $10\%$ of the runtime in one sim
 - `simPWSurvNew`. ~$10\%$. Only will be called once in one simulation.
 - `cutData`. A single call of `cutData` takes ~$4\%$ of the runtime in one simulation, but `cutData` may be called multiple times (3 times in this example) in one simulation.
 
+## `tensurv`
+```{r}
+options(dplyr.summarise.inform = FALSE)
+x <- d3
+txval="Experimental"
+
+# Benchmark
+n_iter = 20
+times_tensurv <- rep(0, 9)
+for (i in 1:n_iter) {
+  s1 <- Sys.time()
+  x1 <- x %>% group_by(Stratum) %>% arrange(desc(tte))
+  times_tensurv[1] = times_tensurv[1] + Sys.time() - s1
+  
+  s2 <- Sys.time()
+  x2 <- x1 %>% mutate(one=1,
+                      atrisk=cumsum(one),
+                      txatrisk=cumsum(Treatment==txval)) 
+  times_tensurv[2] = times_tensurv[2] + Sys.time() - s2
+  
+  s3 <- Sys.time()
+  x3 <- x2 %>%
+        # Handling ties using Breslow's method
+        group_by(Stratum, mtte=desc(tte)) %>%
+        dplyr::summarise(events=sum(event),
+                         txevents=sum((Treatment==txval)*event),
+                         tte=first(tte),
+                         atrisk=max(atrisk),
+                         txatrisk=max(txatrisk)) 
+  times_tensurv[3] = times_tensurv[3] + Sys.time() - s3
+  
+  s4 <- Sys.time()
+  x4 <- x3 %>%
+        # Keep calculation for observed time with at least one event, at least one subject is
+        # at risk in both treatment group and control group.
+        filter(events>0, atrisk-txatrisk>0, txatrisk>0)
+  times_tensurv[4] = times_tensurv[4] + Sys.time() - s4
+  
+  s5 <- Sys.time()
+  x5 <- x4 %>%
+        select(-mtte) 
+  times_tensurv[5] = times_tensurv[5] + Sys.time() - s5
+  
+  s6 <- Sys.time()
+  x6 <- x5 %>%
+        mutate(s=1-events/atrisk) 
+  times_tensurv[6] = times_tensurv[6] + Sys.time() - s6
+  
+  s7 <- Sys.time()
+  x7 <- x6 %>%
+        arrange(Stratum, tte) 
+  times_tensurv[7] = times_tensurv[7] + Sys.time() - s7
+  
+  s8 <- Sys.time()
+  x8 <- x7 %>%
+        group_by(Stratum) %>%
+        mutate(S=lag(cumprod(s), default=1),               # left continuous Kaplan-Meier Estimator
+               OminusE=txevents-txatrisk/atrisk*events,    #  Observed events minus Expected events in treatment group
+               Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) 
+  times_tensurv[8] = times_tensurv[8] + Sys.time() - s8
+  
+  s9 <- Sys.time()
+  x9 <- x8 %>% #Variance of OminusE
+               select(-s)
+  times_tensurv[9] = times_tensurv[9] + Sys.time() - s9
+}
+
+kable(data.frame(eval = c("group_by arrange",
+                          "mutate",
+                          "group_by summarise",
+                          "filter",
+                          "select",
+                          "mutate",
+                          "arrange",
+                          "group_by mutate",
+                          "select"),
+                 time = times_tensurv/n_iter,
+                 percent = round(times_tensurv / sum(times_tensurv) * 100, 2)))
+```
+
+### Filter
+```{r}
+bench::mark(
+  filter(x3, events>0, atrisk-txatrisk>0, txatrisk>0),
+  x3[which(x3$events > 0 & x3$atrisk - x3$txatrisk > 0 & x3$txatrisk > 0), ],
+  iterations = 100
+)
+```
