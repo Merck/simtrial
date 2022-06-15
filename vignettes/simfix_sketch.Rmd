@@ -82,10 +82,6 @@ rg <- tibble(rho = 0, gamma = 0)
 
 
 # Parallel Computing using `foreach` 
-```{r detectCores}
-detectCores()
-```
-
 ```{r runSimfix}
 # Functions for run simfix and simfixNew in serial and in parallel
 
@@ -93,10 +89,10 @@ runSimfix <- function(nsim = 1000, # Number of simulations
                       sampleSize = 800, # Trial sample size
                       targetEvents = 350, # Targeted events at analysis
                       totalDuration = 30, # Planned trial duration
-                      timingType = 1:5 # Use all possible data cutoff methods
+                      timingType = 1:5, # Use all possible data cutoff methods
+                      cores = c(1, 2, 4, 6, 8)
                       ) {
-  times <- rep(0, 5)
-  cores <- c(1, 2, 4, 6, 8)
+  times <- rep(0, length(cores))
 
   # In serial
   registerDoParallel(1)
@@ -114,7 +110,7 @@ runSimfix <- function(nsim = 1000, # Number of simulations
     rg = rg, # FH test(s) to use; in this case, logrank
     setSeed = TRUE
   )
-  times[1] <- Sys.time() - start
+  times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
   
   # In parallel
   for (i in 2:length(cores)) {
@@ -133,7 +129,7 @@ runSimfix <- function(nsim = 1000, # Number of simulations
       rg = rg, # FH test(s) to use; in this case, logrank
       setSeed = TRUE
     )
-    times[i] <- Sys.time() - start
+    times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
     message("Results are identical: ", identical(s, sp))
   }
 
@@ -144,10 +140,10 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
                          sampleSize = 800, # Trial sample size
                          targetEvents = 350, # Targeted events at analysis
                          totalDuration = 30, # Planned trial duration
-                         timingType = 1:5 # Use all possible data cutoff methods
+                         timingType = 1:5, # Use all possible data cutoff methods
+                         cores = c(1, 2, 4, 6, 8)
                          ) {
-  times <- rep(0, 5)
-  cores <- c(1, 2, 4, 6, 8)
+  times <- rep(0, length(cores))
 
   # In serial
   registerDoParallel(1)
@@ -165,7 +161,7 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
     rg = rg, # FH test(s) to use; in this case, logrank
     setSeed = TRUE
   )
-  times[1] <- Sys.time() - start
+  times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
   
   # In parallel
   for (i in 2:length(cores)) {
@@ -184,7 +180,7 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
       rg = rg, # FH test(s) to use; in this case, logrank
       setSeed = TRUE
     )
-    times[i] <- Sys.time() - start
+    times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
     message("Results are identical: ", identical(s, sp))
   }
 
@@ -192,35 +188,40 @@ runSimfixNew <- function(nsim = 1000, # Number of simulations
 }
 ```
 
-## 100 simulations
-```{r 100sims}
-n_sim <- 100
-cores <- c(1, 2, 4, 6, 8)
+```{r detectCores}
+detectCores()
+```
 
-times_100 <- runSimfix(nsim = n_sim)
-times_100_new <- runSimfixNew(nsim = n_sim)
+## 1000 simulations
+```{r 100sims}
+n_sim <- 1000
+cores <- c(1, 2, 4, 6, 8) # must start with 1
+
+times_1000 <- runSimfix(nsim = n_sim, cores = cores)
+times_1000_new <- runSimfixNew(nsim = n_sim, cores = cores)
 
 # Reshape timing results for plot
-df_times_100 <- data.frame(x = cores,
-                           y = c(times_100,
-                                 times_100_new),
+df_times_1000 <- data.frame(x = cores,
+                           y = c(times_1000,
+                                 times_1000_new),
                            group = c(rep("simfix", length(cores)),
                                      rep("simfixNew", length(cores))))
-ggplot(df_times_100, aes(x, y, col = group)) +
+ggplot(df_times_1000, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(breaks = cores) +
   labs(x = "cores", y = paste0("time (sec)"))
 
 # Table
 kable(t(data.frame(cores = as.character(cores),
-                   simfix = times_100,
-                   simfixNew = times_100_new)))
+                   simfix = times_1000,
+                   simfixNew = times_1000_new)))
 ```
 
 ## 10000 simulations
 ```{r 10000sims, cache = TRUE, eval = FALSE}
 n_sim <- 10000
-cores <- c(1, 2, 4, 6, 8)
+cores <- c(1, 2, 4, 6, 8) # must start with 1
+
 times_10000_new <- runSimfixNew(nsim = n_sim)
 times_10000 <- runSimfix(nsim = n_sim)
 
@@ -233,7 +234,7 @@ df_times_10000 <- data.frame(x = cores,
 ggplot(df_times_10000, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(breaks = cores) +
-  labs(x = "cores", y = paste0("time (min)"))
+  labs(x = "cores", y = paste0("time (sec)"))
 
 # Table
 kable(t(data.frame(cores = as.character(cores),
