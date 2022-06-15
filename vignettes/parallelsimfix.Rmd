@@ -418,7 +418,7 @@ runAndPlotSimfixVarCores <- function(
                              targetEvents = targetEvents,
                              totalDuration = totalDuration,
                              timingType = timingType)
-  times_new <- runSimfixVarCores(nsim = n_sim,
+  times_new <- runSimfixVarCores(nsim = nsim,
                              ncores = ncores,
                              runsimfixNew = TRUE,
                              sampleSize = sampleSize,
@@ -430,13 +430,13 @@ runAndPlotSimfixVarCores <- function(
   df_times<- data.frame(x = sort(ncores),
                               y = c(times,
                                     times_new),
-                              fun = c(rep("simfix", length(n_cores)),
-                                      rep("simfixNew", length(n_cores))))
+                              fun = c(rep("simfix", length(ncores)),
+                                      rep("simfixNew", length(ncores))))
   pl_times <- ggplot(df_times, aes(x, y, col = fun)) +
     geom_line() +
-    scale_x_continuous(trans='log2', breaks = n_cores) +
+    scale_x_continuous(trans='log2', breaks = ncores) +
     labs(x = "number of cores", y = paste0("time (sec)"),
-         title = paste0(n_sim, " simulations")) +
+         title = paste0(nsim, " simulations")) +
     theme_mk() +
     scale_color_adaptive("teal")
   
