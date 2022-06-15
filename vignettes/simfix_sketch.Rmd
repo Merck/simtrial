@@ -539,9 +539,71 @@ kable(data.frame(eval = c("group_by arrange",
 
 ### Filter
 ```{r}
-bench::mark(
+mbm_sub <- bench::mark(
   filter(x3, events>0, atrisk-txatrisk>0, txatrisk>0),
   x3[which(x3$events > 0 & x3$atrisk - x3$txatrisk > 0 & x3$txatrisk > 0), ],
   iterations = 100
 )
+mbm_sub$expression[[1]] <- "dplyr::filter"
+mbm_sub$expression[[2]] <- "base filter"
+mbm_sub
+# plot(mbm_sub)
 ```
+
+### Improvments
+```{r}
+tensurvNew <- function(x, txval){
+
+    u.trt = unique(x$Treatment)
+    if(length(u.trt) > 2){
+      stop("Expected two groups")
+    }
+
+    if(! txval %in% u.trt){
+      stop("txval is not a valid treatment group value")
+    }
+
+    if(! all(unique(x$event) %in% c(0,1) ) ){
+      stop("Event indicator must be 0 (censoring) or 1 (event)")
+    }
+    x <- x %>% group_by(Stratum) %>% arrange(desc(tte)) %>%
+          mutate(one=1,
+                 atrisk=cumsum(one),
+                 txatrisk=cumsum(Treatment==txval)) %>%
+          # Handling ties using Breslow's method
+          group_by(Stratum, mtte=desc(tte)) %>%
+          dplyr::summarise(events=sum(event),
+                           txevents=sum((Treatment==txval)*event),
+                           tte=first(tte),
+                           atrisk=max(atrisk),
+                           txatrisk=max(txatrisk))
+    x[which(x$events > 0 & x$atrisk > x$txatrisk & x$txatrisk > 0),] %>%
+          select(-mtte) %>%
+          mutate(s=1-events/atrisk) %>%
+          arrange(Stratum, tte) %>%
+          group_by(Stratum) %>%
+          mutate(S=lag(cumprod(s), default=1),               # left continuous Kaplan-Meier Estimator
+                 OminusE=txevents-txatrisk/atrisk*events,    #  Observed events minus Expected events in treatment group
+                 Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) %>% #Variance of OminusE
+                 select(-s)
+}
+
+bench::mark(
+  d1 %>% simtrial::tensurv(txval="Experimental"),
+  d1 %>% tensurvNew(txval="Experimental"),
+  iterations = 20
+)
+
+bench::mark(
+  d2 %>% simtrial::tensurv(txval="Experimental"),
+  d2 %>% tensurvNew(txval="Experimental"),
+  iterations = 20
+)
+
+bench::mark(
+  d3 %>% simtrial::tensurv(txval="Experimental"),
+  d3 %>% tensurvNew(txval="Experimental"),
+  iterations = 20
+)
+```
+
