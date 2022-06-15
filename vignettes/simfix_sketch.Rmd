@@ -1,5 +1,5 @@
 ---
-title: "Benchmark Example for `simfix`"
+title: "Optimization of `simfix`"
 author: "Jianxiao Yang"
 output:
   html_document:
@@ -80,173 +80,8 @@ failRatesAll <- failRatesAll %>%
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
-
-# Parallel Computing using `foreach` 
-```{r runSimfix}
-# Functions for run simfix and simfixNew in serial and in parallel
-
-runSimfix <- function(nsim = 1000, # Number of simulations
-                      sampleSize = 800, # Trial sample size
-                      targetEvents = 350, # Targeted events at analysis
-                      totalDuration = 30, # Planned trial duration
-                      timingType = 1:5, # Use all possible data cutoff methods
-                      cores = c(1, 2, 4, 6, 8)
-                      ) {
-  times <- rep(0, length(cores))
-
-  # In serial
-  registerDoParallel(1)
-  start <- Sys.time()
-  s <- simfix(
-    nsim = nsim, # Number of simulations
-    sampleSize = sampleSize, # Trial sample size
-    targetEvents = targetEvents, # Targeted events at analysis
-    enrollStrata = enrollStrata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = totalDuration, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = timingType, # Use all possible data cutoff methods
-    rg = rg, # FH test(s) to use; in this case, logrank
-    setSeed = TRUE
-  )
-  times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
-  
-  # In parallel
-  for (i in 2:length(cores)) {
-    registerDoParallel(cores[i])
-    start <- Sys.time()
-    sp <- simfix(
-      nsim = nsim, # Number of simulations
-      sampleSize = sampleSize, # Trial sample size
-      targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
-      enrollRates = enrollRates, # Enrollment rates
-      failRates = failRatesAll, # Failure rates
-      totalDuration = totalDuration, # Planned trial duration
-      block = block, # Block for treatment
-      timingType = timingType, # Use all possible data cutoff methods
-      rg = rg, # FH test(s) to use; in this case, logrank
-      setSeed = TRUE
-    )
-    times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
-    message("Results are identical: ", identical(s, sp))
-  }
-
-  return (times)
-}
-
-runSimfixNew <- function(nsim = 1000, # Number of simulations
-                         sampleSize = 800, # Trial sample size
-                         targetEvents = 350, # Targeted events at analysis
-                         totalDuration = 30, # Planned trial duration
-                         timingType = 1:5, # Use all possible data cutoff methods
-                         cores = c(1, 2, 4, 6, 8)
-                         ) {
-  times <- rep(0, length(cores))
-
-  # In serial
-  registerDoParallel(1)
-  start <- Sys.time()
-  s <- simfixNew(
-    nsim = nsim, # Number of simulations
-    sampleSize = sampleSize, # Trial sample size
-    targetEvents = targetEvents, # Targeted events at analysis
-    enrollStrata = enrollStrata, # Study strata
-    enrollRates = enrollRates, # Enrollment rates
-    failRates = failRatesAll, # Failure rates
-    totalDuration = totalDuration, # Planned trial duration
-    block = block, # Block for treatment
-    timingType = timingType, # Use all possible data cutoff methods
-    rg = rg, # FH test(s) to use; in this case, logrank
-    setSeed = TRUE
-  )
-  times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
-  
-  # In parallel
-  for (i in 2:length(cores)) {
-    registerDoParallel(cores[i])
-    start <- Sys.time()
-    sp <- simfixNew(
-      nsim = nsim, # Number of simulations
-      sampleSize = sampleSize, # Trial sample size
-      targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
-      enrollRates = enrollRates, # Enrollment rates
-      failRates = failRatesAll, # Failure rates
-      totalDuration = totalDuration, # Planned trial duration
-      block = block, # Block for treatment
-      timingType = timingType, # Use all possible data cutoff methods
-      rg = rg, # FH test(s) to use; in this case, logrank
-      setSeed = TRUE
-    )
-    times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
-    message("Results are identical: ", identical(s, sp))
-  }
-
-  return (times)
-}
-```
-
-```{r detectCores}
-detectCores()
-```
-
-## 1000 simulations
-```{r 100sims}
-n_sim <- 1000
-cores <- c(1, 2, 4, 6, 8) # must start with 1
-
-times_1000 <- runSimfix(nsim = n_sim, cores = cores)
-times_1000_new <- runSimfixNew(nsim = n_sim, cores = cores)
-
-# Reshape timing results for plot
-df_times_1000 <- data.frame(x = cores,
-                           y = c(times_1000,
-                                 times_1000_new),
-                           group = c(rep("simfix", length(cores)),
-                                     rep("simfixNew", length(cores))))
-ggplot(df_times_1000, aes(x, y, col = group)) +
-  geom_line() +
-  scale_x_continuous(breaks = cores) +
-  labs(x = "cores", y = paste0("time (sec)"))
-
-# Table
-kable(t(data.frame(cores = as.character(cores),
-                   simfix = times_1000,
-                   simfixNew = times_1000_new)))
-```
-
-## 10000 simulations
-```{r 10000sims, cache = TRUE, eval = FALSE}
-n_sim <- 10000
-cores <- c(1, 2, 4, 6, 8) # must start with 1
-
-times_10000_new <- runSimfixNew(nsim = n_sim)
-times_10000 <- runSimfix(nsim = n_sim)
-
-# Reshape timing results for plot
-df_times_10000 <- data.frame(x = cores,
-                             y = c(times_10000,
-                                   times_10000_new),
-                             group = c(rep("simfix", length(cores)),
-                                       rep("simfixNew", length(cores))))
-ggplot(df_times_10000, aes(x, y, col = group)) +
-  geom_line() +
-  scale_x_continuous(breaks = cores) +
-  labs(x = "cores", y = paste0("time (sec)"))
-
-# Table
-kable(t(data.frame(cores = as.character(cores),
-                   simfix = times_10000,
-                   simfixNew = times_10000_new)))
-```
-
-
-# Optimize one simulation
-
-## Profile one simulation
-```{r}
+# Profile one simulation
+```{r prof_onesim}
 sampleSize = 800
 targetEvents = 350
 totalDuration = 30
@@ -401,8 +236,8 @@ kable(data.frame(eval = c("simPWSurvNew",
 ```
 Overall `doAnalysis` take $70\%$ of the runtime in one simulation.
 
-### `doAnalysis`
-```{r}
+## `doAnalysis`
+```{r prof_doAnalysis}
 d = d1
 
 # Benchmark
@@ -458,8 +293,8 @@ Overall, the following functions take more than $10\%$ of the runtime in one sim
 - `simPWSurvNew`. ~$10\%$. Only will be called once in one simulation.
 - `cutData`. A single call of `cutData` takes ~$4\%$ of the runtime in one simulation, but `cutData` may be called multiple times (3 times in this example) in one simulation.
 
-## `tensurv`
-```{r}
+# `tensurv`
+```{r prof_tensurv}
 options(dplyr.summarise.inform = FALSE)
 x <- d3
 txval="Experimental"
@@ -538,8 +373,8 @@ kable(data.frame(eval = c("group_by arrange",
                  percent = round(times_tensurv / sum(times_tensurv) * 100, 2)))
 ```
 
-### Filter
-```{r}
+## Filter
+```{r filter}
 mbm_sub <- bench::mark(
   filter(x3, events>0, atrisk-txatrisk>0, txatrisk>0),
   x3[which(x3$events > 0 & x3$atrisk - x3$txatrisk > 0 & x3$txatrisk > 0), ],
@@ -551,7 +386,7 @@ mbm_sub
 # plot(mbm_sub)
 ```
 
-### Improvments
+## Improvments
 ```{r}
 tensurvNew <- function(x, txval){
 

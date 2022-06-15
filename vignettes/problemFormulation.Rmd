@@ -1,5 +1,5 @@
 ---
-title: "Computational Enhancement of `rpwexp` "
+title: "Optimization of `simPWSurv` and `rpwexp` "
 author: "Jianxiao Yang"
 output:
   html_document:
@@ -1066,9 +1066,6 @@ mbm_nested3
 ```
 
 In this example, `mapply` is 3 times faster than the nested for loop.
-
-
-# Parallelization - TODO
 
 
 # Create a `tibble` - TODO
