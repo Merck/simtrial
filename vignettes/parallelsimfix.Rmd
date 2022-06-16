@@ -446,12 +446,16 @@ runAndPlotSimfixVarCores <- function(
                                       rep("simfixNew", length(ncores))))
   pl_times <- ggplot(df_times, aes(x, y, col = fun)) +
     geom_line() +
+    geom_point() +
     scale_x_continuous(trans='log2', breaks = ncores) +
     labs(x = "Number of cores", y = paste0("Run time (in second)"),
          title = paste0(nsim, " simulations")) +
     theme_mk() +
     scale_color_adaptive("teal") +
-    theme(legend.title=element_blank())
+    theme(legend.title=element_blank(),
+          legend.position="bottom",
+          legend.justification = "center",
+          aspect.ratio=1)
   
   # Table
   tb_times <- t(data.frame(cores = as.character(sort(ncores)),
@@ -512,11 +516,15 @@ runAndPlotSimfixVarCoresVarSims <- function(
 
   pl_times <- ggplot(df_times, aes(x, y, col = group)) +
     geom_line() +
+    geom_point() +
     scale_x_continuous(breaks = nsims) +
     labs(x = "Number of simulations", y = paste0("Run time (in second)")) +
     theme_mk() +
     scale_color_adaptive("teal") +
-    theme(legend.title=element_blank())
+    theme(legend.title=element_blank(),
+          legend.position="bottom",
+          legend.justification = "center",
+          aspect.ratio=1)
   
   # Table
   tb_times <- rbind(nsims = c("simulations", as.character(nsims)),
