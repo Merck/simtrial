@@ -296,10 +296,8 @@ detectCores()
 
 # Experiments
 
-## Fixed number of simulations
-
-### Function for running simfix and simfixNew across varying number of cores
-```{r runSimfixVarCores}
+## Functions
+```{r functions}
 runSimfixVarCores <- function(
   ncores = c(1L, 2L, 4L, 8L), # Number of cores
   runsimfixNew = FALSE, # Run simfix or simfixNew
@@ -435,10 +433,11 @@ runAndPlotSimfixVarCores <- function(
   pl_times <- ggplot(df_times, aes(x, y, col = fun)) +
     geom_line() +
     scale_x_continuous(trans='log2', breaks = ncores) +
-    labs(x = "number of cores", y = paste0("time (sec)"),
+    labs(x = "Number of cores", y = paste0("Run time (in second)"),
          title = paste0(nsim, " simulations")) +
     theme_mk() +
-    scale_color_adaptive("teal")
+    scale_color_adaptive("teal") +
+    theme(legend.title=element_blank())
   
   # Table
   tb_times <- t(data.frame(cores = as.character(sort(ncores)),
@@ -449,12 +448,81 @@ runAndPlotSimfixVarCores <- function(
   return (list(plot = pl_times,
                df = tb_times))
 }
+
+runAndPlotSimfixVarCoresVarSims <- function(
+  ncores = c(1L, 2L, 4L, 8L), # Number of cores
+  nsims = c(1000, 2000, 3000, 4000, 5000), # Number of simulations
+  sampleSize = 800, # Trial sample size
+  targetEvents = 350, # Targeted events at analysis
+  totalDuration = 30, # Planned trial duration
+  timingType = 1:5 # Use all possible data cutoff methods
+) {
+  
+  nsims <- sort(nsims)
+  times_all <- rep(0, length(ncores) * length(nsims) * 2)
+  labels_all <- character(length = length(ncores) * length(nsims) * 2)
+  sims_all <- rep(0, length(ncores) * length(nsims) * 2)
+  for (i in 1:length(nsims)) {
+    s1 = (i-1) * length(ncores) * 2 + 1
+    e1 = s1 + length(ncores) - 1
+    s2 = e1 + 1
+    e2 = i * length(ncores) * 2
+    # Run simfix and simfixNew in serial and in parallel
+    times_all[s1:e1] <- runSimfixVarCores(nsim = nsims[i],
+                               ncores = ncores,
+                               sampleSize = sampleSize,
+                               targetEvents = targetEvents,
+                               totalDuration = totalDuration,
+                               timingType = timingType)
+    times_all[s2:e2] <- runSimfixVarCores(nsim = nsims[i],
+                               ncores = ncores,
+                               runsimfixNew = TRUE,
+                               sampleSize = sampleSize,
+                               targetEvents = targetEvents,
+                               totalDuration = totalDuration,
+                               timingType = timingType)
+    
+    sims_all[s1:e2] <- rep(nsims[i], length(ncores) * 2)
+    for (j in 1:length(ncores)) {
+      labels_all[s1] <- paste0("simfix ", ncores[j], " core")
+      labels_all[s2] <- paste0("simfixNew ", ncores[j], " core")
+      s1 = s1+1
+      s2 = s2+1
+    }
+  }
+
+  # Reshape timing results for plot
+  df_times<- data.frame(x = sims_all,
+                        y = times_all,
+                        group = labels_all)
+
+  pl_times <- ggplot(df_times, aes(x, y, col = group)) +
+    geom_line() +
+    scale_x_continuous(breaks = nsims) +
+    labs(x = "Number of simulations", y = paste0("Run time (in second)")) +
+    theme_mk() +
+    scale_color_adaptive("teal") +
+    theme(legend.title=element_blank())
+  
+  # Table
+  tb_times <- rbind(nsims = c("simulations", as.character(nsims)),
+                    reshape(df_times,
+                            idvar = "group",
+                            timevar = "x",
+                            direction = "wide"))
+  names(tb_times) <- NULL
+
+  return (list(plot = pl_times,
+               df = tb_times))
+}
 ```
+
+## Fixed number of simulations
 
 ### 1000 simulations
 ```{r 1000sims}
 n_sim <- 1000 # number of simulations in simfix
-n_cores <- c(1L, 4L, 2L, 8L)
+n_cores <- c(1L, 2L, 4L, 8L)
 
 # Run simfix and simfixNew in serial and in parallel
 test1000 <- runAndPlotSimfixVarCores(nsim = n_sim, ncores = n_cores)
@@ -462,5 +530,21 @@ test1000 <- runAndPlotSimfixVarCores(nsim = n_sim, ncores = n_cores)
 # Plot and table
 test1000$plot
 kable(test1000$df)
+```
+
+
+## Varying number of simulations
+
+### 1000 to 5000 simulations
+```{r varsims}
+n_sims <- c(1000, 2000, 3000, 4000, 5000)
+n_cores <- c(1L, 2L, 4L, 8L)
+
+# Run simfix and simfixNew in serial and in parallel
+testVar <- runAndPlotSimfixVarCoresVarSims(nsims = n_sims, ncores = n_cores)
+
+# Plot
+testVar$plot
+kable(testVar$df)
 ```
 
