@@ -14,7 +14,17 @@ sessionInfo()
 ```
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  comment = "#>",
+  dev = "ragg_png",
+  dpi = 96,
+  fig.retina = 1,
+  fig.width = 7.2916667,
+  fig.asp = 1,
+  fig.align = "center",
+  out.width = "80%")
+
 library(simtrial)
 library(knitr)
 library(tibble)
@@ -334,7 +344,8 @@ runSimfixVarCores <- function(
       setSeed = TRUE
     )
     times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
-    
+    doParallel::stopImplicitCluster()
+
     # In parallel
     for (i in 2:length(ncores)) {
       registerDoParallel(ncores[i])
@@ -353,6 +364,7 @@ runSimfixVarCores <- function(
         setSeed = TRUE
       )
       times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
+      doParallel::stopImplicitCluster()
       message("Results are identical: ", identical(s, sp))
     }
   } else { # simfixNew
@@ -374,7 +386,8 @@ runSimfixVarCores <- function(
       setSeed = TRUE
     )
     times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
-    
+    doParallel::stopImplicitCluster()
+
     # In parallel
     for (i in 2:length(ncores)) {
       registerDoParallel(ncores[i])
@@ -393,6 +406,7 @@ runSimfixVarCores <- function(
         setSeed = TRUE
       )
       times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
+      doParallel::stopImplicitCluster()
       message("Results are identical: ", identical(s, sp))
     }
   }
@@ -543,7 +557,7 @@ n_cores <- c(1L, 2L, 4L, 8L)
 # Run simfix and simfixNew in serial and in parallel
 testVar <- runAndPlotSimfixVarCoresVarSims(nsims = n_sims, ncores = n_cores)
 
-# Plot
+# Plot and table
 testVar$plot
 kable(testVar$df)
 ```
