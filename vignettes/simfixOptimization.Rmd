@@ -80,12 +80,13 @@ failRatesAll <- failRatesAll %>%
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
+
 # Profile one simulation
-```{r prof_onesim}
+
+```{r functions}
+totalDuration = 30
 sampleSize = 800
 targetEvents = 350
-totalDuration = 30
-timingType = 1:5
 
 nstrata <- nrow(enrollStrata)
 doAnalysis <- function(d,rg,nstrata){
@@ -118,328 +119,435 @@ xx <- simfix2simPWSurv(failRatesAll)
 fr <- xx$failRates
 dr <- xx$dropoutRates
 
-# Benchmark
-n_iter = 20
-times_iter <- rep(0, 6)
-for (i in 1:n_iter) {
-  set.seed(2022)
-
-  # simPWSurvNew
-  s1 <- Sys.time()
-  sim <- simtrial::simPWSurvNew(n = sampleSize,
-                               enrollStrata = enrollStrata,
-                               enrollRates = enrollRates,
-                               failRates = fr,
-                               dropoutRates = dr,
-                               block = block)
-  times_iter[1] = times_iter[1] + Sys.time() - s1
-
-  # getCutDateForCount
-  s2 <- Sys.time()
-  # study date that targeted event rate achieved
-  tedate <- sim %>% getCutDateForCount(targetEvents)
-  times_iter[2] = times_iter[2] + Sys.time() - s2
-
-  # Compute tests
-  s3 <- Sys.time()
-  # study data that targeted minimum follow-up achieved
-  tmfdate <- max(sim$enrollTime) + minFollow
-  # Compute tests for all specified cutoff options
-  r1 <- NULL ; r2 <- NULL; r3 <- NULL;
-  tests <- rep(FALSE,3)
-  ## Total planned trial duration or max of this and targeted events
-  if (max(1 == timingType)) tests[1] <- TRUE # planned duration cutoff
-  if (max(2 == timingType)) tests[2] <- TRUE # targeted events cutoff
-  if (max(3 == timingType)) tests[3] <- TRUE # minimum follow-up duration target
-  if (max(4 == timingType)){ # max of planned duration, targeted events
-    if (tedate > totalDuration){
-      tests[2] <- TRUE
-    }else tests[1] <- TRUE
-  }
-  if (max(5 == timingType)){ # max of minimum follow-up, targeted events
-    if (tedate > tmfdate){
-      tests[2] <- TRUE
-    }else tests[3] <- TRUE
-  }
-  times_iter[3] = times_iter[3] + Sys.time() - s3
-
-  # cutData
-  s4 <- Sys.time()
-    if (tests[1]){ # Total duration cutoff
-      d1 <- sim %>% cutData(totalDuration)
-      # r1 <- d %>% doAnalysis(rg,nstrata)
+# Benchmark simfix
+mbm_simfix <- function(n_iter = 20,
+                       times_iter = rep(0, 6),
+                       timingType,
+                       useSimfixNew = TRUE,
+                       nstrata,
+                       minFollow,
+                       fr,
+                       dr,
+                       sampleSize = 800,
+                       targetEvents = 350,
+                       totalDuration = 30) {
+  for (i in 1:n_iter) {
+  
+    if (useSimfixNew) {
+      # simPWSurvNew
+      s1 <- Sys.time()
+      sim <- simtrial::simPWSurvNew(n = sampleSize,
+                                   enrollStrata = enrollStrata,
+                                   enrollRates = enrollRates,
+                                   failRates = fr,
+                                   dropoutRates = dr,
+                                   block = block)
+      times_iter[1] = times_iter[1] + Sys.time() - s1
+    } else {
+      # simPWSurv
+      s1 <- Sys.time()
+      sim <- simtrial::simPWSurv(n = sampleSize,
+                                   enrollStrata = enrollStrata,
+                                   enrollRates = enrollRates,
+                                   failRates = fr,
+                                   dropoutRates = dr,
+                                   block = block)
+      times_iter[1] = times_iter[1] + Sys.time() - s1
     }
-    if (tests[2]){ # targeted events cutoff
-      d2 <- sim %>% cutData(tedate)
-      # r2 <- d %>% doAnalysis(rg,nstrata)
-    }
-    if (tests[3]){ # minimum follow-up cutoff
-      d3 <- sim %>% cutData(tmfdate)
-      # r3 <- d %>% doAnalysis(rg,nstrata)
-    }
-  times_iter[4] = times_iter[4] + Sys.time() - s4
 
-  # doAnalysis
-  s5 <- Sys.time()
-    if (tests[1]){ # Total duration cutoff
-      # d <- sim %>% cutData(totalDuration)
-      r1 <- d1 %>% doAnalysis(rg,nstrata)
-    }
-    if (tests[2]){ # targeted events cutoff
-      # d <- sim %>% cutData(tedate)
-      r2 <- d2 %>% doAnalysis(rg,nstrata)
-    }
-    if (tests[3]){ # minimum follow-up cutoff
-      # d <- sim %>% cutData(tmfdate)
-      r3 <- d3 %>% doAnalysis(rg,nstrata)
-    }
-  times_iter[5] = times_iter[5] + Sys.time() - s5
-
-  # Compute addit
-  s6 <- Sys.time()
-    addit <- NULL
-    # planned duration cutoff
-    if (max(1 == timingType)) addit <- rbind(addit,
-                                             r1 %>% mutate(cut="Planned duration",Duration=totalDuration))
-    # targeted events cutoff
-    if (max(2 == timingType)) addit <- rbind(addit, r2 %>% mutate(cut="Targeted events",Duration=tedate))
-    # minimum follow-up duration target
-    if (max(3 == timingType)) addit <- rbind(addit, r3 %>% mutate(cut="Minimum follow-up",Duration=tmfdate))
+    # getCutDateForCount
+    s2 <- Sys.time()
+    # study date that targeted event rate achieved
+    tedate <- sim %>% getCutDateForCount(targetEvents)
+    times_iter[2] = times_iter[2] + Sys.time() - s2
+  
+    # Compute tests
+    s3 <- Sys.time()
+    # study data that targeted minimum follow-up achieved
+    tmfdate <- max(sim$enrollTime) + minFollow
+    # Compute tests for all specified cutoff options
+    r1 <- NULL ; r2 <- NULL; r3 <- NULL;
+    tests <- rep(FALSE,3)
+    ## Total planned trial duration or max of this and targeted events
+    if (max(1 == timingType)) tests[1] <- TRUE # planned duration cutoff
+    if (max(2 == timingType)) tests[2] <- TRUE # targeted events cutoff
+    if (max(3 == timingType)) tests[3] <- TRUE # minimum follow-up duration target
     if (max(4 == timingType)){ # max of planned duration, targeted events
       if (tedate > totalDuration){
-        addit <- rbind(addit, r2 %>% mutate(cut="Max(planned duration, event cut)",Duration=tedate))
-      }else addit <- rbind(addit, r1 %>% mutate(cut="Max(planned duration, event cut)",Duration=totalDuration))
+        tests[2] <- TRUE
+      }else tests[1] <- TRUE
     }
     if (max(5 == timingType)){ # max of minimum follow-up, targeted events
       if (tedate > tmfdate){
-        addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
-      }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
+        tests[2] <- TRUE
+      }else tests[3] <- TRUE
     }
-  times_iter[6] = times_iter[3] + Sys.time() - s6
-
-  # # Clean up
-  # rm(list = c("minFollow",
-  #             "xx", "dr", "fr",
-  #             "tests", "addit",
-  #             "d1", "d2", "d3",
-  #             "r1", "r2", "r3"))
+    times_iter[3] = times_iter[3] + Sys.time() - s3
+  
+    # cutData
+    s4 <- Sys.time()
+      if (tests[1]){ # Total duration cutoff
+        d1 <- sim %>% cutData(totalDuration)
+        # r1 <- d %>% doAnalysis(rg,nstrata)
+      }
+      if (tests[2]){ # targeted events cutoff
+        d2 <- sim %>% cutData(tedate)
+        # r2 <- d %>% doAnalysis(rg,nstrata)
+      }
+      if (tests[3]){ # minimum follow-up cutoff
+        d3 <- sim %>% cutData(tmfdate)
+        # r3 <- d %>% doAnalysis(rg,nstrata)
+      }
+    times_iter[4] = times_iter[4] + Sys.time() - s4
+  
+    # doAnalysis
+    s5 <- Sys.time()
+      if (tests[1]){ # Total duration cutoff
+        # d <- sim %>% cutData(totalDuration)
+        r1 <- d1 %>% doAnalysis(rg,nstrata)
+      }
+      if (tests[2]){ # targeted events cutoff
+        # d <- sim %>% cutData(tedate)
+        r2 <- d2 %>% doAnalysis(rg,nstrata)
+      }
+      if (tests[3]){ # minimum follow-up cutoff
+        # d <- sim %>% cutData(tmfdate)
+        r3 <- d3 %>% doAnalysis(rg,nstrata)
+      }
+    times_iter[5] = times_iter[5] + Sys.time() - s5
+  
+    # Compute addit
+    s6 <- Sys.time()
+      addit <- NULL
+      # planned duration cutoff
+      if (max(1 == timingType)) addit <- rbind(addit,
+                                               r1 %>% mutate(cut="Planned duration",Duration=totalDuration))
+      # targeted events cutoff
+      if (max(2 == timingType)) addit <- rbind(addit, r2 %>% mutate(cut="Targeted events",Duration=tedate))
+      # minimum follow-up duration target
+      if (max(3 == timingType)) addit <- rbind(addit, r3 %>% mutate(cut="Minimum follow-up",Duration=tmfdate))
+      if (max(4 == timingType)){ # max of planned duration, targeted events
+        if (tedate > totalDuration){
+          addit <- rbind(addit, r2 %>% mutate(cut="Max(planned duration, event cut)",Duration=tedate))
+        }else addit <- rbind(addit, r1 %>% mutate(cut="Max(planned duration, event cut)",Duration=totalDuration))
+      }
+      if (max(5 == timingType)){ # max of minimum follow-up, targeted events
+        if (tedate > tmfdate){
+          addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
+        }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
+      }
+    times_iter[6] = times_iter[6] + Sys.time() - s6
+  }
+  
+  if (useSimfixNew) {
+    evals <- c("simPWSurvNew",
+              "getCutDataForCount",
+              "compute tests",
+              "cutData",
+              "doAnalysis",
+              "compute addit")
+  } else {
+    evals <- c("simPWSurv",
+              "getCutDataForCount",
+              "compute tests",
+              "cutData",
+              "doAnalysis",
+              "compute addit")
+  }
+  return (data.frame(eval = evals,
+                     time = times_iter / n_iter,
+                     percent = round(times_iter / sum(times_iter) * 100, 2)))
 }
 
-kable(data.frame(eval = c("simPWSurvNew",
-                          "getCutDateForCount",
-                          "compute tests",
-                          "cutData",
-                          "doAnalysis",
-                          "compute addit"),
-                 time = times_iter/n_iter,
-                 percent = round(times_iter / sum(times_iter) * 100, 2)))
-```
-Overall `doAnalysis` take $70\%$ of the runtime in one simulation.
 
-## `doAnalysis`
-```{r prof_doAnalysis}
-d = d1
+sim <- simtrial::simPWSurvNew(n = sampleSize,
+                             enrollStrata = enrollStrata,
+                             enrollRates = enrollRates,
+                             failRates = fr,
+                             dropoutRates = dr,
+                             block = block)
+# study date that targeted event rate achieved
+tedate <- sim %>% getCutDateForCount(targetEvents)
+# study data that targeted minimum follow-up achieved
+tmfdate <- max(sim$enrollTime) + minFollow
 
-# Benchmark
-n_iter = 20
-times_do <- rep(0, 4)
-for (i in 1:n_iter) {
+d1 <- sim %>% cutData(totalDuration)
+d2 <- sim %>% cutData(tedate)
+d3 <- sim %>% cutData(tmfdate)
 
-  # tensurv
-  s1 <- Sys.time()
-  d11 <- d %>% simtrial::tensurv(txval="Experimental")
-  times_do[1] = times_do[1] + Sys.time() - s1
-
-  # tenFH
-  s2 <- Sys.time()
-  d12 <- d11 %>% simtrial::tenFH(rg=rg)
-  times_do[2] = times_do[2] + Sys.time() - s2
-
-  # Z tibble
-  s3 <- Sys.time()
-  Z = tibble::tibble(Z=d12$Z)
-  times_do[3] = times_do[3] + Sys.time() - s3
-
-  # cbind
-  s4 <- Sys.time()
-  r <- cbind(tibble::tibble(Events = sum(d$event),
-                            lnhr = as.numeric(ifelse(nstrata>1,
-                                                     survival::coxph(survival::Surv(tte,event)~
-                                                                       (Treatment=="Experimental")+
-                                                   survival::strata(Stratum),data=d)$coefficients,
-                                 survival::coxph(survival::Surv(tte,event)~
-                                                   (Treatment=="Experimental"),data=d)$coefficients))
-                         ),
-             Z
-  )
-  times_do[4] = times_do[3] + Sys.time() - s3
-
-# rm(list = c("d11", "d12",
-#             "Z", "r"))
+# Benchmark doAnalysis
+mbm_doAnalysis <- function(n_iter = 20,
+                           times_do = rep(0, 4),
+                           d,
+                           rg,
+                           nstrata) {
+  for (i in 1:n_iter) {
+  
+    # tensurv
+    s1 <- Sys.time()
+    d11 <- d %>% simtrial::tensurv(txval="Experimental")
+    times_do[1] = times_do[1] + Sys.time() - s1
+  
+    # tenFH
+    s2 <- Sys.time()
+    d12 <- d11 %>% simtrial::tenFH(rg=rg)
+    times_do[2] = times_do[2] + Sys.time() - s2
+  
+    # Z tibble
+    s3 <- Sys.time()
+    Z = tibble::tibble(Z=d12$Z)
+    times_do[3] = times_do[3] + Sys.time() - s3
+  
+    # cbind
+    s4 <- Sys.time()
+    r <- cbind(tibble::tibble(Events = sum(d$event),
+                              lnhr = as.numeric(ifelse(nstrata>1,
+                                                       survival::coxph(survival::Surv(tte,event)~
+                                                                         (Treatment=="Experimental")+
+                                                     survival::strata(Stratum),data=d)$coefficients,
+                                   survival::coxph(survival::Surv(tte,event)~
+                                                     (Treatment=="Experimental"),data=d)$coefficients))
+                           ),
+               Z
+    )
+    times_do[4] = times_do[4] + Sys.time() - s4
+  }
+  return (data.frame(eval = c("tensurv",
+                              "tenFH",
+                              "Z",
+                              "r"),
+                     time = times_do / n_iter,
+                     percent = round(times_do / sum(times_do) * 100, 2)))
 }
 
-kable(data.frame(eval = c("tensurv",
-                          "tenFH",
-                          "Z",
-                          "r"),
-                 time = times_do/n_iter,
-                 percent = round(times_do / sum(times_do) * 100, 2)))
-```
-Further benchmark `doAnalysis`, we can see `tensurv` is the most time-consuming part.
+# Benchmark tensurv
+mbm_tensurv <- function(n_iter = 20,
+                        times_tensurv = rep(0, 9),
+                        d,
+                        txval="Experimental") {
+  options(dplyr.summarise.inform = FALSE)
 
-Overall, the following functions take more than $10\%$ of the runtime in one simulation:
-
-- `tensurv`. A single call of `tensurv` takes ~$20\%$ of the runtime in one simulation, but `tensurv` may be called multiple times (3 times in this example) in one simulation.
-- `simPWSurvNew`. ~$10\%$. Only will be called once in one simulation.
-- `cutData`. A single call of `cutData` takes ~$4\%$ of the runtime in one simulation, but `cutData` may be called multiple times (3 times in this example) in one simulation.
-
-# `tensurv`
-```{r prof_tensurv}
-options(dplyr.summarise.inform = FALSE)
-x <- d3
-txval="Experimental"
-
-# Benchmark
-n_iter = 20
-times_tensurv <- rep(0, 9)
-for (i in 1:n_iter) {
-  s1 <- Sys.time()
-  x1 <- x %>% group_by(Stratum) %>% arrange(desc(tte))
-  times_tensurv[1] = times_tensurv[1] + Sys.time() - s1
-  
-  s2 <- Sys.time()
-  x2 <- x1 %>% mutate(one=1,
-                      atrisk=cumsum(one),
-                      txatrisk=cumsum(Treatment==txval)) 
-  times_tensurv[2] = times_tensurv[2] + Sys.time() - s2
-  
-  s3 <- Sys.time()
-  x3 <- x2 %>%
-        # Handling ties using Breslow's method
-        group_by(Stratum, mtte=desc(tte)) %>%
-        dplyr::summarise(events=sum(event),
-                         txevents=sum((Treatment==txval)*event),
-                         tte=first(tte),
-                         atrisk=max(atrisk),
-                         txatrisk=max(txatrisk)) 
-  times_tensurv[3] = times_tensurv[3] + Sys.time() - s3
-  
-  s4 <- Sys.time()
-  x4 <- x3 %>%
-        # Keep calculation for observed time with at least one event, at least one subject is
-        # at risk in both treatment group and control group.
-        filter(events>0, atrisk-txatrisk>0, txatrisk>0)
-  times_tensurv[4] = times_tensurv[4] + Sys.time() - s4
-  
-  s5 <- Sys.time()
-  x5 <- x4 %>%
-        select(-mtte) 
-  times_tensurv[5] = times_tensurv[5] + Sys.time() - s5
-  
-  s6 <- Sys.time()
-  x6 <- x5 %>%
-        mutate(s=1-events/atrisk) 
-  times_tensurv[6] = times_tensurv[6] + Sys.time() - s6
-  
-  s7 <- Sys.time()
-  x7 <- x6 %>%
-        arrange(Stratum, tte) 
-  times_tensurv[7] = times_tensurv[7] + Sys.time() - s7
-  
-  s8 <- Sys.time()
-  x8 <- x7 %>%
-        group_by(Stratum) %>%
-        mutate(S=lag(cumprod(s), default=1),               # left continuous Kaplan-Meier Estimator
-               OminusE=txevents-txatrisk/atrisk*events,    #  Observed events minus Expected events in treatment group
-               Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) 
-  times_tensurv[8] = times_tensurv[8] + Sys.time() - s8
-  
-  s9 <- Sys.time()
-  x9 <- x8 %>% #Variance of OminusE
-               select(-s)
-  times_tensurv[9] = times_tensurv[9] + Sys.time() - s9
-}
-
-kable(data.frame(eval = c("group_by arrange",
-                          "mutate",
-                          "group_by summarise",
-                          "filter",
-                          "select",
-                          "mutate",
-                          "arrange",
-                          "group_by mutate",
-                          "select"),
-                 time = times_tensurv/n_iter,
-                 percent = round(times_tensurv / sum(times_tensurv) * 100, 2)))
-```
-
-## Filter
-```{r filter}
-mbm_sub <- bench::mark(
-  filter(x3, events>0, atrisk-txatrisk>0, txatrisk>0),
-  x3[which(x3$events > 0 & x3$atrisk - x3$txatrisk > 0 & x3$txatrisk > 0), ],
-  iterations = 100
-)
-mbm_sub$expression[[1]] <- "dplyr::filter"
-mbm_sub$expression[[2]] <- "base filter"
-mbm_sub
-# plot(mbm_sub)
-```
-
-## Improvments
-```{r}
-tensurvNew <- function(x, txval){
-
-    u.trt = unique(x$Treatment)
-    if(length(u.trt) > 2){
-      stop("Expected two groups")
-    }
-
-    if(! txval %in% u.trt){
-      stop("txval is not a valid treatment group value")
-    }
-
-    if(! all(unique(x$event) %in% c(0,1) ) ){
-      stop("Event indicator must be 0 (censoring) or 1 (event)")
-    }
-    x <- x %>% group_by(Stratum) %>% arrange(desc(tte)) %>%
-          mutate(one=1,
-                 atrisk=cumsum(one),
-                 txatrisk=cumsum(Treatment==txval)) %>%
+  for (i in 1:n_iter) {
+    s1 <- Sys.time()
+    x1 <- d %>% group_by(Stratum) %>% arrange(desc(tte))
+    times_tensurv[1] = times_tensurv[1] + Sys.time() - s1
+    
+    s2 <- Sys.time()
+    x2 <- x1 %>% mutate(one=1,
+                        atrisk=cumsum(one),
+                        txatrisk=cumsum(Treatment==txval)) 
+    times_tensurv[2] = times_tensurv[2] + Sys.time() - s2
+    
+    s3 <- Sys.time()
+    x3 <- x2 %>%
           # Handling ties using Breslow's method
           group_by(Stratum, mtte=desc(tte)) %>%
           dplyr::summarise(events=sum(event),
                            txevents=sum((Treatment==txval)*event),
                            tte=first(tte),
                            atrisk=max(atrisk),
-                           txatrisk=max(txatrisk))
-    x[which(x$events > 0 & x$atrisk > x$txatrisk & x$txatrisk > 0),] %>%
-          select(-mtte) %>%
-          mutate(s=1-events/atrisk) %>%
-          arrange(Stratum, tte) %>%
+                           txatrisk=max(txatrisk)) 
+    times_tensurv[3] = times_tensurv[3] + Sys.time() - s3
+    
+    s4 <- Sys.time()
+    x4 <- x3 %>%
+          # Keep calculation for observed time with at least one event, at least one subject is
+          # at risk in both treatment group and control group.
+          filter(events>0, atrisk-txatrisk>0, txatrisk>0)
+    times_tensurv[4] = times_tensurv[4] + Sys.time() - s4
+    
+    s5 <- Sys.time()
+    x5 <- x4 %>%
+          select(-mtte) 
+    times_tensurv[5] = times_tensurv[5] + Sys.time() - s5
+    
+    s6 <- Sys.time()
+    x6 <- x5 %>%
+          mutate(s=1-events/atrisk) 
+    times_tensurv[6] = times_tensurv[6] + Sys.time() - s6
+    
+    s7 <- Sys.time()
+    x7 <- x6 %>%
+          arrange(Stratum, tte) 
+    times_tensurv[7] = times_tensurv[7] + Sys.time() - s7
+    
+    s8 <- Sys.time()
+    x8 <- x7 %>%
           group_by(Stratum) %>%
           mutate(S=lag(cumprod(s), default=1),               # left continuous Kaplan-Meier Estimator
                  OminusE=txevents-txatrisk/atrisk*events,    #  Observed events minus Expected events in treatment group
-                 Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) %>% #Variance of OminusE
+                 Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) 
+    times_tensurv[8] = times_tensurv[8] + Sys.time() - s8
+    
+    s9 <- Sys.time()
+    x9 <- x8 %>% #Variance of OminusE
                  select(-s)
+    times_tensurv[9] = times_tensurv[9] + Sys.time() - s9
+  }
+  
+  return (data.frame(eval = c("group_by arrange",
+                            "mutate",
+                            "group_by summarise",
+                            "filter",
+                            "select",
+                            "mutate",
+                            "arrange",
+                            "group_by mutate",
+                            "select"),
+                   time = times_tensurv/n_iter,
+                   percent = round(times_tensurv / sum(times_tensurv) * 100, 2)))
 }
-
-bench::mark(
-  d1 %>% simtrial::tensurv(txval="Experimental"),
-  d1 %>% tensurvNew(txval="Experimental"),
-  iterations = 20
-)
-
-bench::mark(
-  d2 %>% simtrial::tensurv(txval="Experimental"),
-  d2 %>% tensurvNew(txval="Experimental"),
-  iterations = 20
-)
-
-bench::mark(
-  d3 %>% simtrial::tensurv(txval="Experimental"),
-  d3 %>% tensurvNew(txval="Experimental"),
-  iterations = 20
-)
 ```
 
+## `timingType = 1:5`
+
+### `simfix`
+```{r prof_simfix_all}
+times_simfix <- mbm_simfix(timingType = 1:5,
+                              useSimfixNew = FALSE,
+                              nstrata = nstrata,
+                              minFollow = minFollow,
+                              fr = fr,
+                              dr = dr)
+kable(times_simfix)
+```
+
+### `simfix` with `simPWSurvNew`
+```{r prof_simfixNew_all}
+times_simfixNew <- mbm_simfix(timingType = 1:5,
+                           nstrata = nstrata,
+                           minFollow = minFollow,
+                           fr = fr,
+                           dr = dr)
+kable(times_simfixNew)
+```
+
+## `timingType = 1`
+
+### `simfix`
+```{r prof_simfix1}
+times_simfix1 <- mbm_simfix(timingType = 1,
+                            useSimfixNew = FALSE,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfix1)
+```
+
+### `simfix` with `simPWSurvNew`
+```{r prof_simfixNew1}
+times_simfixNew1 <- mbm_simfix(timingType = 1,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfixNew1)
+```
+
+### `doAnalysis`
+```{r prof_doAnalysis1}
+times_do1 <- mbm_doAnalysis(d = d1,
+                            rg = rg,
+                            nstrata = nstrata)
+
+kable(times_do1)
+```
+
+### `tensurv`
+```{r prof_tensurv1}
+times_tensurv1 <- mbm_tensurv(d = d1)
+kable(times_tensurv1)
+```
+
+## `timingType = 2`
+
+### `simfix`
+```{r prof_simfix2}
+times_simfix2 <- mbm_simfix(timingType = 2,
+                            useSimfixNew = FALSE,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfix2)
+```
+
+### `simfix` with `simPWSurvNew`
+```{r prof_simfixNew2}
+times_simfixNew2 <- mbm_simfix(timingType = 2,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfixNew2)
+```
+
+### `doAnalysis`
+```{r prof_doAnalysis2}
+times_do2 <- mbm_doAnalysis(d = d2,
+                            rg = rg,
+                            nstrata = nstrata)
+
+kable(times_do2)
+```
+
+### `tensurv`
+```{r prof_tensurv2}
+times_tensurv2 <- mbm_tensurv(d = d2)
+kable(times_tensurv2)
+```
+
+## `timingType = 3`
+
+### `simfix`
+```{r prof_simfix3}
+times_simfix3 <- mbm_simfix(timingType = 3,
+                            useSimfixNew = FALSE,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfix3)
+```
+
+### `simfix` with `simPWSurvNew`
+```{r prof_simfixNew3}
+times_simfixNew3 <- mbm_simfix(timingType = 3,
+                            nstrata = nstrata,
+                            minFollow = minFollow,
+                            fr = fr,
+                            dr = dr)
+
+kable(times_simfixNew3)
+```
+
+### `doAnalysis`
+```{r prof_doAnalysis3}
+times_do3 <- mbm_doAnalysis(d = d3,
+                            rg = rg,
+                            nstrata = nstrata)
+
+kable(times_do3)
+```
+
+### `tensurv`
+```{r prof_tensurv3}
+times_tensurv3 <- mbm_tensurv(d = d3)
+kable(times_tensurv3)
+```
+
+**Summary**
+
+We focus on three cases when `timingType` is a scalar (1, 2, or 3).
+
+  - Before optimizing `simPWSurv`, `simPWSurv` takes $50\%$ of the runtime in one simulation in all three cases.
+
+  - With a more efficient `simPWSurvNew`, `simPWSurvNew` is no longer the main bottleneck of `simfix`, while `doAnalysis` takes $50\%$ to $60\%$ of the runtime in one simulation.
+
+  - Further benchmark `doAnalysis`, we can see `tensurv` takes almost $80\%$ of the runtime of `doAnalysis`.
