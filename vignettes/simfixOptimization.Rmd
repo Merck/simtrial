@@ -48,7 +48,8 @@ enrollStrata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
 # enrollment over 1 year, with ramp-up over first 6 months
-enrollRates <- tibble(rate = c(9, 2), duration = c(6, 6))
+enrollRates <- tibble(rate = c(2, 4, 6, 8) * 11.1, 
+                      duration = c(2, 2, 2, 6))
 
 # failure rate:
 # - biomarker negative: control is exponential with median of 12 months; experimental has HR = 1.2 for 4 months followed by HR=.65
@@ -80,14 +81,62 @@ failRatesAll <- failRatesAll %>%
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
+# Runtime of `simfix` across different number of simulations
+```{r}
+sampleSize = 800 # Trial sample size
+targetEvents = 350 # Targeted events at analysis
+totalDuration = 30 # Planned trial duration
+
+nitr <- 5
+n_sims <- c(1, 10, 100)
+times <- rep(0, length(n_sims))
+times_new <- rep(0, length(n_sims))
+for (itr in 1:nitr) {
+  for (i in 1:length(n_sims)) {
+    start <- Sys.time()
+    simfix(
+      nsim = n_sims[i], # Number of simulations
+      sampleSize = sampleSize, # Trial sample size
+      targetEvents = targetEvents, # Targeted events at analysis
+      enrollStrata = enrollStrata, # Study strata
+      enrollRates = enrollRates, # Enrollment rates
+      failRates = failRatesAll, # Failure rates
+      totalDuration = totalDuration, # Planned trial duration
+      block = block, # Block for treatment
+      timingType = 1:5, # Use all possible data cutoff methods
+      rg = rg # FH test(s) to use; in this case, logrank
+    )  
+    times[i] <- times[i] + difftime(Sys.time(), start, units = "sec")[[1]]
+    
+    start <- Sys.time()
+    simfixNew(
+      nsim = n_sims[i], # Number of simulations
+      sampleSize = sampleSize, # Trial sample size
+      targetEvents = targetEvents, # Targeted events at analysis
+      enrollStrata = enrollStrata, # Study strata
+      enrollRates = enrollRates, # Enrollment rates
+      failRates = failRatesAll, # Failure rates
+      totalDuration = totalDuration, # Planned trial duration
+      block = block, # Block for treatment
+      timingType = 1:5, # Use all possible data cutoff methods
+      rg = rg # FH test(s) to use; in this case, logrank
+    )  
+    times_new[i] <- times_new[i] + difftime(Sys.time(), start, units = "sec")[[1]]
+  }
+}
+
+tb_times <- t(data.frame(nsims = as.character(sort(n_sims)),
+                         simfix = times/nitr,
+                         simfixNew = times_new/nitr))
+kable(tb_times)
+```
+
+We notice a quasi-linear relationship between the run time of `simfix` and the value of `nsim` (the number of simulations).
+
 
 # Profile one simulation
 
 ```{r functions}
-totalDuration = 30
-sampleSize = 800
-targetEvents = 350
-
 nstrata <- nrow(enrollStrata)
 doAnalysis <- function(d,rg,nstrata){
   if (nrow(rg)==1) {
