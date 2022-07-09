@@ -27,9 +27,9 @@ NULL
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
 #' @param targetEvents Targeted event count for analysis.
-#' @param enrollStrata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
+#' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
 #' @param enrollRates Piecewise constant enrollment rates by time period.
-#' Note that these are overall population enrollment rates and the `enrollStrata` argument controls the
+#' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
@@ -76,7 +76,7 @@ simfixNew <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
-                   enrollStrata = tibble::tibble(Stratum = "All", p = 1),
+                   strata = tibble::tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
                    enrollRates=tibble::tibble(duration=c(2,2,10),
                                               rate=c(3,6,9)),
@@ -112,8 +112,8 @@ simfixNew <- function(nsim=1000,
   if(!min(totalDuration) > 0){stop("totalDuration in `simfix()` must be a single positive number")}
 
   strata2 <- names(table(failRates$Stratum))
-  if(nrow(enrollStrata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
-  for(s in enrollStrata$Stratum){
+  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+  for(s in strata$Stratum){
     if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
   }
 
@@ -127,7 +127,7 @@ simfixNew <- function(nsim=1000,
   if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
   if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
 
-  nstrata <- nrow(enrollStrata)
+  nstrata <- nrow(strata)
   doAnalysis <- function(d,rg,nstrata){
     if (nrow(rg)==1){Z = tibble::tibble(Z=(d %>%
                                            simtrial::tensurv(txval="Experimental") %>%
@@ -166,7 +166,7 @@ simfixNew <- function(nsim=1000,
   ) %op% {
     if (setSeed) set.seed(2022 + i - 1)
     sim <- simtrial::simPWSurvNew(n = sampleSize,
-                               enrollStrata = enrollStrata,
+                               strata = strata,
                                enrollRates = enrollRates,
                                failRates = fr,
                                dropoutRates = dr,

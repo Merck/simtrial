@@ -6,7 +6,7 @@
 \usage{
 simPWSurv(
   n = 100,
-  enrollStrata = tibble::tibble(Stratum = "All", p = 1),
+  strata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
   enrollRates = tibble::tibble(rate = 9, duration = 1),
   failRates = tibble::tibble(Stratum = rep("All", 4), period = rep(1:2, 2), Treatment =
@@ -20,7 +20,7 @@ simPWSurv(
 \item{n}{Number of observations.
 If length(n) > 1, the length is taken to be the number required.}
 
-\item{enrollStrata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum
+\item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum
 in \code{p}}
 
 \item{block}{Vector of treatments to be included in each  block}
@@ -67,7 +67,7 @@ library(dplyr)
 # Simulate 2 strata; will use defaults for blocking and enrollRates
 simPWSurv(n=20,
           # 2 strata,30\% and 70\% prevalence
-          enrollStrata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
+          strata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
           failRates=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
                                    period=rep(1:2,4),
                                    Treatment=rep(c(rep("Control",2),rep("Experimental",2)),2),
@@ -95,6 +95,6 @@ dropoutRates <- bind_rows(
    tibble(Stratum="High",period=1,Treatment="Control"     ,duration=3,rate=.001),
    tibble(Stratum="High",period=1,Treatment="Experimental",duration=3,rate=.001)
 )
-simPWSurv(n=12,enrollStrata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
+simPWSurv(n=12,strata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
          failRates=failRates,dropoutRates=dropoutRates)
 }

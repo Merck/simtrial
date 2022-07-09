@@ -43,7 +43,7 @@ In this example, we consider
 
 ```{r data}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
-enrollStrata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
+strata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
@@ -98,7 +98,7 @@ for (itr in 1:nitr) {
       nsim = n_sims[i], # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
+      strata = strata, # Study strata
       enrollRates = enrollRates, # Enrollment rates
       failRates = failRatesAll, # Failure rates
       totalDuration = totalDuration, # Planned trial duration
@@ -113,7 +113,7 @@ for (itr in 1:nitr) {
       nsim = n_sims[i], # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
+      strata = strata, # Study strata
       enrollRates = enrollRates, # Enrollment rates
       failRates = failRatesAll, # Failure rates
       totalDuration = totalDuration, # Planned trial duration
@@ -137,7 +137,7 @@ We notice a quasi-linear relationship between the run time of `simfix` and the v
 # Profile one simulation
 
 ```{r functions}
-nstrata <- nrow(enrollStrata)
+nstrata <- nrow(strata)
 doAnalysis <- function(d,rg,nstrata){
   if (nrow(rg)==1) {
     Z = tibble::tibble(Z=(d %>%
@@ -186,7 +186,7 @@ mbm_simfix <- function(n_iter = 20,
       # simPWSurvNew
       s1 <- Sys.time()
       sim <- simtrial::simPWSurvNew(n = sampleSize,
-                                   enrollStrata = enrollStrata,
+                                   strata = strata,
                                    enrollRates = enrollRates,
                                    failRates = fr,
                                    dropoutRates = dr,
@@ -196,7 +196,7 @@ mbm_simfix <- function(n_iter = 20,
       # simPWSurv
       s1 <- Sys.time()
       sim <- simtrial::simPWSurv(n = sampleSize,
-                                   enrollStrata = enrollStrata,
+                                   strata = strata,
                                    enrollRates = enrollRates,
                                    failRates = fr,
                                    dropoutRates = dr,
@@ -312,7 +312,7 @@ mbm_simfix <- function(n_iter = 20,
 
 
 sim <- simtrial::simPWSurvNew(n = sampleSize,
-                             enrollStrata = enrollStrata,
+                             strata = strata,
                              enrollRates = enrollRates,
                              failRates = fr,
                              dropoutRates = dr,

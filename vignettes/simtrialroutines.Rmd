@@ -126,7 +126,7 @@ dropoutRates <- tibble(
 ```{r}
 x <- simPWSurv(
   n = 400,
-  enrollStrata = strata,
+  strata = strata,
   block = block,
   enrollRates = enrollRates,
   failRates = failRates,
@@ -248,7 +248,7 @@ simfix(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
   targetEvents = 350, # Targeted events at analysis
-  enrollStrata = strata, # Study strata
+  strata = strata, # Study strata
   enrollRates = enrollRates, # Enrollment rates
   failRates = failRates, # Failure rates
   totalDuration = 30, # Planned trial duration

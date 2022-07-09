@@ -23,7 +23,7 @@ dropoutRates <- bind_rows(
 )
 set.seed(1)
 x <- simPWSurv(n=400000,
-               enrollStrata = strata,
+               strata = strata,
                block = block,
                enrollRates = enrollRates,
                failRates=failRates,
@@ -96,7 +96,7 @@ testthat::test_that("enrollRates calculated from simulated dataset must be withi
 #check the arguments, by changing n, the actual number of events changes
 set.seed(2468)
 z <- simPWSurv(n=300000,
-               enrollStrata = strata,
+               strata = strata,
                block = block,
                enrollRates = enrollRates,
                failRates=failRates,

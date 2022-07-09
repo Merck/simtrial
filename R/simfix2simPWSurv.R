@@ -52,7 +52,7 @@ NULL
 #' # Enroll 300 patients in ~12 months at constant rate
 #' sim <-
 #'     simPWSurv(n=300,
-#'           enrollStrata=tibble::tibble(Stratum=c("Low","High"),p=c(.6,.4)),
+#'           strata=tibble::tibble(Stratum=c("Low","High"),p=c(.6,.4)),
 #'           enrollRates=tibble::tibble(duration=12,rate=300/12),
 #'           failRates=x$failRates,
 #'           dropoutRates=x$dropoutRates)

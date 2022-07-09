@@ -263,7 +263,7 @@ In this example, we consider
 
 ```{r data}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
-enrollStrata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
+strata <- tibble(Stratum = c("Biomarker Negative", "Biomarker Positive"), p = c(.5, .5))
 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
@@ -337,7 +337,7 @@ runSimfixVarCores <- function(
       nsim = nsim, # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
+      strata = strata, # Study strata
       enrollRates = enrollRates, # Enrollment rates
       failRates = failRatesAll, # Failure rates
       totalDuration = totalDuration, # Planned trial duration
@@ -357,7 +357,7 @@ runSimfixVarCores <- function(
         nsim = nsim, # Number of simulations
         sampleSize = sampleSize, # Trial sample size
         targetEvents = targetEvents, # Targeted events at analysis
-        enrollStrata = enrollStrata, # Study strata
+        strata = strata, # Study strata
         enrollRates = enrollRates, # Enrollment rates
         failRates = failRatesAll, # Failure rates
         totalDuration = totalDuration, # Planned trial duration
@@ -379,7 +379,7 @@ runSimfixVarCores <- function(
       nsim = nsim, # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
-      enrollStrata = enrollStrata, # Study strata
+      strata = strata, # Study strata
       enrollRates = enrollRates, # Enrollment rates
       failRates = failRatesAll, # Failure rates
       totalDuration = totalDuration, # Planned trial duration
@@ -399,7 +399,7 @@ runSimfixVarCores <- function(
         nsim = nsim, # Number of simulations
         sampleSize = sampleSize, # Trial sample size
         targetEvents = targetEvents, # Targeted events at analysis
-        enrollStrata = enrollStrata, # Study strata
+        strata = strata, # Study strata
         enrollRates = enrollRates, # Enrollment rates
         failRates = failRatesAll, # Failure rates
         totalDuration = totalDuration, # Planned trial duration

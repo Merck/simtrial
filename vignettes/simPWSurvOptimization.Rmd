@@ -1080,13 +1080,13 @@ In this example, `mapply` is 3 times faster than the nested for loop.
 set.seed(2022)
 mbm_simPWSurv <- microbenchmark(
   simPWSurv(n = 1000, 
-            enrollStrata = strata,
+            strata = strata,
             block = block,
             enrollRates = enrollRates,
             failRates = failRates,
             dropoutRates = dropoutRates),
   simPWSurvNew(n = 1000, 
-               enrollStrata = strata,
+               strata = strata,
                block = block,
                enrollRates = enrollRates,
                failRates = failRates,

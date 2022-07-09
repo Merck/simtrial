@@ -17,7 +17,7 @@ set.seed(1234)
 test2<-simfix(nsim=100,
               sampleSize=434,
               targetEvents=227,
-              enrollStrata = tibble::tibble(Stratum = "All", p = 1),
+              strata = tibble::tibble(Stratum = "All", p = 1),
               enrollRates=tibble::tibble(duration=c(1,1,9),
                                          rate= c(5,5,47)),
               failRates=tibble::tibble(Stratum="All",
