@@ -94,7 +94,7 @@ NULL
 #'simPWSurv(n=12,strata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
 #'          failRates=failRates,dropoutRates=dropoutRates)
 #' @export
-simPWSurvNew <- function(n=100,
+simPWSurv <- function(n=100,
                       strata=tibble::tibble(Stratum="All",p=1),
                       block=c(rep("Control",2),rep("Experimental",2)),
                       enrollRates=tibble::tibble(rate=9,

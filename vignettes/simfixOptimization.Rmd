@@ -21,11 +21,6 @@ library(tibble)
 library(dplyr)
 library(gt)
 library(ggplot2)
-library(profvis)
-library(bench)
-library(microbenchmark)
-library(PWEALL)
-library(parallel)
 library(doParallel)
 devtools::load_all()
 ```
@@ -87,14 +82,14 @@ sampleSize = 800 # Trial sample size
 targetEvents = 350 # Targeted events at analysis
 totalDuration = 30 # Planned trial duration
 
-nitr <- 5
+nitr <- 1
 n_sims <- c(1, 10, 100)
 times <- rep(0, length(n_sims))
 times_new <- rep(0, length(n_sims))
 for (itr in 1:nitr) {
   for (i in 1:length(n_sims)) {
     start <- Sys.time()
-    simfix(
+    simtrial:::simfix_(
       nsim = n_sims[i], # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
@@ -109,7 +104,7 @@ for (itr in 1:nitr) {
     times[i] <- times[i] + difftime(Sys.time(), start, units = "sec")[[1]]
     
     start <- Sys.time()
-    simfixNew(
+    simtrial::simfix(
       nsim = n_sims[i], # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
@@ -128,6 +123,7 @@ for (itr in 1:nitr) {
 tb_times <- t(data.frame(nsims = as.character(sort(n_sims)),
                          simfix = times/nitr,
                          simfixNew = times_new/nitr))
+rownames(tb_times) <- c("Number of simulations", "Old simfix", "New simfix")
 kable(tb_times)
 ```
 
@@ -185,7 +181,7 @@ mbm_simfix <- function(n_iter = 20,
     if (useSimfixNew) {
       # simPWSurvNew
       s1 <- Sys.time()
-      sim <- simtrial::simPWSurvNew(n = sampleSize,
+      sim <- simtrial::simPWSurv(n = sampleSize,
                                    strata = strata,
                                    enrollRates = enrollRates,
                                    failRates = fr,
@@ -195,7 +191,7 @@ mbm_simfix <- function(n_iter = 20,
     } else {
       # simPWSurv
       s1 <- Sys.time()
-      sim <- simtrial::simPWSurv(n = sampleSize,
+      sim <- simtrial:::simPWSurv_(n = sampleSize,
                                    strata = strata,
                                    enrollRates = enrollRates,
                                    failRates = fr,
@@ -289,7 +285,7 @@ mbm_simfix <- function(n_iter = 20,
   }
   
   if (useSimfixNew) {
-    evals <- c("simPWSurvNew",
+    evals <- c("New simPWSurv",
               "getCutDataForCount",
               "compute tests",
               "cutData",
@@ -297,7 +293,7 @@ mbm_simfix <- function(n_iter = 20,
               "compute addit",
               "All")
   } else {
-    evals <- c("simPWSurv",
+    evals <- c("Old simPWSurv",
               "getCutDataForCount",
               "compute tests",
               "cutData",
@@ -311,7 +307,7 @@ mbm_simfix <- function(n_iter = 20,
 }
 
 
-sim <- simtrial::simPWSurvNew(n = sampleSize,
+sim <- simtrial::simPWSurv(n = sampleSize,
                              strata = strata,
                              enrollRates = enrollRates,
                              failRates = fr,
@@ -493,29 +489,6 @@ mbm_tensurv <- function(n_iter = 20,
 }
 ```
 
-## `timingType = 1:5`
-
-### `simfix`
-```{r prof_simfix_all}
-times_simfix <- mbm_simfix(timingType = 1:5,
-                              useSimfixNew = FALSE,
-                              nstrata = nstrata,
-                              minFollow = minFollow,
-                              fr = fr,
-                              dr = dr)
-kable(times_simfix)
-```
-
-### `simfix` with `simPWSurvNew`
-```{r prof_simfixNew_all}
-times_simfixNew <- mbm_simfix(timingType = 1:5,
-                           nstrata = nstrata,
-                           minFollow = minFollow,
-                           fr = fr,
-                           dr = dr)
-kable(times_simfixNew)
-```
-
 ## `timingType = 1`
 
 ### `simfix`
@@ -530,7 +503,7 @@ times_simfix1 <- mbm_simfix(timingType = 1,
 kable(times_simfix1)
 ```
 
-### `simfix` with `simPWSurvNew`
+### `simfix` with new `simPWSurv`
 ```{r prof_simfixNew1}
 times_simfixNew1 <- mbm_simfix(timingType = 1,
                             nstrata = nstrata,
@@ -577,7 +550,7 @@ times_simfix2 <- mbm_simfix(timingType = 2,
 kable(times_simfix2)
 ```
 
-### `simfix` with `simPWSurvNew`
+### `simfix` with new `simPWSurv`
 ```{r prof_simfixNew2}
 times_simfixNew2 <- mbm_simfix(timingType = 2,
                             nstrata = nstrata,
@@ -623,7 +596,7 @@ times_simfix3 <- mbm_simfix(timingType = 3,
 kable(times_simfix3)
 ```
 
-### `simfix` with `simPWSurvNew`
+### `simfix` with new `simPWSurv`
 ```{r prof_simfixNew3}
 times_simfixNew3 <- mbm_simfix(timingType = 3,
                             nstrata = nstrata,
@@ -661,6 +634,6 @@ We focus on three cases when `timingType` is a scalar (1, 2, or 3).
 
   - Before optimizing `simPWSurv`, `simPWSurv` takes $50\%$ of the runtime in one simulation in all three cases.
 
-  - With a more efficient `simPWSurvNew`, `simPWSurvNew` is no longer the main bottleneck of `simfix`, while `doAnalysis` takes $50\%$ to $60\%$ of the runtime in one simulation.
+  - With a more efficient `simPWSurv`, `simPWSurv` is no longer the main bottleneck of `simfix`, while `doAnalysis` takes $50\%$ to $60\%$ of the runtime in one simulation.
 
   - Further benchmark `doAnalysis`, we can see `tensurv` takes almost $80\%$ of the runtime of `doAnalysis`.

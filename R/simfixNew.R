@@ -73,7 +73,7 @@ NULL
 #' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
 #' mean(p<.025)
 #' @export
-simfixNew <- function(nsim=1000,
+simfix <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
@@ -166,7 +166,7 @@ simfixNew <- function(nsim=1000,
     .errorhandling = "pass"
   ) %op% {
     if (setSeed) set.seed(2022 + i - 1)
-    sim <- simtrial::simPWSurvNew(n = sampleSize,
+    sim <- simtrial::simPWSurv(n = sampleSize,
                                strata = strata,
                                enrollRates = enrollRates,
                                failRates = fr,

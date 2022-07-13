@@ -88,7 +88,7 @@ test_FH <- function(nsim = 10000,
   #         Old simfix        #
   #############################
   start <- Sys.time()
-  xx_FH <- simfix(nsim = nsim,
+  xx_FH <- simtrial:::simfix_(nsim = nsim,
                    # sample size
                    sampleSize = x_FH$analysis$N,
                    # targeted total event count
@@ -115,7 +115,7 @@ test_FH <- function(nsim = 10000,
   registerDoParallel(ncore)
 
   start <- Sys.time()
-  xx_FH_new <- simfixNew(nsim = nsim,
+  xx_FH_new <- simtrial::simfix(nsim = nsim,
                   # sample size
                   sampleSize = x_FH$analysis$N,
                   # targeted total event count
@@ -156,12 +156,12 @@ FH_10000_1 <- test_FH(nsim = nsim,
                       )
 
 result_FH_10000_1 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(FH_10000_1$x_FH$analysis$N, 2)),
   power = c(mean(FH_10000_1$xx_FH$Z <= qnorm(0.025)), 
             mean(FH_10000_1$xx_FH_new$Z <= qnorm(0.025))),
   runtime = c(FH_10000_1$time_FH, FH_10000_1$time_FH_new))
-names(result_FH_10000_1) <- c("method", "sample size", "power", "runtime (min)")
+names(result_FH_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(FH_10000_1$x_FH$analysis$Power, 5)))
 result_FH_10000_1 %>% gt()
@@ -176,12 +176,12 @@ FH_10000_2 <- test_FH(nsim = nsim,
                       )
 
 result_FH_10000_2 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(FH_10000_2$x_FH$analysis$N, 2)),
   power = c(mean(FH_10000_2$xx_FH$Z <= qnorm(0.025)), 
             mean(FH_10000_2$xx_FH_new$Z <= qnorm(0.025))),
   runtime = c(FH_10000_2$time_FH, FH_10000_2$time_FH_new))
-names(result_FH_10000_2) <- c("method", "sample size", "power", "runtime (min)")
+names(result_FH_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed power: ", round(FH_10000_2$x_FH$analysis$Power, 5)))
 result_FH_10000_2 %>% gt()
@@ -197,12 +197,12 @@ FH_10000_3 <- test_FH(nsim = nsim,
                       )
 
 result_FH_10000_3 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(FH_10000_3$x_FH$analysis$N, 2)),
   power = c(mean(FH_10000_3$xx_FH$Z <= qnorm(0.025)), 
             mean(FH_10000_3$xx_FH_new$Z <= qnorm(0.025))),
   runtime = c(FH_10000_3$time_FH, FH_10000_3$time_FH_new))
-names(result_FH_10000_3) <- c("method", "sample size", "power", "runtime (min)")
+names(result_FH_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed power: ", round(FH_10000_3$x_FH$analysis$Power, 5)))
 result_FH_10000_3 %>% gt()
@@ -233,7 +233,7 @@ test_MC <- function(nsim = 10000,
   #############################
   start <- Sys.time()
   
-  xx_MC <- simfix(nsim = nsim,
+  xx_MC <- simtrial:::simfix_(nsim = nsim,
                  # sample size
                  sampleSize = x_MC$analysis$N,
                  # targeted total event count
@@ -304,12 +304,12 @@ MC_10000_1 <- test_MC(nsim = nsim,
                       )
 
 result_MC_10000_1 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MC_10000_1$x_MC$analysis$N, 2)),
   power = c(mean(MC_10000_1$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
             mean(MC_10000_1$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
   runtime = c(MC_10000_1$time_MC, MC_10000_1$time_MC_new))
-names(result_MC_10000_1) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MC_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MC_10000_1$x_MC$analysis$Power, 5)))
 result_MC_10000_1 %>% gt()
@@ -327,12 +327,12 @@ MC_10000_2 <- test_MC(nsim = nsim,
                       )
 
 result_MC_10000_2 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MC_10000_2$x_MC$analysis$N, 2)),
   power = c(mean(MC_10000_2$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
             mean(MC_10000_2$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
   runtime = c(MC_10000_2$time_MC, MC_10000_2$time_MC_new))
-names(result_MC_10000_2) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MC_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MC_10000_2$x_MC$analysis$Power, 5)))
 result_MC_10000_2 %>% gt()
@@ -350,12 +350,12 @@ MC_10000_3 <- test_MC(nsim = nsim,
                       )
 
 result_MC_10000_3 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MC_10000_3$x_MC$analysis$N, 2)),
   power = c(mean(MC_10000_3$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
             mean(MC_10000_3$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
   runtime = c(MC_10000_3$time_MC, MC_10000_3$time_MC_new))
-names(result_MC_10000_3) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MC_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MC_10000_3$x_MC$analysis$Power, 5)))
 result_MC_10000_3 %>% gt()
@@ -384,7 +384,7 @@ test_MB <- function(nsim = 10000,
   
   xx_MB <- NULL
   for (sim in 1:nsim) {
-    xx_MB_n <- simPWSurv(n = x_MB$analysis$N,
+    xx_MB_n <- simtrial:::simPWSurv_(n = x_MB$analysis$N,
                            strata = tibble::tibble(Stratum = "All", p = 1),
                            enrollRates = x_MB$enrollRates,
                            failRates = simfix2simPWSurv(failRates)$failRates) %>%
@@ -423,7 +423,7 @@ test_MB <- function(nsim = 10000,
     .combine = "rbind",
     .errorhandling = "pass"
   ) %op% {
-    simPWSurvNew(n = x_MB$analysis$N,
+    simPWSurv(n = x_MB$analysis$N,
                            strata = tibble::tibble(Stratum = "All", p = 1),
                            enrollRates = x_MB$enrollRates,
                            failRates = simfix2simPWSurv(failRates)$failRates) %>%
@@ -455,12 +455,12 @@ MB_10000_1 <- test_MB(nsim = nsim,
                       )
 
 result_MB_10000_1 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MB_10000_1$x_MB$analysis$N, 2)),
   power = c(mean(MB_10000_1$xx_MB$pval < .025), 
             mean(MB_10000_1$xx_MB_new$pval <= .025)),
   runtime = c(MB_10000_1$time_MB, MB_10000_1$time_MB_new))
-names(result_MB_10000_1) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MB_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MB_10000_1$x_MB$analysis$Power, 5)))
 result_MB_10000_1 %>% gt()
@@ -476,12 +476,12 @@ MB_10000_2 <- test_MB(nsim = nsim,
                       )
 
 result_MB_10000_2 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MB_10000_2$x_MB$analysis$N, 2)),
   power = c(mean(MB_10000_2$xx_MB$pval < .025), 
             mean(MB_10000_2$xx_MB_new$pval <= .025)),
   runtime = c(MB_10000_2$time_MB, MB_10000_2$time_MB_new))
-names(result_MB_10000_2) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MB_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MB_10000_2$x_MB$analysis$Power, 5)))
 result_MB_10000_2 %>% gt()
@@ -497,12 +497,12 @@ MB_10000_3 <- test_MB(nsim = nsim,
                       )
 
 result_MB_10000_3 <- data.frame(
-  method = c("simfix", paste0("simfixNew_", ncore, "cores")),
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
   sampleSize = c(rep(MB_10000_3$x_MB$analysis$N, 2)),
   power = c(mean(MB_10000_3$xx_MB$pval < .025), 
             mean(MB_10000_3$xx_MB_new$pval <= .025)),
   runtime = c(MB_10000_3$time_MB, MB_10000_3$time_MB_new))
-names(result_MB_10000_3) <- c("method", "sample size", "power", "runtime (min)")
+names(result_MB_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
 
 writeLines(paste0("Fixed design power: ", round(MB_10000_3$x_MB$analysis$Power, 5)))
 result_MB_10000_3 %>% gt()

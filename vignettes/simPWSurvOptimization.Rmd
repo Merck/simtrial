@@ -21,11 +21,9 @@ library(tibble)
 library(dplyr)
 library(gt)
 library(ggplot2)
-library(profvis)
 library(bench)
 library(microbenchmark)
 library(PWEALL)
-library(parallel)
 devtools::load_all()
 ```
 
@@ -229,32 +227,31 @@ dropoutRates <- bind_rows(
 
 # Profile `simPWSurv`
 
-## Profile using `profvis`
 ```{r}
+# Create necessary intermediate variables
+
 n <- 1000
 set.seed(2022)
-profvis({
-  # Source code of simPWSurv
-  x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob = strata$p)) %>%
-    mutate(enrollTime = rpwenroll(n, enrollRates)) %>%
-    group_by(Stratum) %>% 
-    mutate(Treatment = fixedBlockRand(n = n(), block = block))  %>%
-    group_by(Stratum, Treatment)
-  utr <- unique(x$Treatment)
-  usr <- unique(x$Stratum)
-  x$failTime <- 0
-  x$dropoutTime <- 0
-  for(sr in usr){for(tr in utr){
-      indx <- x$Stratum==sr & x$Treatment==tr
-      x$failTime[indx] <- rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr))
-      x$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
-  }}
-})
+
+# Source code of simPWSurv
+x <- tibble(Stratum = sample(x = strata$Stratum, size = n, replace = TRUE, prob = strata$p)) %>%
+  mutate(enrollTime = rpwenroll(n, enrollRates)) %>%
+  group_by(Stratum) %>% 
+  mutate(Treatment = fixedBlockRand(n = n(), block = block))  %>%
+  group_by(Stratum, Treatment)
+utr <- unique(x$Treatment)
+usr <- unique(x$Stratum)
+x$failTime <- 0
+x$dropoutTime <- 0
+for(sr in usr){for(tr in utr){
+    indx <- x$Stratum==sr & x$Treatment==tr
+    x$failTime[indx] <- rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr))
+    x$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
+}}
+
 ```
 
-## "Profile" using `microbenchmark`
-
-### The source code of `simPWSurv`
+## The source code of `simPWSurv`
 ```{r}
 set.seed(2022)
 prof_sim <- microbenchmark(
@@ -291,7 +288,7 @@ prof_sim
 
 The nested for loop takes almost $90\%$ of the runtime, while creating a `tibble` takes the rest $10\%$ of the runtime.
 
-### A single iteration of the nested for loops
+## A single iteration of the nested for loops
 ```{r}
 # Select the third stratum and the first treatment
 sr <- usr[3]
@@ -330,22 +327,6 @@ prof_singleit
 ```
 
 Filtering rows using `dplyr` takes more than $90\%$ of the runtime of a single iteration of the nested loop.
-
-### Number of observations and number of intervals
-```{r}
-df_n_nr <- data.frame(matrix(nrow = length(usr) * length(utr), ncol = 5))
-colnames(df_n_nr) <- c("stratum", "treatment", "n", "failRates", "dropoutRates")
-i = 1
-for(sr in usr){for(tr in utr){
-  indx <- x$Stratum==sr & x$Treatment==tr
-  findx <- failRates$Stratum==sr & failRates$Treatment==tr
-  dindx <- dropoutRates$Stratum==sr & dropoutRates$Treatment==tr
-  df_n_nr[i, ] <- c(sr, tr, sum(indx), sum(findx), sum(dindx))
-  i = i+1
-}}
-df_n_nr <- df_n_nr %>% arrange(tr, sr)
-kable(df_n_nr)
-```
 
 
 # Manipulate input data
@@ -485,7 +466,7 @@ mbm_sim1 <- microbenchmark(
   times = 100
 )
 
-levels(mbm_sim1$expr) <- c("Current simPWSurv",
+levels(mbm_sim1$expr) <- c("Old simPWSurv",
                            "simPWSurv with efficient filter")
 mbm_sim1
 ```
@@ -655,8 +636,8 @@ mbm_rpwexp <- microbenchmark(
   PWEALL::rpwe(n = x_n, rate = test_failRates$rate, tchange = tchange0),
   times = 1000
 )
-levels(mbm_rpwexp$expr) <- c("Current method in R",
-                             "Current method in C++",
+levels(mbm_rpwexp$expr) <- c("Old method in R",
+                             "Old method in C++",
                              "Inverse CDF with exp(1) in R",
                              "Inverse CDF with unif in R",
                              "Inverse CDF with unif in C++",
@@ -748,8 +729,8 @@ df_times_n <- data.frame(x = times_n$n,
                                times_n$rpwexpunif,
                                times_n$rpwexpinvRcpp,
                                times_n$PWEALL),
-                         group = c(rep("Current method in R", nrow(times_n)),
-                                   rep("Current method in C++", nrow(times_n)),
+                         group = c(rep("Old method in R", nrow(times_n)),
+                                   rep("Old method in C++", nrow(times_n)),
                                    rep("Inverse CDF with exp(1) in R", nrow(times_n)),
                                    rep("Inverse CDF with unif in R", nrow(times_n)),
                                    rep("Inverse CDF with unif in C++", nrow(times_n)),
@@ -759,7 +740,7 @@ ggplot(df_times_n, aes(x, y, col = group)) +
   scale_x_log10(breaks = c(50, 100, 200, 500, 1000, 2000, 5000, 10000)) +
   # scale_x_continuous(trans='log10') + 
   scale_y_continuous(trans='log10') + 
-  labs(x = "number of observations to be generated", y = paste0("time (", "\U003BC", "s)"))
+  labs(x = "Number of observations to be generated", y = paste0("Runtime (", "\U003BC", "s)"))
 ```
 
 ### Runtime comparison across different number of intervals
@@ -791,8 +772,8 @@ df_times_nr <- data.frame(x = times_nr$n_rates,
                                 times_nr$rpwexpunif,
                                 times_nr$rpwexpinvRcpp,
                                 times_nr$PWEALL),
-                          group = c(rep("Current method in R", nrow(times_nr)),
-                                    rep("Current method in C++", nrow(times_nr)),
+                          group = c(rep("Old method in R", nrow(times_nr)),
+                                    rep("Old method in C++", nrow(times_nr)),
                                     rep("Inverse CDF with exp(1) in R", nrow(times_nr)),
                                     rep("Inverse CDF with unif in R", nrow(times_nr)),
                                     rep("Inverse CDF with unif in C++", nrow(times_nr)),
@@ -800,7 +781,7 @@ df_times_nr <- data.frame(x = times_nr$n_rates,
 ggplot(df_times_nr, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(trans='log10') +
-  labs(x = "number of intervals", y = paste0("time (", "\U003BC", "s)"))
+  labs(x = "Number of intervals", y = paste0("Runtime (", "\U003BC", "s)"))
 ```
 
 
@@ -941,7 +922,7 @@ mbm_sim2 <- microbenchmark(
   times = 100
 )
 
-levels(mbm_sim2$expr) <- c("Current simPWSurv",
+levels(mbm_sim2$expr) <- c("Old simPWSurv",
                            "simPWSurv with efficient filter",
                            "simPWSurv with efficient filter and rpwexpinvRcpp")
 mbm_sim2
@@ -1070,22 +1051,22 @@ In this example, `mapply` is 3 times faster than the nested for loop.
 
 # Overall improvement
 
-- Update in `simPWSurvNew`:
+- Update in `simPWSurv`:
     - Filter rows using brackets instead of `dplyr` when calling `rpwexp`.
-    - Generate piecewise Exponential random numbers using the inverse transform method implemented in C++.
+    - Generate piecewise Exponential random numbers using the inverse transform method implemented in C++ `rpwexpinvRcpp`.
     - Generate failure rates and dropout rates using `mapply` instead of the nested for loop. 
 
 - Speedup: $\times$ 7
 ```{r, warning=FALSE}
 set.seed(2022)
 mbm_simPWSurv <- microbenchmark(
-  simPWSurv(n = 1000, 
+  simtrial:::simPWSurv_(n = 1000, 
             strata = strata,
             block = block,
             enrollRates = enrollRates,
             failRates = failRates,
             dropoutRates = dropoutRates),
-  simPWSurvNew(n = 1000, 
+  simtrial::simPWSurv(n = 1000, 
                strata = strata,
                block = block,
                enrollRates = enrollRates,
@@ -1093,7 +1074,7 @@ mbm_simPWSurv <- microbenchmark(
                dropoutRates = dropoutRates),
   times = 100
 )
-levels(mbm_simPWSurv$expr) <- c("simPWSurv", "simPWSurvNew")
+levels(mbm_simPWSurv$expr) <- c("Old simPWSurv", "New simPWSurv")
 mbm_simPWSurv
 ```
 

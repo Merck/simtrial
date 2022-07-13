@@ -34,7 +34,7 @@ NULL
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
-#' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
+#' @param block As in `simtrial:::simPWSurv_()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
@@ -71,8 +71,7 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
 #' mean(p<.025)
-#' @export
-simfix <- function(nsim=1000,
+simfix_ <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
@@ -103,7 +102,7 @@ simfix <- function(nsim=1000,
   if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix()` must contain failRate")}
   if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix()` must contain hr")}
   if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix()` must contain dropoutRate")}
-  
+
   # check input trial durations
   if(!is.numeric(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
   if(!is.vector(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
@@ -112,7 +111,7 @@ simfix <- function(nsim=1000,
 
   strata2 <- names(table(failRates$Stratum))
   if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
-  for(s in strata$Stratum){ 
+  for(s in strata$Stratum){
     if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
   }
 
@@ -122,10 +121,10 @@ simfix <- function(nsim=1000,
 
   if(!targetEvents > 0){stop("targetEvents in `simfix()` must be positive")}
   if(length(targetEvents) != 1){stop(("targetEvents in `simfix()` must be positive"))}
-  
+
   if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
   if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
-  
+
   nstrata <- nrow(strata)
   doAnalysis <- function(d,rg,nstrata){
     if (nrow(rg)==1){Z = tibble::tibble(Z=(d %>%
@@ -156,7 +155,7 @@ simfix <- function(nsim=1000,
   dr <- xx$dropoutRates
   results <- NULL
   for(i in 1:nsim){
-    sim <- simtrial::simPWSurv(n = sampleSize,
+    sim <- simtrial:::simPWSurv_(n = sampleSize,
                                strata = strata,
                                enrollRates = enrollRates,
                                failRates = fr,

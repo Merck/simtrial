@@ -327,7 +327,7 @@ runSimfixVarCores <- function(
   #############################
   registerDoParallel(1)
   start <- Sys.time()
-  s <- simfixNew(
+  s <- simtrial::simfix(
     nsim = nsim, # Number of simulations
     sampleSize = sampleSize, # Trial sample size
     targetEvents = targetEvents, # Targeted events at analysis
@@ -349,7 +349,7 @@ runSimfixVarCores <- function(
   for (i in 2:length(ncores)) {
     registerDoParallel(ncores[i])
     start <- Sys.time()
-    sp <- simfixNew(
+    sp <- simtrial::simfix(
       nsim = nsim, # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
@@ -395,7 +395,7 @@ runAndPlotSimfixVarCores <- function(
     geom_point() +
     scale_x_continuous(trans='log2', breaks = ncores) +
     labs(x = "Number of cores",
-         y = paste0("Run time (in minute)")) +
+         y = paste0("Runtime (in minute)")) +
     theme_mk() +
     scale_color_adaptive("teal") +
     theme(legend.title=element_blank()) +
@@ -403,7 +403,7 @@ runAndPlotSimfixVarCores <- function(
   
   # Table
   tb_times <- t(data.frame(cores = as.character(sort(ncores)),
-                           simfix = times_new))
+                           runtime = times_new))
   # kable(tb_times)
   
   return (list(plot = pl_times,
@@ -454,7 +454,7 @@ runAndPlotSimfixVarCoresVarSims <- function(
     geom_point(aes(shape = group)) +
     scale_x_continuous(breaks = nsims) +
     labs(x = "Number of simulations",
-         y = paste0("Run time (in minute)")) +
+         y = paste0("Runtime (in minute)")) +
     theme_mk() +
     scale_color_adaptive("teal") +
     theme(legend.title=element_blank()) +
