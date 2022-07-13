@@ -1001,60 +1001,11 @@ prof_sim2
 Now creating a `tibble` takes 3/4 of the runtime, while the nested for loop takes the rest 1/4 of the runtime.
 
 
-# Use `mapply` to avoid the nested for loop
-```{r}
-generateAllFailTime <- function(x, failRates, asr, atr) {
-  generateFailTime <- function(sr, tr) {
-    indx <- x$Stratum==sr & x$Treatment==tr
-    findx <- failRates$Stratum == sr & failRates$Treatment == tr
-    return(rpwexpinvRcpp(n = sum(indx),
-                         failRates = failRates[findx, ]))
-  }
-  mapply(generateFailTime, asr, atr)
-}
-```
-
-## Improvments
-
-### The nested for loop
-```{r}
-set.seed(2022)
-mbm_nested3 <- microbenchmark(
-  # Nested for loops to generate failTime and dropoutTime
-  for(sr in usr){for(tr in utr){
-      indx <- x$Stratum==sr & x$Treatment==tr
-      # failTime
-      rpwexpinvRcpp(n=sum(indx),
-             failRates=failRates[failRates$Stratum==sr & failRates$Treatment==tr, ])
-      # dropoutTime
-      rpwexpinvRcpp(n=sum(indx),
-             failRates=dropoutRates[dropoutRates$Stratum==sr & dropoutRates$Treatment==tr, ])
-  }},
-  # Use mapply to generate failTime and dropoutTime
-  {
-    asr <- rep(usr, each = length(utr), times = 1)
-    atr <- rep(utr, each = 1, times = length(usr))
-    # failTime
-    unlist(generateAllFailTime(x, failRates, asr, atr))
-    # dropoutTime
-    unlist(generateAllFailTime(x, dropoutRates, asr, atr))
-  },
-  times = 100
-)
-levels(mbm_nested3$expr) <- c("Nested for loops",
-                            "mapply")
-mbm_nested3
-```
-
-In this example, `mapply` is 3 times faster than the nested for loop.
-
-
 # Overall improvement
 
 - Update in `simPWSurv`:
     - Filter rows using brackets instead of `dplyr` when calling `rpwexp`.
     - Generate piecewise Exponential random numbers using the inverse transform method implemented in C++ `rpwexpinvRcpp`.
-    - Generate failure rates and dropout rates using `mapply` instead of the nested for loop. 
 
 - Speedup: $\times$ 7
 ```{r, warning=FALSE}

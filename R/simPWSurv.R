@@ -116,26 +116,17 @@ simPWSurv <- function(n=100,
          mutate(enrollTime=rpwenroll(n, enrollRates)) %>%
          group_by(Stratum) %>% mutate(Treatment=fixedBlockRand(n=n(),block=block))  %>% # assign treatment
          # generate time to failure and time to dropout
-         arrange(Stratum,Treatment)
+         dplyr::group_by(Stratum,Treatment)
     usr <- unique(x$Stratum)
     utr <- unique(x$Treatment)
     x$failTime <- 0
     x$dropoutTime <- 0
-    asr <- rep(usr, each = length(utr), times = 1)
-    atr <- rep(utr, each = 1, times = length(usr))
-    x$failTime <- unlist(generateAllFailTime(x, failRates, asr, atr))
-    x$dropoutTime <- unlist(generateAllFailTime(x, dropoutRates, asr, atr))
+    for(sr in usr){for(tr in utr){
+      indx <- x$Stratum==sr & x$Treatment==tr
+      x$failTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=failRates[failRates$Stratum==sr&failRates$Treatment==tr,])
+      x$dropoutTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=dropoutRates[dropoutRates$Stratum==sr&dropoutRates$Treatment==tr,])
+    }}
     # set calendar time-to-event and failure indicator
     return(x %>% mutate(cte=pmin(dropoutTime,failTime)+enrollTime,
                         fail=(failTime <= dropoutTime)*1))
-}
-
-generateAllFailTime <- function(x, failRates, asr, atr) {
-  generateFailTime <- function(sr, tr) {
-    indx <- x$Stratum==sr & x$Treatment==tr
-    findx <- failRates$Stratum == sr & failRates$Treatment == tr
-    return(rpwexpinvRcpp(n = sum(indx),
-                         failRates = failRates[findx, ]))
-  }
-  mapply(generateFailTime, asr, atr, SIMPLIFY = FALSE)
 }
