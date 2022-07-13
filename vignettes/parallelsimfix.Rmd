@@ -34,11 +34,6 @@ library(tibble)
 library(dplyr)
 library(gt)
 library(ggplot2)
-library(profvis)
-library(bench)
-library(microbenchmark)
-library(PWEALL)
-library(parallel)
 library(doParallel)
 devtools::load_all()
 
@@ -313,7 +308,6 @@ detectCores()
 ```{r functions}
 runSimfixVarCores <- function(
   ncores = c(1L, 2L, 4L, 8L), # Number of cores
-  runsimfixNew = FALSE, # Run simfix or simfixNew
   nsim = 1000, # Number of simulations
   sampleSize = 800, # Trial sample size
   targetEvents = 350, # Targeted events at analysis
@@ -328,12 +322,34 @@ runSimfixVarCores <- function(
   
   times <- rep(0, length(ncores))
 
-  if (runsimfixNew == FALSE) { # simfix
+  #############################
+  #         In serial         #
+  #############################
+  registerDoParallel(1)
+  start <- Sys.time()
+  s <- simfixNew(
+    nsim = nsim, # Number of simulations
+    sampleSize = sampleSize, # Trial sample size
+    targetEvents = targetEvents, # Targeted events at analysis
+    strata = strata, # Study strata
+    enrollRates = enrollRates, # Enrollment rates
+    failRates = failRatesAll, # Failure rates
+    totalDuration = totalDuration, # Planned trial duration
+    block = block, # Block for treatment
+    timingType = timingType, # Use all possible data cutoff methods
+    rg = rg, # FH test(s) to use; in this case, logrank
+    setSeed = TRUE
+  )
+  times[1] <- difftime(Sys.time(), start, units = "min")[[1]]
+  doParallel::stopImplicitCluster()
 
-    # In serial
-    registerDoParallel(1)
+  #############################
+  #        In parallel        #
+  #############################
+  for (i in 2:length(ncores)) {
+    registerDoParallel(ncores[i])
     start <- Sys.time()
-    s <- simfix(
+    sp <- simfixNew(
       nsim = nsim, # Number of simulations
       sampleSize = sampleSize, # Trial sample size
       targetEvents = targetEvents, # Targeted events at analysis
@@ -346,72 +362,9 @@ runSimfixVarCores <- function(
       rg = rg, # FH test(s) to use; in this case, logrank
       setSeed = TRUE
     )
-    times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
+    times[i] <- difftime(Sys.time(), start, units = "min")[[1]]
     doParallel::stopImplicitCluster()
-
-    # In parallel
-    for (i in 2:length(ncores)) {
-      registerDoParallel(ncores[i])
-      start <- Sys.time()
-      sp <- simfix(
-        nsim = nsim, # Number of simulations
-        sampleSize = sampleSize, # Trial sample size
-        targetEvents = targetEvents, # Targeted events at analysis
-        strata = strata, # Study strata
-        enrollRates = enrollRates, # Enrollment rates
-        failRates = failRatesAll, # Failure rates
-        totalDuration = totalDuration, # Planned trial duration
-        block = block, # Block for treatment
-        timingType = timingType, # Use all possible data cutoff methods
-        rg = rg, # FH test(s) to use; in this case, logrank
-        setSeed = TRUE
-      )
-      times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
-      doParallel::stopImplicitCluster()
-      message("Results are identical: ", identical(s, sp))
-    }
-  } else { # simfixNew
-
-    # In serial
-    registerDoParallel(1)
-    start <- Sys.time()
-    s <- simfixNew(
-      nsim = nsim, # Number of simulations
-      sampleSize = sampleSize, # Trial sample size
-      targetEvents = targetEvents, # Targeted events at analysis
-      strata = strata, # Study strata
-      enrollRates = enrollRates, # Enrollment rates
-      failRates = failRatesAll, # Failure rates
-      totalDuration = totalDuration, # Planned trial duration
-      block = block, # Block for treatment
-      timingType = timingType, # Use all possible data cutoff methods
-      rg = rg, # FH test(s) to use; in this case, logrank
-      setSeed = TRUE
-    )
-    times[1] <- difftime(Sys.time(), start, units = "sec")[[1]]
-    doParallel::stopImplicitCluster()
-
-    # In parallel
-    for (i in 2:length(ncores)) {
-      registerDoParallel(ncores[i])
-      start <- Sys.time()
-      sp <- simfixNew(
-        nsim = nsim, # Number of simulations
-        sampleSize = sampleSize, # Trial sample size
-        targetEvents = targetEvents, # Targeted events at analysis
-        strata = strata, # Study strata
-        enrollRates = enrollRates, # Enrollment rates
-        failRates = failRatesAll, # Failure rates
-        totalDuration = totalDuration, # Planned trial duration
-        block = block, # Block for treatment
-        timingType = timingType, # Use all possible data cutoff methods
-        rg = rg, # FH test(s) to use; in this case, logrank
-        setSeed = TRUE
-      )
-      times[i] <- difftime(Sys.time(), start, units = "sec")[[1]]
-      doParallel::stopImplicitCluster()
-      message("Results are identical: ", identical(s, sp))
-    }
+    message("Results are identical: ", identical(s, sp))
   }
   
   return (times)
@@ -426,16 +379,9 @@ runAndPlotSimfixVarCores <- function(
   timingType = 1:5 # Use all possible data cutoff methods
 ) {
   
-  # Run simfix and simfixNew in serial and in parallel
-  times <- runSimfixVarCores(nsim = nsim,
-                             ncores = ncores,
-                             sampleSize = sampleSize,
-                             targetEvents = targetEvents,
-                             totalDuration = totalDuration,
-                             timingType = timingType)
+  # Run simfixNew in serial and in parallel
   times_new <- runSimfixVarCores(nsim = nsim,
                              ncores = ncores,
-                             runsimfixNew = TRUE,
                              sampleSize = sampleSize,
                              targetEvents = targetEvents,
                              totalDuration = totalDuration,
@@ -443,16 +389,13 @@ runAndPlotSimfixVarCores <- function(
 
   # Reshape timing results for plot
   df_times<- data.frame(x = sort(ncores),
-                              y = c(times,
-                                    times_new),
-                              fun = c(rep("simfix", length(ncores)),
-                                      rep("simfixNew", length(ncores))))
-  pl_times <- ggplot(df_times, aes(x, y, col = fun)) +
-    geom_line(aes(linetype = fun)) +
-    geom_point(aes(shape = fun)) +
+                        y = times_new)
+  pl_times <- ggplot(df_times, aes(x, y)) +
+    geom_line() +
+    geom_point() +
     scale_x_continuous(trans='log2', breaks = ncores) +
-    labs(x = "Number of cores", y = paste0("Run time (in second)"),
-         title = paste0(nsim, " simulations")) +
+    labs(x = "Number of cores",
+         y = paste0("Run time (in minute)")) +
     theme_mk() +
     scale_color_adaptive("teal") +
     theme(legend.title=element_blank()) +
@@ -460,8 +403,7 @@ runAndPlotSimfixVarCores <- function(
   
   # Table
   tb_times <- t(data.frame(cores = as.character(sort(ncores)),
-                           simfix = times,
-                           simfixNew = times_new))
+                           simfix = times_new))
   # kable(tb_times)
   
   return (list(plot = pl_times,
@@ -478,14 +420,12 @@ runAndPlotSimfixVarCoresVarSims <- function(
 ) {
   
   nsims <- sort(nsims)
-  times_all <- rep(0, length(ncores) * length(nsims) * 2)
-  labels_all <- character(length = length(ncores) * length(nsims) * 2)
-  sims_all <- rep(0, length(ncores) * length(nsims) * 2)
+  times_all <- rep(0, length(ncores) * length(nsims))
+  sims_all <- rep(0, length(ncores) * length(nsims))
+  labels_all <- character(length = length(ncores) * length(nsims))
   for (i in 1:length(nsims)) {
-    s1 = (i-1) * length(ncores) * 2 + 1
-    e1 = s1 + length(ncores) - 1
-    s2 = e1 + 1
-    e2 = i * length(ncores) * 2
+    s1 = (i-1) * length(ncores) + 1
+    e1 = i * length(ncores)
     # Run simfix and simfixNew in serial and in parallel
     times_all[s1:e1] <- runSimfixVarCores(nsim = nsims[i],
                                ncores = ncores,
@@ -493,20 +433,11 @@ runAndPlotSimfixVarCoresVarSims <- function(
                                targetEvents = targetEvents,
                                totalDuration = totalDuration,
                                timingType = timingType)
-    times_all[s2:e2] <- runSimfixVarCores(nsim = nsims[i],
-                               ncores = ncores,
-                               runsimfixNew = TRUE,
-                               sampleSize = sampleSize,
-                               targetEvents = targetEvents,
-                               totalDuration = totalDuration,
-                               timingType = timingType)
     
-    sims_all[s1:e2] <- rep(nsims[i], length(ncores) * 2)
+    sims_all[s1:e1] <- rep(nsims[i], length(ncores))
     for (j in 1:length(ncores)) {
       labels_all[s1] <- paste0("simfix ", ncores[j], " core")
-      labels_all[s2] <- paste0("simfixNew ", ncores[j], " core")
       s1 = s1+1
-      s2 = s2+1
     }
   }
 
@@ -519,10 +450,11 @@ runAndPlotSimfixVarCoresVarSims <- function(
   df_times$group <- factor(df_times$group, levels = stringr::str_sort(unique(df_times$group), numeric = TRUE))
 
   pl_times <- ggplot(df_times, aes(x, y, col = group)) +
-    geom_line(aes(linetype = group)) +
+    geom_line() +
     geom_point(aes(shape = group)) +
     scale_x_continuous(breaks = nsims) +
-    labs(x = "Number of simulations", y = paste0("Run time (in second)")) +
+    labs(x = "Number of simulations",
+         y = paste0("Run time (in minute)")) +
     theme_mk() +
     scale_color_adaptive("teal") +
     theme(legend.title=element_blank()) +
@@ -551,7 +483,7 @@ runAndPlotSimfixVarCoresVarSims <- function(
 n_sim <- 10000 # Number of simulations in simfix
 n_cores <- c(1L, 2L, 4L, 8L, 16L)
 
-# Run simfix and simfixNew in serial and in parallel
+# Run simfix in serial and in parallel
 testFix <- runAndPlotSimfixVarCores(nsim = n_sim, ncores = n_cores)
 ```
 
@@ -563,13 +495,13 @@ kable(testFix$df)
 
 ## Varying number of simulations
 
-### 1,000 to 5,000 simulations
+### 10,000 to 25,000 simulations
 
 ```{r varsims}
-n_sims <- c(1000, 2000, 3000, 4000, 5000)
+n_sims <- c(10, 15, 20, 25) * 1000
 n_cores <- c(1L, 2L, 4L, 8L, 16L)
 
-# Run simfix and simfixNew in serial and in parallel
+# Run simfix in serial and in parallel
 testVar <- runAndPlotSimfixVarCoresVarSims(nsims = n_sims, ncores = n_cores)
 ```
 

@@ -18,6 +18,7 @@
 #' @import dplyr
 #' @import tibble
 #' @import survival
+#' @import foreach
 NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
