@@ -63,7 +63,7 @@ ncore = 4
 
 # save data
 saveData = TRUE
-if (saveData) dataPath = getwd()
+if (saveData) dataPath = paste0(getwd(), "/")
 ```
 
 
