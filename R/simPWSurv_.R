@@ -21,7 +21,7 @@ NULL
 
 #' Simulate a stratified time-to-event outcome randomized trial
 #'
-#' \code{simPWSurv} enables simulation of a clinical trial with essentially arbitrary
+#' \code{simPWSurv_} enables simulation of a clinical trial with essentially arbitrary
 #' patterns of enrollment, failure rates and censoring.
 #' The piecewise exponential distribution allows a simple method to specify a distribtuion
 #' and enrollment pattern
@@ -56,12 +56,12 @@ NULL
 #' @examples
 #' library(dplyr)
 #' # Tests
-#'  simPWSurv(n=20)
+#'  simtrial:::simPWSurv_(n=20)
 #'  # 3:1 randomization
-#'  simPWSurv(n=20,block=c(rep("Experimental",3),"Control"))
+#'  simtrial:::simPWSurv_(n=20,block=c(rep("Experimental",3),"Control"))
 #'
 #' # Simulate 2 strata; will use defaults for blocking and enrollRates
-#' simPWSurv(n=20,
+#' simtrial:::simPWSurv_(n=20,
 #'           # 2 strata,30% and 70% prevalence
 #'           strata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
 #'           failRates=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
@@ -91,10 +91,9 @@ NULL
 #'    tibble(Stratum="High",period=1,Treatment="Control"     ,duration=3,rate=.001),
 #'    tibble(Stratum="High",period=1,Treatment="Experimental",duration=3,rate=.001)
 #')
-#'simPWSurv(n=12,strata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
+#'simtrial:::simPWSurv_(n=12,strata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
 #'          failRates=failRates,dropoutRates=dropoutRates)
-#' @export
-simPWSurv <- function(n=100,
+simPWSurv_ <- function(n=100,
                       strata=tibble::tibble(Stratum="All",p=1),
                       block=c(rep("Control",2),rep("Experimental",2)),
                       enrollRates=tibble::tibble(rate=9,
@@ -116,26 +115,17 @@ simPWSurv <- function(n=100,
          mutate(enrollTime=rpwenroll(n, enrollRates)) %>%
          group_by(Stratum) %>% mutate(Treatment=fixedBlockRand(n=n(),block=block))  %>% # assign treatment
          # generate time to failure and time to dropout
-         arrange(Stratum,Treatment)
-    usr <- unique(x$Stratum)
+         dplyr::group_by(Stratum,Treatment)
     utr <- unique(x$Treatment)
+    usr <- unique(x$Stratum)
     x$failTime <- 0
     x$dropoutTime <- 0
-    asr <- rep(usr, each = length(utr), times = 1)
-    atr <- rep(utr, each = 1, times = length(usr))
-    x$failTime <- unlist(generateAllFailTime(x, failRates, asr, atr))
-    x$dropoutTime <- unlist(generateAllFailTime(x, dropoutRates, asr, atr))
+    for(sr in usr){for(tr in utr){
+      indx <- x$Stratum==sr & x$Treatment==tr
+      x$failTime[indx] <- rpwexp(n=sum(indx),failRates=filter(failRates,Stratum==sr&Treatment==tr))
+      x$dropoutTime[indx] <- rpwexp(n=sum(indx),failRates=filter(dropoutRates,Stratum==sr&Treatment==tr))
+    }}
     # set calendar time-to-event and failure indicator
     return(x %>% mutate(cte=pmin(dropoutTime,failTime)+enrollTime,
                         fail=(failTime <= dropoutTime)*1))
-}
-
-generateAllFailTime <- function(x, failRates, asr, atr) {
-  generateFailTime <- function(sr, tr) {
-    indx <- x$Stratum==sr & x$Treatment==tr
-    findx <- failRates$Stratum == sr & failRates$Treatment == tr
-    return(rpwexpinvRcpp(n = sum(indx),
-                         failRates = failRates[findx, ]))
-  }
-  mapply(generateFailTime, asr, atr, SIMPLIFY = FALSE)
 }

@@ -18,7 +18,6 @@
 #' @import dplyr
 #' @import tibble
 #' @import survival
-#' @import foreach
 NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
@@ -35,7 +34,7 @@ NULL
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
-#' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
+#' @param block As in `simtrial:::simPWSurv_()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
@@ -72,8 +71,7 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
 #' mean(p<.025)
-#' @export
-simfix <- function(nsim=1000,
+simfix_ <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
@@ -92,8 +90,7 @@ simfix <- function(nsim=1000,
                    timingType=1:5, # select desired cutoffs for analysis (default is all types)
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
-                   rg=tibble::tibble(rho=0,gamma=0),
-                   setSeed = FALSE
+                   rg=tibble::tibble(rho=0,gamma=0)
 ){# check input values
   # check input enrollment rate assumptions
   if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
@@ -157,16 +154,8 @@ simfix <- function(nsim=1000,
   fr <- xx$failRates
   dr <- xx$dropoutRates
   results <- NULL
-
-  # parallel
-  `%op%` <- get_operator()
-  results <- foreach::foreach(
-    i = seq_len(nsim),
-    .combine = "rbind",
-    .errorhandling = "pass"
-  ) %op% {
-    if (setSeed) set.seed(2022 + i - 1)
-    sim <- simtrial::simPWSurv(n = sampleSize,
+  for(i in 1:nsim){
+    sim <- simtrial:::simPWSurv_(n = sampleSize,
                                strata = strata,
                                enrollRates = enrollRates,
                                failRates = fr,
@@ -223,19 +212,7 @@ simfix <- function(nsim=1000,
         addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
       }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
     }
-    addit %>% mutate(Sim=i)
+    results <- rbind(results, addit %>% mutate(Sim=i))
   }
   results
-}
-
-# Get operator (parallel or serial)
-get_operator <- function() {
-  is_par <- foreach::getDoParWorkers() > 1
-  if (is_par) {
-    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
-    res <- foreach::`%dopar%`
-  } else {
-    res <- foreach::`%do%`
-  }
-  res
 }
