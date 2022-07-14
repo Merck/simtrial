@@ -45,6 +45,8 @@ Default is to include all available cutoff methods.}
 \item{rg}{As in \code{simtrial::tenFHCorr()}.
 A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
+
+\item{setSeed}{Bool: Set seed for simulation?}
 }
 \value{
 A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),

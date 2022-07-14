@@ -41,6 +41,7 @@ NULL
 #' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
+#' @param setSeed Bool: Set seed for simulation?
 #'
 #' @details \code{timingType} has up to 5 elements indicating different options for data cutoff.
 #' 1 uses the planned study duration, 2 the time the targeted event count is achieved,
