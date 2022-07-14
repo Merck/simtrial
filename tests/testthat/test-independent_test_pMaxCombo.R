@@ -1,5 +1,5 @@
 testthat::test_that("the p-values correspond to pMaxCombo",{
-  set.seed(2018)
+  set.seed(2022)
   # this part is a double programming
   y=simPWSurv(n=300) %>% cutDataAtCount(30)
   adjust.methods="asymp"
