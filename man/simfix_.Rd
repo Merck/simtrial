@@ -54,7 +54,7 @@ If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {r
 are also included.
 }
 \description{
-\code{simfix()} provide simulations of a single endpoint two-arm trial
+\code{simfix_()} provide simulations of a single endpoint two-arm trial
 where the enrollment, hazard ratio, and failure and dropout rates change over time.
 }
 \details{
@@ -68,12 +68,12 @@ where the enrollment, hazard ratio, and failure and dropout rates change over ti
 library(tidyr)
 library(dplyr)
 # Show output structure
-simfix(nsim=3)
+simtrial:::simfix_(nsim=3)
 # Example with 2 tests: logrank and FH(0,1)
-simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
+simtrial:::simfix_(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- simfix(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
+xx <- simtrial:::simfix_(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
 # Get power approximation for FH, data cutoff combination
 xx \%>\% group_by(cut,rho,gamma) \%>\% summarise(mean(Z<=qnorm(.025)))
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up

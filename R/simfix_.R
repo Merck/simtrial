@@ -22,7 +22,7 @@ NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
 #'
-#' `simfix()` provide simulations of a single endpoint two-arm trial
+#' `simfix_()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
@@ -56,12 +56,12 @@ NULL
 #' library(tidyr)
 #' library(dplyr)
 #' # Show output structure
-#' simfix(nsim=3)
+#' simtrial:::simfix_(nsim=3)
 #' # Example with 2 tests: logrank and FH(0,1)
-#' simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' simtrial:::simfix_(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- simfix(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' xx <- simtrial:::simfix_(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>% group_by(cut,rho,gamma) %>% summarise(mean(Z<=qnorm(.025)))
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
@@ -93,37 +93,37 @@ simfix_ <- function(nsim=1000,
                    rg=tibble::tibble(rho=0,gamma=0)
 ){# check input values
   # check input enrollment rate assumptions
-  if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
-  if(max(names(enrollRates)=="rate") != 1){stop("enrollRates column names in `simfix()` must contain  rate")}
+  if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix_()` must contain duration")}
+  if(max(names(enrollRates)=="rate") != 1){stop("enrollRates column names in `simfix_()` must contain  rate")}
 
   # check input failure rate assumptions
-  if(max(names(failRates)=="Stratum") != 1){stop("failRates column names in `simfix()` must contain Stratum")}
-  if(max(names(failRates)=="duration") != 1){stop("failRates column names in `simfix()` must contain duration")}
-  if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix()` must contain failRate")}
-  if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix()` must contain hr")}
-  if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix()` must contain dropoutRate")}
+  if(max(names(failRates)=="Stratum") != 1){stop("failRates column names in `simfix_()` must contain Stratum")}
+  if(max(names(failRates)=="duration") != 1){stop("failRates column names in `simfix_()` must contain duration")}
+  if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix_()` must contain failRate")}
+  if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix_()` must contain hr")}
+  if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix_()` must contain dropoutRate")}
 
   # check input trial durations
-  if(!is.numeric(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!is.vector(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(length(totalDuration) != 1){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!min(totalDuration) > 0){stop("totalDuration in `simfix()` must be a single positive number")}
+  if(!is.numeric(totalDuration)){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(!is.vector(totalDuration)){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(length(totalDuration) != 1){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(!min(totalDuration) > 0){stop("totalDuration in `simfix_()` must be a single positive number")}
 
   strata2 <- names(table(failRates$Stratum))
-  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix_()` must be the same in strata and failRates")}
   for(s in strata$Stratum){
-    if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+    if(max(strata2==s) != 1){stop("Stratum in `simfix_()` must be the same in strata and failRates")}
   }
 
-  if(!nsim > 0){stop("nsim in `simfix()` must be positive integer")}
-  if(length(nsim) != 1){stop("nsim in `simfix()` must be positive integer")}
-  if(nsim != ceiling(nsim)){stop("nsim in `simfix()` must be positive integer")}
+  if(!nsim > 0){stop("nsim in `simfix_()` must be positive integer")}
+  if(length(nsim) != 1){stop("nsim in `simfix_()` must be positive integer")}
+  if(nsim != ceiling(nsim)){stop("nsim in `simfix_()` must be positive integer")}
 
-  if(!targetEvents > 0){stop("targetEvents in `simfix()` must be positive")}
-  if(length(targetEvents) != 1){stop(("targetEvents in `simfix()` must be positive"))}
+  if(!targetEvents > 0){stop("targetEvents in `simfix_()` must be positive")}
+  if(length(targetEvents) != 1){stop(("targetEvents in `simfix_()` must be positive"))}
 
-  if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
-  if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
+  if(!sampleSize > 0){stop("sampleSize in `simfix_()` must be positive")}
+  if(length(sampleSize) != 1){stop("sampleSize in `simfix_()` must be positive")}
 
   nstrata <- nrow(strata)
   doAnalysis <- function(d,rg,nstrata){
