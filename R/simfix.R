@@ -41,7 +41,7 @@ NULL
 #' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
-#' @param setSeed Bool: Set seed for simulation?
+#' @param seed Optional. Initial seed for simulations
 #'
 #' @details \code{timingType} has up to 5 elements indicating different options for data cutoff.
 #' 1 uses the planned study duration, 2 the time the targeted event count is achieved,
@@ -94,7 +94,7 @@ simfix <- function(nsim=1000,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
                    rg=tibble::tibble(rho=0,gamma=0),
-                   setSeed = FALSE
+                   seed = NULL
 ){# check input values
   # check input enrollment rate assumptions
   if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
@@ -128,6 +128,13 @@ simfix <- function(nsim=1000,
 
   if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
   if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
+
+  if(is.null(seed)) {
+    setSeed = FALSE
+  } else {
+    if (!is.numeric(seed)){stop("seed in `simfix()` must be a number")}
+    setSeed = TRUE
+  }
 
   nstrata <- nrow(strata)
   doAnalysis <- function(d,rg,nstrata){
@@ -166,7 +173,7 @@ simfix <- function(nsim=1000,
     .combine = "rbind",
     .errorhandling = "pass"
   ) %op% {
-    if (setSeed) set.seed(2022 + i - 1)
+    if (setSeed) set.seed(seed + i - 1)
     sim <- simtrial::simPWSurv(n = sampleSize,
                                strata = strata,
                                enrollRates = enrollRates,

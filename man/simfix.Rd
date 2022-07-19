@@ -16,7 +16,7 @@ simfix(
   block = rep(c("Experimental", "Control"), 2),
   timingType = 1:5,
   rg = tibble::tibble(rho = 0, gamma = 0),
-  setSeed = FALSE
+  seed = NULL
 )
 }
 \arguments{
@@ -46,7 +46,7 @@ Default is to include all available cutoff methods.}
 A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 
-\item{setSeed}{Bool: Set seed for simulation?}
+\item{seed}{Optional. Initial seed for simulations}
 }
 \value{
 A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
