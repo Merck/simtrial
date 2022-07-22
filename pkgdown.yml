@@ -1,12 +1,12 @@
 pandoc: 2.14.2
-pkgdown: 2.0.3
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   arbitraryhazard: arbitraryhazard.html
   modestWLRTVignette: modestWLRTVignette.html
   pMaxComboVignette: pMaxComboVignette.html
   simtrialroutines: simtrialroutines.html
-last_built: 2022-06-08T03:33Z
+last_built: 2022-07-22T19:24Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles

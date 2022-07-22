@@ -79,13 +79,25 @@
     <loc>https://merck.github.io/simtrial/reference/rpwexp.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/rpwexpRcpp.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/rpwexpinvRcpp.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/simPWSurv.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/simPWSurv_.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/simfix.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/simfix2simPWSurv.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/simfix_.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/simtrial-package.html</loc>
