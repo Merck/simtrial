@@ -60,10 +60,6 @@ NULL
 #' library(doParallel)
 #' # Show output structure
 #' simfix(nsim=3)
-#' # Use two cores
-#' registerDoParallel(2)
-#' simfix(nsim=10, seed = 2022)
-#' stopImplicitCluster()
 #' # Example with 2 tests: logrank and FH(0,1)
 #' simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Power by test
@@ -78,6 +74,11 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
 #' mean(p<.025)
+#' # Use two cores
+#' registerDoParallel(2)
+#' simfix(nsim=10, seed = 2022)
+#' stopImplicitCluster()
+#' registerDoSEQ()
 #' @export
 simfix <- function(nsim=1000,
                    sampleSize=500, # sample size
