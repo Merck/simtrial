@@ -28,7 +28,10 @@ Imports:
     tibble,
     tidyr,
     survival,
-    mvtnorm
+    mvtnorm,
+    Rcpp,
+    foreach,
+    doParallel
 Suggests: 
     knitr,
     rmarkdown,
@@ -49,3 +52,5 @@ RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Remotes: 
     dominicmagirr/modestWLRT
+LinkingTo: 
+    Rcpp

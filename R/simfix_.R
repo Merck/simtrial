@@ -18,12 +18,11 @@
 #' @import dplyr
 #' @import tibble
 #' @import survival
-#' @import foreach
 NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
 #'
-#' `simfix()` provide simulations of a single endpoint two-arm trial
+#' `simfix_()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
@@ -35,13 +34,12 @@ NULL
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
-#' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
+#' @param block As in `simtrial:::simPWSurv_()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
-#' @param seed Optional. Initial seed for simulations
 #'
 #' @details \code{timingType} has up to 5 elements indicating different options for data cutoff.
 #' 1 uses the planned study duration, 2 the time the targeted event count is achieved,
@@ -57,14 +55,13 @@ NULL
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
-#' library(doParallel)
 #' # Show output structure
-#' simfix(nsim=3)
+#' simtrial:::simfix_(nsim=3)
 #' # Example with 2 tests: logrank and FH(0,1)
-#' simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' simtrial:::simfix_(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- simfix(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' xx <- simtrial:::simfix_(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>% group_by(cut,rho,gamma) %>% summarise(mean(Z<=qnorm(.025)))
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
@@ -74,13 +71,7 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
 #' mean(p<.025)
-#' # Use two cores
-#' registerDoParallel(2)
-#' simfix(nsim=10, seed = 2022)
-#' stopImplicitCluster()
-#' registerDoSEQ()
-#' @export
-simfix <- function(nsim=1000,
+simfix_ <- function(nsim=1000,
                    sampleSize=500, # sample size
                    targetEvents=350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
@@ -99,48 +90,40 @@ simfix <- function(nsim=1000,
                    timingType=1:5, # select desired cutoffs for analysis (default is all types)
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
-                   rg=tibble::tibble(rho=0,gamma=0),
-                   seed = NULL
+                   rg=tibble::tibble(rho=0,gamma=0)
 ){# check input values
   # check input enrollment rate assumptions
-  if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
-  if(max(names(enrollRates)=="rate") != 1){stop("enrollRates column names in `simfix()` must contain  rate")}
+  if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix_()` must contain duration")}
+  if(max(names(enrollRates)=="rate") != 1){stop("enrollRates column names in `simfix_()` must contain  rate")}
 
   # check input failure rate assumptions
-  if(max(names(failRates)=="Stratum") != 1){stop("failRates column names in `simfix()` must contain Stratum")}
-  if(max(names(failRates)=="duration") != 1){stop("failRates column names in `simfix()` must contain duration")}
-  if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix()` must contain failRate")}
-  if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix()` must contain hr")}
-  if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix()` must contain dropoutRate")}
+  if(max(names(failRates)=="Stratum") != 1){stop("failRates column names in `simfix_()` must contain Stratum")}
+  if(max(names(failRates)=="duration") != 1){stop("failRates column names in `simfix_()` must contain duration")}
+  if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix_()` must contain failRate")}
+  if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix_()` must contain hr")}
+  if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix_()` must contain dropoutRate")}
 
   # check input trial durations
-  if(!is.numeric(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!is.vector(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(length(totalDuration) != 1){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!min(totalDuration) > 0){stop("totalDuration in `simfix()` must be a single positive number")}
+  if(!is.numeric(totalDuration)){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(!is.vector(totalDuration)){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(length(totalDuration) != 1){stop("totalDuration in `simfix_()` must be a single positive number")}
+  if(!min(totalDuration) > 0){stop("totalDuration in `simfix_()` must be a single positive number")}
 
   strata2 <- names(table(failRates$Stratum))
-  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix_()` must be the same in strata and failRates")}
   for(s in strata$Stratum){
-    if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+    if(max(strata2==s) != 1){stop("Stratum in `simfix_()` must be the same in strata and failRates")}
   }
 
-  if(!nsim > 0){stop("nsim in `simfix()` must be positive integer")}
-  if(length(nsim) != 1){stop("nsim in `simfix()` must be positive integer")}
-  if(nsim != ceiling(nsim)){stop("nsim in `simfix()` must be positive integer")}
+  if(!nsim > 0){stop("nsim in `simfix_()` must be positive integer")}
+  if(length(nsim) != 1){stop("nsim in `simfix_()` must be positive integer")}
+  if(nsim != ceiling(nsim)){stop("nsim in `simfix_()` must be positive integer")}
 
-  if(!targetEvents > 0){stop("targetEvents in `simfix()` must be positive")}
-  if(length(targetEvents) != 1){stop(("targetEvents in `simfix()` must be positive"))}
+  if(!targetEvents > 0){stop("targetEvents in `simfix_()` must be positive")}
+  if(length(targetEvents) != 1){stop(("targetEvents in `simfix_()` must be positive"))}
 
-  if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
-  if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
-
-  if(is.null(seed)) {
-    setSeed = FALSE
-  } else {
-    if (!is.numeric(seed)){stop("seed in `simfix()` must be a number")}
-    setSeed = TRUE
-  }
+  if(!sampleSize > 0){stop("sampleSize in `simfix_()` must be positive")}
+  if(length(sampleSize) != 1){stop("sampleSize in `simfix_()` must be positive")}
 
   nstrata <- nrow(strata)
   doAnalysis <- function(d,rg,nstrata){
@@ -171,16 +154,8 @@ simfix <- function(nsim=1000,
   fr <- xx$failRates
   dr <- xx$dropoutRates
   results <- NULL
-
-  # parallel
-  `%op%` <- get_operator()
-  results <- foreach::foreach(
-    i = seq_len(nsim),
-    .combine = "rbind",
-    .errorhandling = "pass"
-  ) %op% {
-    if (setSeed) set.seed(seed + i - 1)
-    sim <- simtrial::simPWSurv(n = sampleSize,
+  for(i in 1:nsim){
+    sim <- simtrial:::simPWSurv_(n = sampleSize,
                                strata = strata,
                                enrollRates = enrollRates,
                                failRates = fr,
@@ -237,19 +212,7 @@ simfix <- function(nsim=1000,
         addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
       }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
     }
-    addit %>% mutate(Sim=i)
+    results <- rbind(results, addit %>% mutate(Sim=i))
   }
   results
-}
-
-# Get operator (parallel or serial)
-get_operator <- function() {
-  is_par <- foreach::getDoParWorkers() > 1
-  if (is_par) {
-    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
-    res <- foreach::`%dopar%`
-  } else {
-    res <- foreach::`%do%`
-  }
-  res
 }
