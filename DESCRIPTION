@@ -30,7 +30,8 @@ Imports:
     survival,
     mvtnorm,
     Rcpp,
-    foreach
+    foreach,
+    doParallel
 Suggests: 
     knitr,
     rmarkdown,

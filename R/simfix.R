@@ -57,8 +57,13 @@ NULL
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
+#' library(doParallel)
 #' # Show output structure
 #' simfix(nsim=3)
+#' # Use two cores
+#' registerDoParallel(2)
+#' simfix(nsim=10, seed = 2022)
+#' stopImplicitCluster()
 #' # Example with 2 tests: logrank and FH(0,1)
 #' simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Power by test
