@@ -1,0 +1,541 @@
+---
+title: "Tests for `simfix`"
+author: "Jianxiao Yang"
+output:
+  html_document:
+    code_folding: hide
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: true
+---
+
+```{r}
+sessionInfo()
+```
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# devtools::install_github("Merck/simtrial", ref = "issue14-Rcpp-enhancement")
+# devtools::install_github("Merck/gsdmvn", ref = "issue-04-table-bound")
+library(gsdmvn)
+library(gsDesign2)
+library(gsDesign)
+library(tibble)
+library(gt)
+library(dplyr)
+library(tibble)
+library(simtrial)
+library(foreach)
+library(doParallel)
+```
+
+# Set parameters
+```{r set_parameters}
+# enrollment rates
+enrollRates <- tibble(Stratum = "All", duration = 18, rate = 20)
+# failure rates
+failRates <- tibble(Stratum = "All", duration = c(4, 100),
+                    failRate = log(2) / 12,
+                    hr = c(1, .6),
+                    dropoutRate = .001)
+# Study duration in months
+studyDuration <- 36
+# Experimental / Control randomization ratio
+ratio <- 1
+# 1-sided Type I error
+alpha <- 0.025
+# beta (power may be a bad argument choice)
+beta <- .1
+
+x <- fixed_design(x = "AHR", alpha = alpha, power = 1 - beta, ratio = 1,
+                  enrollRates = enrollRates, failRates = failRates,
+                  studyDuration = studyDuration)
+```
+
+```{r}
+seed = 2022
+
+# number of simulations
+nsim = 10000
+
+# number of cores for parallelization
+ncore = 4
+
+# save data
+saveData = TRUE
+if (saveData) dataPath = "/Users/yang/Documents/Merck2022/simtrial_check/"
+```
+
+
+# Fleming-Harrington Weighted Logrank Tests
+```{r FH_test_function}
+test_FH <- function(nsim = 10000,
+                    ncores = 4,
+                    # please try different rho and gamma like
+                    # (rho, gamma) = (0, 0), (0, 0.5), (0.5, 0.5)
+                    rho = 0,
+                    gamma = 0,
+                    seed = NULL)
+{
+  #############################
+  #        fixed design       #
+  #############################
+  x_FH <- fixed_design("FH", alpha, power = NULL, ratio = 1,
+                       enrollRates = x$enrollRates, failRates = failRates, studyDuration = studyDuration,
+                       rho = rho,
+                       gamma = gamma)
+  
+  #############################
+  #         Old simfix        #
+  #############################
+  start <- Sys.time()
+  xx_FH <- simtrial:::simfix_(nsim = nsim,
+                   # sample size
+                   sampleSize = x_FH$analysis$N,
+                   # targeted total event count
+                   targetEvents = x_FH$analysis$Events,
+                   # multinomial probability distribution for strata enrollment
+                   strata = tibble::tibble(Stratum = "All", p = 1),
+                   # enrollment rates as in AHR()
+                   enrollRates = x_FH$enrollRates,
+                   # failure rates as in AHR()
+                   failRates = failRates,
+                   # total planned trial duration; single value
+                   totalDuration = studyDuration,
+                   # Fixed block randomization specification
+                   block = rep(c("Experimental","Control"), 2),
+                   # select desired cutoffs for analysis: planned duration cutoff
+                   timingType = 1,
+                   # rho and gamma
+                   rg = tibble::tibble(rho = rho, gamma = gamma),
+                   seed = seed)
+  t_FH = difftime(Sys.time(), start, units = "min")[[1]]
+
+  #############################
+  #         New simfix        #
+  #############################
+  registerDoParallel(ncore)
+
+  start <- Sys.time()
+  xx_FH_new <- simtrial::simfix(nsim = nsim,
+                  # sample size
+                  sampleSize = x_FH$analysis$N,
+                  # targeted total event count
+                  targetEvents = x_FH$analysis$Events,
+                  # multinomial probability distribution for strata enrollment
+                  strata = tibble::tibble(Stratum = "All", p = 1),
+                  # enrollment rates as in AHR()
+                  enrollRates = x_FH$enrollRates,
+                  # failure rates as in AHR()
+                  failRates = failRates,
+                  # total planned trial duration; single value
+                  totalDuration = studyDuration,
+                  # Fixed block randomization specification
+                  block = rep(c("Experimental","Control"), 2),
+                  # select desired cutoffs for analysis: planned duration cutoff
+                  timingType = 1,
+                  # rho and gamma
+                  rg = tibble::tibble(rho = rho, gamma = gamma),
+                  seed = seed)
+  t_FH_new = difftime(Sys.time(), start, units = "min")[[1]]
+  
+  doParallel::stopImplicitCluster()
+
+  return (list(x_FH = x_FH,
+               xx_FH = xx_FH,
+               xx_FH_new = xx_FH_new,
+               time_FH = t_FH,
+               time_FH_new =t_FH_new))
+}
+```
+
+## Exmaple 1: `rho = 0, gamma = 0`
+```{r FH_ex1}
+FH_10000_1 <- test_FH(nsim = nsim,
+                      ncores = ncores,
+                      # please try different rho and gamma like
+                      # (rho, gamma) = (0, 0), (0, 0.5), (0.5, 0.5)
+                      rho = 0, gamma = 0,
+                      seed = seed
+                      )
+
+result_FH_10000_1 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(FH_10000_1$x_FH$analysis$N, 2)),
+  power = c(mean(FH_10000_1$xx_FH$Z <= qnorm(0.025)), 
+            mean(FH_10000_1$xx_FH_new$Z <= qnorm(0.025))),
+  runtime = c(FH_10000_1$time_FH, FH_10000_1$time_FH_new))
+names(result_FH_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(FH_10000_1$x_FH$analysis$Power, 5)))
+result_FH_10000_1 %>% gt()
+```
+
+## Exmaple 2: `rho = 0, gamma = 0.5`
+```{r FH_ex2}
+FH_10000_2 <- test_FH(nsim = nsim,
+                      ncores = ncores,
+                      # please try different rho and gamma like
+                      # (rho, gamma) = (0, 0), (0, 0.5), (0.5, 0.5)
+                      rho = 0, gamma = 0.5,
+                      seed = seed
+                      )
+
+result_FH_10000_2 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(FH_10000_2$x_FH$analysis$N, 2)),
+  power = c(mean(FH_10000_2$xx_FH$Z <= qnorm(0.025)), 
+            mean(FH_10000_2$xx_FH_new$Z <= qnorm(0.025))),
+  runtime = c(FH_10000_2$time_FH, FH_10000_2$time_FH_new))
+names(result_FH_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed power: ", round(FH_10000_2$x_FH$analysis$Power, 5)))
+result_FH_10000_2 %>% gt()
+```
+
+## Exmaple 3: `rho = 0.5, gamma = 0.5`
+```{r FH_ex3}
+FH_10000_3 <- test_FH(nsim = nsim,
+                      ncores = ncores,
+                      # please try different rho and gamma like
+                      # (rho, gamma) = (0, 0), (0, 0.5), (0.5, 0.5)
+                      rho = 0.5, gamma = 0.5,
+                      seed = seed
+                      )
+
+result_FH_10000_3 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(FH_10000_3$x_FH$analysis$N, 2)),
+  power = c(mean(FH_10000_3$xx_FH$Z <= qnorm(0.025)), 
+            mean(FH_10000_3$xx_FH_new$Z <= qnorm(0.025))),
+  runtime = c(FH_10000_3$time_FH, FH_10000_3$time_FH_new))
+names(result_FH_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed power: ", round(FH_10000_3$x_FH$analysis$Power, 5)))
+result_FH_10000_3 %>% gt()
+```
+
+# MaxCombo test
+```{r MC_test_function}
+test_MC <- function(nsim = 10000,
+                    ncores = 4,
+                    # please try different combination of rho and gamma like
+                    # rho = c(0, 0), gamma =  (0, 0.5)
+                    # rho = c(0, 0.5), gamma =  (0, 0.5)
+                    # rho = c(0, 0, 0.5), gamma =  (0, 0.5, 0.5)
+                    rho = c(0, 0),
+                    gamma = c(0, 0.5),
+                    seed = NULL
+                    )
+{
+  #############################
+  #        fixed design       #
+  #############################
+  x_MC <- fixed_design("MaxCombo", alpha, power = NULL, ratio = 1,
+                      enrollRates = x$enrollRates, failRates = failRates, studyDuration = studyDuration,
+                      rho = rho, gamma = gamma
+                      )
+  
+  #############################
+  #         Old simfix        #
+  #############################
+  start <- Sys.time()
+  
+  xx_MC <- simtrial:::simfix_(nsim = nsim,
+                 # sample size
+                 sampleSize = x_MC$analysis$N,
+                 # targeted total event count
+                 targetEvents = x_MC$analysis$Events,
+                 # multinomial probability distribution for strata enrollment
+                 strata = tibble::tibble(Stratum = "All", p = 1),
+                 # enrollment rates as in AHR()
+                 enrollRates = x_MC$enrollRates,
+                 # failure rates as in AHR()
+                 failRates = failRates,
+                 # total planned trial duration; single value
+                 totalDuration = studyDuration,
+                 # Fixed block randomization specification
+                 block = rep(c("Experimental","Control"), 2),
+                 # select desired cutoffs for analysis: planned duration cutoff
+                 timingType = 1,
+                 # rho and gamma
+                 rg = tibble::tibble(rho = rho, gamma = gamma),
+                 seed = seed)
+
+  t_MC = difftime(Sys.time(), start, units = "min")[[1]]
+
+  #############################
+  #         New simfix        #
+  #############################
+  registerDoParallel(ncore)
+
+  start <- Sys.time()
+  xx_MC_new <- simfix(nsim = nsim,
+                      # sample size
+                      sampleSize = x_MC$analysis$N,
+                      # targeted total event count
+                      targetEvents = x_MC$analysis$Events,
+                      # multinomial probability distribution for strata enrollment
+                      strata = tibble::tibble(Stratum = "All", p = 1),
+                      # enrollment rates as in AHR()
+                      enrollRates = x_MC$enrollRates,
+                      # failure rates as in AHR()
+                      failRates = failRates,
+                      # total planned trial duration; single value
+                      totalDuration = studyDuration,
+                      # Fixed block randomization specification
+                      block = rep(c("Experimental","Control"), 2),
+                      # select desired cutoffs for analysis: planned duration cutoff
+                      timingType = 1,
+                      # rho and gamma
+                      rg = tibble::tibble(rho = rho, gamma = gamma),
+                      seed = seed)
+  t_MC_new = difftime(Sys.time(), start, units = "min")[[1]]
+
+  doParallel::stopImplicitCluster()
+
+  return (list(x_MC = x_MC,
+               xx_MC = xx_MC,
+               xx_MC_new = xx_MC_new,
+               time_MC = t_MC,
+               time_MC_new =t_MC_new))
+}
+```
+
+## Example 1: `rho = c(0, 0), gamma =  (0, 0.5)`
+```{r MC_ex1}
+MC_10000_1 <- test_MC(nsim = nsim,
+                      ncores = ncores,
+                      # please try different combination of rho and gamma like
+                      # rho = c(0, 0), gamma =  (0, 0.5)
+                      # rho = c(0, 0.5), gamma =  (0, 0.5)
+                      # rho = c(0, 0, 0.5), gamma =  (0, 0.5, 0.5)
+                      rho = c(0, 0), gamma = c(0, 0.5),
+                      seed = seed
+                      )
+
+result_MC_10000_1 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MC_10000_1$x_MC$analysis$N, 2)),
+  power = c(mean(MC_10000_1$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
+            mean(MC_10000_1$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
+  runtime = c(MC_10000_1$time_MC, MC_10000_1$time_MC_new))
+names(result_MC_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MC_10000_1$x_MC$analysis$Power, 5)))
+result_MC_10000_1 %>% gt()
+```
+
+## Example 2: `rho = c(0, 0.5), gamma =  (0, 0.5)`
+```{r MC_ex2}
+MC_10000_2 <- test_MC(nsim = nsim,
+                      ncores = ncores,
+                      # please try different combination of rho and gamma like
+                      # rho = c(0, 0), gamma =  (0, 0.5)
+                      # rho = c(0, 0.5), gamma =  (0, 0.5)
+                      # rho = c(0, 0, 0.5), gamma =  (0, 0.5, 0.5)
+                      rho = c(0, 0.5), gamma = c(0, 0.5),
+                      seed = seed
+                      )
+
+result_MC_10000_2 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MC_10000_2$x_MC$analysis$N, 2)),
+  power = c(mean(MC_10000_2$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
+            mean(MC_10000_2$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
+  runtime = c(MC_10000_2$time_MC, MC_10000_2$time_MC_new))
+names(result_MC_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MC_10000_2$x_MC$analysis$Power, 5)))
+result_MC_10000_2 %>% gt()
+```
+
+## Example 3: `rho = c(0, 0, 0.5), gamma =  (0, 0.5, 0.5)`
+```{r MC_ex3}
+MC_10000_3 <- test_MC(nsim = nsim,
+                      ncores = ncores,
+                      # please try different combination of rho and gamma like
+                      # rho = c(0, 0), gamma =  (0, 0.5)
+                      # rho = c(0, 0.5), gamma =  (0, 0.5)
+                      # rho = c(0, 0, 0.5), gamma =  (0, 0.5, 0.5)
+                      rho = c(0, 0, 0.5), gamma = c(0, 0.5, 0.5),
+                      seed = seed
+                      )
+
+result_MC_10000_3 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MC_10000_3$x_MC$analysis$N, 2)),
+  power = c(mean(MC_10000_3$xx_MC %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025), 
+            mean(MC_10000_3$xx_MC_new %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist() <= .025)),
+  runtime = c(MC_10000_3$time_MC, MC_10000_3$time_MC_new))
+names(result_MC_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MC_10000_3$x_MC$analysis$Power, 5)))
+result_MC_10000_3 %>% gt()
+```
+
+
+# Magirr and Burman Modestly Weighted Logrank Tests
+```{r MB_test_function}
+test_MB <- function(nsim = 10000,
+                    ncores = 4,
+                    # please try different value of tau,
+                    # like tau = 4, 12, 36
+                    tau = 4)
+{
+  #############################
+  #        fixed design       #
+  #############################
+  x_MB <- fixed_design("MB", alpha, power = NULL, ratio = 1,
+                       enrollRates = x$enrollRates, failRates = failRates, studyDuration = studyDuration,
+                       tau = tau)
+  
+  #############################
+  #         Old simfix        #
+  #############################
+  start <- Sys.time()
+  
+  xx_MB <- NULL
+  for (sim in 1:nsim) {
+    xx_MB_n <- simtrial:::simPWSurv_(n = x_MB$analysis$N,
+                           strata = tibble::tibble(Stratum = "All", p = 1),
+                           enrollRates = x_MB$enrollRates,
+                           failRates = simfix2simPWSurv(failRates)$failRates) %>%
+      cutData(studyDuration) %>%
+      tensurv(txval = "Experimental") %>%
+      wMB(tau) %>%
+      summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V)) %>%
+      mutate(pval = pnorm(Z))
+  
+    xx_MB <- rbind(xx_MB, xx_MB_n)
+  }
+  t_MB = difftime(Sys.time(), start, units = "min")[[1]]
+
+  #############################
+  #         New simfix        #
+  #############################
+  registerDoParallel(ncore)
+
+  # Get operator (parallel or serial)
+  get_operator <- function() {
+    is_par <- foreach::getDoParWorkers() > 1
+    if (is_par) {
+      message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
+      res <- foreach::`%dopar%`
+    } else {
+      res <- foreach::`%do%`
+    }
+    res
+  }
+
+  `%op%` <- get_operator()
+  
+  start <- Sys.time()
+  xx_MB_new <- foreach::foreach(
+    i = seq_len(nsim),
+    .combine = "rbind",
+    .errorhandling = "pass"
+  ) %op% {
+    simPWSurv(n = x_MB$analysis$N,
+                           strata = tibble::tibble(Stratum = "All", p = 1),
+                           enrollRates = x_MB$enrollRates,
+                           failRates = simfix2simPWSurv(failRates)$failRates) %>%
+      cutData(studyDuration) %>%
+      tensurv(txval = "Experimental") %>%
+      wMB(tau) %>%
+      summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V)) %>%
+      mutate(pval = pnorm(Z))
+  }
+  t_MB_new = difftime(Sys.time(), start, units = "min")[[1]]
+
+  doParallel::stopImplicitCluster()
+
+  return (list(x_MB = x_MB,
+               xx_MB = xx_MB,
+               xx_MB_new = xx_MB_new,
+               time_MB = t_MB,
+               time_MB_new =t_MB_new))
+}
+```
+
+## Example 1: `tau = 4`
+```{r MB_ex1}
+MB_10000_1 <- test_MB(nsim = nsim,
+                      ncores = ncores,
+                      # please try different value of tau,
+                      # like tau = 4, 12, 36
+                      tau = 4
+                      )
+
+result_MB_10000_1 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MB_10000_1$x_MB$analysis$N, 2)),
+  power = c(mean(MB_10000_1$xx_MB$pval < .025), 
+            mean(MB_10000_1$xx_MB_new$pval <= .025)),
+  runtime = c(MB_10000_1$time_MB, MB_10000_1$time_MB_new))
+names(result_MB_10000_1) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MB_10000_1$x_MB$analysis$Power, 5)))
+result_MB_10000_1 %>% gt()
+```
+
+## Example 2: `tau = 12`
+```{r MB_ex2}
+MB_10000_2 <- test_MB(nsim = nsim,
+                      ncores = ncores,
+                      # please try different value of tau,
+                      # like tau = 4, 12, 36
+                      tau = 12
+                      )
+
+result_MB_10000_2 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MB_10000_2$x_MB$analysis$N, 2)),
+  power = c(mean(MB_10000_2$xx_MB$pval < .025), 
+            mean(MB_10000_2$xx_MB_new$pval <= .025)),
+  runtime = c(MB_10000_2$time_MB, MB_10000_2$time_MB_new))
+names(result_MB_10000_2) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MB_10000_2$x_MB$analysis$Power, 5)))
+result_MB_10000_2 %>% gt()
+```
+
+## Example 3: `tau = 36`
+```{r MB_ex3}
+MB_10000_3 <- test_MB(nsim = nsim,
+                      ncores = ncores,
+                      # please try different value of tau,
+                      # like tau = 4, 12, 36
+                      tau = 36
+                      )
+
+result_MB_10000_3 <- data.frame(
+  method = c("Old simfix", paste0("New simfix w/ ", ncore, " cores")),
+  sampleSize = c(rep(MB_10000_3$x_MB$analysis$N, 2)),
+  power = c(mean(MB_10000_3$xx_MB$pval < .025), 
+            mean(MB_10000_3$xx_MB_new$pval <= .025)),
+  runtime = c(MB_10000_3$time_MB, MB_10000_3$time_MB_new))
+names(result_MB_10000_3) <- c("Method", "Sample size", "Power", "Runtime (min)")
+
+writeLines(paste0("Fixed design power: ", round(MB_10000_3$x_MB$analysis$Power, 5)))
+result_MB_10000_3 %>% gt()
+```
+
+
+# Save simulated data
+```{r}
+if (saveData) {
+  saveRDS(FH_10000_1, file = paste0(dataPath, "FH_nsim", nsim, "_ex1.rds"))
+  saveRDS(FH_10000_2, file = paste0(dataPath, "FH_nsim", nsim, "_ex2.rds"))
+  saveRDS(FH_10000_3, file = paste0(dataPath, "FH_nsim", nsim, "_ex3.rds"))
+  
+  saveRDS(MC_10000_1, file = paste0(dataPath, "MC_nsim", nsim, "_ex1.rds"))
+  saveRDS(MC_10000_2, file = paste0(dataPath, "MC_nsim", nsim, "_ex2.rds"))
+  saveRDS(MC_10000_3, file = paste0(dataPath, "MC_nsim", nsim, "_ex3.rds"))
+  
+  saveRDS(MB_10000_1, file = paste0(dataPath, "MB_nsim", nsim, "_ex1.rds"))
+  saveRDS(MB_10000_2, file = paste0(dataPath, "MB_nsim", nsim, "_ex2.rds"))
+  saveRDS(MB_10000_3, file = paste0(dataPath, "MB_nsim", nsim, "_ex3.rds"))
+}
+```
+
