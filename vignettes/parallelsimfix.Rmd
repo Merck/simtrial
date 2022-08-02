@@ -251,10 +251,10 @@ In this example, we consider
 
 - 2 strata
 - 2 periods in enrollments
-- 4 periods in failure rates of the control arm per stratum
-- 4 periods in failure rates of the experimental arm per stratum
-- 4 periods in dropout rates of the control arm per stratum
-- 4 periods in dropout rates of the experimental arm per stratum
+- 2 periods in failure rates of the control arm per stratum
+- 2 periods in failure rates of the experimental arm per stratum
+- 2 periods in dropout rates of the control arm per stratum
+- 2 periods in dropout rates of the experimental arm per stratum
 
 ```{r data}
 # 2 strata: Biomarker negative (50% of population) + Biomarker positive (50% of population); 
