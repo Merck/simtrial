@@ -8,6 +8,18 @@ output:
     toc_float: TRUE
     number_sections: true
 ---
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  dev = "ragg_png",
+  dpi = 96,
+  fig.retina = 2,
+  fig.width = 12,
+  fig.asp = 0.5,
+  fig.align = "center",
+  out.width = "80%"
+)
+```
 
 ```{r}
 sessionInfo()
@@ -937,8 +949,8 @@ df_times_n <- data.frame(x = times_n$n,
                                times_n$rpwexpunif,
                                times_n$rpwexpinvRcpp,
                                times_n$PWEALL),
-                         group = c(rep("Old method in R", nrow(times_n)),
-                                   rep("Old method in C++", nrow(times_n)),
+                         group = c(rep("Naive method in R", nrow(times_n)),
+                                   rep("Naive method in C++", nrow(times_n)),
                                    rep("Inverse CDF with exp(1) in R", nrow(times_n)),
                                    rep("Inverse CDF with unif in R", nrow(times_n)),
                                    rep("Inverse CDF with unif in C++", nrow(times_n)),
@@ -948,7 +960,7 @@ ggplot(df_times_n, aes(x, y, col = group)) +
   scale_x_log10(breaks = c(50, 100, 200, 500, 1000, 2000, 5000, 10000)) +
   # scale_x_continuous(trans='log10') + 
   scale_y_continuous(trans='log10') + 
-  labs(x = "Number of observations to be generated", y = paste0("Runtime (", "\U003BC", "s)")) +
+  labs(x = "Number of random numbers to be generated", y = paste0("Runtime (", "\U003BC", "s)")) +
   theme_mk() +
   scale_color_adaptive("teal") +
   theme(legend.title=element_blank())
@@ -983,8 +995,8 @@ df_times_nr <- data.frame(x = times_nr$n_rates,
                                 times_nr$rpwexpunif,
                                 times_nr$rpwexpinvRcpp,
                                 times_nr$PWEALL),
-                          group = c(rep("Old method in R", nrow(times_nr)),
-                                    rep("Old method in C++", nrow(times_nr)),
+                          group = c(rep("Naive method in R", nrow(times_nr)),
+                                    rep("Naive method in C++", nrow(times_nr)),
                                     rep("Inverse CDF with exp(1) in R", nrow(times_nr)),
                                     rep("Inverse CDF with unif in R", nrow(times_nr)),
                                     rep("Inverse CDF with unif in C++", nrow(times_nr)),
@@ -992,7 +1004,7 @@ df_times_nr <- data.frame(x = times_nr$n_rates,
 ggplot(df_times_nr, aes(x, y, col = group)) +
   geom_line() +
   scale_x_continuous(trans='log10') +
-  labs(x = "Number of intervals", y = paste0("Runtime (", "\U003BC", "s)")) +
+  labs(x = "Number of periods in piecewise model", y = paste0("Runtime (", "\U003BC", "s)")) +
   theme_mk() +
   scale_color_adaptive("teal") +
   theme(legend.title=element_blank())

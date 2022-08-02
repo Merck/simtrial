@@ -15,8 +15,8 @@ sessionInfo()
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# devtools::install_github("Merck/simtrial", ref = "issue14-Rcpp-enhancement")
-# devtools::install_github("Merck/gsdmvn", ref = "issue-04-table-bound")
+# devtools::install_github("Merck/simtrial")
+# devtools::install_github("Merck/gsdmvn", ref = "issue-06-development")
 library(gsdmvn)
 library(gsDesign2)
 library(gsDesign)
@@ -56,13 +56,13 @@ x <- fixed_design(x = "AHR", alpha = alpha, power = 1 - beta, ratio = 1,
 seed = 2022
 
 # number of simulations
-nsim = 10000
+nsim = 20000
 
 # number of cores for parallelization
 ncore = 4
 
 # save data
-saveData = TRUE
+saveData = FALSE
 if (saveData) dataPath = "/Users/yang/Documents/Merck2022/simtrial_check/"
 ```
 
@@ -89,6 +89,7 @@ test_FH <- function(nsim = 10000,
   #         Old simfix        #
   #############################
   start <- Sys.time()
+  set.seed(seed)
   xx_FH <- simtrial:::simfix_(nsim = nsim,
                    # sample size
                    sampleSize = x_FH$analysis$N,
@@ -107,8 +108,7 @@ test_FH <- function(nsim = 10000,
                    # select desired cutoffs for analysis: planned duration cutoff
                    timingType = 1,
                    # rho and gamma
-                   rg = tibble::tibble(rho = rho, gamma = gamma),
-                   seed = seed)
+                   rg = tibble::tibble(rho = rho, gamma = gamma))
   t_FH = difftime(Sys.time(), start, units = "min")[[1]]
 
   #############################
@@ -240,7 +240,7 @@ test_MC <- function(nsim = 10000,
   #         Old simfix        #
   #############################
   start <- Sys.time()
-  
+  set.seed(seed)
   xx_MC <- simtrial:::simfix_(nsim = nsim,
                  # sample size
                  sampleSize = x_MC$analysis$N,
@@ -259,8 +259,7 @@ test_MC <- function(nsim = 10000,
                  # select desired cutoffs for analysis: planned duration cutoff
                  timingType = 1,
                  # rho and gamma
-                 rg = tibble::tibble(rho = rho, gamma = gamma),
-                 seed = seed)
+                 rg = tibble::tibble(rho = rho, gamma = gamma))
 
   t_MC = difftime(Sys.time(), start, units = "min")[[1]]
 

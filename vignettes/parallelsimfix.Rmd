@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   dpi = 96,
   fig.retina = 2,
   fig.width = 7.2916667,
-  fig.asp = 1,
+  fig.asp = 0.6,
   fig.align = "center",
   out.width = "80%"
 )
@@ -368,7 +368,7 @@ runSimfixVarCores <- function(
     message("Results are identical: ", identical(s, sp))
   }
   
-  return (times)
+  return (round(times, 2))
 }
 
 runAndPlotSimfixVarCores <- function(
