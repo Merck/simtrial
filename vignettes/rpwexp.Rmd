@@ -1,0 +1,434 @@
+---
+title: "Generate piecewise Exponential random numbers"
+author: "Jianxiao Yang"
+output:
+  html_document:
+    code_folding: hide
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: true
+---
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  dev = "ragg_png",
+  dpi = 96,
+  fig.retina = 2,
+  fig.width = 12,
+  fig.asp = 0.5,
+  fig.align = "center",
+  out.width = "80%"
+)
+```
+
+```{r}
+sessionInfo()
+```
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(simtrial)
+library(knitr)
+library(tibble)
+library(dplyr)
+library(gt)
+library(ggplot2)
+library(bench)
+library(microbenchmark)
+library(PWEALL)
+
+# ggplot2 theme ----------------------------------------------------------------
+
+theme_mk <- function(font_size = 14, font_family = "sans", line_size = .5,
+                     rel_small = 12 / 14, rel_tiny = 11 / 14, rel_large = 16 / 14,
+                     border_type = c("half", "full", "none"),
+                     grid_x = FALSE, grid_y = FALSE) {
+  half_line <- font_size / 2
+  small_size <- rel_small * font_size
+  border_type <- match.arg(border_type)
+
+  # work off of theme_grey just in case some new theme element comes along
+  theme_grey(base_size = font_size, base_family = font_family) %+replace%
+    theme(
+      line = element_line(color = "black", size = line_size, linetype = 1, lineend = "butt"),
+      rect = element_rect(fill = NA, color = NA, size = line_size, linetype = 1),
+      text = element_text(
+        family = font_family, face = "plain", color = "black",
+        size = font_size, hjust = 0.5, vjust = 0.5, angle = 0, lineheight = .9,
+        margin = margin(), debug = FALSE
+      ),
+      axis.line = element_line(color = "black", size = line_size, linetype = as.numeric(border_type == "half"), lineend = "square"),
+      axis.line.x = NULL,
+      axis.line.y = NULL,
+      axis.text = element_text(color = "black", size = small_size),
+      axis.text.x = element_text(margin = margin(t = small_size / 4), vjust = 1),
+      axis.text.x.top = element_text(margin = margin(b = small_size / 4), vjust = 0),
+      axis.text.y = element_text(margin = margin(r = small_size / 4), hjust = 1),
+      axis.text.y.right = element_text(margin = margin(l = small_size / 4), hjust = 0),
+      axis.ticks = element_line(color = "black", size = line_size),
+      axis.ticks.length = unit(half_line / 2, "pt"),
+      axis.title.x = element_text(
+        margin = margin(t = half_line / 2),
+        vjust = 1
+      ),
+      axis.title.x.top = element_text(
+        margin = margin(b = half_line / 2),
+        vjust = 0
+      ),
+      axis.title.y = element_text(
+        angle = 90,
+        margin = margin(r = half_line / 2),
+        vjust = 1
+      ),
+      axis.title.y.right = element_text(
+        angle = -90,
+        margin = margin(l = half_line / 2),
+        vjust = 0
+      ),
+      legend.background = element_blank(),
+      legend.spacing = unit(font_size, "pt"),
+      legend.spacing.x = NULL,
+      legend.spacing.y = NULL,
+      legend.margin = margin(0, 0, 0, 0),
+      legend.key = element_blank(),
+      legend.key.size = unit(1.1 * font_size, "pt"),
+      legend.key.height = NULL,
+      legend.key.width = NULL,
+      legend.text = element_text(size = rel(rel_small)),
+      legend.text.align = NULL,
+      legend.title = element_text(hjust = 0),
+      legend.title.align = NULL,
+      legend.position = "right",
+      legend.direction = NULL,
+      legend.justification = c("left", "center"),
+      legend.box = NULL,
+      legend.box.margin = margin(0, 0, 0, 0),
+      legend.box.background = element_blank(),
+      legend.box.spacing = unit(font_size, "pt"),
+      panel.background = element_blank(),
+      panel.border = element_rect(fill = NA, color = "black", size = line_size, linetype = as.numeric(border_type == "full")),
+      panel.grid.major = NULL,
+      panel.grid.minor = NULL,
+      panel.grid.major.x = element_line(color = "grey85", size = line_size, linetype = as.numeric(grid_x)),
+      panel.grid.major.y = element_line(color = "grey85", size = line_size, linetype = as.numeric(grid_y)),
+      panel.grid.minor.x = NULL,
+      panel.grid.minor.y = NULL,
+      panel.spacing = unit(half_line, "pt"),
+      panel.spacing.x = NULL,
+      panel.spacing.y = NULL,
+      panel.ontop = FALSE,
+      strip.background = element_rect(fill = "grey80"),
+      strip.text = element_text(
+        size = rel(rel_small),
+        margin = margin(
+          half_line / 2, half_line / 2,
+          half_line / 2, half_line / 2
+        )
+      ),
+      strip.text.x = NULL,
+      strip.text.y = element_text(angle = -90),
+      strip.placement = "inside",
+      strip.placement.x = NULL,
+      strip.placement.y = NULL,
+      strip.switch.pad.grid = unit(half_line / 2, "pt"),
+      strip.switch.pad.wrap = unit(half_line / 2, "pt"),
+      plot.background = element_blank(),
+      plot.title = element_text(
+        face = "bold",
+        size = rel(rel_large),
+        hjust = 0, vjust = 1,
+        margin = margin(b = half_line)
+      ),
+      plot.subtitle = element_text(
+        size = rel(rel_small),
+        hjust = 0, vjust = 1,
+        margin = margin(b = half_line)
+      ),
+      plot.caption = element_text(
+        size = rel(rel_tiny),
+        hjust = 1, vjust = 1,
+        margin = margin(t = half_line)
+      ),
+      plot.tag = element_text(
+        face = "bold",
+        hjust = 0, vjust = 0.7
+      ),
+      plot.tag.position = c(0, 1),
+      plot.margin = margin(half_line, half_line, half_line, half_line),
+      complete = TRUE
+    )
+}
+
+# ggplot2 color palettes -------------------------------------------------------
+
+#' Adaptive palette (discrete)
+#'
+#' Create a discrete palette that will use the first `n` colors from
+#' the supplied color values when the palette has enough colors.
+#' Otherwise, use an interpolated color palette.
+#'
+#' @param values Color values.
+pal_ramp <- function(values) {
+  force(values)
+  function(n) {
+    if (n <= length(values)) {
+      values[seq_len(n)]
+    } else {
+      colorRampPalette(values, alpha = TRUE)(n)
+    }
+  }
+}
+
+#' Adaptive color palette generator
+#'
+#' Adaptive color palette generator for ggsci color palettes using `pal_ramp()`.
+#'
+#' @param name Color palette name
+#' @param alpha Transparency level, a real number in (0, 1].
+pal_adaptive <- function(name, alpha = 1) {
+  if (alpha > 1L | alpha <= 0L) stop("alpha must be in (0, 1]")
+
+  raw_cols <- simtrial_pal_hex[[name]]
+  raw_cols_rgb <- col2rgb(raw_cols)
+  alpha_cols <- rgb(
+    raw_cols_rgb[1L, ], raw_cols_rgb[2L, ], raw_cols_rgb[3L, ],
+    alpha = alpha * 255L, names = names(raw_cols),
+    maxColorValue = 255L
+  )
+
+  pal_ramp(unname(alpha_cols))
+}
+
+simtrial_pal_hex <- list(
+  "d3.category10" = c(
+    "#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B",
+    "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"
+  ),
+  "d3.category20" = c(
+    "#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B",
+    "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF", "#AEC7E8", "#FFBB78",
+    "#98DF8A", "#FF9896", "#C5B0D5", "#C49C94", "#F7B6D2", "#C7C7C7",
+    "#DBDB8D", "#9EDAE5"
+  ),
+  "d3.category20b" = c(
+    "#393B79", "#637939", "#8C6D31", "#843C39", "#7B4173", "#5254A3",
+    "#8CA252", "#BD9E39", "#AD494A", "#A55194", "#6B6ECF", "#B5CF6B",
+    "#E7BA52", "#D6616B", "#CE6DBD", "#9C9EDE", "#CEDB9C", "#E7CB94",
+    "#E7969C", "#DE9ED6"
+  ),
+  "d3.category20c" = c(
+    "#3182BD", "#E6550D", "#31A354", "#756BB1", "#636363", "#6BAED6",
+    "#FD8D3C", "#74C476", "#9E9AC8", "#969696", "#9ECAE1", "#FDAE6B",
+    "#A1D99B", "#BCBDDC", "#BDBDBD", "#C6DBEF", "#FDD0A2", "#C7E9C0",
+    "#DADAEB", "#D9D9D9"
+  ),
+  "okabe-ito" = c(
+    "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
+    "#CC79A7", "#999999"
+  ),
+  "teal" = c(
+    "#00857C", "#6ECEB2", "#BFED33", "#FFF063", "#0C2340", "#5450E4",
+    "#688CE8", "#69B8F7"
+  )
+)
+
+#' Adaptive color scales
+#'
+#' @inheritParams pal_adaptive
+#' @param ... additional parameters for [ggplot2::discrete_scale()].
+scale_color_adaptive <- function(name, alpha = 1, ...) {
+  ggplot2::discrete_scale("colour", name, pal_adaptive(name, alpha), ...)
+}
+
+scale_fill_adaptive <- function(name, alpha = 1, ...) {
+  ggplot2::discrete_scale("fill", name, pal_adaptive(name, alpha), ...)
+}
+```
+
+# The inverse transform method
+
+## `rexp`
+```{r}
+rpwexpexp <- function(n, rate = 1, duration = 1) {
+  # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
+  n_piece <- length(rate)
+  # Get number of piecewise rates
+  H <- c(0, cumsum(rate * duration))[1:n_piece]
+  duration <- c(0, cumsum(duration))[1:n_piece]
+  # Generate cumulative hazard for each observation
+  y <- rexp(n = n, rate = 1)
+  # Make a vector to record with interval each observation is in
+  interval <- rep(1, n)
+  if (n_piece > 1) {
+    for (i in 2:(n_piece)) interval[y >= H[i]] <- i
+    # if rate[i-1] = 0 (i.e. H[i] == H[i-1]), no observation will fall in to [i-1, i)
+  }
+  y <- (y - H[interval]) / rate[interval] + duration[interval]
+  # if rate[n_piece] == 0, observations in final interval are Inf
+  return (y)
+}
+```
+
+## `runif`
+```{r}
+rpwexpunif <- function(n, rate, duration){
+  # Need to check rate, t are positive real vectors of same length, t is increasing, h > 0
+  n_piece <- length(rate)
+  # Get number of piecewise rates
+  H <- c(0, cumsum(rate * duration))[1:n_piece]
+  duration <- c(0, cumsum(duration))[1:n_piece]
+  # Generate cumulative hazard for each observation
+  y <- -log(runif(n))
+  # Make a vector to record with interval each observation is in
+  interval <- rep(1, n)
+  if (n_piece > 1) {
+    for (i in 2:(n_piece)) {
+      interval[y >= H[i]] <- i
+    }
+  }
+  y <- (y - H[interval]) / rate[interval] + duration[interval]
+  return (y)
+}
+
+# Simulate failRates
+n_rates <- 10
+duration <- floor(runif(n_rates, 1, 5))
+rate <- runif(n_rates, 0.0005, 0.095)
+rate[5] <- 0.0
+rate[10] <- 0.0
+tchange1 <- cumsum(duration)
+tchange0 <- c(0, tchange1)[1:(length(duration-1))]
+
+# Expect the same results
+set.seed(2)
+s1 <- PWEALL::rpwe(n = 10, rate = rate, tchange = tchange0)
+set.seed(2)
+s2 <- rpwexpunif(n = 10, rate = rate, duration = duration)
+set.seed(2)
+s3 <- simtrial::rpwexpinvRcpp(n = 10, failRates = data.frame(duration = duration,
+                                                             rate = rate))
+
+all.equal(s1$r, s2)
+all.equal(s2, s3)
+```
+
+# Benchmark different methods for generating piecewise Exponential random numbers
+```{r}
+bm_rpwexp <- function(n, nr, itr = 1000) {
+  # simulate failRates
+  duration <- floor(runif(nr, 1, 5))
+  rate <- runif(nr, 0.0005, 0.095)
+  failTbl <- tibble(duration, rate)
+
+  times <- rep(0, 4)
+  for (i in 1:itr) {
+    # Current method in R
+    start_time <- Sys.time()
+    rpwexp(n = n, failRates = failTbl)
+    end_time <- Sys.time()
+    times[1] = times[1] + difftime(end_time, start_time, units = "secs")[[1]]
+
+    # Current method in C++
+    start_time <- Sys.time()
+    rpwexpRcpp(n = n, failRates = failTbl)
+    end_time <- Sys.time()
+    times[2] = times[2] + difftime(end_time, start_time, units = "secs")[[1]]
+
+    # Inverse CDF with unif in R
+    start_time <- Sys.time()
+    rpwexpunif(n = n, rate = rate, duration = duration)
+    end_time <- Sys.time()
+    times[3] = times[3] + difftime(end_time, start_time, units = "secs")[[1]]
+
+    # Inverse CDF with unif in C++
+    start_time <- Sys.time()
+    rpwexpinvRcpp(n = n, failRates = failTbl)
+    end_time <- Sys.time()
+    times[4] = times[4] + difftime(end_time, start_time, units = "secs")[[1]]
+  }
+
+  return (times * 1e6 / itr)
+}
+
+nr_pool <- c(2, 4, 6, 8, 10, 20, 50, 100) # number of time intervals
+n_pool <- c(50, 100, 200, 500, 1000, 1500, 2000) # number of observations to be generated
+```
+
+## Runtime comparison across different number of observations to be generated
+```{r}
+# Fix n_rates = 10
+nr <- 10
+
+# Dataframe for storing timing results
+times_n <- data.frame(matrix(ncol = 5, nrow = length(n_pool)))
+colnames(times_n) <- c("n",
+                       "rpwexp",
+                       "rpwexpRcpp",
+                       "rpwexpunif",
+                       "rpwexpinvRcpp")
+times_n$n <- n_pool
+
+# Benchmark
+for (i in 1:length(n_pool)) {
+  times_n[i, 2:5] <- bm_rpwexp(n_pool[i], nr)
+}
+
+# Reshape timing results for plot
+df_times_n <- data.frame(x = times_n$n,
+                         y = c(times_n$rpwexp,
+                               times_n$rpwexpRcpp,
+                               times_n$rpwexpunif,
+                               times_n$rpwexpinvRcpp),
+                         group = c(rep("Naive method in R", nrow(times_n)),
+                                   rep("Naive method in C++", nrow(times_n)),
+                                   rep("Inverse CDF with unif in R", nrow(times_n)),
+                                   rep("Inverse CDF with unif in C++", nrow(times_n))))
+ggplot(df_times_n, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_log10(breaks = c(50, 100, 200, 500, 1000, 2000)) +
+  # scale_x_continuous(trans='log10') + 
+  # scale_y_continuous(trans='log10') + 
+  labs(x = "Number of random numbers to be generated", y = paste0("Runtime (", "\U003BC", "s)")) +
+  theme_mk() +
+  scale_color_adaptive("teal") +
+  theme(legend.title=element_blank())
+```
+
+## Runtime comparison across different number of intervals
+```{r}
+# Fix n = 1000
+n <- 1000
+
+# Dataframe for storing timing results
+times_nr <- data.frame(matrix(ncol = 5, nrow = length(nr_pool)))
+colnames(times_nr) <- c("n_rates",
+                        "rpwexp",
+                        "rpwexpRcpp",
+                        "rpwexpunif",
+                        "rpwexpinvRcpp")
+times_nr$n_rates <- nr_pool
+
+# Benchmark
+for (i in 1:length(nr_pool)) {
+  times_nr[i, 2:5] <- bm_rpwexp(n, nr_pool[i])
+}
+
+# Reshape timing results for plot
+df_times_nr <- data.frame(x = times_nr$n_rates,
+                          y = c(times_nr$rpwexp,
+                                times_nr$rpwexpRcpp,
+                                times_nr$rpwexpunif,
+                                times_nr$rpwexpinvRcpp),
+                          group = c(rep("Naive method in R", nrow(times_nr)),
+                                    rep("Naive method in C++", nrow(times_nr)),
+                                    rep("Inverse CDF with unif in R", nrow(times_nr)),
+                                    rep("Inverse CDF with unif in C++", nrow(times_nr))))
+ggplot(df_times_nr, aes(x, y, col = group)) +
+  geom_line() +
+  scale_x_continuous(trans='log10') +
+  labs(x = "Number of periods in piecewise model", y = paste0("Runtime (", "\U003BC", "s)")) +
+  theme_mk() +
+  scale_color_adaptive("teal") +
+  theme(legend.title=element_blank())
+```
+
