@@ -131,12 +131,12 @@ $$w(t)=S(\min(t,t^*))^{-1}.$$</p>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Use default enrollment and event rates at cut at 100 events</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">200</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">125</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="tensurv.html">tensurv</a></span><span class="op">(</span>txval<span class="op">=</span><span class="st">"Experimental"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># compute Magirr-Burman weights with </span></span></span>
-<span class="r-in"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">wMB</span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span></span>
+<span class="r-in"><span><span class="co"># compute Magirr-Burman weights with</span></span></span>
+<span class="r-in"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">wMB</span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>             <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span><span class="op">*</span><span class="va">wMB</span><span class="op">)</span>,V<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span><span class="op">*</span><span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,Z<span class="op">=</span><span class="va">S</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0009389262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.090692e-07</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -144,7 +144,7 @@ $$w(t)=S(\min(t,t^*))^{-1}.$$</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -133,7 +133,7 @@ specified.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> trt=1 240      132    150.3      2.24      7.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Chisq= 7.3  on 1 degrees of freedom, p= 0.007 </span>
-<span class="r-in"><span><span class="co"># simple model with 3 rates same for each for 3 months, </span></span></span>
+<span class="r-in"><span><span class="co"># simple model with 3 rates same for each for 3 months,</span></span></span>
 <span class="r-in"><span><span class="co"># different for each treatment after months</span></span></span>
 <span class="r-in"><span><span class="va">rate1a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Ex1delayedEffect</span>,<span class="va">trt</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span>, <span class="fu">pwexpfit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">month</span>,<span class="va">evntd</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rate0a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Ex1delayedEffect</span>,<span class="va">trt</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>, <span class="fu">pwexpfit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">month</span>,<span class="va">evntd</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -152,7 +152,7 @@ specified.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
