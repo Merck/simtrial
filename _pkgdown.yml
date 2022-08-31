@@ -19,5 +19,5 @@ footer:
     left: [developed_by, built_with, legal]
     right: [blank]
   components:
-    legal: "<br>Copyright &copy; Merck Sharp & Dohme Corp., a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA."
+    legal: "<br>Copyright &copy; 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"

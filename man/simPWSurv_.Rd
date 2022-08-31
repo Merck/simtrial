@@ -12,8 +12,8 @@ simPWSurv_(
   failRates = tibble::tibble(Stratum = rep("All", 4), period = rep(1:2, 2), Treatment =
     c(rep("Control", 2), rep("Experimental", 2)), duration = rep(c(3, 1), 2), rate =
     log(2)/c(9, 9, 9, 18)),
-  dropoutRates = tibble::tibble(Stratum = rep("All", 2), period = rep(1, 2), Treatment
-    = c("Control", "Experimental"), duration = rep(100, 2), rate = rep(0.001, 2))
+  dropoutRates = tibble::tibble(Stratum = rep("All", 2), period = rep(1, 2), Treatment =
+    c("Control", "Experimental"), duration = rep(100, 2), rate = rep(0.001, 2))
 )
 }
 \arguments{

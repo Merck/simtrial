@@ -40,7 +40,7 @@ rate1$rate/rate0$rate
 pchisq(sum(rateall$m2ll)-sum(rate1$m2ll+rate0$m2ll), df = 4, lower.tail=FALSE)
 # compare with logrank
 survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
-# simple model with 3 rates same for each for 3 months, 
+# simple model with 3 rates same for each for 3 months,
 # different for each treatment after months
 rate1a <- with(subset(Ex1delayedEffect,trt==1), pwexpfit(Surv(month,evntd),3))
 rate0a <- with(subset(Ex1delayedEffect,trt==0), pwexpfit(Surv(month,evntd),3))
