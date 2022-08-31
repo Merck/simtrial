@@ -43,8 +43,8 @@ library(tidyr)
 library(dplyr)
 # Use default enrollment and event rates at cut at 100 events
 x <- simPWSurv(n=200) \%>\% cutDataAtCount(125) \%>\% tensurv(txval="Experimental")
-# compute Magirr-Burman weights with 
-ZMB <- x \%>\% wMB(6) \%>\% 
+# compute Magirr-Burman weights with
+ZMB <- x \%>\% wMB(6) \%>\%
              summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)

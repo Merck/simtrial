@@ -1,4 +1,4 @@
-#  Copyright (c) 2021 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#  Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
 #
 #  This file is part of the simtrial program.
 #
@@ -25,9 +25,9 @@ NULL
 #' Initial version assumes observations are right censored or events only.
 #'
 #' @param Srv input survival object (see \code{Surv}); note that only 0=censored, 1=event for \code{Surv}
-#' @param intervals Vector containing positive values indicating interval lengths where the 
-#' exponential rates are assumed. 
-#' Note that a final infinite interval is added if any events occur after the final interval 
+#' @param intervals Vector containing positive values indicating interval lengths where the
+#' exponential rates are assumed.
+#' Note that a final infinite interval is added if any events occur after the final interval
 #' specified.
 #'
 #' @return A matrix with rows containing interval length, estimated rate, -2*log-likelihood for each interval.
@@ -47,7 +47,7 @@ NULL
 #' pchisq(sum(rateall$m2ll)-sum(rate1$m2ll+rate0$m2ll), df = 4, lower.tail=FALSE)
 #' # compare with logrank
 #' survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
-#' # simple model with 3 rates same for each for 3 months, 
+#' # simple model with 3 rates same for each for 3 months,
 #' # different for each treatment after months
 #' rate1a <- with(subset(Ex1delayedEffect,trt==1), pwexpfit(Surv(month,evntd),3))
 #' rate0a <- with(subset(Ex1delayedEffect,trt==0), pwexpfit(Surv(month,evntd),3))
@@ -56,7 +56,7 @@ NULL
 #' m2ll1 <- sum(rate0$m2ll)+sum(rate1$m2ll)
 #' # as a measure of strength, chi-square examines improvement in likelihood
 #' pchisq(m2ll0-m2ll1, 5, lower.tail=FALSE)
-#' 
+#'
 #' @export
 pwexpfit <- function(Srv = Surv(time=Ex1delayedEffect$month, event=Ex1delayedEffect$evntd),
                       intervals=array(3,3)){
@@ -77,7 +77,7 @@ pwexpfit <- function(Srv = Surv(time=Ex1delayedEffect$month, event=Ex1delayedEff
     TTOT <- sum(dat$time)
     rate <- events/TTOT
     if (TTOT>0) rval <- rbind(rval,data.frame(intervals=intervals[i],
-                                              TTOT=TTOT, events=events, rate=rate, 
+                                              TTOT=TTOT, events=events, rate=rate,
                                               m2ll=2*(rate*TTOT-events*log(rate))))
   }
   return(rval)
