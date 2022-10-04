@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yilong Zhang \email{yilong.zhang@merck.com}
+\strong{Maintainer}: Yilong Zhang \email{elong0527@gmail.com}
 
 Authors:
 \itemize{
@@ -33,7 +33,7 @@ Other contributors:
   \item Ping Yang \email{ping.yang1@merck.com} [contributor]
   \item Yalin Zhu \email{yalin.zhu@merck.com} [contributor]
   \item Heng Zhou \email{heng.zhou@merck.com} [contributor]
-  \item Merck Sharp & Dohme Corp [copyright holder]
+  \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates [copyright holder]
 }
 
 }

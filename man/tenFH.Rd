@@ -5,8 +5,7 @@
 \title{Fleming-Harrington Weighted Logrank Tests}
 \usage{
 tenFH(
-  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% tensurv(txval =
-    "Experimental"),
+  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% tensurv(txval = "Experimental"),
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   returnVariance = FALSE
 )

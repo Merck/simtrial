@@ -3,7 +3,7 @@ Type: Package
 Title: Clinical Trial Simulation
 Version: 0.2.1
 Authors@R: c(
-    person(given = "Keaven", family = "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
+    person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
     person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role =  c("ctb","cre")),
     person("Nan", "Xiao", email = "nan.xiao1@merck.com", role = c("ctb")),
@@ -14,14 +14,16 @@ Authors@R: c(
     person("Ping", "Yang", email = "ping.yang1@merck.com", role = c("ctb")),
     person("Yalin", "Zhu", email = "yalin.zhu@merck.com", role = c("ctb")),
     person("Heng", "Zhou", email = "heng.zhou@merck.com", role = c("ctb")),
-    person("Merck Sharp & Dohme Corp", role = "cph")
+    person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph")
     )
-Maintainer: Yilong Zhang <yilong.zhang@merck.com>
-Description: simtrial provides some basic routines for simulating a clinical trial. 
-    The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. 
-    Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used 
-    to simulate a broad range of scenarios.
-    However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
+Description: simtrial provides some basic routines for simulating a
+    clinical trial. The primary intent is to provide some tools to
+    generate trial simulations for trials with time to event outcomes.
+    Piecewise exponential failure rates and piecewise constant
+    enrollment rates are the underlying mechanism used to simulate
+    a broad range of scenarios. However, the basic generation of data
+    is done using pipes to allow maximum flexibility for users to
+    meet different needs.
 License: GPL-3
 URL: https://merck.github.io/simtrial/, https://github.com/Merck/simtrial
 BugReports: https://github.com/Merck/simtrial/issues
@@ -35,7 +37,7 @@ Imports:
     Rcpp,
     foreach,
     doParallel
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     testthat,
@@ -50,10 +52,10 @@ Suggests:
     covr
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE)  
-RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
-Remotes: 
+Remotes:
     dominicmagirr/modestWLRT
-LinkingTo: 
+LinkingTo:
     Rcpp
