@@ -4,7 +4,10 @@ Title: Clinical Trial Simulation
 Version: 0.2.1
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
-    person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut","cre")),
+    person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
+    person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role =  c("ctb","cre")),
+    person("Nan", "Xiao", email = "nan.xiao1@merck.com", role = c("ctb")),
+    person("Jianxiao", "Yang", email = "yangjx@ucla.edu", role = c("ctb")),
     person("Amin", "Shirazi", email = "ashirazist@gmail.com", role = c("ctb")),
     person("Ruixue", "Wang", email = "ruixue.wang@merck.com", role = c("ctb")),
     person("Yi", "Cui", email = "yi.cui@merck.com", role = c("ctb")),
