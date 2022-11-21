@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
   %\VignetteIndexEntry{Using the Magirr-Burman weights for testing}
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, include=FALSE}
@@ -27,11 +27,6 @@ options(width = 58)
 They have implemented this in the package [modestWLRT](https://github.com/dominicmagirr/modestWLRT).
 Since the implementation is relatively straightforward, we have added this functionality to the `simtrial` package and explain how to use it here with the `wMB()` function.
 
-We consider two examples:
-
-- A single stratum example where we compare results with the `modestWLRT` package.
-- A stratified example which was not implemented in `modestWLRT`.
-
 Packages used are as follows:
 
 ```{r, message=FALSE, warning=FALSE}
@@ -40,32 +35,30 @@ library(dplyr)
 library(survival)
 ```
 
-## Single stratum examples
-
-### Magirr and Burman delayed effect example
+## Simulating a delayed effect example
 
 First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached.
-For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019).
-The control group has an exponential failure rate with a median of 15 months. 
+For failure rates, we consider the delayed treatment effect example of @MagirrBurman.
+The control group has an exponential failure rate with a median of 15 months.
 For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter.
-This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
+This differs from the @MagirrBurman delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 36
-sampleSize <- 200
+sampleSize <- 300
 enrollRates <- tibble::tibble(duration = 12, rate = 200 / 12)
 failRates <- tibble::tribble(
   ~Stratum, ~duration, ~failRate, ~hr, ~dropoutRate,
   "All", 6, log(2) / 15, 1, 0,
-  "All", 36, log(2) / 15, .7, 0
+  "All", 36, log(2) / 15, .6, 0
 )
 ```
 
 Now we generate a single dataset with the above characteristics and cut data for analysis at 36 months post start of enrollment.
 Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):
 
-```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
-set.seed(7783)
+```{r, message=FALSE, warning=FALSE, fig.width=7.5, fig.height=4}
+set.seed(7789)
 xpar <- simfix2simPWSurv(failRates)
 MBdelay <- simPWSurv(
   n = sampleSize,
@@ -81,78 +74,61 @@ plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
 
-We perform a logrank and weighted logrank tests as follows:
+## Generalizing the Magirr-Burman test
 
-```{r, message=FALSE, warning=FALSE}
-xx <- MBdelay %>%
-  tensurv(txval = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
-  mutate(p = pnorm(Z))
-xx
-```
+Next, we consider the @Magirr2021 extension of the modestly weighted logrank test (MWLRT) of  @MagirrBurman where we have weights as follows:
 
-Now for a MaxCombo test with the above compoenent tests, we have  p-value of
+$$w(t, \tau, w_{\max}) = \min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).$$
 
-```{r, message=FALSE, warning=FALSE}
-xx %>% pMaxCombo()
-```
-
-Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months.
 This requires generating weights and then computing the test.
+We begin with the default of `wmax=\Inf` which corresponds to the original @MagirrBurman test and set the time until maximum weight $\tau$ with `delay = 6`.
 
 ```{r}
 ZMB <- MBdelay %>%
   tensurv(txval = "Experimental") %>%
-  wMB(6) %>%
+  wMB(delay = 6) %>%
   summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)
 ```
 
-Finally, we consider weighted logrank tests with less down-weighting.
-Results are quite similar to the results with greater down-weighting.
+Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` so that the maximum weight begins at the observed median of the observed combined treatment Kaplan-Meier curve.
 
 ```{r}
-xx <- MBdelay %>%
+ZMB <- MBdelay %>%
   tensurv(txval = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
-  mutate(p = pnorm(Z))
-xx
+  wMB(delay = Inf, wmax = 2) %>%
+  summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V))
+# Compute p-value of modestly weighted logrank of Magirr-Burman
+pnorm(ZMB$Z)
 ```
 
-Check vs tenFH().
+Another way this can be done is with a generalized Fleming-Harrington test with
+
+$$w(t; \rho, \gamma, w_{\max})= \min((1-F(t))^\rho F(t)^\gamma, w_{\max})).$$
+
+and let $\gamma=0, \rho = -1/2.$
 
 ```{r}
-xx <- MBdelay %>%
+wmax <- 2
+Z_modified_FH <- MBdelay %>%
   tensurv(txval = "Experimental") %>%
-  tenFH(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5)))
-xx
-```
-
-```{r}
-xx <- MBdelay %>%
-  tensurv(txval = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, .5, .5), gamma = c(0, .5, .5, 0))) %>%
-  mutate(p = pnorm(Z))
-xx
-```
-
-Now for a MaxCombo test with the above compoenent tests, we have  p-value of
-
-```{r}
-xx %>% pMaxCombo()
+  mutate(w = pmin(wmax, 1 / S)) %>%
+  summarize(S = sum(OminusE * w), V = sum(Var * w^2), Z = S / sqrt(V))
+# Compute p-value of modestly weighted logrank of Magirr-Burman
+pnorm(Z_modified_FH$Z)
 ```
 
 ### Freidlin and Korn strong null hypothesis example
 
 The underlying survival is worse for the experimental group is uniformly worse for the experimental group until the very end of the study.
-This was presented by @FKNPH2019. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of 
+This was presented by @FKNPH2019. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of
 
 First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached.
-For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019).
-The control group has an exponential failure rate with a median of 15 months. 
+For failure rates, we consider the delayed treatment effect example of @MagirrBurman.
+The control group has an exponential failure rate with a median of 15 months.
 For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter.
-This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
+This differs from the @MagirrBurman delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 5
@@ -188,7 +164,7 @@ plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
 
-We perform a logrank and weighted logrank tests as follows:
+We perform a logrank and weighted logrank tests as suggested for more limited downweighting by follows:
 
 ```{r}
 xx <- FHwn %>%
@@ -198,19 +174,19 @@ xx <- FHwn %>%
 xx
 ```
 
-Now for a MaxCombo test with the above compoenent tests, we have  p-value of
+Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
 xx %>% pMaxCombo()
 ```
 
-Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months.
+Next, we consider the @MagirrBurman modestly weighted logrank test with down-weighting specified for the first 6 months but a maximum weight of 2.
 This requires generating weights and then computing the test.
 
 ```{r}
 ZMB <- FHwn %>%
   tensurv(txval = "Experimental") %>%
-  wMB(6) %>%
+  wMB(delay = 6, wmax = 2) %>%
   summarize(S = sum(OminusE * wMB), V = sum(Var * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)
@@ -227,10 +203,13 @@ xx <- FHwn %>%
 xx
 ```
 
-Now for a MaxCombo test with the above compoenent tests, we have  p-value of
+Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
 xx %>% pMaxCombo()
 ```
+
+Thus, with less down-weighting the MaxCombo test appears less problematic.
+This is addressed at greater length elsewhere.
 
 ## References
