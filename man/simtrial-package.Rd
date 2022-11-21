@@ -18,15 +18,18 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yilong Zhang \email{elong0527@gmail.com}
+\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com} [contributor]
 
 Authors:
 \itemize{
   \item Keaven Anderson \email{keaven_anderson@merck.com}
+  \item Yilong Zhang \email{elong0527@gmail.com}
 }
 
 Other contributors:
 \itemize{
+  \item Nan Xiao \email{nan.xiao1@merck.com} [contributor]
+  \item Jianxiao Yang \email{yangjx@ucla.edu} [contributor]
   \item Amin Shirazi \email{ashirazist@gmail.com} [contributor]
   \item Ruixue Wang \email{ruixue.wang@merck.com} [contributor]
   \item Yi Cui \email{yi.cui@merck.com} [contributor]
