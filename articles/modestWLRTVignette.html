@@ -87,16 +87,17 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p><span class="citation">Magirr and Burman (2019)</span> implemented a modestly weighted logrank test with the following claim:</p>
+<p><span class="citation">Magirr and Burman (2019)</span> implemented a
+modestly weighted logrank test with the following claim:</p>
 <blockquote>
-<p>Tests from this new class can be constructed to have high power under a delayed-onset treatment effect scenario, as well as being almost as efficient as the standard logrank test under proportional hazards.</p>
+<p>Tests from this new class can be constructed to have high power under
+a delayed-onset treatment effect scenario, as well as being almost as
+efficient as the standard logrank test under proportional hazards.</p>
 </blockquote>
-<p>They have implemented this in the package <a href="https://github.com/dominicmagirr/modestWLRT" class="external-link">modestWLRT</a>. Since the implementation is relatively straightforward, we have added this functionality to the <code>simtrial</code> package and explain how to use it here with the <code><a href="../reference/wMB.html">wMB()</a></code> function.</p>
-<p>We consider two examples:</p>
-<ul>
-<li>A single stratum example where we compare results with the <code>modestWLRT</code> package.</li>
-<li>A stratified example which was not implemented in <code>modestWLRT</code>.</li>
-</ul>
+<p>They have implemented this in the package <a href="https://github.com/dominicmagirr/modestWLRT" class="external-link">modestWLRT</a>. Since
+the implementation is relatively straightforward, we have added this
+functionality to the <code>simtrial</code> package and explain how to
+use it here with the <code><a href="../reference/wMB.html">wMB()</a></code> function.</p>
 <p>Packages used are as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span></span>
@@ -104,24 +105,32 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="single-stratum-examples">Single stratum examples<a class="anchor" aria-label="anchor" href="#single-stratum-examples"></a>
+<h2 id="simulating-a-delayed-effect-example">Simulating a delayed effect example<a class="anchor" aria-label="anchor" href="#simulating-a-delayed-effect-example"></a>
 </h2>
-<div class="section level3">
-<h3 id="magirr-and-burman-delayed-effect-example">Magirr and Burman delayed effect example<a class="anchor" aria-label="anchor" href="#magirr-and-burman-delayed-effect-example"></a>
-</h3>
-<p>First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached. For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019). The control group has an exponential failure rate with a median of 15 months. For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter. This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.</p>
+<p>First, we specify study duration, sample size and enrollment rates.
+The enrollment rate is assumed constant during the enrollment period
+until the targeted sample size is reached. For failure rates, we
+consider the delayed treatment effect example of <span class="citation">Magirr and Burman (2019)</span>. The control group has
+an exponential failure rate with a median of 15 months. For the initial
+6 months, the underlying hazard ratio is one followed by a hazard ratio
+of 0.7 thereafter. This differs from the <span class="citation">Magirr
+and Burman (2019)</span> delayed effect assumptions only in that they
+assume a hazard ratio of 0.5 after 6 months.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">studyDuration</span> <span class="op">&lt;-</span> <span class="fl">36</span></span>
-<span><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="fl">200</span></span>
+<span><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="fl">300</span></span>
 <span><span class="va">enrollRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">12</span>, rate <span class="op">=</span> <span class="fl">200</span> <span class="op">/</span> <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">Stratum</span>, <span class="op">~</span><span class="va">duration</span>, <span class="op">~</span><span class="va">failRate</span>, <span class="op">~</span><span class="va">hr</span>, <span class="op">~</span><span class="va">dropoutRate</span>,</span>
 <span>  <span class="st">"All"</span>, <span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">1</span>, <span class="fl">0</span>,</span>
-<span>  <span class="st">"All"</span>, <span class="fl">36</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">.7</span>, <span class="fl">0</span></span>
+<span>  <span class="st">"All"</span>, <span class="fl">36</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">.6</span>, <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now we generate a single dataset with the above characteristics and cut data for analysis at 36 months post start of enrollment. Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):</p>
+<p>Now we generate a single dataset with the above characteristics and
+cut data for analysis at 36 months post start of enrollment. Then we
+plot Kaplan-Meier curves for the resulting dataset (red curve for
+experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7789</span><span class="op">)</span></span>
 <span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simPWSurv.html">simfix2simPWSurv</a></span><span class="op">(</span><span class="va">failRates</span><span class="op">)</span></span>
 <span><span class="va">MBdelay</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="va">sampleSize</span>,</span>
@@ -136,88 +145,71 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, mark <span class="op">=</span> <span class="st">"|"</span>, xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modestWLRTVignette_files/figure-html/unnamed-chunk-4-1.png" width="720"></p>
-<p>We perform a logrank and weighted logrank tests as follows:</p>
+</div>
+<div class="section level2">
+<h2 id="generalizing-the-magirr-burman-test">Generalizing the Magirr-Burman test<a class="anchor" aria-label="anchor" href="#generalizing-the-magirr-burman-test"></a>
+</h2>
+<p>Next, we consider the <span class="citation">Magirr (2021)</span>
+extension of the modestly weighted logrank test (MWLRT) of <span class="citation">Magirr and Burman (2019)</span> where we have weights
+as follows:</p>
+<p><span class="math display">\[w(t, \tau, w_{\max}) =
+\min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).\]</span></p>
+<p>This requires generating weights and then computing the test. We
+begin with the default of <code>wmax=\Inf</code> which corresponds to
+the original <span class="citation">Magirr and Burman (2019)</span> test
+and set the time until maximum weight <span class="math inline">\(\tau\)</span> with <code>delay = 6</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">xx</span></span>
-<span><span class="co">#&gt;   rho gamma          Z        V1        V2        V3</span></span>
-<span><span class="co">#&gt; 1   0     0 -0.8626673 1.0000000 0.8630152 0.9254035</span></span>
-<span><span class="co">#&gt; 2   0     1 -1.4086898 0.8630152 1.0000000 0.9731757</span></span>
-<span><span class="co">#&gt; 3   1     1 -1.1451643 0.9254035 0.9731757 1.0000000</span></span>
-<span><span class="co">#&gt;            p</span></span>
-<span><span class="co">#&gt; 1 0.19416020</span></span>
-<span><span class="co">#&gt; 2 0.07946346</span></span>
-<span><span class="co">#&gt; 3 0.12607055</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.1142327</span></span></code></pre></div>
-<p>Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months. This requires generating weights and then computing the test.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.1802602</span></span></code></pre></div>
-<p>Finally, we consider weighted logrank tests with less down-weighting. Results are quite similar to the results with greater down-weighting.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="co">#&gt; [1] 0.04812254</span></span></code></pre></div>
+<p>Now we set the maximum weight to be 2 as in <span class="citation">Magirr (2021)</span> and set the <code>delay=Inf</code>
+so that the maximum weight begins at the observed median of the observed
+combined treatment Kaplan-Meier curve.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">xx</span></span>
-<span><span class="co">#&gt;   rho gamma          Z        V1        V2        V3</span></span>
-<span><span class="co">#&gt; 1 0.0   0.0 -0.8626673 1.0000000 0.9403634 0.9654105</span></span>
-<span><span class="co">#&gt; 2 0.0   0.5 -1.2587243 0.9403634 1.0000000 0.9918447</span></span>
-<span><span class="co">#&gt; 3 0.5   0.5 -1.1104867 0.9654105 0.9918447 1.0000000</span></span>
-<span><span class="co">#&gt;           p</span></span>
-<span><span class="co">#&gt; 1 0.1941602</span></span>
-<span><span class="co">#&gt; 2 0.1040650</span></span>
-<span><span class="co">#&gt; 3 0.1333947</span></span></code></pre></div>
-<p>Check vs tenFH().</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="cn">Inf</span>, wmax <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.04503586</span></span></code></pre></div>
+<p>Another way this can be done is with a generalized Fleming-Harrington
+test with</p>
+<p><span class="math display">\[w(t; \rho, \gamma, w_{\max})=
+\min((1-F(t))^\rho F(t)^\gamma, w_{\max})).\]</span></p>
+<p>and let <span class="math inline">\(\gamma=0, \rho =
+-1/2.\)</span></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wmax</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">Z_modified_FH</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tenFH.html">tenFH</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">xx</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
-<span><span class="co">#&gt;     rho gamma      Z</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   0     0   -<span style="color: #BB0000;">0.863</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   0     0.5 -<span style="color: #BB0000;">1.26</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   0.5   0.5 -<span style="color: #BB0000;">1.11</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">xx</span></span>
-<span><span class="co">#&gt;   rho gamma          Z        V1        V2        V3</span></span>
-<span><span class="co">#&gt; 1 0.0   0.0 -0.8626673 1.0000000 0.9403634 0.9654105</span></span>
-<span><span class="co">#&gt; 2 0.0   0.5 -1.2587243 0.9403634 1.0000000 0.9918447</span></span>
-<span><span class="co">#&gt; 3 0.5   0.5 -1.1104867 0.9654105 0.9918447 1.0000000</span></span>
-<span><span class="co">#&gt; 4 0.5   0.0 -0.6681079 0.9907477 0.8871792 0.9272057</span></span>
-<span><span class="co">#&gt;          V4         p</span></span>
-<span><span class="co">#&gt; 1 0.9907477 0.1941602</span></span>
-<span><span class="co">#&gt; 2 0.8871792 0.1040650</span></span>
-<span><span class="co">#&gt; 3 0.9272057 0.1333947</span></span>
-<span><span class="co">#&gt; 4 1.0000000 0.2520324</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.1404057</span></span></code></pre></div>
-</div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">wmax</span>, <span class="fl">1</span> <span class="op">/</span> <span class="va">S</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span> <span class="op">*</span> <span class="va">w</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span> <span class="op">*</span> <span class="va">w</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z_modified_FH</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.04503586</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="freidlin-and-korn-strong-null-hypothesis-example">Freidlin and Korn strong null hypothesis example<a class="anchor" aria-label="anchor" href="#freidlin-and-korn-strong-null-hypothesis-example"></a>
 </h3>
-<p>The underlying survival is worse for the experimental group is uniformly worse for the experimental group until the very end of the study. This was presented by <span class="citation">Freidlin and Korn (2019)</span>. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of</p>
-<p>First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached. For failure rates, we consider the delayed treatment effect example of Magirr and Burman (2019). The control group has an exponential failure rate with a median of 15 months. For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter. This differs from the Magirr and Burman (2019) delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>The underlying survival is worse for the experimental group is
+uniformly worse for the experimental group until the very end of the
+study. This was presented by <span class="citation">Freidlin and Korn
+(2019)</span>. For this case, we have a hazard ratio of 16 for 1/10 of 1
+year (1.2 months), followed by a hazard ratio of</p>
+<p>First, we specify study duration, sample size and enrollment rates.
+The enrollment rate is assumed constant during the enrollment period
+until the targeted sample size is reached. For failure rates, we
+consider the delayed treatment effect example of <span class="citation">Magirr and Burman (2019)</span>. The control group has
+an exponential failure rate with a median of 15 months. For the initial
+6 months, the underlying hazard ratio is one followed by a hazard ratio
+of 0.7 thereafter. This differs from the <span class="citation">Magirr
+and Burman (2019)</span> delayed effect assumptions only in that they
+assume a hazard ratio of 0.5 after 6 months.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">studyDuration</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span>
 <span><span class="va">enrollDuration</span> <span class="op">&lt;-</span> <span class="fl">.0001</span></span>
@@ -229,8 +221,11 @@
 <span>  hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">/</span> <span class="fl">.25</span>, <span class="fl">.19</span> <span class="op">/</span> <span class="fl">.25</span><span class="op">)</span>,</span>
 <span>  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">4.9</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now we generate a single dataset with the above characteristics and cut data for analysis at 36 months post start of enrollment. Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Now we generate a single dataset with the above characteristics and
+cut data for analysis at 36 months post start of enrollment. Then we
+plot Kaplan-Meier curves for the resulting dataset (red curve for
+experimental treatment, black for control):</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span></span>
 <span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simPWSurv.html">simfix2simPWSurv</a></span><span class="op">(</span><span class="va">failRates</span><span class="op">)</span></span>
 <span><span class="va">FHwn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simPWSurv.html">simPWSurv</a></span><span class="op">(</span></span>
@@ -245,13 +240,22 @@
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="va">Treatment</span>, data <span class="op">=</span> <span class="va">FHwn</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, mark <span class="op">=</span> <span class="st">"|"</span>, xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="modestWLRTVignette_files/figure-html/unnamed-chunk-13-1.png" width="720"></p>
-<p>We perform a logrank and weighted logrank tests as follows:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="modestWLRTVignette_files/figure-html/unnamed-chunk-9-1.png" width="720"></p>
+<p>We perform a logrank and weighted logrank tests as suggested for more
+limited downweighting by follows:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique</span></span>
+<span><span class="co">#&gt; column names if `.name_repair` is omitted as of tibble</span></span>
+<span><span class="co">#&gt; 2.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">simtrial</span></span></span>
+<span><span class="co">#&gt;   package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/Merck/simtrial/issues&gt;</span>.</span></span>
 <span><span class="va">xx</span></span>
 <span><span class="co">#&gt;   rho gamma         Z        V1        V2        V3</span></span>
 <span><span class="co">#&gt; 1   0     0  4.808526 1.0000000 0.8652115 0.9356769</span></span>
@@ -261,21 +265,27 @@
 <span><span class="co">#&gt; 1 0.9999992398</span></span>
 <span><span class="co">#&gt; 2 0.0006759349</span></span>
 <span><span class="co">#&gt; 3 0.1111481087</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>Now for a MaxCombo test with the above component tests, we have
+p-value of</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.001256683</span></span></code></pre></div>
-<p>Next, we consider the Magirr and Burman (2019) modestly weighted logrank test with down-weighting specifid for the first 6 months. This requires generating weights and then computing the test.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>Next, we consider the <span class="citation">Magirr and Burman
+(2019)</span> modestly weighted logrank test with down-weighting
+specified for the first 6 months but a maximum weight of 2. This
+requires generating weights and then computing the test.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/wMB.html">wMB</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, wmax <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OminusE</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Var</span> <span class="op">*</span> <span class="va">wMB</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.6189718</span></span></code></pre></div>
-<p>Finally, we consider weighted logrank tests with less down-weighting. Results are quite similar to the results with greater down-weighting.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; [1] 0.920727</span></span></code></pre></div>
+<p>Finally, we consider weighted logrank tests with less down-weighting.
+Results are quite similar to the results with greater
+down-weighting.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tenFHcorr.html">tenFHcorr</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -289,10 +299,13 @@
 <span><span class="co">#&gt; 1 0.9999992</span></span>
 <span><span class="co">#&gt; 2 0.2444929</span></span>
 <span><span class="co">#&gt; 3 0.8232561</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above compoenent tests, we have p-value of</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>Now for a MaxCombo test with the above component tests, we have
+p-value of</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.2915952</span></span></code></pre></div>
+<p>Thus, with less down-weighting the MaxCombo test appears less
+problematic. This is addressed at greater length elsewhere.</p>
 </div>
 </div>
 <div class="section level2 unnumbered">
@@ -300,10 +313,19 @@
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-FKNPH2019" class="csl-entry">
-Freidlin, Boris, and Edward L Korn. 2019. <span>“Methods for Accommodating Nonproportional Hazards in Clinical Trials: Ready for the Primary Analysis?”</span> <em>Journal of Clinical Oncology</em> 37 (35): 3455–59.
+Freidlin, Boris, and Edward L Korn. 2019. <span>“Methods for
+Accommodating Nonproportional Hazards in Clinical Trials: Ready for the
+Primary Analysis?”</span> <em>Journal of Clinical Oncology</em> 37 (35):
+3455–59.
+</div>
+<div id="ref-Magirr2021" class="csl-entry">
+Magirr, Dominic. 2021. <span>“Non-Proportional Hazards in
+Immuno-Oncology: Is an Old Perspective Needed?”</span>
+<em>Pharmaceutical Statistics</em> 20 (3): 512–27.
 </div>
 <div id="ref-MagirrBurman" class="csl-entry">
-Magirr, Dominic, and Carl-Fredrik Burman. 2019. <span>“Modestly Weighted Logrank Tests.”</span> <em>Statistics in Medicine</em> 38 (20): 3782–90.
+Magirr, Dominic, and Carl-Fredrik Burman. 2019. <span>“Modestly Weighted
+Logrank Tests.”</span> <em>Statistics in Medicine</em> 38 (20): 3782–90.
 </div>
 </div>
 </div>

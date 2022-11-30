@@ -1,4 +1,4 @@
-pandoc: 2.14.2
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   modestWLRTVignette: modestWLRTVignette.html
   pMaxComboVignette: pMaxComboVignette.html
   simtrialroutines: simtrialroutines.html
-last_built: 2022-10-05T02:09Z
+last_built: 2022-11-30T17:53Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles

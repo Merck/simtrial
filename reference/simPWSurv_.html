@@ -157,54 +157,54 @@ to be the same as input in block</p></dd>
 <span class="r-in"><span> <span class="fu">simtrial</span><span class="fu">:::</span><span class="fu">simPWSurv_</span><span class="op">(</span>n<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Stratum, Treatment [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime    cte  fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> All         0.021<span style="text-decoration: underline;">9</span> Control        2.76        359.    2.79      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> All         0.129  Experimental   2.51        182.    2.64      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> All         0.185  Control        0.458      <span style="text-decoration: underline;">1</span>099.    0.643     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> All         0.418  Experimental   0.988      <span style="text-decoration: underline;">2</span>909.    1.41      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> All         0.485  Control        4.03        334.    4.52      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> All         0.552  Control        0.090<span style="text-decoration: underline;">4</span>      199.    0.643     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> All         0.650  Experimental   2.74        473.    3.39      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> All         0.680  Experimental  14.1           8.67  9.35      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> All         0.830  Control        1.91       <span style="text-decoration: underline;">1</span>720.    2.74      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> All         1.04   Control        1.38        262.    2.42      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> All         1.42   Experimental  18.1         699.   19.6       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> All         1.44   Experimental   3.73       <span style="text-decoration: underline;">2</span>996.    5.17      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> All         1.55   Control        0.466       798.    2.02      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> All         1.88   Experimental  15.9        <span style="text-decoration: underline;">3</span>043.   17.8       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> All         1.90   Control       42.1        <span style="text-decoration: underline;">1</span>701.   44.0       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> All         2.07   Experimental   5.21        112.    7.28      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> All         2.07   Experimental   8.29        148.   10.4       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> All         2.24   Control        4.92        164.    7.16      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> All         2.27   Control        6.92       <span style="text-decoration: underline;">1</span>005.    9.19      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> All         2.59   Experimental  20.1         280.   22.7       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime   cte  fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> All         0.046<span style="text-decoration: underline;">4</span> Control         1.85        229.   1.90     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> All         0.195  Experimental    2.21        294.   2.41     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> All         0.230  Experimental   12.7         216.  13.0      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> All         0.326  Control        13.7        <span style="text-decoration: underline;">2</span>207.  14.0      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> All         0.474  Control        40.7         798.  41.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> All         0.490  Experimental    3.44       <span style="text-decoration: underline;">1</span>199.   3.93     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> All         0.581  Control        34.7         458.  35.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> All         0.689  Experimental   28.2         457.  28.9      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> All         1.09   Experimental    6.82         69.4  7.91     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> All         1.20   Control        13.8         885.  15.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> All         1.27   Control         6.18       <span style="text-decoration: underline;">1</span>806.   7.45     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> All         1.45   Experimental   26.3          74.0 27.8      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> All         1.57   Control        43.6        <span style="text-decoration: underline;">4</span>634.  45.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> All         1.64   Experimental    0.723       523.   2.36     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> All         1.72   Control         7.85        528.   9.56     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> All         1.85   Experimental    9.78        652.  11.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> All         1.90   Control         3.30       <span style="text-decoration: underline;">1</span>260.   5.21     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> All         1.92   Experimental   17.9        <span style="text-decoration: underline;">3</span>190.  19.8      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> All         2.01   Control        26.1         234.  28.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> All         2.01   Experimental    1.50        573.   3.52     1</span>
 <span class="r-in"><span> <span class="co"># 3:1 randomization</span></span></span>
 <span class="r-in"><span> <span class="fu">simtrial</span><span class="fu">:::</span><span class="fu">simPWSurv_</span><span class="op">(</span>n<span class="op">=</span><span class="fl">20</span>,block<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Experimental"</span>,<span class="fl">3</span><span class="op">)</span>,<span class="st">"Control"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Stratum, Treatment [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime    cte  fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> All          0.149 Control         20.0         34.8  20.2      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> All          0.382 Experimental    10.3        601.   10.7      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> All          0.499 Experimental    30.0        369.   30.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> All          0.507 Experimental     2.64      <span style="text-decoration: underline;">1</span>212.    3.14     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> All          0.716 Experimental    18.5       <span style="text-decoration: underline;">2</span>699.   19.2      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> All          0.970 Experimental   113.        <span style="text-decoration: underline;">1</span>329.  114.       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> All          1.02  Control         29.5       <span style="text-decoration: underline;">1</span>659.   30.6      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> All          1.09  Experimental     2.05       387.    3.14     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> All          1.14  Control          5.02        59.7   6.15     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> All          1.36  Experimental    79.2         53.2  54.6      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> All          1.41  Experimental     8.22       678.    9.63     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> All          1.62  Experimental    10.2       <span style="text-decoration: underline;">1</span>190.   11.8      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> All          1.80  Experimental     1.46       912.    3.26     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> All          1.83  Experimental    19.1       <span style="text-decoration: underline;">1</span>249.   21.0      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> All          1.88  Control          7.05      <span style="text-decoration: underline;">1</span>392.    8.93     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> All          1.98  Experimental    68.1        111.   70.0      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> All          2.03  Experimental    19.1       <span style="text-decoration: underline;">2</span>488.   21.1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> All          2.10  Control         14.4        133.   16.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> All          2.13  Experimental   132.          23.4  25.5      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> All          2.35  Experimental    53.9       <span style="text-decoration: underline;">1</span>252.   56.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime   cte  fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> All         0.032<span style="text-decoration: underline;">7</span> Experimental   61.4         531.  61.5      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> All         0.080<span style="text-decoration: underline;">1</span> Control        22.4         129.  22.5      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> All         0.251  Experimental   15.4         197.  15.7      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> All         0.329  Experimental   17.2         528.  17.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> All         0.561  Control        12.0         222.  12.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> All         0.720  Experimental   69.0         786.  69.8      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> All         0.836  Experimental   13.7          98.0 14.5      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> All         1.16   Experimental    0.682       363.   1.84     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> All         1.18   Control        13.2         261.  14.4      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> All         1.19   Experimental    1.69        455.   2.88     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> All         1.27   Experimental   34.2         988.  35.4      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> All         1.38   Experimental   12.8         730.  14.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> All         1.69   Experimental    5.66       <span style="text-decoration: underline;">1</span>673.   7.35     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> All         1.81   Experimental   10.8          22.6 12.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> All         1.82   Experimental   15.4          58.2 17.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> All         1.89   Control        15.4         837.  17.3      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> All         1.91   Experimental   14.0         275.  15.9      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> All         2.05   Control         0.893        86.0  2.94     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> All         2.07   Experimental   37.5         208.  39.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> All         2.16   Experimental    1.29       <span style="text-decoration: underline;">1</span>644.   3.45     1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Simulate 2 strata; will use defaults for blocking and enrollRates</span></span></span>
 <span class="r-in"><span><span class="fu">simtrial</span><span class="fu">:::</span><span class="fu">simPWSurv_</span><span class="op">(</span>n<span class="op">=</span><span class="fl">20</span>,</span></span>
@@ -225,26 +225,26 @@ to be the same as input in block</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Stratum, Treatment [4]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime   cte  fail</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Low         0.012<span style="text-decoration: underline;">0</span> Control         33.3        273.  33.3      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Low         0.020<span style="text-decoration: underline;">8</span> Experimental    25.4       <span style="text-decoration: underline;">1</span>675.  25.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> High        0.039<span style="text-decoration: underline;">9</span> Experimental    28.9       <span style="text-decoration: underline;">3</span>879.  29.0      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Low         0.098<span style="text-decoration: underline;">8</span> Control         16.7       <span style="text-decoration: underline;">2</span>365.  16.8      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> High        0.129  Experimental    11.0         74.8 11.2      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> High        0.181  Control          6.15      <span style="text-decoration: underline;">5</span>969.   6.33     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Low         0.193  Experimental     7.76       186.   7.95     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> High        0.471  Control         13.0       <span style="text-decoration: underline;">1</span>802.  13.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> High        0.837  Experimental    18.3        631.  19.1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> High        0.911  Experimental    23.5        163.  24.4      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Low         0.952  Control         20.1         23.0 21.1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> High        0.990  Control          8.42       999.   9.41     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Low         1.24   Experimental     4.94       796.   6.18     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> High        1.72   Control         18.9        159.  20.7      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> Low         1.79   Control          4.25       338.   6.04     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> High        1.84   Experimental     2.37      <span style="text-decoration: underline;">1</span>015.   4.20     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> Low         1.91   Experimental    12.8        415.  14.7      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> High        2.33   Experimental     2.51      <span style="text-decoration: underline;">1</span>119.   4.85     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> High        2.45   Control          6.72      <span style="text-decoration: underline;">2</span>281.   9.17     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> Low         2.47   Control         44.1        314.  46.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Low          0.105 Control        24.3        <span style="text-decoration: underline;">1</span>880.  24.4      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> High         0.192 Experimental   25.1          75.4 25.3      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> High         0.240 Control         3.60        424.   3.84     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Low          0.277 Experimental   33.8        <span style="text-decoration: underline;">1</span>609.  34.0      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> High         0.744 Experimental    6.15        423.   6.89     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> High         0.759 Control        15.7        <span style="text-decoration: underline;">1</span>925.  16.4      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Low          0.829 Control         9.09       <span style="text-decoration: underline;">2</span>912.   9.92     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> High         0.941 Experimental   33.2         721.  34.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Low          1.03  Experimental    0.363       697.   1.39     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> High         1.04  Experimental   27.1         957.  28.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> High         1.64  Control         4.58       <span style="text-decoration: underline;">1</span>204.   6.22     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> High         1.75  Control         0.237       720.   1.98     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> High         1.79  Control        14.2         261.  16.0      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> Low          1.94  Control        26.7          50.3 28.7      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> High         2.06  Experimental   30.7         480.  32.7      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> High         2.13  Experimental   12.3         792.  14.4      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> High         2.25  Control         9.62        595.  11.9      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> High         2.37  Control         5.72       <span style="text-decoration: underline;">1</span>797.   8.09     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> High         2.51  Experimental   34.6        <span style="text-decoration: underline;">3</span>408.  37.1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> High         2.59  Experimental  123.           10.4 13.0      0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you want a more rectangular entry for a tibble</span></span></span>
 <span class="r-in"><span><span class="va">failRates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span></span></span>
@@ -267,18 +267,18 @@ to be the same as input in block</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Stratum, Treatment [4]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Stratum enrollTime Treatment    failTime dropoutTime   cte  fail</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> High         0.107 Control          5.53        25.0  5.64     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> High         0.177 Experimental    35.5        997.  35.7      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> High         0.352 Experimental    41.0        102.  41.3      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> High         0.353 Control         15.8       <span style="text-decoration: underline;">1</span>304.  16.1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Low          0.363 Control         50.3        189.  50.7      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Low          0.724 Experimental    53.7         72.9 54.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> High         0.783 Experimental    14.8        818.  15.5      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> High         1.07  Control         16.3       <span style="text-decoration: underline;">1</span>662.  17.3      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> High         1.10  Control          3.35       432.   4.45     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Low          1.29  Control         62.7       <span style="text-decoration: underline;">1</span>724.  63.9      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> High         1.41  Experimental    22.5        369.  23.9      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> High         1.65  Control         41.5         46.5 43.2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Low         0.028<span style="text-decoration: underline;">9</span> Experimental    138.         809. 138.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> High        0.035<span style="text-decoration: underline;">3</span> Control          28.8       <span style="text-decoration: underline;">3</span>167.  28.8     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Low         0.124  Control          13.3       <span style="text-decoration: underline;">2</span>010.  13.4     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> High        0.470  Control          43.9        565.  44.4     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Low         0.549  Control          16.4       <span style="text-decoration: underline;">1</span>264.  16.9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> High        0.745  Experimental     10.9       <span style="text-decoration: underline;">2</span>616.  11.6     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> High        0.766  Experimental     21.4        718.  22.1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> High        1.09   Control          21.6        125.  22.7     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Low         1.14   Experimental     21.1       <span style="text-decoration: underline;">2</span>456.  22.2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> High        1.58   Control          12.8       <span style="text-decoration: underline;">3</span>108.  14.4     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> High        1.60   Experimental     82.6        603.  84.2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> High        1.68   Experimental     36.5        505.  38.2     1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
