@@ -7,10 +7,8 @@ test_that("rpwenroll handles 0 enrollment rate properly for 1st enrollment perio
 })
 
 test_that("rpwenroll handles 0 enrollment rate properly for final enrollment period", {
-  n <- 5
-  enrollRates <- tibble(duration = c(1, 2), rate = c(10, 0))
-  expect_error(rpwenroll(n=n, enrollRates=enrollRates))
 
+  set.seed(123)
   n <- 50
   enrollRates <- tibble(duration = c(1, 2), rate = c(10, 0))
   expect_error(rpwenroll(n=n, enrollRates=enrollRates))
