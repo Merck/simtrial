@@ -4,10 +4,7 @@
 \alias{rpwenroll}
 \title{Generate Piecewise Exponential Enrollment}
 \usage{
-rpwenroll(
-  n = NULL,
-  enrollRates = tibble::tibble(duration = c(1, 2), rate = c(2, 5))
-)
+rpwenroll(n = NULL, enrollRates = tibble(duration = c(1, 2), rate = c(2, 5)))
 }
 \arguments{
 \item{n}{Number of observations.
@@ -28,15 +25,25 @@ method for (fixed trial duration) as well as the Kim and Tsiatis(1990) method
 see \code{\link[gsDesign:nSurv]{gsDesign}}.
 }
 \examples{
+library(tibble)
+# Example 1
 # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-x <- rpwenroll(n=10000, enrollRates=tibble::tibble(rate = c(5, 15, 30), duration = c(100,200,100)))
-plot(x,1:10000,
-     main="Piecewise uniform enrollment simulation",xlab="Time",
-     ylab="Enrollment")
+x <- rpwenroll(n = 1e5,
+               enrollRates = tibble(rate = c(5, 15, 30),
+                                    duration = c(100, 200, 100)))
+plot(x, 1:1e5,
+     main = "Piecewise uniform enrollment simulation",
+     xlab = "Time",
+     ylab = "Enrollment")
+
+# Example 2
 # exponential enrollment
-x <- rpwenroll(10000, enrollRates=tibble::tibble(rate = .03, duration = 1))
-plot(x,1:10000,main="Simulated exponential inter-arrival times",
-     xlab="Time",ylab="Enrollment")
+x <- rpwenroll(n = 1e5,
+               enrollRates = tibble(rate = .03, duration = 1))
+plot(x, 1:1e5,
+     main = "Simulated exponential inter-arrival times",
+     xlab = "Time",
+     ylab = "Enrollment")
 
 }

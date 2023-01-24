@@ -15,9 +15,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import tibble
-#' @import dplyr
-#' @import tidyr
+#' @importFrom  tibble tibble
+#' @importFrom  dplyr %>% mutate row_number group_by
+#' @importFrom tidyr expand
 NULL
 
 #' Generate Piecewise Exponential Enrollment
@@ -33,53 +33,99 @@ NULL
 #' @param enrollRates A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
 #' for specified enrollment periods.
 #' If necessary, last period will be extended to ensure enrollment of specified \code{n}.
+#'
 #' @return A vector of random enrollment times.
+#'
 #' @examples
+#' library(tibble)
+#' # Example 1
 #' # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 #' # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-#' x <- rpwenroll(n=10000, enrollRates=tibble::tibble(rate = c(5, 15, 30), duration = c(100,200,100)))
-#' plot(x,1:10000,
-#'      main="Piecewise uniform enrollment simulation",xlab="Time",
-#'      ylab="Enrollment")
+#' x <- rpwenroll(n = 1e5,
+#'                enrollRates = tibble(rate = c(5, 15, 30),
+#'                                     duration = c(100, 200, 100)))
+#' plot(x, 1:1e5,
+#'      main = "Piecewise uniform enrollment simulation",
+#'      xlab = "Time",
+#'      ylab = "Enrollment")
+#'
+#' # Example 2
 #' # exponential enrollment
-#' x <- rpwenroll(10000, enrollRates=tibble::tibble(rate = .03, duration = 1))
-#' plot(x,1:10000,main="Simulated exponential inter-arrival times",
-#'      xlab="Time",ylab="Enrollment")
+#' x <- rpwenroll(n = 1e5,
+#'                enrollRates = tibble(rate = .03, duration = 1))
+#' plot(x, 1:1e5,
+#'      main = "Simulated exponential inter-arrival times",
+#'      xlab = "Time",
+#'      ylab = "Enrollment")
 #'
 #' @export
 rpwenroll <- function(n = NULL,
-                      enrollRates = tibble::tibble(duration=c(1,2),rate=c(2,5))
-){# take care of the simple case first
-  if(nrow(enrollRates)==1) {
+                      enrollRates = tibble(duration = c(1, 2), rate = c(2, 5))
+){
+
+  # take care of the simple case first
+  # if it is exponential enrollment
+  if(nrow(enrollRates) == 1) {
     # stop with error message if only 1 enrollment period and the enrollment rate is less or equal with 0
-    if (enrollRates$rate <=0) stop("Please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
+    if (enrollRates$rate <= 0){
+      stop("Please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
+    }
     # otherwise, return inter-arrival exponential times
-    else return(cumsum(stats::rexp(n=n,rate=enrollRates$rate)))
+    else{
+      ans <- cumsum(stats::rexp(n = n,rate = enrollRates$rate))
+    }
   }
+
+  # build `y` summarizes the start/end time, period order, etc..
   y <- enrollRates %>%
-          dplyr::mutate(period=dplyr::row_number(),
-                        finish=cumsum(duration),
-                        lambda=duration*rate,
-                        origin=dplyr::lag(finish,default=0)) %>%
-          group_by(period) %>%
-          dplyr::mutate(N=stats::rpois(n=1,lambda=lambda))
+    mutate(period = row_number(),
+           finish = cumsum(duration),
+           lambda = duration * rate,
+           origin = dplyr::lag(finish, default = 0)) %>%
+    group_by(period) %>%
+    mutate(N = stats::rpois(n = 1, lambda = lambda))
+
   # deal with extreme cases where none randomized in fixed intervals
-  if (sum(y$N)==0){
-    if (is.null(n)) return(NULL)
-    # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-    if (dplyr::last(enrollRates$rate) <=0) stop("Please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
-    # otherwise, return inter-arrival exponential times
-    else return(cumsum(stats::rexp(n,rate=dplyr::last(enrollRates$rate)))+dplyr::last(y$finish))
+  if (sum(y$N) == 0){
+
+    if (is.null(n)){
+      ans <- NULL
+    }
+
+    if (dplyr::last(enrollRates$rate) <= 0){
+      # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
+      stop("simtrial: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+    }else{
+      # otherwise, return inter-arrival exponential times
+      ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish)
+    }
   }
+
   # generate sorted uniform observations for Poisson count for each interval
-  z <- tidyr::expand(y,enrollTime=sort(stats::runif(n=N,min=origin,max=finish)))
-  if (is.null(n)) return(z$enrollTime) # if n not specified, return generated times
-  if (nrow(z) >= n) return(z$enrollTime[1:n]) # if n already achieved, return first n observations
+  z <- tidyr::expand(y, enrollTime = sort(stats::runif(n = N, min = origin, max = finish)))
+
+  # if n not specified, return generated times
+  if (is.null(n)){
+    ans <- z$enrollTime
+  }
+
+  # if n already achieved, return first n observations
+  if (nrow(z) >= n){
+    ans <- z$enrollTime[1:n]
+  }
+
   # after specified finite intervals, add required additional observations with
   # exponential inter-arrival times
-  nadd <- n-nrow(z)
+  n_add <- n - nrow(z)
   # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-  if (dplyr::last(enrollRates$rate) <=0) stop("Please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+  if (dplyr::last(enrollRates$rate) <= 0){
+    stop("simtrial: Please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+  }
   # Otherwise, return inter-arrival exponential times
-  else return(c(z$enrollTime, cumsum(stats::rexp(nadd,rate=dplyr::last(enrollRates$rate)))+dplyr::last(y$finish)))
+  else{
+    ans <- c(z$enrollTime,
+             cumsum(stats::rexp(n_add, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish))
+  }
+
+  return(ans)
 }
