@@ -25,36 +25,43 @@ NULL
 #'
 #' @examples
 #' library(dplyr)
+#' library(tibble)
+#'
 #' # Use default enrollment and calendar cut date for 50 events in Positive stratum
-#' x <- simPWSurv(n=200,
-#'                strata = tibble::tibble(Stratum=c("Positive","Negative"), p = c(.5, .5)),
-#'                failRates = tibble::tibble(Stratum = rep(c("Positive","Negative"),2),
-#'                                           period = rep(1, 4),
-#'                                           Treatment = c(rep("Control", 2),
-#'                                                         rep("Experimental", 2)),
-#'                                           duration = rep(1, 4),
-#'                                           rate = log(2) / c(6, 9, 9, 12)
-#'                                           ),
-#'                dropoutRates = tibble::tibble(Stratum = rep(c("Positive","Negative"),2),
-#'                                              period = rep(1, 4),
-#'                                              Treatment = c(rep("Control", 2),
-#'                                                            rep("Experimental", 2)),
-#'                                              duration = rep(1, 4),
-#'                                              rate = rep(.001, 4)
-#'                                             )
-#'               )
-#' d <- getCutDateForCount(filter(x,Stratum=="Positive"),count=50)
-#' y <- cutData(x,cutDate=d)
-#' table(y$Stratum,y$event)
+#' x <- simPWSurv(
+#'   n = 200,
+#'   strata = tibble(Stratum = c("Positive", "Negative"),
+#'                   p = c(.5, .5)),
+#'   failRates = tibble(Stratum = rep(c("Positive","Negative"), 2),
+#'                      period = rep(1, 4),
+#'                      Treatment = c(rep("Control", 2), rep("Experimental", 2)),
+#'                      duration = rep(1, 4),
+#'                      rate = log(2) / c(6, 9, 9, 12)),
+#'   dropoutRates = tibble(Stratum = rep(c("Positive", "Negative"),2),
+#'                         period = rep(1, 4),
+#'                         Treatment = c(rep("Control", 2), rep("Experimental", 2)),
+#'                         duration = rep(1, 4),
+#'                         rate = rep(.001, 4)))
+#'
+#' d <- getCutDateForCount(x %>% filter(Stratum == "Positive"), count = 50)
+#'
+#' y <- cutData(x, cutDate = d)
+#' table(y$Stratum, y$event)
 #'
 #' @return The a numeric value with the \code{cte} from the input dataset at which the targeted event count
 #' is reached, or if the final event count is never reached, the final \code{cte} at which an event occurs.
 #'
 #' @export
 
-getCutDateForCount <- function(x,count){
-  y <- ungroup(x) %>% select(cte,fail) %>% filter(fail==1) %>% select(cte) %>% arrange(cte) %>%
-         mutate(eventCount=row_number()) %>%
-         subset(eventCount<=count)
+getCutDateForCount <- function(x, count){
+  y <- x %>%
+    ungroup() %>%
+    select(cte,fail) %>%
+    filter(fail == 1) %>%
+    select(cte) %>%
+    arrange(cte) %>%
+    mutate(eventCount = row_number()) %>%
+    subset(eventCount <= count)
+
   return(last(y$cte))
 }

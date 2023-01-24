@@ -22,7 +22,7 @@ event count is reached.
 \examples{
 library(tidyr)
 # Use default enrollment and event rates at cut at 100 events
-x <- simPWSurv(n=200) \%>\% cutDataAtCount(100)
-table(x$event,x$Treatment)
+x <- simPWSurv(n = 200) \%>\% cutDataAtCount(100)
+table(x$event, x$Treatment)
 
 }

@@ -15,8 +15,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import dplyr
-#' @import tibble
+#' @import dplyr group_by mutate
+#' @importFrom tibble tibble
 NULL
 
 #' Simulate a stratified time-to-event outcome randomized trial
@@ -53,80 +53,102 @@ NULL
 #' \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
 #' \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
 #' \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
+#'
 #' @examples
 #' library(dplyr)
-#' # Tests
-#'  simPWSurv(n=20)
-#'  # 3:1 randomization
-#'  simPWSurv(n=20,block=c(rep("Experimental",3),"Control"))
+#' library(tibble)
 #'
+#' # example 1
+#' simPWSurv(n=20)
+#'
+#' # example 2
+#' # 3:1 randomization
+#' simPWSurv(n = 20,
+#'           block = c(rep("Experimental",3), "Control"))
+#'
+#' # example 3
 #' # Simulate 2 strata; will use defaults for blocking and enrollRates
-#' simPWSurv(n=20,
+#' simPWSurv(n = 20,
 #'           # 2 strata,30% and 70% prevalence
-#'           strata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
-#'           failRates=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
-#'                                    period=rep(1:2,4),
-#'                                    Treatment=rep(c(rep("Control",2),rep("Experimental",2)),2),
-#'                                    duration=rep(c(3,1),4),
-#'                                    rate=c(.03,.05,.03,.03,.05,.08,.07,.04)),
-#'           dropoutRates=tibble::tibble(Stratum=c(rep("Low",2),rep("High",2)),
-#'                                       period=rep(1,4),
-#'                                       Treatment=rep(c("Control","Experimental"),2),
-#'                                       duration=rep(1,4),
-#'                                       rate=rep(.001,4))
-#')
+#'           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
+#'           failRates = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
+#'                              period = rep(1:2, 4),
+#'                              Treatment = rep(c(rep("Control", 2),
+#'                                          rep("Experimental", 2)), 2),
+#'                              duration = rep(c(3,1), 4),
+#'                              rate = c(.03, .05, .03, .03, .05, .08, .07, .04)),
+#'           dropoutRates = tibble(Stratum = c(rep("Low", 2), rep("High", 2)),
+#'                                 period = rep(1, 4),
+#'                                 Treatment = rep(c("Control", "Experimental"), 2),
+#'                                 duration = rep(1, 4),
+#'                                 rate = rep(.001, 4)))
+#' # example 4
+#' # If you want a more rectangular entry for a tibble
+#' failRates <- bind_rows(
+#'   tibble(Stratum = "Low" , period = 1, Treatment = "Control"     , duration = 3, rate = .03),
+#'   tibble(Stratum = "Low" , period = 1, Treatment = "Experimental", duration = 3, rate = .03),
+#'   tibble(Stratum = "Low" , period = 2, Treatment = "Experimental", duration = 3, rate = .02),
+#'   tibble(Stratum = "High", period = 1, Treatment = "Control"     , duration = 3, rate = .05),
+#'   tibble(Stratum = "High", period = 1, Treatment = "Experimental", duration = 3, rate = .06),
+#'   tibble(Stratum = "High", period = 2, Treatment = "Experimental", duration = 3, rate = .03))
 #'
-#'# If you want a more rectangular entry for a tibble
-#'failRates <- bind_rows(
-#'    tibble(Stratum="Low" ,period=1,Treatment="Control"     ,duration=3,rate=.03),
-#'    tibble(Stratum="Low" ,period=1,Treatment="Experimental",duration=3,rate=.03),
-#'    tibble(Stratum="Low" ,period=2,Treatment="Experimental",duration=3,rate=.02),
-#'    tibble(Stratum="High",period=1,Treatment="Control"     ,duration=3,rate=.05),
-#'    tibble(Stratum="High",period=1,Treatment="Experimental",duration=3,rate=.06),
-#'    tibble(Stratum="High",period=2,Treatment="Experimental",duration=3,rate=.03)
-#')
-#'dropoutRates <- bind_rows(
-#'    tibble(Stratum="Low" ,period=1,Treatment="Control"     ,duration=3,rate=.001),
-#'    tibble(Stratum="Low" ,period=1,Treatment="Experimental",duration=3,rate=.001),
-#'    tibble(Stratum="High",period=1,Treatment="Control"     ,duration=3,rate=.001),
-#'    tibble(Stratum="High",period=1,Treatment="Experimental",duration=3,rate=.001)
-#')
-#'simPWSurv(n=12,strata=tibble(Stratum=c("Low","High"),p=c(.3,.7)),
-#'          failRates=failRates,dropoutRates=dropoutRates)
+#' dropoutRates <- bind_rows(
+#'   tibble(Stratum = "Low" , period=1, Treatment = "Control"     , duration = 3, rate = .001),
+#'   tibble(Stratum = "Low" , period=1, Treatment = "Experimental", duration = 3, rate = .001),
+#'   tibble(Stratum = "High", period=1, Treatment = "Control"     , duration = 3, rate = .001),
+#'   tibble(Stratum = "High", period=1, Treatment = "Experimental", duration = 3, rate = .001))
+#'
+#'simPWSurv(n = 12,
+#'          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
+#'          failRates = failRates,
+#'          dropoutRates = dropoutRates)
 #' @export
-simPWSurv <- function(n=100,
-                      strata=tibble::tibble(Stratum="All",p=1),
-                      block=c(rep("Control",2),rep("Experimental",2)),
-                      enrollRates=tibble::tibble(rate=9,
-                                                 duration=1),
-                      failRates=tibble::tibble(Stratum=rep("All",4),
-                                               period=rep(1:2,2),
-                                               Treatment=c(rep("Control",2), rep("Experimental",2)),
-                                               duration=rep(c(3,1),2),
-                                               rate=log(2)/c(9,9,9,18)),
-                      dropoutRates=tibble::tibble(Stratum=rep("All",2),
-                                              period=rep(1,2),
-                                              Treatment=c("Control","Experimental"),
-                                              duration=rep(100,2),
-                                              rate=rep(.001,2))
-                      ){
-# start tibble by generating strata and enrollment times
-    #return(
-    x<-  tibble::tibble(Stratum=sample(x=strata$Stratum,size=n,replace=TRUE,prob=strata$p)) %>%
-         mutate(enrollTime=rpwenroll(n, enrollRates)) %>%
-         group_by(Stratum) %>% mutate(Treatment=fixedBlockRand(n=n(),block=block))  %>% # assign treatment
-         # generate time to failure and time to dropout
-         dplyr::group_by(Stratum,Treatment)
-    usr <- unique(x$Stratum)
-    utr <- unique(x$Treatment)
+simPWSurv <- function(
+    n = 100,
+    strata = tibble(Stratum = "All", p = 1),
+    block = c(rep("Control", 2), rep("Experimental", 2)),
+    enrollRates = tibble(rate = 9, duration = 1),
+    failRates = tibble(Stratum = rep("All", 4),
+                       period = rep(1:2,2),
+                       Treatment = c(rep("Control", 2), rep("Experimental", 2)),
+                       duration = rep(c(3, 1), 2),
+                       rate = log(2) / c(9, 9, 9, 18)),
+    dropoutRates = tibble(Stratum = rep("All", 2),
+                          period = rep(1, 2),
+                          Treatment = c("Control", "Experimental"),
+                          duration = rep(100, 2),
+                          rate = rep(.001, 2))){
+  # start tibble by generating strata and enrollment times
+
+  x <- tibble(Stratum = sample(x = strata$Stratum,
+                               size = n,
+                               replace = TRUE,
+                               prob = strata$p)) %>%
+    mutate(enrollTime = rpwenroll(n, enrollRates)) %>%
+    group_by(Stratum) %>%
+    # assign treatment
+    mutate(Treatment = fixedBlockRand(n = n(), block = block)) %>%
+    # generate time to failure and time to dropout
+    group_by(Stratum, Treatment)
+
+    unique_stratum <- unique(x$Stratum)
+    unique_treatment <- unique(x$Treatment)
     x$failTime <- 0
     x$dropoutTime <- 0
-    for(sr in usr){for(tr in utr){
-      indx <- x$Stratum==sr & x$Treatment==tr
-      x$failTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=failRates[failRates$Stratum==sr&failRates$Treatment==tr,,drop = FALSE])
-      x$dropoutTime[indx] <- rpwexpinvRcpp(n=sum(indx),failRates=dropoutRates[dropoutRates$Stratum==sr&dropoutRates$Treatment==tr,,drop = FALSE])
-    }}
+
+    for(sr in unique_stratum){
+      for(tr in unique_treatment){
+      indx <- x$Stratum ==sr & x$Treatment == tr
+      x$failTime[indx] <- rpwexpinvRcpp(n = sum(indx),
+                                        failRates = failRates[failRates$Stratum == sr & failRates$Treatment == tr, , drop = FALSE])
+      x$dropoutTime[indx] <- rpwexpinvRcpp(n = sum(indx),
+                                           failRates = dropoutRates[dropoutRates$Stratum == sr & dropoutRates$Treatment == tr, ,drop = FALSE])
+      }
+    }
+
     # set calendar time-to-event and failure indicator
-    return(x %>% mutate(cte=pmin(dropoutTime,failTime)+enrollTime,
-                        fail=(failTime <= dropoutTime)*1))
+    ans <- x %>%
+      mutate(cte = pmin(dropoutTime, failTime) + enrollTime,
+             fail = (failTime <= dropoutTime) * 1)
+    return(ans)
 }
