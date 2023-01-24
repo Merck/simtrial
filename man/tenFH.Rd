@@ -68,7 +68,11 @@ The stratified Fleming-Harrington weighted logrank test is then computed as:
 \examples{
 library(tidyr)
 # Use default enrollment and event rates at cut at 100 events
-x <- simPWSurv(n=200) \%>\% cutDataAtCount(100) \%>\% tensurv(txval="Experimental")
+x <- simPWSurv(n = 200) \%>\%
+  cutDataAtCount(100) \%>\%
+  tensurv(txval ="Experimental")
+
 # compute logrank (FH(0,0)) and FH(0,1)
-tenFH(x,rg=tibble(rho=c(0,0),gamma=c(0,1)))
+tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
+
 }

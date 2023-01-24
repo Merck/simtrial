@@ -10,7 +10,7 @@ wMB(x, delay = 4, wmax = Inf)
 \item{x}{a \code{tensurv}-class \code{tibble} with a counting process dataset}
 
 \item{delay}{The initial delay period where weights increase;
-after this, weights are constant at the final weigh in the delay period}
+after this, weights are constant at the final weight in the delay period}
 
 \item{wmax}{Maximum weight to be returned.
 set \code{delay = Inf, wmax = 2} to be consistent with recommendation of
@@ -48,17 +48,32 @@ The weight at time \eqn{t} is then defined as
 \examples{
 library(tidyr)
 library(dplyr)
+
 # Use default enrollment and event rates at cut at 100 events
 # For transparency, may be good to set either `delay` or `wmax` to Inf`
-x <- simPWSurv(n=200) \%>\% cutDataAtCount(125) \%>\% tensurv(txval="Experimental")
+x <- simPWSurv(n = 200) \%>\%
+  cutDataAtCount(125) \%>\%
+  tensurv(txval = "Experimental")
+
+# example 1
 # compute Magirr-Burman weights with `delay = 6`
-ZMB <- x \%>\% wMB(6, wmax = Inf) \%>\%
-             summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+ZMB <- x \%>\%
+  wMB(delay = 6, wmax = Inf) \%>\%
+  summarize(S = sum(o_minus_e * wMB),
+            V = sum(var_o_minus_e * wMB^2),
+            Z = S / sqrt(V))
+
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$Z)
+
+# example 2
 # Now compute with maximum weight of 2 as recommended in Magirr, 2021
-ZMB2 <- x \%>\% wMB(delay = Inf, wmax = 2) \%>\%
-             summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+ZMB2 <- x \%>\%
+  wMB(delay = Inf, wmax = 2) \%>\%
+  summarize(S = sum(o_minus_e * wMB),
+            V = sum(var_o_minus_e * wMB^2),
+            Z = S / sqrt(V))
+
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB2$Z)
 
