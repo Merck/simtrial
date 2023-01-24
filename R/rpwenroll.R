@@ -15,9 +15,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @importFrom  tibble tibble
-#' @importFrom  dplyr %>% mutate row_number group_by
-#' @importFrom tidyr expand
+#' @import tibble
+#' @import dplyr
+#' @import tidyr
 NULL
 
 #' Generate Piecewise Exponential Enrollment
@@ -78,12 +78,12 @@ rpwenroll <- function(n = NULL,
 
   # build `y` summarizes the start/end time, period order, etc..
   y <- enrollRates %>%
-    mutate(period = row_number(),
+    dplyr::mutate(period = row_number(),
            finish = cumsum(duration),
            lambda = duration * rate,
            origin = dplyr::lag(finish, default = 0)) %>%
     dplyr::group_by(period) %>%
-    mutate(N = stats::rpois(n = 1, lambda = lambda))
+    dplyr::mutate(N = stats::rpois(n = 1, lambda = lambda))
 
   # deal with extreme cases where none randomized in fixed intervals
   if (sum(y$N) == 0){
