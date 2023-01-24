@@ -15,9 +15,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import tibble
-#' @import dplyr
-#' @import tidyr
+#' @importFrom  tibble tibble
+#' @importFrom  dplyr select mutate filter %>% group_by arrange
+#' @importFrom  tidyr expand
 NULL
 
 #' Generate Piecewise Exponential Enrollment

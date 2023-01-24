@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import dplyr group_by mutate
+#' @importFrom dplyr group_by mutate %>%
 #' @importFrom tibble tibble
 NULL
 

@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @importFrom  dplyr %>% filter mutate select
+#' @importFrom  dplyr filter mutate select %>%
 NULL
 
 #' Cut a Dataset for Analysis at a Specified Date
