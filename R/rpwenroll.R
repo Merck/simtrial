@@ -82,7 +82,7 @@ rpwenroll <- function(n = NULL,
            finish = cumsum(duration),
            lambda = duration * rate,
            origin = dplyr::lag(finish, default = 0)) %>%
-    group_by(period) %>%
+    dplyr::group_by(period) %>%
     mutate(N = stats::rpois(n = 1, lambda = lambda))
 
   # deal with extreme cases where none randomized in fixed intervals
