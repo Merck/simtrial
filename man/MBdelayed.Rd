@@ -29,7 +29,7 @@ library(mvtnorm)
 fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelayed)
 
 # Plot survival
-plot(fit, lty=1:2) 
+plot(fit, lty=1:2)
 legend("topright", legend = c("Control", "Experimental"), lty = 1:2)
 
 # Set up time, event, number of event dataset for testing
@@ -47,18 +47,18 @@ ten <- ten \%>\% wMB(6)
 head(ten)
 
 # Now compute test based on these weights
-ten \%>\% summarise(S = sum(OminusE*wMB),
-                  V = sum(Var*wMB^2),
+ten \%>\% summarise(S = sum(o_minus_e*wMB),
+                  V = sum(var_o_minus_e*wMB^2),
                   Z = S/sqrt(V)) \%>\%
         mutate(p=pnorm(Z))
 
 # Create 0 weights for first 6 months
 ten <- ten \%>\% mutate(w6 = 1 * (tte >= 6))
-ten \%>\% summarise(S = sum(OminusE*w6),
-                  V = sum(Var*w6^2),
-                  Z = S/sqrt(V)) \%>\% 
+ten \%>\% summarise(S = sum(o_minus_e*w6),
+                  V = sum(var_o_minus_e*w6^2),
+                  Z = S/sqrt(V)) \%>\%
         mutate(p=pnorm(Z))
-        
+
 # Generate another dataset
 ds <- simPWSurv(n = 200,
                 enrollRates = tibble(rate = 200 / 12, duration = 12),

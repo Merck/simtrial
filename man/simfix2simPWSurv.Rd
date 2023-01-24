@@ -5,8 +5,8 @@
 \title{Conversion of enrollment and failure rates from simfix() to simPWSurv() format}
 \usage{
 simfix2simPWSurv(
-  failRates = tibble::tibble(Stratum = "All", duration = c(3, 100), failRate =
-    log(2)/c(9, 18), hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2))
+  failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
+    hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2))
 )
 }
 \arguments{
@@ -30,29 +30,35 @@ individual simulations in ways that \code{simfix()} does not.
 \examples{
 library(tidyr)
 library(dplyr)
+library(tibble)
+
+# example 1
 # Convert standard input
 simfix2simPWSurv()
+
 # Stratified example
-failRates <- tibble::tibble(Stratum=c(rep("Low",3),rep("High",3)),
-                            duration=rep(c(4,10,100),2),
-                            failRate=c(.04,.1,.06,
-                                       .08,.16,.12),
-                            hr=c(1.5,.5,2/3,
-                                 2, 10/16, 10/12),
-                            dropoutRate=.01
-)
+failRates <- tibble(Stratum = c(rep("Low", 3),rep("High", 3)),
+                    duration = rep(c(4, 10, 100), 2),
+                    failRate = c(.04, .1, .06,
+                                 .08,.16,.12),
+                    hr = c(1.5, .5, 2/3,
+                           2, 10/16, 10/12),
+                    dropoutRate =.01)
+
 x <- simfix2simPWSurv(failRates)
+
 # Do a single simulation with the above rates
 # Enroll 300 patients in ~12 months at constant rate
-sim <-
-    simPWSurv(n=300,
-          strata=tibble::tibble(Stratum=c("Low","High"),p=c(.6,.4)),
-          enrollRates=tibble::tibble(duration=12,rate=300/12),
-          failRates=x$failRates,
-          dropoutRates=x$dropoutRates)
+sim <- simPWSurv(n = 300,
+                 strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
+                 enrollRates = tibble(duration = 12, rate = 300 / 12),
+                 failRates = x$failRates,
+                 dropoutRates = x$dropoutRates)
+
 # Cut after 200 events and do a stratified logrank test
 dat <- sim \%>\%
-       cutDataAtCount(200) \%>\%            # cut data
-       tensurv(txval="Experimental") \%>\%  # convert format for tenFH
-       tenFH(rg=tibble(rho=0,gamma=0))    # stratified logrank
+  cutDataAtCount(200) \%>\%              # cut data
+  tensurv(txval = "Experimental") \%>\%  # convert format for tenFH
+  tenFH(rg = tibble(rho=0,gamma=0))    # stratified logrank
+
 }
