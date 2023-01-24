@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @importFrom dplyr ungroup select mutate filter arrange subset last
+#' @importFrom dplyr ungroup select mutate filter arrange last
 NULL
 #' Get Date at Which an Event Count is Reached
 #'
