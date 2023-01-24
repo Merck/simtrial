@@ -38,12 +38,14 @@ NULL
 #'
 #' @param x a \code{tensurv}-class \code{tibble} with a counting process dataset
 #' @param delay The initial delay period where weights increase;
-#' after this, weights are constant at the final weigh in the delay period
+#' after this, weights are constant at the final weight in the delay period
 #' @param wmax Maximum weight to be returned.
 #' set \code{delay = Inf, wmax = 2} to be consistent with recommendation of
 #' Magirr (2021).
+#'
 #' @return a vector with weights for the Magirr-Burman weighted logrank test
 #' for the data in \code{x}
+#'
 #' @details
 #' We define \eqn{t^*} to be the input variable \code{delay}.
 #' This specifies an initial period during which weights increase.
@@ -65,17 +67,32 @@ NULL
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
+#'
 #' # Use default enrollment and event rates at cut at 100 events
 #' # For transparency, may be good to set either `delay` or `wmax` to Inf`
-#' x <- simPWSurv(n=200) %>% cutDataAtCount(125) %>% tensurv(txval="Experimental")
+#' x <- simPWSurv(n = 200) %>%
+#'   cutDataAtCount(125) %>%
+#'   tensurv(txval = "Experimental")
+#'
+#' # example 1
 #' # compute Magirr-Burman weights with `delay = 6`
-#' ZMB <- x %>% wMB(6, wmax = Inf) %>%
-#'              summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+#' ZMB <- x %>%
+#'   wMB(delay = 6, wmax = Inf) %>%
+#'   summarize(S = sum(o_minus_e * wMB),
+#'             V = sum(var_o_minus_e * wMB^2),
+#'             Z = S / sqrt(V))
+#'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB$Z)
+#'
+#' # example 2
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
-#' ZMB2 <- x %>% wMB(delay = Inf, wmax = 2) %>%
-#'              summarize(S=sum(OminusE*wMB),V=sum(Var*wMB^2),Z=S/sqrt(V))
+#' ZMB2 <- x %>%
+#'   wMB(delay = Inf, wmax = 2) %>%
+#'   summarize(S = sum(o_minus_e * wMB),
+#'             V = sum(var_o_minus_e * wMB^2),
+#'             Z = S / sqrt(V))
+#'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB2$Z)
 #'
@@ -83,29 +100,60 @@ NULL
 wMB <- function(x, delay = 4, wmax = Inf)
 {
   # check input failure rate assumptions
-  if(!is.data.frame(x)){stop("x in `wMB()` must be a data frame")}
+  if(!is.data.frame(x)){
+    stop("x in `wMB()` must be a data frame")
+  }
 
   # check input delay
-  if(!is.numeric(delay)){stop("delay in `wMB()` must be a non-negative number")}
-  if(!delay >= 0){stop("delay in `wMB()` must be a non-negative number")}
-  if(!is.numeric(wmax)){stop("wmax (maximum weight) in `wMB()` must be a positive number")}
-  if(!delay > 0){stop("wmax (maximum weight) in `wMB()` must be a positive number")}
+  if(!is.numeric(delay)){
+    stop("delay in `wMB()` must be a non-negative number")
+  }
 
-  if(max(names(x)=="Stratum") != 1){stop("x column names in `wMB()` must contain Stratum")}
-  if(max(names(x)=="tte") != 1){stop("x column names in `wMB()` must contain tte")}
-  if(max(names(x)=="S") != 1){stop("x column names in `wMB()` must contain S")}
+  if(!delay >= 0){
+    stop("delay in `wMB()` must be a non-negative number")
+  }
+
+  if(!is.numeric(wmax)){
+    stop("wmax (maximum weight) in `wMB()` must be a positive number")
+  }
+
+  if(!delay > 0){
+    stop("wmax (maximum weight) in `wMB()` must be a positive number")
+  }
+
+  if(max(names(x)=="Stratum") != 1){
+    stop("x column names in `wMB()` must contain Stratum")
+  }
+
+  if(max(names(x)=="tte") != 1){
+    stop("x column names in `wMB()` must contain tte")
+  }
+
+  if(max(names(x)=="S") != 1){
+    stop("x column names in `wMB()` must contain S")
+  }
 
   # Compute max weight by stratum
   x2 <- x %>% group_by(Stratum)
-  allstrat <- x2 %>% summarize()                        # Make sure you don't lose any strata!
-  maxwgt <- x2 %>%
-            filter(tte <= delay) %>%                    # look only up to delay time
-            summarize(maxwgt = max(1/S)) %>%            # weight before delay specified as 1/S
-            right_join(allstrat, by = "Stratum") %>%    # get back strata with no records before delay ends
-            mutate(maxwgt = replace_na(maxwgt, 1)) %>%  # maxwgt is 1 when there are no records before delay ends
-            mutate(maxwgt = pmin(wmax, maxwgt)) %>%     # Cut off weights at wmax
-            full_join(x2,by="Stratum") %>%              # Now merge maxwgt back to stratified dataset
-            mutate(wMB=pmin(maxwgt,1/S)) %>%            # Weight is min of maxwgt and 1/S which will increase up to delay
-            select(-maxwgt)
-  return(maxwgt)
+  # Make sure you don't lose any strata!
+  tbl_all_stratum <- x2 %>% summarize()
+
+  ans <- x2 %>%
+    # look only up to delay time
+    filter(tte <= delay) %>%
+    # weight before delay specified as 1/S
+    summarize(max_weight = max(1/S)) %>%
+    # get back strata with no records before delay ends
+    right_join(tbl_all_stratum, by = "Stratum") %>%
+    # max_weight is 1 when there are no records before delay ends
+    mutate(max_weight = tidyr::replace_na(max_weight, 1)) %>%
+    # Cut off weights at wmax
+    mutate(max_weight = pmin(wmax, max_weight)) %>%
+    # Now merge max_weight back to stratified dataset
+    full_join(x2, by = "Stratum") %>%
+    # Weight is min of max_weight and 1/S which will increase up to delay
+    mutate(wMB = pmin(max_weight, 1/S)) %>%
+    select(-max_weight)
+
+  return(ans)
 }

@@ -15,8 +15,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import dplyr
-#' @import tibble
+#' @importFrom dplyr select mutate filter %>% arrange group_by
+#' @importFrom tibble tibble
 NULL
 
 #' Process Survival Data into Counting Process Format
@@ -43,70 +43,79 @@ NULL
 #' Other variables in this represent the following within each stratum at
 #' each time at which one or more events are observed:
 #' - `events`: Total number of events
-#' - `txevents`: Total number of events at treatment group
-#' - `atrisk`: Number of subjects at risk
-#' - `txatrisk`: Number of subjects at risk in treatment group
+#' - `n_event_tol`: Total number of events at treatment group
+#' - `n_risk_tol`: Number of subjects at risk
+#' - `n_risk_trt`: Number of subjects at risk in treatment group
 #' - `S`: Left-continuous Kaplan-Meier survival estimate
-#' - `OminusE`: In treatment group, observed number of events minus expected
+#' - `o_minus_e`: In treatment group, observed number of events minus expected
 #' number of events. The expected number of events is estimated by assuming
 #' no treatment effect with hypergeometric distribution with parameters total
 #' number of events, total number of events at treatment group and number of
 #' events at a time. (Same assumption of log-rank test under the null hypothesis)
-#' - `Var`: variance of `OminusE` under the same assumption.
+#' - `var_o_minus_e`: variance of `o_minus_e` under the same assumption.
 #'
 #' @examples
 #' library(dplyr)
+#' library(tibble)
 #'
-#' # Example 1
-#' x=tibble(Stratum = c(rep(1,10),rep(2,6)),
-#' Treatment = rep(c(1,1,0,0),4),
-#' tte = 1:16,
-#' event= rep(c(0,1),8))
+#' # example 1
+#' x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
+#'             Treatment = rep(c(1, 1, 0, 0), 4),
+#'             tte = 1:16,
+#'             event= rep(c(0, 1), 8))
+#' tensurv(x, txval = 1)
 #'
-#' tensurv(x, txval=1)
-#'
-#' # Example 2
-#' x <- simPWSurv(n=400)
-#' y <- cutDataAtCount(x,150) %>% tensurv(txval = "Experimental")
+#' # example 2
+#' x <- simPWSurv(n = 400)
+#' y <- cutDataAtCount(x, 150) %>% tensurv(txval = "Experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
-#' z <- sum(y$OminusE)/sqrt(sum(y$Var))
-#' c(z,pnorm(z))
+#' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
+#' c(z, pnorm(z))
 #'
 #' @export
 tensurv <- function(x, txval){
 
-    u.trt = unique(x$Treatment)
-    if(length(u.trt) > 2){
-      stop("Expected two groups")
+    unique_treatment <- unique(x$Treatment)
+
+    if(length(unique_treatment) > 2){
+      stop("tensurv: expected two groups!")
     }
 
-    if(! txval %in% u.trt){
-      stop("txval is not a valid treatment group value")
+    if(! txval %in% unique_treatment){
+      stop("tensurv: txval is not a valid treatment group value!")
     }
 
-    if(! all(unique(x$event) %in% c(0,1) ) ){
-      stop("Event indicator must be 0 (censoring) or 1 (event)")
+    if(! all(unique(x$event) %in% c(0, 1) ) ){
+      stop("tensurv: event indicator must be 0 (censoring) or 1 (event)!")
     }
-    x %>% group_by(Stratum) %>% arrange(desc(tte)) %>%
-          mutate(one=1,
-                 atrisk=cumsum(one),
-                 txatrisk=cumsum(Treatment==txval)) %>%
-          # Handling ties using Breslow's method
-          group_by(Stratum, mtte=desc(tte)) %>%
-          dplyr::summarise(events=sum(event),
-                           txevents=sum((Treatment==txval)*event),
-                           tte=first(tte),
-                           atrisk=max(atrisk),
-                           txatrisk=max(txatrisk)) %>%
-          # Keep calculation for observed time with at least one event, at least one subject is
-          # at risk in both treatment group and control group.
-          filter(events>0, atrisk-txatrisk>0, txatrisk>0) %>%
-          select(-mtte) %>%
-          mutate(s=1-events/atrisk) %>%
-          arrange(Stratum, tte) %>%
-          group_by(Stratum) %>%
-          mutate(S=lag(cumprod(s), default=1),               # left continuous Kaplan-Meier Estimator
-                 OminusE=txevents-txatrisk/atrisk*events,    #  Observed events minus Expected events in treatment group
-                 Var=(atrisk-txatrisk)*txatrisk*events*(atrisk-events)/atrisk^2/(atrisk-1)) %>% #Variance of OminusE
-                 select(-s)
+
+    ans <- x %>%
+      group_by(Stratum) %>%
+      arrange(desc(tte)) %>%
+      mutate(one = 1,
+             n_risk_tol = cumsum(one),
+             n_risk_trt = cumsum(Treatment == txval)) %>%
+      # Handling ties using Breslow's method
+      group_by(Stratum, mtte = desc(tte)) %>%
+      dplyr::summarise(events = sum(event),
+                       n_event_tol = sum((Treatment == txval) * event),
+                       tte = first(tte),
+                       n_risk_tol = max(n_risk_tol),
+                       n_risk_trt = max(n_risk_trt)) %>%
+      # Keep calculation for observed time with at least one event, at least one subject is
+      # at risk in both treatment group and control group.
+      filter(events > 0, n_risk_tol - n_risk_trt > 0, n_risk_trt > 0) %>%
+      select(-mtte) %>%
+      mutate(s = 1 - events / n_risk_tol) %>%
+      arrange(Stratum, tte) %>%
+      group_by(Stratum) %>%
+      mutate( # left continuous Kaplan-Meier Estimator
+             S = lag(cumprod(s), default = 1),
+             # observed events minus Expected events in treatment group
+             o_minus_e = n_event_tol - n_risk_trt / n_risk_tol * events,
+             # variance of o_minus_e
+             var_o_minus_e = (n_risk_tol - n_risk_trt) * n_risk_trt * events * (n_risk_tol - events) / n_risk_tol^2 / (n_risk_tol - 1)) %>%
+      select(-s)
+
+    return(ans)
 }

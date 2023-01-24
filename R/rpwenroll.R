@@ -73,6 +73,7 @@ rpwenroll <- function(n = NULL,
     # otherwise, return inter-arrival exponential times
     else{
       ans <- cumsum(stats::rexp(n = n,rate = enrollRates$rate))
+      return(ans)
     }
   }
 
@@ -90,6 +91,7 @@ rpwenroll <- function(n = NULL,
 
     if (is.null(n)){
       ans <- NULL
+      return(ans)
     }
 
     if (dplyr::last(enrollRates$rate) <= 0){
@@ -98,6 +100,7 @@ rpwenroll <- function(n = NULL,
     }else{
       # otherwise, return inter-arrival exponential times
       ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish)
+      return(ans)
     }
   }
 
@@ -107,11 +110,13 @@ rpwenroll <- function(n = NULL,
   # if n not specified, return generated times
   if (is.null(n)){
     ans <- z$enrollTime
+    return(ans)
   }
 
   # if n already achieved, return first n observations
   if (nrow(z) >= n){
     ans <- z$enrollTime[1:n]
+    return(ans)
   }
 
   # after specified finite intervals, add required additional observations with
@@ -125,7 +130,6 @@ rpwenroll <- function(n = NULL,
   else{
     ans <- c(z$enrollTime,
              cumsum(stats::rexp(n_add, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish))
+    return(ans)
   }
-
-  return(ans)
 }

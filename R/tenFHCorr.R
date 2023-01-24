@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import tibble
+#' @importFrom tibble tibble as_tibble
 #' @import dplyr
 NULL
 
@@ -30,59 +30,92 @@ NULL
 #' @param rg a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row
 #' @param corr a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix
+#'
 #' @return a `tibble` with \code{rg} as input, the FH test statistics specified
 #' for the data in \code{Z}, and the correlation or covariance matrix for these tests in variables starting
 #' with \code{V}
+#'
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
 #' # Use default enrollment and event rates at cut of 100 events
-#' x <- simPWSurv(n=200) %>% cutDataAtCount(100) %>% tensurv(txval="Experimental")
+#' x <- simPWSurv(n = 200) %>%
+#'   cutDataAtCount(100) %>%
+#'   tensurv(txval = "Experimental")
+#'
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' x <- tenFHcorr(rg=tibble(rho=c(0,0),gamma=c(0,1)),x=x)
+#' x <- tenFHcorr(rg = tibble(rho = c(0, 0),
+#'                            gamma=c(0,1)),
+#'                x = x)
+#'
 #' # compute p-value for MaxCombo
 #' library(mvtnorm)
-#' 1-pmvnorm(lower=rep(min(x$Z),nrow(x)),corr=data.matrix(select(x,-c(rho,gamma,Z))),
-#' algorithm=GenzBretz(maxpts=50000,abseps=0.00001))[1]
+#' 1 - pmvnorm(lower = rep(min(x$Z), nrow(x)),
+#'             corr = data.matrix(select(x, -c(rho, gamma, Z))),
+#'             algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
+#'
 #' # check that covariance is as expected
-#' x <- simPWSurv(n=200) %>%
-#'          cutDataAtCount(100) %>%
-#'          tensurv(txval="Experimental")
-#' x %>% tenFHcorr(rg=tibble(rho=c(0,0),gamma=c(0,1)),corr=FALSE)
+#' x <- simPWSurv(n = 200) %>%
+#'   cutDataAtCount(100) %>%
+#'   tensurv(txval = "Experimental")
+#'
+#' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
+#'                             gamma=c(0, 1)),
+#'                 corr = FALSE)
+#'
 #' # Off-diagonal element should be variance in following
-#' x %>% tenFHcorr(rg=tibble(rho=0,gamma=.5),corr=FALSE)
+#' x %>% tenFHcorr(rg = tibble(rho = 0,
+#'                             gamma=.5),
+#'                 corr = FALSE)
+#'
 #' # compare off diagonal result with tenFH()
-#' x %>% tenFH(rg=tibble(rho=0,gamma=.5))
+#' x %>% tenFH(rg = tibble(rho = 0,gamma =.5))
+#'
 #' @export
-
-tenFHcorr <- function(x=simPWSurv(n=200) %>% cutDataAtCount(100) %>%
-                        tensurv(txval = "Experimental"),
-                      rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)),
-                      corr=TRUE
+#' @rdname tenFHcorr
+#'
+tenFHcorr <- function(x = simPWSurv(n = 200) %>%
+                            cutDataAtCount(100) %>%
+                            tensurv(txval = "Experimental"),
+                      rg = tibble(rho = c(0 ,0, 1, 1),
+                                  gamma = c(0, 1, 0, 1)),
+                      corr = TRUE
 ){
+
+  n_weight <- nrow(rg)
   # Get average rho and gamma for FH covariance matrix
-  # We want rhoave[i,j] = (rho[i]+rho[j])/2
-  # and     gamave[i,j] = (gamma[i]+gamma[j])/2
-  nr <- nrow(rg)
-  rhoave <- (matrix(rg$rho,nrow=nr,ncol=nr)+matrix(rg$rho,nrow=nr,ncol=nr,byrow=TRUE))/2
-  gamave <- (matrix(rg$gamma,nrow=nr,ncol=nr)+matrix(rg$gamma,nrow=nr,ncol=nr,byrow=TRUE))/2
+  # We want ave_rho[i,j] = (rho[i] + rho[j])/2
+  # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
+  ave_rho <- (matrix(rg$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
+                matrix(rg$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+              )/2
+  ave_gamma <- (matrix(rg$gamma, nrow = n_weight, ncol = n_weight) +
+                  matrix(rg$gamma,nrow = n_weight,ncol = n_weight, byrow = TRUE)
+               )/2
+
   # Convert back to tibble
-  rg2 <- tibble(rho=as.numeric(rhoave), gamma=as.numeric(gamave))
+  rg2 <- tibble(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
   # get unique values of rho, gamma
-  rgu <- rg2 %>% unique()
+  rg_unique <- rg2 %>% unique()
+
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  # rgFH <- tenFH(x,rgu,returnVariance=TRUE) %>% right_join(rg2,by=c("rho"="rho","gamma"="gamma"))
-  # FIXED by KA TO GET SORT CORRECT 8/21/2020
-  rgFH <- rg2 %>% left_join(tenFH(x,rgu,returnVariance=TRUE),by=c("rho"="rho","gamma"="gamma"))
+  rg_fh <- rg2 %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
+                             by = c("rho" = "rho","gamma" = "gamma"))
+
   # get Z statistics for input rho, gamma combinations
-  Z <- rgFH$Z[(0:(nrow(rg)-1))*nrow(rg)+1:nrow(rg)]
+  Z <- rg_fh$Z[(0:(n_weight - 1)) * n_weight + 1:n_weight]
   # get correlation matrix
-  c <- matrix(rgFH$Var,nrow=nrow(rg),byrow=TRUE)
-  if (corr) c <- stats::cov2cor(c)
-  names(c) <- paste("V",1:ncol(c),sep="")
+  cov_mat <- matrix(rg_fh$Var, nrow = n_weight, byrow = TRUE)
+
+  if (corr){
+    corr_mat <- stats::cov2cor(cov_mat)
+  }
+
+  names(corr_mat) <- paste("V", 1:ncol(corr_mat), sep = "")
+
   # return combined values
-  cbind(rg,Z,as_tibble(c))
+  ans <- cbind(rg, Z, as_tibble(corr_mat))
+  return(ans)
 }
-#' @rdname tenFHcorr
-#' @export
+
