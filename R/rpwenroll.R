@@ -119,7 +119,7 @@ rpwenroll <- function(n = NULL,
   n_add <- n - nrow(z)
   # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
   if (dplyr::last(enrollRates$rate) <= 0){
-    stop("simtrial: Please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+    stop("simtrial: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
   }
   # Otherwise, return inter-arrival exponential times
   else{
