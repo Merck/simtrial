@@ -68,7 +68,7 @@ rpwenroll <- function(n = NULL,
   if(nrow(enrollRates) == 1) {
     # stop with error message if only 1 enrollment period and the enrollment rate is less or equal with 0
     if (enrollRates$rate <= 0){
-      stop("Please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
+      stop("rpwenroll: please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
     }
     # otherwise, return inter-arrival exponential times
     else{
@@ -94,7 +94,7 @@ rpwenroll <- function(n = NULL,
 
     if (dplyr::last(enrollRates$rate) <= 0){
       # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-      stop("simtrial: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+      stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
     }else{
       # otherwise, return inter-arrival exponential times
       ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish)
@@ -119,7 +119,7 @@ rpwenroll <- function(n = NULL,
   n_add <- n - nrow(z)
   # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
   if (dplyr::last(enrollRates$rate) <= 0){
-    stop("simtrial: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+    stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
   }
   # Otherwise, return inter-arrival exponential times
   else{
