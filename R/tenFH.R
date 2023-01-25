@@ -109,10 +109,11 @@ tenFH <- function(x = simPWSurv(n = 200) %>%
 
   # get minimal columns from tensurv item
   xx <- x %>%
-        ungroup() %>%
-        select(S, o_minus_e, var_o_minus_e)
+    ungroup() %>%
+    select(S, o_minus_e, var_o_minus_e)
 
   rg$Z <- rep(0, nrow(rg))
+
   if (returnVariance){
     rg$Var <- rep(0, nrow(rg))
   }

@@ -60,16 +60,16 @@ NULL
 #'   tensurv(txval = "Experimental")
 #'
 #' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
-#'                             gamma=c(0, 1)),
+#'                             gamma = c(0, 1)),
 #'                 corr = FALSE)
 #'
 #' # Off-diagonal element should be variance in following
 #' x %>% tenFHcorr(rg = tibble(rho = 0,
-#'                             gamma=.5),
+#'                             gamma =.5),
 #'                 corr = FALSE)
 #'
 #' # compare off diagonal result with tenFH()
-#' x %>% tenFH(rg = tibble(rho = 0,gamma =.5))
+#' x %>% tenFH(rg = tibble(rho = 0, gamma =.5))
 #'
 #' @export
 #' @rdname tenFHcorr
