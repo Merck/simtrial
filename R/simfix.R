@@ -48,37 +48,64 @@ NULL
 #' 3 the planned minimum follow-up after enrollment is complete,
 #' 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
 #' 5 the maximum of targeted event count and minimum follow-up cuts (2 and 3).
+#'
 #' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
 #' \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timingType}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
 #' are also included.
+#'
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
 #' library(doParallel)
+#' library(tibble)
+#'
+#' # example 1
 #' # Show output structure
-#' simfix(nsim=3)
+#' simfix(nsim = 3)
+#'
+#' # example 2
 #' # Example with 2 tests: logrank and FH(0,1)
-#' simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' simfix(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
+#'
+#' # example 3
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- simfix(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
+#' xx <- simfix(nsim = 100,
+#'              timingType = c(2, 5),
+#'              rg = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
-#' xx %>% group_by(cut,rho,gamma) %>% summarise(mean(Z<=qnorm(.025)))
+#' xx %>%
+#'   group_by(cut, rho, gamma) %>%
+#'   summarise(mean(Z <= qnorm(.025)))
+#'
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx %>%  filter(cut != "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo)
-#' p <- unlist(p)
-#' mean(p<.025)
+#' p <- xx %>%
+#'   filter(cut != "Targeted events") %>%
+#'   group_by(Sim) %>%
+#'   group_map(pMaxCombo) %>%
+#'   unlist()
+#'
+#' mean(p < .025)
+#'
 #' # MaxCombo estimate for targeted events cutoff
-#' p <- unlist(xx %>%  filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo))
-#' mean(p<.025)
+#' p <- xx %>%
+#'   filter(cut == "Targeted events") %>%
+#'   group_by(Sim) %>%
+#'   group_map(pMaxCombo) %>%
+#'   unlist()
+#'
+#' mean(p < .025)
+#'
+#' # example 3
 #' # Use two cores
 #' registerDoParallel(2)
-#' simfix(nsim=10, seed = 2022)
+#' simfix(nsim = 10, seed = 2022)
 #' stopImplicitCluster()
 #' registerDoSEQ()
+#'
 #' @export
 simfix <- function(nsim=1000,
                    sampleSize=500, # sample size

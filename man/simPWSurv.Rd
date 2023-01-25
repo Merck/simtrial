@@ -62,7 +62,7 @@ library(dplyr)
 library(tibble)
 
 # example 1
-simPWSurv(n=20)
+simPWSurv(n = 20)
 
 # example 2
 # 3:1 randomization
