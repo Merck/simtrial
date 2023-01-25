@@ -31,15 +31,15 @@ Fleming-Harrington tests
 \examples{
 library(tidyr)
 library(dplyr)
+
 # Use default enrollment and event rates at cut of 100 events
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(100) \%>\%
   tensurv(txval = "Experimental")
 
 # compute logrank (FH(0,0)) and FH(0,1)
-x <- tenFHcorr(rg = tibble(rho = c(0, 0),
-                           gamma=c(0,1)),
-               x = x)
+x <- x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
+                                 gamma = c(0, 1)))
 
 # compute p-value for MaxCombo
 library(mvtnorm)
