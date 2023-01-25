@@ -55,24 +55,24 @@ rate11 <- with(subset(y,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Sur
 ratetest<- c(rate00$rate,rate10$rate,rate01$rate, rate11$rate)
 xevent<-bind_rows(rate00, rate01,rate10,rate11)
 
-testthat::test_that("Strata percentage calculated from simulated dataset must be within 
+testthat::test_that("Strata percentage calculated from simulated dataset must be within
                     the tolerance=0.002 of strata in setup (0.4,0.6)",{
   expect_equal(object=c(sum(stringr::str_count(x$Stratum, "Low"))/400000,
                         sum(stringr::str_count(x$Stratum, "High"))/400000),
-               expected=c(0.4, 0.6), tolerance=0.002) 
+               expected=c(0.4, 0.6), tolerance=0.002)
 })
 
-testthat::test_that("block calculated from simulated dataset equals size of 4 with 1:1 
+testthat::test_that("block calculated from simulated dataset equals size of 4 with 1:1
                     randomization, which is 2 for each arm",{
   expect_equal(object=bktest1, expected=rep(2,length(bktest1)))
-  expect_equal(object=bktest2, expected=rep(2,length(bktest2)))             
+  expect_equal(object=bktest2, expected=rep(2,length(bktest2)))
 })
 
-testthat::test_that("failRates calculated from simulated dataset must be within the 
+testthat::test_that("failRates calculated from simulated dataset must be within the
                     tolerance=0.1 of failRates in setting",{
   expect_equal(object=ratetest, expected=failRates$rate, tolerance=0.1)})
 
-testthat::test_that("DropoutRates calculated from simulated dataset must be within 
+testthat::test_that("DropoutRates calculated from simulated dataset must be within
                     the tolerance=0.0005 of DropoutRates=0.001 in setup",{
   duration=300
   drtest<-0
@@ -81,7 +81,7 @@ testthat::test_that("DropoutRates calculated from simulated dataset must be with
   }
   expect_equal(object=drtest, expected=rep(0.001,300), tolerance=0.001)})
 
-testthat::test_that("enrollRates calculated from simulated dataset must be within 
+testthat::test_that("enrollRates calculated from simulated dataset must be within
                     the relative tolerance=0.05 of enrollRates in setup",{
   duration=300
   entest<-0
@@ -111,5 +111,5 @@ rate11 <- with(subset(y1,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Su
 zevent<-bind_rows(rate00, rate01,rate10,rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size",{
-  expect_false(unique(xevent$events==zevent$events))})
+  expect_false(unique(xevent$event==zevent$event))})
 
