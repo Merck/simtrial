@@ -77,12 +77,13 @@ NULL
 tenFHcorr <- function(x = simPWSurv(n = 200) %>%
                             cutDataAtCount(100) %>%
                             tensurv(txval = "Experimental"),
-                      rg = tibble(rho = c(0 ,0, 1, 1),
+                      rg = tibble(rho = c(0, 0, 1, 1),
                                   gamma = c(0, 1, 0, 1)),
                       corr = TRUE
 ){
 
   n_weight <- nrow(rg)
+
   # Get average rho and gamma for FH covariance matrix
   # We want ave_rho[i,j] = (rho[i] + rho[j])/2
   # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
@@ -94,24 +95,25 @@ tenFHcorr <- function(x = simPWSurv(n = 200) %>%
                )/2
 
   # Convert back to tibble
-  rg2 <- tibble(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
+  rg_new <- tibble(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
   # get unique values of rho, gamma
-  rg_unique <- rg2 %>% unique()
+  rg_unique <- rg_new %>% unique()
 
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  rg_fh <- rg2 %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
-                             by = c("rho" = "rho","gamma" = "gamma"))
+  rg_fh <- rg_new %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
+                                by = c("rho" = "rho","gamma" = "gamma"))
 
   # get Z statistics for input rho, gamma combinations
   Z <- rg_fh$Z[(0:(n_weight - 1)) * n_weight + 1:n_weight]
+
   # get correlation matrix
   cov_mat <- matrix(rg_fh$Var, nrow = n_weight, byrow = TRUE)
 
   if (corr){
     corr_mat <- stats::cov2cor(cov_mat)
   } else{
-    corr_mat <- corr_mat
+    corr_mat <- cov_mat
   }
 
   names(corr_mat) <- paste("V", 1:ncol(corr_mat), sep = "")
