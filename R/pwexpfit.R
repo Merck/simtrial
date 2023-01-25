@@ -24,61 +24,99 @@ NULL
 #' on input dataset and intervals for piecewise constant failure rates.
 #' Initial version assumes observations are right censored or events only.
 #'
-#' @param Srv input survival object (see \code{Surv}); note that only 0=censored, 1=event for \code{Surv}
+#' @param Srv input survival object (see \code{Surv});
+#' note that only 0 = censored, 1 = event for \code{Surv}
 #' @param intervals Vector containing positive values indicating interval lengths where the
 #' exponential rates are assumed.
 #' Note that a final infinite interval is added if any events occur after the final interval
 #' specified.
 #'
-#' @return A matrix with rows containing interval length, estimated rate, -2*log-likelihood for each interval.
+#' @return A matrix with rows containing interval length, estimated rate,
+#' -2*log-likelihood for each interval.
 #'
 #' @examples
 #' # use default arguments for delayed effect example dataset (Ex1delayedEffect)
 #' library(survival)
+#'
+#' # example 1
 #' rateall <- pwexpfit()
 #' rateall
+#'
+#' # example 2
 #' # Estimate by treatment effect
-#' rate1 <- with(subset(Ex1delayedEffect,trt==1), pwexpfit(Surv(month,evntd)))
-#' rate0 <- with(subset(Ex1delayedEffect,trt==0), pwexpfit(Surv(month,evntd)))
+#' rate1 <- with(subset(Ex1delayedEffect, trt == 1), pwexpfit(Surv(month, evntd)))
+#' rate0 <- with(subset(Ex1delayedEffect, trt == 0), pwexpfit(Surv(month, evntd)))
+#'
 #' rate1
 #' rate0
 #' rate1$rate/rate0$rate
+#'
 #' # chi-square test for (any) treatment effect (8 - 4 parameters = 4 df)
-#' pchisq(sum(rateall$m2ll)-sum(rate1$m2ll+rate0$m2ll), df = 4, lower.tail=FALSE)
+#' pchisq(sum(rateall$m2ll) - sum(rate1$m2ll + rate0$m2ll),
+#'        df = 4,
+#'        lower.tail = FALSE)
+#'
 #' # compare with logrank
 #' survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
+#'
+#' # example 3
 #' # simple model with 3 rates same for each for 3 months,
 #' # different for each treatment after months
-#' rate1a <- with(subset(Ex1delayedEffect,trt==1), pwexpfit(Surv(month,evntd),3))
-#' rate0a <- with(subset(Ex1delayedEffect,trt==0), pwexpfit(Surv(month,evntd),3))
+#' rate1a <- with(subset(Ex1delayedEffect, trt == 1), pwexpfit(Surv(month, evntd), 3))
+#' rate0a <- with(subset(Ex1delayedEffect, trt == 0), pwexpfit(Surv(month, evntd), 3))
 #' rate1a$rate/rate0a$rate
-#' m2ll0 <- rateall$m2ll[1]+rate1a$m2ll[2]+rate0a$m2ll[2]
-#' m2ll1 <- sum(rate0$m2ll)+sum(rate1$m2ll)
+#'
+#' m2ll0 <- rateall$m2ll[1] + rate1a$m2ll[2] + rate0a$m2ll[2]
+#' m2ll1 <- sum(rate0$m2ll) + sum(rate1$m2ll)
+#'
 #' # as a measure of strength, chi-square examines improvement in likelihood
-#' pchisq(m2ll0-m2ll1, 5, lower.tail=FALSE)
+#' pchisq(m2ll0-m2ll1, df = 5, lower.tail=FALSE)
 #'
 #' @export
-pwexpfit <- function(Srv = Surv(time=Ex1delayedEffect$month, event=Ex1delayedEffect$evntd),
-                      intervals=array(3,3)){
-  if (!is.Surv(Srv)) stop("Srv must be a survival object")
-  xx <- data.frame(time=Srv[,"time"], status=Srv[,"status"])
-  # only allow status 0,1
-  if (nrow(subset(xx,status != 0 & status!=1))) stop("Srv may only have status values of 0 or 1")
-  # check for late observation after sum(intervals)
-  if (nrow(subset(xx,time>sum(intervals)&status>0))>0) intervals <- c(intervals,Inf)
-  times <- c(0,cumsum(intervals))
-  rval <- NULL
-  for(i in 1:length(intervals)){
-    dat <- subset(xx,time>times[i])
-    dat$status[dat$time>times[i+1]]<-0
-    dat$time[dat$time>times[i+1]]<-times[i+1]
-    dat$time <- dat$time - times[i]
-    events <- sum(dat$status)
-    TTOT <- sum(dat$time)
-    rate <- events/TTOT
-    if (TTOT>0) rval <- rbind(rval,data.frame(intervals=intervals[i],
-                                              TTOT=TTOT, events=events, rate=rate,
-                                              m2ll=2*(rate*TTOT-events*log(rate))))
+#'
+pwexpfit <- function(
+    Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+               intervals = array(3, 3)){
+
+  if (!is.Surv(Srv)){
+    stop("pwexpfit: Srv must be a survival object!")
   }
-  return(rval)
+
+  # only allow status 0,1
+  xx <- data.frame(time = Srv[ , "time"], status = Srv[ , "status"])
+  if (nrow(subset(xx, status != 0 & status != 1))){
+    stop("pwexpfit: Srv may only have status values of 0 or 1!")
+  }
+
+  # check for late observation after sum(intervals)
+  if (nrow(subset(xx, time > sum(intervals) & status > 0)) > 0){
+    intervals <- c(intervals, Inf)
+  }
+
+  times <- c(0, cumsum(intervals))
+
+  ans <- NULL
+  for(i in 1:length(intervals)){
+
+    dat <- subset(xx, time > times[i])
+    dat$status[dat$time > times[i + 1]] <- 0
+    dat$time[dat$time > times[i + 1]] <- times[i + 1]
+    dat$time <- dat$time - times[i]
+
+    event <- sum(dat$status)
+    ttot <- sum(dat$time)
+    rate <- event / ttot
+
+    if (ttot > 0){
+      ans_new <- data.frame(intervals = intervals[i],
+                            ttot = ttot,
+                            event = event,
+                            rate = rate,
+                            m2ll = 2 * (rate * ttot - event * log(rate))
+                            )
+      ans <- rbind(ans, ans_new)
+    }
+  }
+
+  return(ans)
 }

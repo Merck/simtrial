@@ -30,13 +30,15 @@ library(tidyr)
 library(tibble)
 library(dplyr)
 
+# example 1
 x <- simfix(nsim = 1,
             timingType = 5,
             rg = tibble(rho = c(0, 0, 1),
-                        gamma=c(0, 1, 1)))
+                        gamma = c(0, 1, 1)))
 head(x)
 pMaxCombo(x)
 
+# example 2
 # Only use cuts for events, events + min follow-up
 xx <- simfix(nsim = 100,
              timingType = 5,

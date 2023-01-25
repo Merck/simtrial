@@ -55,7 +55,7 @@ NULL
 getCutDateForCount <- function(x, count){
   y <- x %>%
     ungroup() %>%
-    select(cte,fail) %>%
+    select(cte, fail) %>%
     filter(fail == 1) %>%
     select(cte) %>%
     arrange(cte) %>%
