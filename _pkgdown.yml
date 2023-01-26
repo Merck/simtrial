@@ -21,3 +21,60 @@ footer:
   components:
     legal: "<br>Copyright &copy; 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"
+
+navbar:
+  left:
+  - text: Home
+    href: index.html
+  - text: Reference
+    href: reference/index.html
+  - text: Articles
+    href: articles/index.html
+  - text: News
+    href: news/index.html
+
+reference:
+- title: "Example datasets"
+  contents:
+    - Ex1delayedEffect
+    - Ex2delayedEffect
+    - Ex3curewithph
+    - Ex4belly
+    - Ex5widening
+    - Ex6crossing
+    - MBdelayed
+- title: "Distrubution-related functions"
+  contents:
+    - rpwexp
+    - rpwexpRcpp
+    - rpwexpinvRcpp
+    - rpwenroll
+    - pwexpfit
+- title: "Functions to simulate data under the piecewise model"
+  contents:
+    - simPWSurv
+    - simfix
+    - simfix2simPWSurv
+- title: "Functions to cut data"
+  contents:
+    - cutData
+    - cutDataAtCount
+    - getCutDateForCount
+- title: "Functions to compute p-values/test statistics"
+  contents:
+    - tenFH
+    - tenFHcorr
+    - tensurv
+    - wMB
+    - pMaxCombo
+- title: "Functions to randomize patients"
+  contents:
+    - fixedBlockRand
+
+articles:
+- title: "Useful artiles"
+  contents:
+  - arbitraryhazard
+  - modestWLRTVignette
+  - pMaxComboVignette
+  - simtrialroutines
