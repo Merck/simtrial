@@ -200,7 +200,7 @@ simfix <- function(nsim = 1000,
     stop("simfix: nsim in `simfix()` must be positive integer!")
   }
 
-  if(!is.integer(nsim)){
+  if(nsim != ceiling(nsim)){
     stop("simfix: nsim in `simfix()` must be positive integer!")
   }
 
