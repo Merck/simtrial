@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' @import dplyr
-#' @import tibble
+#' @importFrom tibble tibble
 #' @import survival
 #' @import foreach
 NULL
@@ -107,96 +107,158 @@ NULL
 #' registerDoSEQ()
 #'
 #' @export
-simfix <- function(nsim=1000,
-                   sampleSize=500, # sample size
-                   targetEvents=350,  # targeted total event count
+#'
+simfix <- function(nsim = 1000,
+                   sampleSize = 500, # sample size
+                   targetEvents = 350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
-                   strata = tibble::tibble(Stratum = "All", p = 1),
+                   strata = tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
-                   enrollRates=tibble::tibble(duration=c(2,2,10),
-                                              rate=c(3,6,9)),
+                   enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
-                   failRates=tibble::tibble(Stratum="All",
-                                            duration=c(3,100),
-                                            failRate=log(2)/c(9,18),
-                                            hr=c(.9,.6),
-                                            dropoutRate=rep(.001,2)),
-                   totalDuration=30, # total planned trial duration; single value
-                   block=rep(c("Experimental","Control"),2), # Fixed block randomization specification
-                   timingType=1:5, # select desired cutoffs for analysis (default is all types)
+                   failRates = tibble(Stratum = "All",
+                                      duration = c(3, 100),
+                                      failRate = log(2) / c(9, 18),
+                                      hr = c(.9, .6),
+                                      dropoutRate = rep(.001, 2)),
+                   # total planned trial duration; single value
+                   totalDuration = 30,
+                   # Fixed block randomization specification
+                   block = rep(c("Experimental", "Control"), 2),
+                   # select desired cutoffs for analysis (default is all types)
+                   timingType = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
-                   rg=tibble::tibble(rho=0,gamma=0),
+                   rg = tibble(rho = 0, gamma = 0),
                    seed = NULL
-){# check input values
+                   ){
+  # check input values
   # check input enrollment rate assumptions
-  if(max(names(enrollRates)=="duration") != 1){stop("enrollRates column names in `simfix()` must contain duration")}
-  if(max(names(enrollRates)=="rate") != 1){stop("enrollRates column names in `simfix()` must contain  rate")}
+  if(!("duration" %in% names(enrollRates)) ){
+    stop("simfix: enrollRates column names in `simfix()` must contain duration!")
+  }
+
+  if(!("rate" %in% names(enrollRates))){
+    stop("simfix: enrollRates column names in `simfix()` must contain  rate!")
+  }
+
 
   # check input failure rate assumptions
-  if(max(names(failRates)=="Stratum") != 1){stop("failRates column names in `simfix()` must contain Stratum")}
-  if(max(names(failRates)=="duration") != 1){stop("failRates column names in `simfix()` must contain duration")}
-  if(max(names(failRates)=="failRate") != 1){stop("failRates column names in `simfix()` must contain failRate")}
-  if(max(names(failRates)=="hr") != 1){stop("failRates column names in `simfix()` must contain hr")}
-  if(max(names(failRates)=="dropoutRate") != 1){stop("failRates column names in `simfix()` must contain dropoutRate")}
+  if(!("Stratum" %in% names(failRates))){
+    stop("simfix: failRates column names in `simfix()` must contain Stratum!")
+  }
 
-  # check input trial durations
-  if(!is.numeric(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!is.vector(totalDuration)){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(length(totalDuration) != 1){stop("totalDuration in `simfix()` must be a single positive number")}
-  if(!min(totalDuration) > 0){stop("totalDuration in `simfix()` must be a single positive number")}
+  if(!("duration" %in% names(failRates))){
+    stop("simfix: failRates column names in `simfix()` must contain duration!")
+  }
 
+  if(!("failRate" %in% names(failRates))){
+    stop("simfix: failRates column names in `simfix()` must contain failRate!")
+  }
+
+  if(!("hr" %in% names(failRates))){
+    stop("simfix: failRates column names in `simfix()` must contain hr")
+  }
+
+  if(!("dropoutRate" %in% names(failRates))){
+    stop("simfix: failRates column names in `simfix()` must contain dropoutRate")
+  }
+
+  # check input trial duration
+  if(!is.numeric(totalDuration)){
+    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+  }
+
+  if(!is.vector(totalDuration)){
+    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+  }
+
+  if(length(totalDuration) != 1){
+    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+  }
+
+  if(!min(totalDuration) > 0){
+    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+  }
+
+  # check stratum
   strata2 <- names(table(failRates$Stratum))
-  if(nrow(strata)!= length(strata2)){stop("Stratum in `simfix()` must be the same in strata and failRates")}
-  for(s in strata$Stratum){
-    if(max(strata2==s) != 1){stop("Stratum in `simfix()` must be the same in strata and failRates")}
+  if(nrow(strata) != length(strata2)){
+    stop("simfix: Stratum in `simfix()` must be the same in strata and failRates!")
   }
 
-  if(!nsim > 0){stop("nsim in `simfix()` must be positive integer")}
-  if(length(nsim) != 1){stop("nsim in `simfix()` must be positive integer")}
-  if(nsim != ceiling(nsim)){stop("nsim in `simfix()` must be positive integer")}
+  if(any(is.na(match(strata$Stratum, strata2))) | any(is.na(match(strata2, strata$Stratum)))){
+    stop("simfix: Stratum in `simfix()` must be the same in strata and failRates!")
+  }
 
-  if(!targetEvents > 0){stop("targetEvents in `simfix()` must be positive")}
-  if(length(targetEvents) != 1){stop(("targetEvents in `simfix()` must be positive"))}
+  # check nsim
+  if(nsim <= 0){
+    stop("simfix: nsim in `simfix()` must be positive integer!")
+  }
 
-  if(!sampleSize > 0){stop("sampleSize in `simfix()` must be positive")}
-  if(length(sampleSize) != 1){stop("sampleSize in `simfix()` must be positive")}
+  if(length(nsim) != 1){
+    stop("simfix: nsim in `simfix()` must be positive integer!")
+  }
 
+  if(!is.integer(nsim)){
+    stop("simfix: nsim in `simfix()` must be positive integer!")
+  }
+
+  # check targetEvents
+  if(targetEvents <= 0){
+    stop("simfix: targetEvents in `simfix()` must be positive!")
+  }
+
+  if(length(targetEvents) != 1){
+    stop(("simfix: targetEvents in `simfix()` must be positive!"))
+  }
+
+  # check sampleSize
+  if(sampleSize <= 0){
+    stop("simfix: sampleSize in `simfix()` must be positive!")
+  }
+
+  if(length(sampleSize) != 1){
+    stop("simfix: sampleSize in `simfix()` must be positive")
+  }
+
+  # check seed
   if(is.null(seed)) {
-    setSeed = FALSE
+    setSeed <- FALSE
   } else {
-    if (!is.numeric(seed)){stop("seed in `simfix()` must be a number")}
-    setSeed = TRUE
+    if (!is.numeric(seed)){stop("simfix: seed in `simfix()` must be a number")}
+    setSeed <- TRUE
   }
 
-  nstrata <- nrow(strata)
-  doAnalysis <- function(d,rg,nstrata){
-    if (nrow(rg)==1){Z = tibble::tibble(Z=(d %>%
-                                           simtrial::tensurv(txval="Experimental") %>%
-                                           simtrial::tenFH(rg=rg)
-    )$Z
-    )
-    }else Z = d %>%
-              simtrial::tensurv(txval="Experimental") %>%
-              simtrial::tenFHcorr(rg=rg,corr=TRUE)
-    r <- cbind(tibble::tibble(Events = sum(d$event),
-                              lnhr = as.numeric(ifelse(nstrata>1,
-                                     survival::coxph(survival::Surv(tte,event)~
-                                                       (Treatment=="Experimental")+
-                                                       survival::strata(Stratum),data=d)$coefficients,
-                                     survival::coxph(survival::Surv(tte,event)~
-                                                       (Treatment=="Experimental"),data=d)$coefficients))
-                             ),
-                Z
-    )
-    r
+  n_stratum <- nrow(strata)
+
+  # build a function to calculate Z and log-hr
+  doAnalysis <- function(d, rg, n_stratum){
+    if (nrow(rg) == 1){
+      Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% tenFH(rg = rg))$Z)
+    } else{
+      Z <- d %>% tensurv(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+    }
+
+    ans <- tibble(
+      Events = sum(d$event),
+      lnhr = ifelse(n_stratum > 1,
+                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(Stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental"), data = d)$coefficients
+                    ) %>% as.numeric()
+      )
+
+    ans <- cbind(ans, Z)
+    return(ans)
   }
+
   # compute minimum planned follow-up time
-  minFollow <- max(0,totalDuration - sum(enrollRates$duration))
+  minFollow <- max(0, totalDuration - sum(enrollRates$duration))
+
   # put failure rates into simPWSurv format
-  xx <- simfix2simPWSurv(failRates)
-  fr <- xx$failRates
-  dr <- xx$dropoutRates
+  temp <- simfix2simPWSurv(failRates)
+  fr <- temp$failRates
+  dr <- temp$dropoutRates
   results <- NULL
 
   # parallel
@@ -205,68 +267,133 @@ simfix <- function(nsim=1000,
     i = seq_len(nsim),
     .combine = "rbind",
     .errorhandling = "pass"
-  ) %op% {
-    if (setSeed) set.seed(seed + i - 1)
-    sim <- simtrial::simPWSurv(n = sampleSize,
-                               strata = strata,
-                               enrollRates = enrollRates,
-                               failRates = fr,
-                               dropoutRates = dr,
-                               block = block)
+    ) %op% {
+
+    # set random seed
+    if (setSeed){
+      set.seed(seed + i - 1)
+    }
+
+    # generate piecewise data
+    sim <- simPWSurv(n = sampleSize,
+                     strata = strata,
+                     enrollRates = enrollRates,
+                     failRates = fr,
+                     dropoutRates = dr,
+                     block = block)
+
     # study date that targeted event rate achieved
     tedate <- sim %>% getCutDateForCount(targetEvents)
+
     # study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enrollTime) + minFollow
+
     # Compute tests for all specified cutoff options
-    r1 <- NULL ; r2 <- NULL; r3 <- NULL;
-    tests <- rep(FALSE,3)
+    r1 <- NULL
+    r2 <- NULL
+    r3 <- NULL
+
+    tests <- rep(FALSE, 3)
+
     ## Total planned trial duration or max of this and targeted events
-    if (max(1 == timingType)) tests[1] <- TRUE # planned duration cutoff
-    if (max(2 == timingType)) tests[2] <- TRUE # targeted events cutoff
-    if (max(3 == timingType)) tests[3] <- TRUE # minimum follow-up duration target
-    if (max(4 == timingType)){ # max of planned duration, targeted events
+    if (1 %in% timingType){
+      tests[1] <- TRUE       # planned duration cutoff
+    }
+
+    if (2 %in% timingType){
+      tests[2] <- TRUE       # targeted events cutoff
+    }
+
+    if (3 %in% timingType){
+      tests[3] <- TRUE       # minimum follow-up duration target
+    }
+
+    if (4 %in% timingType){  # max of planned duration, targeted events
       if (tedate > totalDuration){
         tests[2] <- TRUE
-      }else tests[1] <- TRUE
+      }else{
+        tests[1] <- TRUE
+      }
     }
-    if (max(5 == timingType)){ # max of minimum follow-up, targeted events
+
+    if (5 %in% timingType){  # max of minimum follow-up, targeted events
       if (tedate > tmfdate){
         tests[2] <- TRUE
-      }else tests[3] <- TRUE
+      }else{
+        tests[3] <- TRUE
+      }
     }
-    if (tests[1]){ # Total duration cutoff
+
+    # Total duration cutoff
+    if (tests[1]){
       d <- sim %>% cutData(totalDuration)
-      r1 <- d %>% doAnalysis(rg,nstrata)
+      r1 <- d %>% doAnalysis(rg, n_stratum)
     }
-    if (tests[2]){ # targeted events cutoff
+
+    # targeted events cutoff
+    if (tests[2]){
       d <- sim %>% cutData(tedate)
-      r2 <- d %>% doAnalysis(rg,nstrata)
+      r2 <- d %>% doAnalysis(rg, n_stratum)
     }
-    if (tests[3]){ # minimum follow-up cutoff
+
+    # minimum follow-up cutoff
+    if (tests[3]){
       d <- sim %>% cutData(tmfdate)
-      r3 <- d %>% doAnalysis(rg,nstrata)
+      r3 <- d %>% doAnalysis(rg, n_stratum)
     }
+
     addit <- NULL
     # planned duration cutoff
-    if (max(1 == timingType)) addit <- rbind(addit,
-                                             r1 %>% mutate(cut="Planned duration",Duration=totalDuration))
+    if (1 %in% timingType){
+      addit <- rbind(addit,
+                     r1 %>% mutate(cut = "Planned duration",
+                                   Duration = totalDuration))
+    }
+
     # targeted events cutoff
-    if (max(2 == timingType)) addit <- rbind(addit, r2 %>% mutate(cut="Targeted events",Duration=tedate))
+    if (2 %in% timingType){
+      addit <- rbind(addit,
+                     r2 %>% mutate(cut = "Targeted events",
+                                   Duration = tedate))
+    }
+
     # minimum follow-up duration target
-    if (max(3 == timingType)) addit <- rbind(addit, r3 %>% mutate(cut="Minimum follow-up",Duration=tmfdate))
-    if (max(4 == timingType)){ # max of planned duration, targeted events
+    if (3 %in% timingType){
+      addit <- rbind(addit,
+                     r3 %>% mutate(cut = "Minimum follow-up",
+                                   Duration = tmfdate))
+    }
+
+    # max of planned duration, targeted events
+    if (4 %in% timingType){
       if (tedate > totalDuration){
-        addit <- rbind(addit, r2 %>% mutate(cut="Max(planned duration, event cut)",Duration=tedate))
-      }else addit <- rbind(addit, r1 %>% mutate(cut="Max(planned duration, event cut)",Duration=totalDuration))
+        addit <- rbind(addit,
+                       r2 %>% mutate(cut = "Max(planned duration, event cut)",
+                                     Duration = tedate))
+      }else{
+        addit <- rbind(addit,
+                       r1 %>% mutate(cut = "Max(planned duration, event cut)",
+                                     Duration = totalDuration))
+      }
     }
-    if (max(5 == timingType)){ # max of minimum follow-up, targeted events
+
+    # max of minimum follow-up, targeted events
+    if (5 %in% timingType){
       if (tedate > tmfdate){
-        addit <- rbind(addit, r2 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tedate))
-      }else addit <- rbind(addit, r3 %>% mutate(cut="Max(min follow-up, event cut)",Duration=tmfdate))
+        addit <- rbind(addit,
+                       r2 %>% mutate(cut = "Max(min follow-up, event cut)",
+                                     Duration = tedate))
+      }else{
+        addit <- rbind(addit,
+                       r3 %>% mutate(cut = "Max(min follow-up, event cut)",
+                                     Duration = tmfdate))
+      }
     }
-    addit %>% mutate(Sim=i)
-  }
-  results
+
+    addit %>% mutate(Sim = i)
+    }
+
+  return(results)
 }
 
 # Get operator (parallel or serial)
