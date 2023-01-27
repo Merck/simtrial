@@ -83,7 +83,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bshazard</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
 <p>We simulate a log-logistic distribution as an example of how to
 simulate a trial with an arbitrary distribution. We begin by showing
 hazard rates that can be used to approximate this distribution.</p>
@@ -126,12 +127,12 @@ year.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Stratum, Treatment [1]</span></span></span>
 <span><span class="co">#&gt;     tte event Stratum Treatment   </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1.16      1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.728     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0.610     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0.778     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0.484     0 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1.70      1 All     Log-logistic</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0.590     1 All     Log-logistic</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.603     1 All     Log-logistic</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1.09      1 All     Log-logistic</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0.742     1 All     Log-logistic</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2.22      1 All     Log-logistic</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0.508     1 All     Log-logistic</span></span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
@@ -142,9 +143,9 @@ interval as a function of time. We overlay the actual rates in red.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bshazard/man/bshazard.html" class="external-link">bshazard</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span>, nk <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Iterations: relative error in phi-hat = 1e-04 </span></span>
-<span><span class="co">#&gt; phi= 6.312633   sv2= 0.02244415   df= 23.73219   lambda= 281.2596 </span></span>
-<span><span class="co">#&gt; phi= 7.285772   sv2= 0.00134244   df= 11.12082   lambda= 5427.263 </span></span>
-<span><span class="co">#&gt; phi= 7.407122   sv2= 0.0004351541   df= 5.907063   lambda= 17021.83</span></span>
+<span><span class="co">#&gt; phi= 4.744387   sv2= 0.02357219   df= 23.6489   lambda= 201.2706 </span></span>
+<span><span class="co">#&gt; phi= 5.158829   sv2= 0.001847674   df= 12.04863   lambda= 2792.067 </span></span>
+<span><span class="co">#&gt; phi= 5.522676   sv2= 0.000541336   df= 6.799094   lambda= 10201.94</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Time"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.5</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">times</span>, y <span class="op">=</span> <span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Time <span class="op">=</span> <span class="fu">lag</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">rate</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="arbitraryhazard_files/figure-html/unnamed-chunk-7-1.png" width="720"></p>
