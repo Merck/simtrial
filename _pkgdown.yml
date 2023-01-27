@@ -19,19 +19,8 @@ footer:
     left: [developed_by, built_with, legal]
     right: [blank]
   components:
-    legal: "<br>Copyright &copy; 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
+    legal: "<br>Copyright &copy; 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"
-
-navbar:
-  left:
-  - text: Home
-    href: index.html
-  - text: Reference
-    href: reference/index.html
-  - text: Articles
-    href: articles/index.html
-  - text: News
-    href: news/index.html
 
 reference:
 - title: "Example datasets"
@@ -43,36 +32,36 @@ reference:
     - Ex5widening
     - Ex6crossing
     - MBdelayed
-- title: "Distrubution-related functions"
+- title: "Distributions"
   contents:
     - rpwexp
     - rpwexpRcpp
     - rpwexpinvRcpp
     - rpwenroll
     - pwexpfit
-- title: "Functions to simulate data under the piecewise model"
+- title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
     - simfix
     - simfix2simPWSurv
-- title: "Functions to cut data"
+- title: "Cut data"
   contents:
     - cutData
     - cutDataAtCount
     - getCutDateForCount
-- title: "Functions to compute p-values/test statistics"
+- title: "Compute p-values/test statistics"
   contents:
     - tenFH
     - tenFHcorr
     - tensurv
     - wMB
     - pMaxCombo
-- title: "Functions to randomize patients"
+- title: "Randomization algorithms"
   contents:
     - fixedBlockRand
 
 articles:
-- title: "Useful artiles"
+- title: "Example simulation workflows"
   contents:
   - arbitraryhazard
   - modestWLRTVignette
