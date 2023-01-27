@@ -8,10 +8,10 @@
 <meta name="description" content="simtrial">
 <title>Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test • simtrial</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test">
 <meta property="og:description" content="simtrial">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -39,14 +39,8 @@
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/arbitraryhazard.html">Approximating an arbitrary hazard function</a>
-    <a class="dropdown-item" href="../articles/modestWLRTVignette.html">Using the Magirr-Burman weights for testing</a>
-    <a class="dropdown-item" href="../articles/pMaxComboVignette.html">Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test</a>
-    <a class="dropdown-item" href="../articles/simtrialroutines.html">Basic tools for time-to-event trial simulation and testing</a>
-  </div>
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/index.html">Articles</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -174,42 +168,42 @@ enrollment and the date at which the targeted event count was reached.
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">350</td>
+<td align="right">368</td>
 <td align="right">-0.36</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.33</td>
+<td align="right">-3.48</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="right">0.93</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">73.8</td>
+<td align="right">72.48</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">350</td>
+<td align="right">368</td>
 <td align="right">-0.36</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.44</td>
+<td align="right">-3.63</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
-<td align="right">0.93</td>
+<td align="right">0.92</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">73.8</td>
+<td align="right">72.48</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">350</td>
+<td align="right">368</td>
 <td align="right">-0.36</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-3.80</td>
+<td align="right">-3.72</td>
 <td align="right">0.93</td>
-<td align="right">0.93</td>
+<td align="right">0.92</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">73.8</td>
+<td align="right">72.48</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -219,7 +213,7 @@ follows (note that you will need to have the package
 <strong>mvtnorm</strong> installed):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 8.016743e-05</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.0001116443</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="generating-data-with-simtrialsimpwsurv">Generating data with <code>simtrial::simPWSurv()</code><a class="anchor" aria-label="anchor" href="#generating-data-with-simtrialsimpwsurv"></a>
@@ -243,56 +237,56 @@ routine.</p>
 <tbody>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.11</td>
+<td align="right">0.09</td>
 <td align="left">Experimental</td>
-<td align="right">9.08</td>
-<td align="right">841.93</td>
-<td align="right">9.19</td>
+<td align="right">30.71</td>
+<td align="right">1002.63</td>
+<td align="right">30.80</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.17</td>
-<td align="left">Control</td>
-<td align="right">26.44</td>
-<td align="right">54.62</td>
-<td align="right">26.61</td>
+<td align="right">0.19</td>
+<td align="left">Experimental</td>
+<td align="right">1.65</td>
+<td align="right">683.87</td>
+<td align="right">1.85</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.20</td>
+<td align="right">0.24</td>
 <td align="left">Control</td>
-<td align="right">13.04</td>
-<td align="right">940.96</td>
-<td align="right">13.24</td>
+<td align="right">7.07</td>
+<td align="right">1934.95</td>
+<td align="right">7.31</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.39</td>
-<td align="left">Experimental</td>
-<td align="right">17.27</td>
-<td align="right">335.54</td>
-<td align="right">17.66</td>
+<td align="right">0.26</td>
+<td align="left">Control</td>
+<td align="right">32.29</td>
+<td align="right">551.75</td>
+<td align="right">32.55</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.54</td>
+<td align="right">0.40</td>
 <td align="left">Experimental</td>
-<td align="right">52.45</td>
-<td align="right">1634.43</td>
-<td align="right">52.99</td>
+<td align="right">17.81</td>
+<td align="right">408.58</td>
+<td align="right">18.20</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.56</td>
-<td align="left">Experimental</td>
-<td align="right">15.48</td>
-<td align="right">1687.07</td>
-<td align="right">16.04</td>
+<td align="right">0.44</td>
+<td align="left">Control</td>
+<td align="right">6.20</td>
+<td align="right">1274.55</td>
+<td align="right">6.64</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -311,40 +305,40 @@ after 75 events.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">9.08</td>
-<td align="right">1</td>
-<td align="left">All</td>
-<td align="left">Experimental</td>
-</tr>
-<tr class="even">
-<td align="right">26.44</td>
-<td align="right">1</td>
-<td align="left">All</td>
-<td align="left">Control</td>
-</tr>
-<tr class="odd">
-<td align="right">13.04</td>
-<td align="right">1</td>
-<td align="left">All</td>
-<td align="left">Control</td>
-</tr>
-<tr class="even">
-<td align="right">17.27</td>
-<td align="right">1</td>
-<td align="left">All</td>
-<td align="left">Experimental</td>
-</tr>
-<tr class="odd">
-<td align="right">26.85</td>
+<td align="right">30.40</td>
 <td align="right">0</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">15.48</td>
+<td align="right">1.65</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
+</tr>
+<tr class="odd">
+<td align="right">7.07</td>
+<td align="right">1</td>
+<td align="left">All</td>
+<td align="left">Control</td>
+</tr>
+<tr class="even">
+<td align="right">30.23</td>
+<td align="right">0</td>
+<td align="left">All</td>
+<td align="left">Control</td>
+</tr>
+<tr class="odd">
+<td align="right">17.81</td>
+<td align="right">1</td>
+<td align="left">All</td>
+<td align="left">Experimental</td>
+</tr>
+<tr class="even">
+<td align="right">6.20</td>
+<td align="right">1</td>
+<td align="left">All</td>
+<td align="left">Control</td>
 </tr>
 </tbody>
 </table>
@@ -373,36 +367,36 @@ combination suggested in <span class="citation">Lin et al.
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-2.18</td>
+<td align="right">-1.50</td>
 <td align="right">1.00</td>
 <td align="right">0.86</td>
-<td align="right">0.94</td>
+<td align="right">0.95</td>
 <td align="right">0.93</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.33</td>
+<td align="right">-1.46</td>
 <td align="right">0.86</td>
 <td align="right">1.00</td>
-<td align="right">0.64</td>
-<td align="right">0.94</td>
+<td align="right">0.65</td>
+<td align="right">0.95</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-1.77</td>
-<td align="right">0.94</td>
-<td align="right">0.64</td>
+<td align="right">-1.31</td>
+<td align="right">0.95</td>
+<td align="right">0.65</td>
 <td align="right">1.00</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-2.24</td>
+<td align="right">-1.64</td>
 <td align="right">0.93</td>
-<td align="right">0.94</td>
+<td align="right">0.95</td>
 <td align="right">0.79</td>
 <td align="right">1.00</td>
 </tr>
@@ -411,14 +405,14 @@ combination suggested in <span class="citation">Lin et al.
 <p>Now we compute our p-value as before:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.02002845</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.08986368</span></span></code></pre></div>
 <p>Suppose we want the p-value just based on the logrank and FH(0,1) and
 FH(1,0) as suggested by <span class="citation">Lee (2007)</span>. We
 remove the rows and columns associated with FH(0,0) and FH(1,1) and then
 apply <code><a href="../reference/pMaxCombo.html">pMaxCombo()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pMaxCombo.html">pMaxCombo</a></span><span class="op">(</span><span class="va">Z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">V1</span>, <span class="va">V4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">rho</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">gamma</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">rho</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">gamma</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.01751496</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1151194</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="using-survival-data-in-another-format">Using survival data in another format<a class="anchor" aria-label="anchor" href="#using-survival-data-in-another-format"></a>
@@ -544,7 +538,7 @@ better estimate of design properties. Here we will test at the <span class="math
 <span><span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.001</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.77</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.84</span></span></code></pre></div>
 <p>We note the use of <code>group_map</code> in the above produces a
 list of p-values for each simulation. It would be nice to have something
 that worked more like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarize()</a></code> to avoid
@@ -583,74 +577,74 @@ as follows, demonstrated with a smaller number of simulations.</p>
 <tbody>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.34</td>
+<td align="right">-0.47</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.17</td>
+<td align="right">-4.35</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">72.63</td>
+<td align="right">70.27</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.34</td>
+<td align="right">-0.47</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.10</td>
+<td align="right">-4.10</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">72.63</td>
+<td align="right">70.27</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">350</td>
-<td align="right">-0.34</td>
+<td align="right">352</td>
+<td align="right">-0.47</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.17</td>
+<td align="right">-4.36</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">72.63</td>
+<td align="right">71.48</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">350</td>
-<td align="right">-0.34</td>
+<td align="right">352</td>
+<td align="right">-0.47</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.10</td>
+<td align="right">-4.11</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">72.63</td>
+<td align="right">71.48</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.58</td>
+<td align="right">-0.32</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-5.35</td>
+<td align="right">-3.01</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">75.80</td>
+<td align="right">68.49</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.58</td>
+<td align="right">-0.32</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-6.39</td>
+<td align="right">-2.26</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">75.80</td>
+<td align="right">68.49</td>
 <td align="right">2</td>
 </tr>
 </tbody>
@@ -661,14 +655,14 @@ targeted event count.</p>
 <code class="sourceCode R"><span><span class="co"># Subset to targeted events cutoff tests</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">==</span> <span class="st">"Targeted events"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.99</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.95</span></span></code></pre></div>
 <p>Now we use the later of targeted events and minimum follow-up
 cutoffs.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset to targeted events cutoff tests</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">!=</span> <span class="st">"Targeted events"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.99</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.95</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -717,7 +711,7 @@ Research</em>, 1–15.
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2023 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
