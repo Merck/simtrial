@@ -19,5 +19,51 @@ footer:
     left: [developed_by, built_with, legal]
     right: [blank]
   components:
-    legal: "<br>Copyright &copy; 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
+    legal: "<br>Copyright &copy; 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"
+
+reference:
+- title: "Example datasets"
+  contents:
+    - Ex1delayedEffect
+    - Ex2delayedEffect
+    - Ex3curewithph
+    - Ex4belly
+    - Ex5widening
+    - Ex6crossing
+    - MBdelayed
+- title: "Distributions"
+  contents:
+    - rpwexp
+    - rpwexpRcpp
+    - rpwexpinvRcpp
+    - rpwenroll
+    - pwexpfit
+- title: "Simulate data under the piecewise model"
+  contents:
+    - simPWSurv
+    - simfix
+    - simfix2simPWSurv
+- title: "Cut data"
+  contents:
+    - cutData
+    - cutDataAtCount
+    - getCutDateForCount
+- title: "Compute p-values/test statistics"
+  contents:
+    - tenFH
+    - tenFHcorr
+    - tensurv
+    - wMB
+    - pMaxCombo
+- title: "Randomization algorithms"
+  contents:
+    - fixedBlockRand
+
+articles:
+- title: "Example simulation workflows"
+  contents:
+  - arbitraryhazard
+  - modestWLRTVignette
+  - pMaxComboVignette
+  - simtrialroutines
