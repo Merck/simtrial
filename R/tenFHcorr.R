@@ -73,7 +73,6 @@ NULL
 #'
 #' @export
 #' @rdname tenFHcorr
-#'
 tenFHcorr <- function(x = simPWSurv(n = 200) %>%
                             cutDataAtCount(100) %>%
                             tensurv(txval = "Experimental"),
@@ -122,4 +121,3 @@ tenFHcorr <- function(x = simPWSurv(n = 200) %>%
   ans <- cbind(rg, Z, as_tibble(corr_mat))
   return(ans)
 }
-
