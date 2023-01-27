@@ -29,17 +29,26 @@ Using the \code{cumulative=TRUE} option, enrollment times that piecewise constan
 time can be generated.
 }
 \examples{
+library(tibble)
+
+# example 1
+# exponential failure times
+x <- rpwexp(n = 10000,
+            failRates = tibble(rate = 5, duration = 1))
+plot(sort(x),(10000:1)/10001,
+     log = "y", main = "Exponential simulated survival curve",
+     xlab = "Time",ylab = "P{Survival}")
+
+# example 2
+
 # get 10k piecewise exponential failure times
 # failure rates are 1 for time 0-.5, 3 for time .5 - 1 and 10 for >1.
 # intervals specifies duration of each failure rate interval
 # with the final interval running to infinity
-x <- rpwexp(10000, failRates=tibble::tibble(rate = c(1, 3, 10), duration = c(.5,.5,1)))
-plot(sort(x),(10000:1)/10001,log="y", main="PW Exponential simulated survival curve",
-xlab="Time",ylab="P{Survival}")
-# exponential failure times
-x <- rpwexp(10000, failRates=tibble::tibble(rate = 5, duration=1))
-
-plot(sort(x),(10000:1)/10001,log="y", main="Exponential simulated survival curve",
-     xlab="Time",ylab="P{Survival}")
+x <- rpwexp(n = 1e4,
+            failRates = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1)))
+plot(sort(x), (1e4:1)/10001,
+     log = "y", main = "PW Exponential simulated survival curve",
+     xlab = "Time", ylab = "P{Survival}")
 
 }

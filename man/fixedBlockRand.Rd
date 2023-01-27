@@ -22,10 +22,15 @@ exact multiple of the block length.
 }
 \examples{
 library(dplyr)
+
+# example 1
 # 2:1 randomization with block size 3, treatments "A" and "B"
-tibble(x=1:10) \%>\% mutate(Treatment=fixedBlockRand(block=c("A","B","B")))
+tibble(x = 1:10) \%>\% mutate(Treatment = fixedBlockRand(block = c("A", "B", "B")))
+
+# example 2
 # Stratified randomization
-tibble(Stratum=c(rep("A",10),rep("B",10))) \%>\%
-group_by(Stratum) \%>\%
-mutate(Treatment=fixedBlockRand())
+tibble(Stratum = c(rep("A", 10), rep("B", 10))) \%>\%
+  group_by(Stratum) \%>\%
+  mutate(Treatment = fixedBlockRand())
+
 }

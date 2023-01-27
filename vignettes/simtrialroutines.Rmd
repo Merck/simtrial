@@ -178,7 +178,7 @@ Now stratified logrank and stratified weighted logrank tests are easily generate
 To generate a stratified logrank test and a corresponding one-sided p-value, we simply do the following:
 
 ```{r}
-z <- with(ten150, sum(OminusE) / sqrt(sum(Var)))
+z <- with(ten150, sum(o_minus_e) / sqrt(sum(var_o_minus_e)))
 c(z, pnorm(z))
 ```
 
@@ -187,7 +187,7 @@ We again compute a z-statistic and its corresponding one-sided p-value.
 
 ```{r}
 xx <- mutate(ten150, w = S * (1 - S)^2)
-z <- with(xx, sum(OminusE * w) / sum(sqrt(Var * w^2)))
+z <- with(xx, sum(o_minus_e * w) / sum(sqrt(var_o_minus_e * w^2)))
 c(z, pnorm(z))
 ```
 

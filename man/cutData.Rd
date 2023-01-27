@@ -19,8 +19,9 @@ A dataset ready for survival analysis
 Cut a Dataset for Analysis at a Specified Date
 }
 \examples{
-# Use default enrollment and event rates and cut at calendar time 5 after start
-# of randomization
+# Use default enrollment and event rates and
+# cut at calendar time 5 after start of randomization
 library(dplyr)
-simPWSurv(n=20) \%>\% cutData(5)
+simPWSurv(n = 20) \%>\% cutData(5)
+
 }

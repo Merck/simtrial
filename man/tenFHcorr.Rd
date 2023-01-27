@@ -31,21 +31,37 @@ Fleming-Harrington tests
 \examples{
 library(tidyr)
 library(dplyr)
+
 # Use default enrollment and event rates at cut of 100 events
-x <- simPWSurv(n=200) \%>\% cutDataAtCount(100) \%>\% tensurv(txval="Experimental")
+x <- simPWSurv(n = 200) \%>\%
+  cutDataAtCount(100) \%>\%
+  tensurv(txval = "Experimental")
+
 # compute logrank (FH(0,0)) and FH(0,1)
-x <- tenFHcorr(rg=tibble(rho=c(0,0),gamma=c(0,1)),x=x)
+x <- x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
+                                 gamma = c(0, 1)))
+
 # compute p-value for MaxCombo
 library(mvtnorm)
-1-pmvnorm(lower=rep(min(x$Z),nrow(x)),corr=data.matrix(select(x,-c(rho,gamma,Z))),
-algorithm=GenzBretz(maxpts=50000,abseps=0.00001))[1]
+1 - pmvnorm(lower = rep(min(x$Z), nrow(x)),
+            corr = data.matrix(select(x, -c(rho, gamma, Z))),
+            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
+
 # check that covariance is as expected
-x <- simPWSurv(n=200) \%>\%
-         cutDataAtCount(100) \%>\%
-         tensurv(txval="Experimental")
-x \%>\% tenFHcorr(rg=tibble(rho=c(0,0),gamma=c(0,1)),corr=FALSE)
+x <- simPWSurv(n = 200) \%>\%
+  cutDataAtCount(100) \%>\%
+  tensurv(txval = "Experimental")
+
+x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
+                            gamma = c(0, 1)),
+                corr = FALSE)
+
 # Off-diagonal element should be variance in following
-x \%>\% tenFHcorr(rg=tibble(rho=0,gamma=.5),corr=FALSE)
+x \%>\% tenFHcorr(rg = tibble(rho = 0,
+                            gamma =.5),
+                corr = FALSE)
+
 # compare off diagonal result with tenFH()
-x \%>\% tenFH(rg=tibble(rho=0,gamma=.5))
+x \%>\% tenFH(rg = tibble(rho = 0, gamma =.5))
+
 }

@@ -8,14 +8,14 @@ simfix(
   nsim = 1000,
   sampleSize = 500,
   targetEvents = 350,
-  strata = tibble::tibble(Stratum = "All", p = 1),
-  enrollRates = tibble::tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
-  failRates = tibble::tibble(Stratum = "All", duration = c(3, 100), failRate =
-    log(2)/c(9, 18), hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
+  strata = tibble(Stratum = "All", p = 1),
+  enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+  failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
+    hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
   totalDuration = 30,
   block = rep(c("Experimental", "Control"), 2),
   timingType = 1:5,
-  rg = tibble::tibble(rho = 0, gamma = 0),
+  rg = tibble(rho = 0, gamma = 0),
   seed = NULL
 )
 }
@@ -71,25 +71,50 @@ where the enrollment, hazard ratio, and failure and dropout rates change over ti
 library(tidyr)
 library(dplyr)
 library(doParallel)
+library(tibble)
+
+# example 1
 # Show output structure
-simfix(nsim=3)
+simfix(nsim = 3)
+
+# example 2
 # Example with 2 tests: logrank and FH(0,1)
-simfix(nsim=1,rg=tibble::tibble(rho=0,gamma=c(0,1)))
+simfix(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
+
+# example 3
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- simfix(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
+xx <- simfix(nsim = 100,
+             timingType = c(2, 5),
+             rg = tibble(rho = 0, gamma = c(0, 1)))
 # Get power approximation for FH, data cutoff combination
-xx \%>\% group_by(cut,rho,gamma) \%>\% summarise(mean(Z<=qnorm(.025)))
+xx \%>\%
+  group_by(cut, rho, gamma) \%>\%
+  summarise(mean(Z <= qnorm(.025)))
+
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx \%>\%  filter(cut != "Targeted events") \%>\% group_by(Sim) \%>\% group_map(pMaxCombo)
-p <- unlist(p)
-mean(p<.025)
+p <- xx \%>\%
+  filter(cut != "Targeted events") \%>\%
+  group_by(Sim) \%>\%
+  group_map(pMaxCombo) \%>\%
+  unlist()
+
+mean(p < .025)
+
 # MaxCombo estimate for targeted events cutoff
-p <- unlist(xx \%>\%  filter(cut == "Targeted events") \%>\% group_by(Sim) \%>\% group_map(pMaxCombo))
-mean(p<.025)
+p <- xx \%>\%
+  filter(cut == "Targeted events") \%>\%
+  group_by(Sim) \%>\%
+  group_map(pMaxCombo) \%>\%
+  unlist()
+
+mean(p < .025)
+
+# example 3
 # Use two cores
 registerDoParallel(2)
-simfix(nsim=10, seed = 2022)
+simfix(nsim = 10, seed = 2022)
 stopImplicitCluster()
 registerDoSEQ()
+
 }

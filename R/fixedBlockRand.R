@@ -23,25 +23,33 @@
 #'
 #' @param n sample size to be randomized
 #' @param block Vector of treatments to be included in each block
+#'
 #' @return A treatment group sequence (vector) of length `n` with treatments from `block` permuted within
 #' each block having block size equal to the length of `block`
+#'
 #' @examples
 #' library(dplyr)
+#'
+#' # example 1
 #' # 2:1 randomization with block size 3, treatments "A" and "B"
-#' tibble(x=1:10) %>% mutate(Treatment=fixedBlockRand(block=c("A","B","B")))
+#' tibble(x = 1:10) %>% mutate(Treatment = fixedBlockRand(block = c("A", "B", "B")))
+#'
+#' # example 2
 #' # Stratified randomization
-#' tibble(Stratum=c(rep("A",10),rep("B",10))) %>%
-#' group_by(Stratum) %>%
-#' mutate(Treatment=fixedBlockRand())
+#' tibble(Stratum = c(rep("A", 10), rep("B", 10))) %>%
+#'   group_by(Stratum) %>%
+#'   mutate(Treatment = fixedBlockRand())
+#'
 #' @export
-fixedBlockRand <- function(n=10, block=c(0,0,1,1)){
+fixedBlockRand <- function(n = 10, block = c(0, 0, 1, 1)){
+
   length_block <- length(block)
-  nblock <- ceiling(n/length_block)
-  ntot <- nblock * length_block
-  tx <- NULL
-  u <- NULL
-  tx <- rep(block, each = nblock)
-  u <- rep(1:nblock, length_block)
-  u <- u + stats::runif(ntot)
-  return((tx[order(u)])[1:n])
+  n_block <- ceiling(n / length_block)
+  n_total <- n_block * length_block
+
+  block_to_sample <- rep(block, each = n_block)
+  sample_order <- rep(1:n_block, length_block)
+  sample_order <- sample_order + stats::runif(n_total)
+
+  return((block_to_sample[order(sample_order)])[1:n])
 }

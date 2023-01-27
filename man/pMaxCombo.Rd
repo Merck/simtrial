@@ -27,13 +27,26 @@ ADaM ADTTE format.
 }
 \examples{
 library(tidyr)
-x <- simfix(nsim=1,timingType=5,rg=tibble::tibble(rho=c(0,0,1),gamma=c(0,1,1)))
+library(tibble)
+library(dplyr)
+
+# example 1
+x <- simfix(nsim = 1,
+            timingType = 5,
+            rg = tibble(rho = c(0, 0, 1),
+                        gamma = c(0, 1, 1)))
 head(x)
 pMaxCombo(x)
+
+# example 2
 # Only use cuts for events, events + min follow-up
-xx <- simfix(nsim=100,timingType=5,rg=tibble::tibble(rho=c(0,0,1),gamma=c(0,1,1)))
+xx <- simfix(nsim = 100,
+             timingType = 5,
+             rg = tibble(rho = c(0, 0, 1),
+                         gamma = c(0, 1, 1)))
 head(xx)
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- unlist(xx \%>\%  dplyr::group_by(Sim) \%>\% dplyr::group_map(pMaxCombo))
-mean(p<.025)
+p <- xx \%>\% group_by(Sim) \%>\% group_map(pMaxCombo) \%>\% unlist()
+mean(p < .025)
+
 }

@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import tibble
+#' @importFrom tibble tibble
 #' @import dplyr
 NULL
 
@@ -28,11 +28,13 @@ NULL
 #' Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
 #' @param returnVariance a logical flag that, if true, adds columns
 #' estimated variance for weighted sum of observed minus expected; see details; Default: FALSE
+#'
 #' @return a `tibble` with \code{rg} as input and the FH test statistic
 #' for the data in \code{x}
 #' (\code{Z}, a directional square root of the usual weighted logrank test);
 #' if variance calculations are specified (e.g., to be used for covariances in a combination test),
 #' the this will be returned in the column \code{Var}
+#'
 #' @details
 #' The input value \code{x} produced by \code{tensurv()} produces a counting process dataset
 #' grouped by strata and sorted within strata by increasing times where events occur.
@@ -67,38 +69,69 @@ NULL
 #' The stratified Fleming-Harrington weighted logrank test is then computed as:
 #' \deqn{Z = \sum_i X_i/\sqrt{\sum_i V_i}}
 #' }
+#'
 #' @examples
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
-#' x <- simPWSurv(n=200) %>% cutDataAtCount(100) %>% tensurv(txval="Experimental")
+#' x <- simPWSurv(n = 200) %>%
+#'   cutDataAtCount(100) %>%
+#'   tensurv(txval ="Experimental")
+#'
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' tenFH(x,rg=tibble(rho=c(0,0),gamma=c(0,1)))
+#' tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
+#'
 #' @export
+#' @rdname tenFH
+#'
+tenFH <- function(x = simPWSurv(n = 200) %>%
+                        cutDataAtCount(150) %>%
+                        tensurv(txval = "Experimental"),
+                  rg = tibble(rho = c(0, 0, 1, 1),
+                              gamma = c(0, 1, 0, 1)),
+                  returnVariance = FALSE){
 
-tenFH <- function(x=simPWSurv(n=200) %>% cutDataAtCount(150) %>% tensurv(txval = "Experimental"),
-                  rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)),
-                  returnVariance=FALSE){
   # check input failure rate assumptions
-  if(!is.data.frame(x)){stop("x in `tenFH()` must be a data frame")}
-  if(max(names(x)=="S") != 1){stop("x column names in `tenFH()` must contain S")}
-  if(max(names(x)=="OminusE") != 1){stop("x column names in `tenFH()` must contain OminusE ")}
-  if(max(names(x)=="Var") != 1){stop("x column names in `tenFH()` must contain Var")}
+  if(!is.data.frame(x)){
+    stop("tenFH: x in `tenFH()` must be a data frame!")
+  }
+
+  if(!("S" %in% names(x))){
+    stop("tenFH: x column names in `tenFH()` must contain S!")
+  }
+
+  if(!("o_minus_e" %in% names(x))){
+    stop("tenFH: x column names in `tenFH()` must contain o_minus_e!")
+  }
+
+  if(!("var_o_minus_e" %in% names(x))){
+    stop("tenFH: x column names in `tenFH()` must contain var_o_minus_e!")
+  }
 
   # get minimal columns from tensurv item
   xx <- x %>%
-        ungroup() %>%
-        select(S,OminusE,Var)
-  rg$Z <- rep(0,nrow(rg))
-  if (returnVariance) rg$Var <- rep(0,nrow(rg))
-  for(i in 1:nrow(rg)){
-    y <- xx %>% mutate(w=S^rg$rho[i]*(1-S)^rg$gamma[i],
-                       wOminusE=w*OminusE,
-                       wVar=w^2*Var) %>%
-                summarize(wVar=sum(wVar),wOminusE=sum(wOminusE))
-    rg$Z[i] <- y$wOminusE/sqrt(y$wVar)
-    if (returnVariance) rg$Var[i] <- y$wVar
+    ungroup() %>%
+    select(S, o_minus_e, var_o_minus_e)
+
+  rg$Z <- rep(0, nrow(rg))
+
+  if (returnVariance){
+    rg$Var <- rep(0, nrow(rg))
   }
-  rg
+
+  for(i in 1:nrow(rg)){
+    y <- xx %>%
+      mutate(weight = S^rg$rho[i] * (1 - S)^rg$gamma[i],
+             weighted_o_minus_e = weight * o_minus_e,
+             weighted_var = weight^2 * var_o_minus_e) %>%
+      summarize(weighted_var = sum(weighted_var),
+                weighted_o_minus_e = sum(weighted_o_minus_e))
+
+    rg$Z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
+
+    if (returnVariance){
+      rg$Var[i] <- y$weighted_var
+    }
+  }
+
+  return(rg)
 }
-#' @rdname tenFH
-#' @export

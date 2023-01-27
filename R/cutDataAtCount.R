@@ -26,15 +26,17 @@
 #' @examples
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
-#' x <- simPWSurv(n=200) %>% cutDataAtCount(100)
-#' table(x$event,x$Treatment)
+#' x <- simPWSurv(n = 200) %>% cutDataAtCount(100)
+#' table(x$event, x$Treatment)
 #'
 #' @return a \code{tibble} ready for survival analysis, including culumns time to event (`tte`),
 #' `event`, the `stratum` and the `treatment.`
 #'
 #' @export
 
-cutDataAtCount <- function(x,count){
-  ctecut <- getCutDateForCount(x,count)
-  return(cutData(x,ctecut))
+cutDataAtCount <- function(x, count){
+  cut_date <- getCutDateForCount(x, count)
+  ans <- x %>% cutData(cutDate = cut_date)
+
+  return(ans)
 }

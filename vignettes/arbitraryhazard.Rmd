@@ -1,6 +1,11 @@
 ---
 title: "Approximating an arbitrary hazard function"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{Approximating an arbitrary hazard function}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,6 +24,7 @@ library(bshazard)
 library(ggplot2)
 library(dplyr)
 library(survival)
+set.seed(123)
 ```
 
 We simulate a log-logistic distribution as an example of how to simulate a trial with an arbitrary distribution.

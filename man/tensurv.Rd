@@ -25,16 +25,16 @@ Other variables in this represent the following within each stratum at
 each time at which one or more events are observed:
 \itemize{
 \item \code{events}: Total number of events
-\item \code{txevents}: Total number of events at treatment group
-\item \code{atrisk}: Number of subjects at risk
-\item \code{txatrisk}: Number of subjects at risk in treatment group
+\item \code{n_event_tol}: Total number of events at treatment group
+\item \code{n_risk_tol}: Number of subjects at risk
+\item \code{n_risk_trt}: Number of subjects at risk in treatment group
 \item \code{S}: Left-continuous Kaplan-Meier survival estimate
-\item \code{OminusE}: In treatment group, observed number of events minus expected
+\item \code{o_minus_e}: In treatment group, observed number of events minus expected
 number of events. The expected number of events is estimated by assuming
 no treatment effect with hypergeometric distribution with parameters total
 number of events, total number of events at treatment group and number of
 events at a time. (Same assumption of log-rank test under the null hypothesis)
-\item \code{Var}: variance of \code{OminusE} under the same assumption.
+\item \code{var_o_minus_e}: variance of \code{o_minus_e} under the same assumption.
 }
 }
 \description{
@@ -50,20 +50,20 @@ The tie is handled by the Breslow's Method.
 }
 \examples{
 library(dplyr)
+library(tibble)
 
-# Example 1
-x=tibble(Stratum = c(rep(1,10),rep(2,6)),
-Treatment = rep(c(1,1,0,0),4),
-tte = 1:16,
-event= rep(c(0,1),8))
+# example 1
+x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
+            Treatment = rep(c(1, 1, 0, 0), 4),
+            tte = 1:16,
+            event= rep(c(0, 1), 8))
+tensurv(x, txval = 1)
 
-tensurv(x, txval=1)
-
-# Example 2
-x <- simPWSurv(n=400)
-y <- cutDataAtCount(x,150) \%>\% tensurv(txval = "Experimental")
+# example 2
+x <- simPWSurv(n = 400)
+y <- cutDataAtCount(x, 150) \%>\% tensurv(txval = "Experimental")
 # weighted logrank test (Z-value and 1-sided p-value)
-z <- sum(y$OminusE)/sqrt(sum(y$Var))
-c(z,pnorm(z))
+z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
+c(z, pnorm(z))
 
 }
