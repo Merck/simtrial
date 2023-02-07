@@ -58,7 +58,7 @@ reference:
     - pMaxCombo
 - title: "Randomization algorithms"
   contents:
-    - fixedBlockRand
+    - rand_by_fixed_block
 
 articles:
 - title: "Example simulation workflows"
