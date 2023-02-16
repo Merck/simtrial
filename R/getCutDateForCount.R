@@ -44,7 +44,7 @@ NULL
 #'
 #' d <- getCutDateForCount(x %>% filter(Stratum == "Positive"), count = 50)
 #'
-#' y <- cutData(x, cutDate = d)
+#' y <- cut_data_by_date(x, cutDate = d)
 #' table(y$Stratum, y$event)
 #'
 #' @return The a numeric value with the \code{cte} from the input dataset at which the targeted event count

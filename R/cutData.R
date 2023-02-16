@@ -30,11 +30,11 @@ NULL
 #' # Use default enrollment and event rates and
 #' # cut at calendar time 5 after start of randomization
 #' library(dplyr)
-#' simPWSurv(n = 20) %>% cutData(5)
+#' simPWSurv(n = 20) %>% cut_data_by_date(5)
 #'
 #' @export
 #'
-cutData <- function(x, cutDate){
+cut_data_by_date <- function(x, cutDate){
 
   ans <- x %>%
     filter(enrollTime <= cutDate) %>%
