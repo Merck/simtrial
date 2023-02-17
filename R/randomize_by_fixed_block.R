@@ -32,16 +32,16 @@
 #'
 #' # example 1
 #' # 2:1 randomization with block size 3, treatments "A" and "B"
-#' tibble(x = 1:10) %>% mutate(Treatment = rand_by_fixed_block(block = c("A", "B", "B")))
+#' tibble(x = 1:10) %>% mutate(Treatment = randomize_by_fixed_block(block = c("A", "B", "B")))
 #'
 #' # example 2
 #' # Stratified randomization
 #' tibble(Stratum = c(rep("A", 10), rep("B", 10))) %>%
 #'   group_by(Stratum) %>%
-#'   mutate(Treatment = rand_by_fixed_block())
+#'   mutate(Treatment = randomize_by_fixed_block())
 #'
 #' @export
-rand_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)){
+randomize_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)){
 
   length_block <- length(block)
   n_block <- ceiling(n / length_block)
