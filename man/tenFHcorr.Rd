@@ -5,7 +5,8 @@
 \title{Fleming-Harrington Weighted Logrank Tests plus Correlations}
 \usage{
 tenFHcorr(
-  x = simPWSurv(n = 200) \%>\% cutDataAtCount(100) \%>\% tensurv(txval = "Experimental"),
+  x = simPWSurv(n = 200) \%>\% cutDataAtCount(100) \%>\% tensurv(txval =
+    "Experimental"),
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   corr = TRUE
 )
