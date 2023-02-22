@@ -61,7 +61,7 @@ NULL
 #'
 #' @export
 #'
-pMaxCombo <- function(Z,
+pvalue_maxcombo<- function(Z,
                       dummyvar,
                       algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
 
