@@ -38,7 +38,7 @@ reference:
     - rpwexpRcpp
     - rpwexpinvRcpp
     - rpwenroll
-    - pwexpfit
+    - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
@@ -52,7 +52,7 @@ reference:
 - title: "Compute p-values/test statistics"
   contents:
     - tenFH
-    - tenFHcorr
+    - tenFHcorrdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==
     - tensurv
     - wMB
     - pMaxCombo
