@@ -38,7 +38,7 @@ reference:
     - rpwexpRcpp
     - rpwexpinvRcpp
     - rpwenroll
-    - fit_pwexp
+    - pwexpfit
 - title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
