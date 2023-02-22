@@ -21,7 +21,7 @@ This vignette demonstrates the lower-level routines in the simtrial package spec
 
 The routines are as follows:
 
-* `rand_by_fixed_block` - fixed block randomization
+* `randomize_by_fixed_block` - fixed block randomization
 * `rpwenroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
 * `cutData` - cut data for analysis at a specified calendar time
@@ -54,12 +54,12 @@ library(dplyr)
 Fixed block randomization with an arbitrary block contents is performed as demonstrated below. In this case we have a block size of 5 with one string repeated twice in each block and three other strings appearing once each.
 
 ```{r}
-rand_by_fixed_block(n = 10, block = c("A", "Dog", "Cat", "Cat"))
+randomize_by_fixed_block(n = 10, block = c("A", "Dog", "Cat", "Cat"))
 ```
 More normally, with a default of blocks of size four:
 
 ```{r}
-rand_by_fixed_block(n = 20)
+randomize_by_fixed_block(n = 20)
 ```
 
 ## Enrollment
