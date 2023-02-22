@@ -52,7 +52,7 @@ reference:
 - title: "Compute p-values/test statistics"
   contents:
     - tenFH
-    - tenFHcorrdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==
+    - tenFHcorr
     - tensurv
     - wMB
     - pMaxCombo
