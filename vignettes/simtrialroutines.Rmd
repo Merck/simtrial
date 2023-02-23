@@ -194,7 +194,7 @@ c(z, pnorm(z))
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-tenFH(x = ten150, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
+wlr(x = ten150, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `tenFHcorr` to compute a correlation matrix for the above Z-statistics as follows.
