@@ -83,7 +83,7 @@ In this case, we use the 4 test combination suggested in @NPHWGSimulation, @NPHW
 Z <- s %>%
   cutDataAtCount(75) %>%
   tensurv(txval = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
+  wlrcorr(rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
 Z %>% kable(digits = 2)
 ```
 
@@ -123,7 +123,7 @@ Now we analyze the data with a MaxCombo with the logrank and FH(0,1) and compute
 ```{r,warning=FALSE,message=FALSE}
 x %>%
   tensurv(txval = "Maintained") %>%
-  tenFHcorr(rg = tibble(rho = 0, gamma = c(0, 1))) %>%
+  wlrcorr(rg = tibble(rho = 0, gamma = c(0, 1))) %>%
   pMaxCombo()
 ```
 
