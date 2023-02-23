@@ -51,7 +51,7 @@ reference:
     - getCutDateForCount
 - title: "Compute p-values/test statistics"
   contents:
-    - tenFH
+    - wlr
     - tenFHcorr
     - tensurv
     - wMB
