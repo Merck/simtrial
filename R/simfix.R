@@ -32,13 +32,13 @@ NULL
 #' @param enrollRates Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
-#' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+#' @param data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
-#' @param rg As in `simtrial::tenFHCorr()`.
+#' @param rg As in `simtrial::wlrCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations
@@ -235,9 +235,9 @@ simfix <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% tenFH(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% wlr(rg = rg))$Z)
     } else{
-      Z <- d %>% tensurv(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% tensurv(txval = "Experimental") %>% wlrcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(

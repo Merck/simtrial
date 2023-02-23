@@ -45,7 +45,7 @@ NULL
 #'   tensurv(txval = "Experimental")
 #'
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' x <- x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
+#' x <- x %>% wlrcorr(rg = tibble(rho = c(0, 0),
 #'                                  gamma = c(0, 1)))
 #'
 #' # compute p-value for MaxCombo
@@ -59,21 +59,21 @@ NULL
 #'   cutDataAtCount(100) %>%
 #'   tensurv(txval = "Experimental")
 #'
-#' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
+#' x %>% wlrcorr(rg = tibble(rho = c(0, 0),
 #'                             gamma = c(0, 1)),
 #'                 corr = FALSE)
 #'
 #' # Off-diagonal element should be variance in following
-#' x %>% tenFHcorr(rg = tibble(rho = 0,
+#' x %>% wlrcorr(rg = tibble(rho = 0,
 #'                             gamma =.5),
 #'                 corr = FALSE)
 #'
-#' # compare off diagonal result with tenFH()
-#' x %>% tenFH(rg = tibble(rho = 0, gamma =.5))
+#' # compare off diagonal result with wlr()
+#' x %>% wlr(rg = tibble(rho = 0, gamma =.5))
 #'
 #' @export
-#' @rdname tenFHcorr
-tenFHcorr <- function(x = simPWSurv(n = 200) %>%
+#' @rdname wlrcorr
+wlrcorr <- function(x = simPWSurv(n = 200) %>%
                             cutDataAtCount(100) %>%
                             tensurv(txval = "Experimental"),
                       rg = tibble(rho = c(0, 0, 1, 1),
@@ -100,7 +100,7 @@ tenFHcorr <- function(x = simPWSurv(n = 200) %>%
 
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  rg_fh <- rg_new %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
+  rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, returnVariance = TRUE),
                                 by = c("rho" = "rho","gamma" = "gamma"))
 
   # get Z statistics for input rho, gamma combinations

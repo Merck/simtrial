@@ -23,12 +23,12 @@ NULL
 #' MaxCombo p-value
 #'
 #' \code{pMaxCombo()} computes p-values for the MaxCombo test
-#' based on output from \code{simtrial::tenFHcorr()}.
+#' based on output from \code{simtrial::wlrcorr()}.
 #' This is still in an experimental stage and is intended for use with
 #' the \code{simtrial::simfix()} trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as that provided in the
 #' ADaM ADTTE format.
-#' @param Z a dataset output from \code{tenFHcorr()}; see examples.
+#' @param Z a dataset output from \code{wlrcorr()}; see examples.
 #' @param dummyvar a dummy input that allows \code{group_map()} to be used to
 #' compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}
