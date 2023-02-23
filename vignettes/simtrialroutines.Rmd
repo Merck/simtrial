@@ -210,7 +210,7 @@ We can compute a p-value for the MaxCombo as follows using the `pmvnorm` functio
 
 ```{r,message=FALSE}
 # Compute p-value for MaxCombo
-pMaxCombo(x)
+pvalue_maxcombo(x)
 ```
 
 ## Simplification for 2-arm trials
