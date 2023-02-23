@@ -58,9 +58,6 @@
     <loc>https://merck.github.io/simtrial/reference/cutDataAtCount.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/simtrial/reference/fixedBlockRand.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/simtrial/reference/getCutDateForCount.html</loc>
   </url>
   <url>
@@ -71,6 +68,9 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/pwexpfit.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/rpwenroll.html</loc>
