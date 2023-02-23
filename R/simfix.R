@@ -85,7 +85,7 @@ NULL
 #' p <- xx %>%
 #'   filter(cut != "Targeted events") %>%
 #'   group_by(Sim) %>%
-#'   group_map(pMaxCombo) %>%
+#'   group_map(value_maxcombo) %>%
 #'   unlist()
 #'
 #' mean(p < .025)
@@ -94,7 +94,7 @@ NULL
 #' p <- xx %>%
 #'   filter(cut == "Targeted events") %>%
 #'   group_by(Sim) %>%
-#'   group_map(pMaxCombo) %>%
+#'   group_map(value_maxcombo) %>%
 #'   unlist()
 #'
 #' mean(p < .025)
