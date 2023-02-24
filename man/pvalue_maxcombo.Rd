@@ -22,7 +22,7 @@ compute p-values for multiple simulations.}
 A numeric p-value
 }
 \description{
-\code{pMaxCombo()} computes p-values for the MaxCombo test
+\code{pvalue_maxcombo()} computes p-values for the MaxCombo test
 based on output from \code{simtrial::tenFHcorr()}.
 This is still in an experimental stage and is intended for use with
 the \code{simtrial::simfix()} trial simulation routine.
@@ -40,7 +40,7 @@ x <- simfix(nsim = 1,
             rg = tibble(rho = c(0, 0, 1),
                         gamma = c(0, 1, 1)))
 head(x)
-pMaxCombo(x)
+pvalue_maxcombo(x)
 
 # example 2
 # Only use cuts for events, events + min follow-up
@@ -50,7 +50,7 @@ xx <- simfix(nsim = 100,
                          gamma = c(0, 1, 1)))
 head(xx)
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx \%>\% group_by(Sim) \%>\% group_map(pMaxCombo) \%>\% unlist()
+p <- xx \%>\% group_by(Sim) \%>\% group_map(pvalue_maxcombo) \%>\% unlist()
 mean(p < .025)
 
 }
