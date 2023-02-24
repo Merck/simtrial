@@ -7,7 +7,7 @@
 pMaxCombo(Z, dummyvar, algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05))
 }
 \arguments{
-\item{Z}{a dataset output from \code{tenFHcorr()}; see examples.}
+\item{Z}{a dataset output from \code{wlrcorr()}; see examples.}
 
 \item{dummyvar}{a dummy input that allows \code{group_map()} to be used to
 compute p-values for multiple simulations.}
@@ -19,7 +19,7 @@ A numeric p-value
 }
 \description{
 \code{pMaxCombo()} computes p-values for the MaxCombo test
-based on output from \code{simtrial::tenFHcorr()}.
+based on output from \code{simtrial::wlrcorr()}.
 This is still in an experimental stage and is intended for use with
 the \code{simtrial::simfix()} trial simulation routine.
 However, it can also be used to analyze clinical trial data such as that provided in the
