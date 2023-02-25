@@ -96,7 +96,7 @@ xx \%>\%
 p <- xx \%>\%
   filter(cut != "Targeted events") \%>\%
   group_by(Sim) \%>\%
-  group_map(value_maxcombo) \%>\%
+  group_map(pvalue_maxcombo) \%>\%
   unlist()
 
 mean(p < .025)
@@ -105,7 +105,7 @@ mean(p < .025)
 p <- xx \%>\%
   filter(cut == "Targeted events") \%>\%
   group_by(Sim) \%>\%
-  group_map(value_maxcombo) \%>\%
+  group_map(pvalue_maxcombo) \%>\%
   unlist()
 
 mean(p < .025)
