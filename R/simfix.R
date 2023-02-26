@@ -38,7 +38,7 @@ NULL
 #' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
-#' @param rg As in `simtrial::wlrCorr()`.
+#' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations
@@ -237,7 +237,7 @@ simfix <- function(nsim = 1000,
     if (nrow(rg) == 1){
       Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% wlr(rg = rg))$Z)
     } else{
-      Z <- d %>% tensurv(txval = "Experimental") %>% wlrcorr(rg = rg, corr = TRUE)
+      Z <- d %>% tensurv(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(

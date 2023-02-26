@@ -39,7 +39,7 @@ random distribution between strata.}
 \item{timingType}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
 
-\item{rg}{As in \code{simtrial::wlrCorr()}.
+\item{rg}{As in \code{simtrial::tenFHCorr()}.
 A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 
