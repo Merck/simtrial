@@ -1,4 +1,4 @@
-testthat::test_that("wlrCorr calculated correct correlation value",{
+testthat::test_that("tenFHCorr calculated correct correlation value",{
   set.seed(123)
   y=simPWSurv(n=300) %>% cutDataAtCount(30)
   adjust.methods="asymp"
@@ -55,7 +55,7 @@ testthat::test_that("wlrCorr calculated correct correlation value",{
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   corr1=cor.tst[2:5,2:5]
   a2 <- y %>% tensurv(txval="Experimental")
-  corr2=wlrcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
+  corr2=tenFHCorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
   corr2= rbind(corr2$V1,corr2$V2,corr2$V3,corr2$V4)
   expect_equal(corr1,corr2,tolerance = 0.00001)
 })
