@@ -38,7 +38,6 @@ testthat::test_that("the p-values correspond to pMaxCombo",{
   tst.rslt2 <- subset(tst.rsltt, grepl("FH", tst.rsltt$W))
   cov.tst.rslt11 <- tst.rslt2$Var
   d2$V <- cov.tst.rslt11
-  d1d2 <- full_join(d1,d2, by = c("X1","X2"))
   cov.tst.rslt1 <- d1d2$V
   cov.tst.1 <- matrix(NA, nrow=length(wt1), ncol=length(wt1))
   cov.tst.1[lower.tri(cov.tst.1, diag=FALSE)] <- cov.tst.rslt1
@@ -55,7 +54,7 @@ testthat::test_that("the p-values correspond to pMaxCombo",{
   if(Z.tst.rslt1[max.tst] >= 0){pval <- 1 - pval2/2}
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   p1=pval
-  a2 <- y %>% tensurv(txval="Experimental")
+  a2 <- y %>% counting_process(txval="Experimental")
   aa=tenFHcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
   p2= simtrial::pMaxCombo(Z = aa)
 
