@@ -32,7 +32,7 @@ NULL
 #' @param enrollRates Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
-#' @param data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+#' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.

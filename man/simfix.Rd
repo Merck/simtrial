@@ -32,6 +32,9 @@ simfix(
 Note that these are overall population enrollment rates and the \code{strata} argument controls the
 random distribution between strata.}
 
+\item{failRates}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+and dropout rates by stratum and time period.}
+
 \item{totalDuration}{Total follow-up from start of enrollment to data cutoff.}
 
 \item{block}{As in \code{simtrial::simPWSurv()}. Vector of treatments to be included in each block.}
@@ -44,9 +47,6 @@ A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than eq
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 
 \item{seed}{Optional. Initial seed for simulations}
-
-\item{data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==failRates}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
-and dropout rates by stratum and time period.}
 }
 \value{
 A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
