@@ -52,7 +52,7 @@ reference:
 - title: "Compute p-values/test statistics"
   contents:
     - wlr
-    - wlrcorr
+    - tenFHcorr
     - tensurv
     - wMB
     - pMaxCombo
