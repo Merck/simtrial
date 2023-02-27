@@ -38,6 +38,7 @@ testthat::test_that("the p-values correspond to pMaxCombo",{
   tst.rslt2 <- subset(tst.rsltt, grepl("FH", tst.rsltt$W))
   cov.tst.rslt11 <- tst.rslt2$Var
   d2$V <- cov.tst.rslt11
+  d1d2 <- full_join(d1,d2, by = c("X1","X2"))
   cov.tst.rslt1 <- d1d2$V
   cov.tst.1 <- matrix(NA, nrow=length(wt1), ncol=length(wt1))
   cov.tst.1[lower.tri(cov.tst.1, diag=FALSE)] <- cov.tst.rslt1
