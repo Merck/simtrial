@@ -5,12 +5,12 @@
 \title{Piecewise exponential survival estimation}
 \usage{
 fit_pwexp(
-  Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+  srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
   intervals = array(3, 3)
 )
 }
 \arguments{
-\item{Srv}{input survival object (see \code{Surv});
+\item{srv}{input survival object (see \code{Surv});
 note that only 0 = censored, 1 = event for \code{Surv}}
 
 \item{intervals}{Vector containing positive values indicating interval lengths where the
