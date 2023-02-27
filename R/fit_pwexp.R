@@ -75,17 +75,17 @@ NULL
 #' @export
 #'
 fit_pwexp <- function(
-    Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+    srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
                intervals = array(3, 3)){
 
-  if (!is.Surv(Srv)){
-    stop("fit_pwexp: Srv must be a survival object!")
+  if (!is.Surv(srv)){
+    stop("fit_pwexp: srv must be a survival object!")
   }
 
   # only allow status 0,1
   xx <- data.frame(time = srv[ , "time"], status = srv[ , "status"])
   if (nrow(subset(xx, status != 0 & status != 1))){
-    stop("fit_pwexp: Srv may only have status values of 0 or 1!")
+    stop("fit_pwexp: srv may only have status values of 0 or 1!")
   }
 
   # check for late observation after sum(intervals)
