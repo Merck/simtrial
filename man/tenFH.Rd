@@ -5,12 +5,8 @@
 \title{Fleming-Harrington Weighted Logrank Tests}
 \usage{
 tenFH(
-<<<<<<< HEAD
-  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% tensurv(arm = "Experimental"),
-=======
-  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% counting_process(txval =
+  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% counting_process(arm =
     "Experimental"),
->>>>>>> main
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   returnVariance = FALSE
 )
@@ -75,12 +71,7 @@ library(tidyr)
 # Use default enrollment and event rates at cut at 100 events
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(100) \%>\%
-<<<<<<< HEAD
-  tensurv(arm ="Experimental")
-=======
-  counting_process(txval ="Experimental")
->>>>>>> main
-
+  counting_process(arm ="Experimental")
 # compute logrank (FH(0,0)) and FH(0,1)
 tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
 

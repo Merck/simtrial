@@ -58,11 +58,7 @@ sim <- simPWSurv(n = 300,
 # Cut after 200 events and do a stratified logrank test
 dat <- sim \%>\%
   cutDataAtCount(200) \%>\%              # cut data
-<<<<<<< HEAD
-  tensurv(arm = "Experimental") \%>\%  # convert format for tenFH
-=======
-  counting_process(txval = "Experimental") \%>\%  # convert format for tenFH
->>>>>>> main
+  counting_process(arm = "Experimental") \%>\%  # convert format for tenFH
   tenFH(rg = tibble(rho=0,gamma=0))    # stratified logrank
 
 }

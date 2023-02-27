@@ -4,11 +4,7 @@
 \alias{counting_process}
 \title{Process Survival Data into Counting Process Format}
 \usage{
-<<<<<<< HEAD:man/tensurv.Rd
-tensurv(x, arm)
-=======
-counting_process(x, txval)
->>>>>>> main:man/counting_process.Rd
+counting_process(x, arm)
 }
 \arguments{
 \item{x}{a tibble with no missing values and contain variables
@@ -61,19 +57,11 @@ x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
             Treatment = rep(c(1, 1, 0, 0), 4),
             tte = 1:16,
             event= rep(c(0, 1), 8))
-<<<<<<< HEAD:man/tensurv.Rd
-tensurv(x, arm = 1)
+counting_process(x, arm = 1)
 
 # example 2
 x <- simPWSurv(n = 400)
-y <- cutDataAtCount(x, 150) \%>\% tensurv(arm = "Experimental")
-=======
-counting_process(x, txval = 1)
-
-# example 2
-x <- simPWSurv(n = 400)
-y <- cutDataAtCount(x, 150) \%>\% counting_process(txval = "Experimental")
->>>>>>> main:man/counting_process.Rd
+y <- cutDataAtCount(x, 150) \%>\% counting_process(arm = "Experimental")
 # weighted logrank test (Z-value and 1-sided p-value)
 z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 c(z, pnorm(z))
