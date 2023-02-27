@@ -247,7 +247,7 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 simfix(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
-  targetEvents = 350, # Targeted events at analysis
+  target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
   enrollRates = enrollRates, # Enrollment rates
   failRates = failRates, # Failure rates
