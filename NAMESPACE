@@ -2,9 +2,10 @@
 
 export(cutData)
 export(cutDataAtCount)
+export(fit_pwexp)
 export(getCutDateForCount)
 export(pMaxCombo)
-export(pwexpfit)
+export(pMaxCombo)
 export(randomize_by_fixed_block)
 export(rpwenroll)
 export(rpwexp)
