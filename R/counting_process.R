@@ -63,22 +63,22 @@ NULL
 #'             Treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
-#' tensurv(x, arm = 1)
+#' counting_process(x, arm = 1)
 #'
 #' # example 2
 #' x <- simPWSurv(n = 400)
-#' y <- cutDataAtCount(x, 150) %>% tensurv(arm = "Experimental")
+#' y <- cutDataAtCount(x, 150) %>% counting_process(arm = "Experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
 #' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 #' c(z, pnorm(z))
 #'
 #' @export
-tensurv <- function(x, arm){
+counting_process <- function(x, arm){
 
     unique_treatment <- unique(x$Treatment)
 
     if(length(unique_treatment) > 2){
-      stop("tensurv: expected two groups!")
+      stop("counting_process: expected two groups!")
     }
 
     if(! arm %in% unique_treatment){
@@ -86,7 +86,7 @@ tensurv <- function(x, arm){
     }
 
     if(! all(unique(x$event) %in% c(0, 1) ) ){
-      stop("tensurv: event indicator must be 0 (censoring) or 1 (event)!")
+      stop("counting_process: event indicator must be 0 (censoring) or 1 (event)!")
     }
 
     ans <- x %>%

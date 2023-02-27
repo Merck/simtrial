@@ -16,7 +16,7 @@ test_wMB <- function(x, delay = 4){
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum",{
-  x <- simPWSurv(n=200) %>% cutDataAtCount(125) %>% tensurv(arm="Experimental")
+  x <- simPWSurv(n=200) %>% cutDataAtCount(125) %>% counting_process(arm="Experimental")
 
   out1 <- test_wMB(x, delay=3)
   out1 <- data.frame(out1[order(out1$Stratum,out1$tte),])
@@ -42,7 +42,7 @@ test_that("Validation passed for the situation of multiple strata",{
                                              duration=rep(1,4),
                                              rate=rep(.001,4))) %>%
     cutDataAtCount(125) %>%
-    tensurv(arm="Experimental")
+    counting_process(arm="Experimental")
 
   out1 <- test_wMB(x, delay=3)
   out1 <- data.frame(out1[order(out1$Stratum,out1$tte),])

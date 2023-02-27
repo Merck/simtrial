@@ -7,7 +7,7 @@
 wMB(x, delay = 4, wmax = Inf)
 }
 \arguments{
-\item{x}{a \code{tensurv}-class \code{tibble} with a counting process dataset}
+\item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
 
 \item{delay}{The initial delay period where weights increase;
 after this, weights are constant at the final weight in the delay period}
@@ -34,7 +34,7 @@ is greater than or equal to underlying survival in the experimental group,
 Type I error is controlled as the specified level.
 }
 \details{
-This function computes Magirr-Burman weights and adds them to a dataset created by the \code{tensurv()} function.
+This function computes Magirr-Burman weights and adds them to a dataset created by the \code{counting_process()} function.
 These weights can then be used to compute a Z-statistic for the modestly weighted logrank test proposed.
 
 We define \eqn{t^*} to be the input variable \code{delay}.
@@ -53,7 +53,11 @@ library(dplyr)
 # For transparency, may be good to set either `delay` or `wmax` to Inf`
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(125) \%>\%
+<<<<<<< HEAD
   tensurv(arm = "Experimental")
+=======
+  counting_process(txval = "Experimental")
+>>>>>>> main
 
 # example 1
 # compute Magirr-Burman weights with `delay = 6`

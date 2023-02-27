@@ -5,13 +5,18 @@
 \title{Fleming-Harrington Weighted Logrank Tests}
 \usage{
 tenFH(
+<<<<<<< HEAD
   x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% tensurv(arm = "Experimental"),
+=======
+  x = simPWSurv(n = 200) \%>\% cutDataAtCount(150) \%>\% counting_process(txval =
+    "Experimental"),
+>>>>>>> main
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   returnVariance = FALSE
 )
 }
 \arguments{
-\item{x}{a \code{tensurv}-class \code{tibble} with a counting process dataset}
+\item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
 
 \item{rg}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row;
@@ -28,10 +33,10 @@ if variance calculations are specified (e.g., to be used for covariances in a co
 the this will be returned in the column \code{Var}
 }
 \description{
-With output from the function \code{tensurv}
+With output from the function \code{counting_process}
 }
 \details{
-The input value \code{x} produced by \code{tensurv()} produces a counting process dataset
+The input value \code{x} produced by \code{counting_process()} produces a counting process dataset
 grouped by strata and sorted within strata by increasing times where events occur.
 \itemize{
 \item \eqn{Z} - standardized normal Fleming-Harrington weighted logrank test
@@ -46,7 +51,7 @@ at time \eqn{t_{ij}}
 \item \eqn{E_{ije}} - expected observations in experimental treatment group given random selection of \eqn{O_{ij.}}
 from those in stratum \eqn{i} at risk at time \eqn{t_{ij}}
 \item \eqn{V_{ije}} - hypergeometric variance for \eqn{E_{ije}} as produced in \code{Var}
-from the \code{tensurv()} routine
+from the \code{counting_process()} routine
 \item \eqn{N_{ije}} - total number of study subjects in stratum \eqn{i} in the experimental treatment group
 who were followed for at least duration \eqn{t_{ij}}
 \item \eqn{E_{ije}} - expected observations in experimental group in stratum \eqn{i} at time \eqn{t_{ij}}
@@ -70,7 +75,11 @@ library(tidyr)
 # Use default enrollment and event rates at cut at 100 events
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(100) \%>\%
+<<<<<<< HEAD
   tensurv(arm ="Experimental")
+=======
+  counting_process(txval ="Experimental")
+>>>>>>> main
 
 # compute logrank (FH(0,0)) and FH(0,1)
 tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))

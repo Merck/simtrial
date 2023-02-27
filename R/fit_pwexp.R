@@ -39,13 +39,13 @@ NULL
 #' library(survival)
 #'
 #' # example 1
-#' rateall <- pwexpfit()
+#' rateall <- fit_pwexp()
 #' rateall
 #'
 #' # example 2
 #' # Estimate by treatment effect
-#' rate1 <- with(subset(Ex1delayedEffect, trt == 1), pwexpfit(Surv(month, evntd)))
-#' rate0 <- with(subset(Ex1delayedEffect, trt == 0), pwexpfit(Surv(month, evntd)))
+#' rate1 <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd)))
+#' rate0 <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd)))
 #'
 #' rate1
 #' rate0
@@ -62,8 +62,8 @@ NULL
 #' # example 3
 #' # simple model with 3 rates same for each for 3 months,
 #' # different for each treatment after months
-#' rate1a <- with(subset(Ex1delayedEffect, trt == 1), pwexpfit(Surv(month, evntd), 3))
-#' rate0a <- with(subset(Ex1delayedEffect, trt == 0), pwexpfit(Surv(month, evntd), 3))
+#' rate1a <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd), 3))
+#' rate0a <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd), 3))
 #' rate1a$rate/rate0a$rate
 #'
 #' m2ll0 <- rateall$m2ll[1] + rate1a$m2ll[2] + rate0a$m2ll[2]
@@ -74,18 +74,18 @@ NULL
 #'
 #' @export
 #'
-pwexpfit <- function(
+fit_pwexp <- function(
     Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
                intervals = array(3, 3)){
 
   if (!is.Surv(Srv)){
-    stop("pwexpfit: Srv must be a survival object!")
+    stop("fit_pwexp: Srv must be a survival object!")
   }
 
   # only allow status 0,1
   xx <- data.frame(time = Srv[ , "time"], status = Srv[ , "status"])
   if (nrow(subset(xx, status != 0 & status != 1))){
-    stop("pwexpfit: Srv may only have status values of 0 or 1!")
+    stop("fit_pwexp: Srv may only have status values of 0 or 1!")
   }
 
   # check for late observation after sum(intervals)

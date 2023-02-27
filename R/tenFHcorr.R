@@ -26,7 +26,7 @@ NULL
 #' p-value for MaxCombo, the maximum of the specifed
 #' Fleming-Harrington tests
 #'
-#' @param x a \code{tensurv}-class \code{tibble} with a counting process dataset
+#' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
 #' @param rg a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row
 #' @param corr a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix
@@ -42,7 +42,7 @@ NULL
 #' # Use default enrollment and event rates at cut of 100 events
 #' x <- simPWSurv(n = 200) %>%
 #'   cutDataAtCount(100) %>%
-#'   tensurv(arm = "Experimental")
+#'   counting_process(arm = "Experimental")
 #'
 #' # compute logrank (FH(0,0)) and FH(0,1)
 #' x <- x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
@@ -57,7 +57,7 @@ NULL
 #' # check that covariance is as expected
 #' x <- simPWSurv(n = 200) %>%
 #'   cutDataAtCount(100) %>%
-#'   tensurv(arm = "Experimental")
+#'   counting_process(arm = "Experimental")
 #'
 #' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
 #'                             gamma = c(0, 1)),
@@ -75,7 +75,7 @@ NULL
 #' @rdname tenFHcorr
 tenFHcorr <- function(x = simPWSurv(n = 200) %>%
                             cutDataAtCount(100) %>%
-                            tensurv(arm = "Experimental"),
+                            counting_process(arm = "Experimental"),
                       rg = tibble(rho = c(0, 0, 1, 1),
                                   gamma = c(0, 1, 0, 1)),
                       corr = TRUE

@@ -5,13 +5,18 @@
 \title{Fleming-Harrington Weighted Logrank Tests plus Correlations}
 \usage{
 tenFHcorr(
+<<<<<<< HEAD
   x = simPWSurv(n = 200) \%>\% cutDataAtCount(100) \%>\% tensurv(arm = "Experimental"),
+=======
+  x = simPWSurv(n = 200) \%>\% cutDataAtCount(100) \%>\% counting_process(txval =
+    "Experimental"),
+>>>>>>> main
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   corr = TRUE
 )
 }
 \arguments{
-\item{x}{a \code{tensurv}-class \code{tibble} with a counting process dataset}
+\item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
 
 \item{rg}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row}
@@ -35,7 +40,11 @@ library(dplyr)
 # Use default enrollment and event rates at cut of 100 events
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(100) \%>\%
+<<<<<<< HEAD
   tensurv(arm = "Experimental")
+=======
+  counting_process(txval = "Experimental")
+>>>>>>> main
 
 # compute logrank (FH(0,0)) and FH(0,1)
 x <- x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
@@ -50,7 +59,11 @@ library(mvtnorm)
 # check that covariance is as expected
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(100) \%>\%
+<<<<<<< HEAD
   tensurv(arm = "Experimental")
+=======
+  counting_process(txval = "Experimental")
+>>>>>>> main
 
 x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
                             gamma = c(0, 1)),
