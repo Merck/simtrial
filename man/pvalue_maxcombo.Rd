@@ -4,15 +4,11 @@
 \alias{pvalue_maxcombo}
 \title{MaxCombo p-value}
 \usage{
-<<<<<<< HEAD:man/pvalue_maxcombo.Rd
 pvalue_maxcombo(
   Z,
-  dummyvar,
+  dummy_var,
   algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05)
 )
-=======
-pMaxCombo(Z, dummy_var, algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05))
->>>>>>> main:man/pMaxCombo.Rd
 }
 \arguments{
 \item{Z}{a dataset output from \code{tenFHcorr()}; see examples.}
