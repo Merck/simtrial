@@ -29,7 +29,7 @@ NULL
 #' However, it can also be used to analyze clinical trial data such as that provided in the
 #' ADaM ADTTE format.
 #' @param Z a dataset output from \code{tenFHcorr()}; see examples.
-#' @param dummyvar a dummy input that allows \code{group_map()} to be used to
+#' @param dummy_var a dummy input that allows \code{group_map()} to be used to
 #' compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}
 #'
@@ -62,8 +62,8 @@ NULL
 #' @export
 #'
 pvalue_maxcombo<- function(Z,
-                      dummyvar,
-                      algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
+                           dummy_var,
+                           algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
 
   ans <- (1 - mvtnorm::pmvnorm(lower = rep(Z$Z %>% min() %>% as.numeric(),
                                            nrow(Z)),

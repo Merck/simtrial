@@ -27,7 +27,7 @@ NULL
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
-#' @param targetEvents Targeted event count for analysis.
+#' @param target_event Targeted event count for analysis.
 #' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
 #' @param enrollRates Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
@@ -110,7 +110,7 @@ NULL
 #'
 simfix <- function(nsim = 1000,
                    sampleSize = 500, # sample size
-                   targetEvents = 350,  # targeted total event count
+                   target_event = 350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
                    strata = tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
@@ -204,13 +204,13 @@ simfix <- function(nsim = 1000,
     stop("simfix: nsim in `simfix()` must be positive integer!")
   }
 
-  # check targetEvents
-  if(targetEvents <= 0){
-    stop("simfix: targetEvents in `simfix()` must be positive!")
+  # check target_event
+  if(target_event <= 0){
+    stop("simfix: target_event in `simfix()` must be positive!")
   }
 
-  if(length(targetEvents) != 1){
-    stop(("simfix: targetEvents in `simfix()` must be positive!"))
+  if(length(target_event) != 1){
+    stop(("simfix: target_event in `simfix()` must be positive!"))
   }
 
   # check sampleSize
@@ -235,9 +235,9 @@ simfix <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% tenFH(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% counting_process(txval = "Experimental") %>% tenFH(rg = rg))$Z)
     } else{
-      Z <- d %>% tensurv(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(
@@ -283,7 +283,7 @@ simfix <- function(nsim = 1000,
                      block = block)
 
     # study date that targeted event rate achieved
-    tedate <- sim %>% getCutDateForCount(targetEvents)
+    tedate <- sim %>% getCutDateForCount(target_event)
 
     # study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enrollTime) + minFollow
