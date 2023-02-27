@@ -90,7 +90,7 @@ Type I error is controlled as the specified level.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>a <code>tensurv</code>-class <code>tibble</code> with a counting process dataset</p></dd>
+<dd><p>a <code>counting_process</code>-class <code>tibble</code> with a counting process dataset</p></dd>
 
 
 <dt>delay</dt>
@@ -115,7 +115,7 @@ for the data in <code>x</code></p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function computes Magirr-Burman weights and adds them to a dataset created by the <code><a href="tensurv.html">tensurv()</a></code> function.
+    <p>This function computes Magirr-Burman weights and adds them to a dataset created by the <code><a href="counting_process.html">counting_process()</a></code> function.
 These weights can then be used to compute a Z-statistic for the modestly weighted logrank test proposed.</p>
 <p>We define \(t^*\) to be the input variable <code>delay</code>.
 This specifies an initial period during which weights increase.
@@ -144,7 +144,7 @@ $$w(t)=\min(w_max, S(\min(t,t^*))^{-1}).$$</p>
 <span class="r-in"><span><span class="co"># For transparency, may be good to set either `delay` or `wmax` to Inf`</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cutDataAtCount.html">cutDataAtCount</a></span><span class="op">(</span><span class="fl">125</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="tensurv.html">tensurv</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="counting_process.html">counting_process</a></span><span class="op">(</span>txval <span class="op">=</span> <span class="st">"Experimental"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example 1</span></span></span>
 <span class="r-in"><span><span class="co"># compute Magirr-Burman weights with `delay = 6`</span></span></span>
@@ -156,7 +156,7 @@ $$w(t)=\min(w_max, S(\min(t,t^*))^{-1}).$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.139052e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001099461</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Now compute with maximum weight of 2 as recommended in Magirr, 2021</span></span></span>
@@ -168,7 +168,7 @@ $$w(t)=\min(w_max, S(\min(t,t^*))^{-1}).$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB2</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.727011e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0005846021</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

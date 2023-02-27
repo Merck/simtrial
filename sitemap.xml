@@ -52,6 +52,9 @@
     <loc>https://merck.github.io/simtrial/reference/MBdelayed.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/counting_process.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/cutData.html</loc>
   </url>
   <url>
@@ -101,9 +104,6 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/tenFHcorr.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/tensurv.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/wMB.html</loc>
