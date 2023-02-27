@@ -22,7 +22,7 @@ This vignette demonstrates the lower-level routines in the simtrial package spec
 The routines are as follows:
 
 * `randomize_by_fixed_block` - fixed block randomization
-* `rpwenroll` - random inter-arrival times with piecewise constant enrollment rates
+* `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
 * `cutData` - cut data for analysis at a specified calendar time
 * `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
@@ -67,7 +67,7 @@ randomize_by_fixed_block(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpwenroll(n = 20, enrollRates = tibble(
+rpw_enroll(n = 20, enrollRates = tibble(
   duration = c(1, 2),
   rate = c(2, 5)
 ))
