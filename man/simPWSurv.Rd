@@ -8,7 +8,7 @@ simPWSurv(
   n = 100,
   strata = tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
-  enrollRates = tibble(rate = 9, duration = 1),
+  enroll_rate = tibble(rate = 9, duration = 1),
   failRates = tibble(Stratum = rep("All", 4), period = rep(1:2, 2), Treatment =
     c(rep("Control", 2), rep("Experimental", 2)), duration = rep(c(3, 1), 2), rate =
     log(2)/c(9, 9, 9, 18)),
@@ -25,7 +25,7 @@ in \code{p}}
 
 \item{block}{Vector of treatments to be included in each  block}
 
-\item{enrollRates}{Enrollment rates; see details and examples}
+\item{enroll_rate}{Enrollment rates; see details and examples}
 
 \item{failRates}{Failure rates; see details and examples; note that treatments need
 to be the same as input in block}
@@ -36,7 +36,7 @@ to be the same as input in block}
 \value{
 a \code{tibble} with the following variables for each observation
 \code{Stratum},
-\code{enrollTime} (enrollment time for the observation),
+\code{enroll_time} (enrollment time for the observation),
 \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
 \code{failTime} (failure time generated using \code{rpwexp()}),
 \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
@@ -70,7 +70,7 @@ simPWSurv(n = 20,
           block = c(rep("Experimental",3), "Control"))
 
 # example 3
-# Simulate 2 strata; will use defaults for blocking and enrollRates
+# Simulate 2 strata; will use defaults for blocking and enroll_rate
 simPWSurv(n = 20,
           # 2 strata,30\% and 70\% prevalence
           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
