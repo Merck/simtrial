@@ -5,18 +5,18 @@
 \title{Piecewise exponential survival estimation}
 \usage{
 fit_pwexp(
-  Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+  srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
   intervals = array(3, 3)
 )
 }
 \arguments{
+\item{srv}{input survival object (see \code{Surv});
+note that only 0 = censored, 1 = event for \code{Surv}}
+
 \item{intervals}{Vector containing positive values indicating interval lengths where the
 exponential rates are assumed.
 Note that a final infinite interval is added if any events occur after the final interval
 specified.}
-
-\item{srv}{input survival object (see \code{Surv});
-note that only 0 = censored, 1 = event for \code{Surv}}
 }
 \value{
 A matrix with rows containing interval length, estimated rate,
