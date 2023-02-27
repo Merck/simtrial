@@ -1,4 +1,4 @@
-testthat::test_that("the p-values correspond to pMaxCombo",{
+testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   set.seed(2022)
   # this part is a double programming
   y=simPWSurv(n=300) %>% cutDataAtCount(30)
@@ -57,7 +57,7 @@ testthat::test_that("the p-values correspond to pMaxCombo",{
   p1=pval
   a2 <- y %>% counting_process(arm="Experimental")
   aa=tenFHcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-  p2= simtrial::pMaxCombo(Z = aa)
+  p2= simtrial::pvalue_maxcombo(Z = aa)
 
   expect_equal(p1, p2, tolerance = 0.005)
 })

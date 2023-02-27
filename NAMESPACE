@@ -5,7 +5,11 @@ export(cutData)
 export(cutDataAtCount)
 export(fit_pwexp)
 export(getCutDateForCount)
+<<<<<<< HEAD
 export(pMaxCombo)
+=======
+export(pvalue_maxcombo)
+>>>>>>> b37efadc9d9c0a3e3c3fd9dffc22482a79c5de94
 export(randomize_by_fixed_block)
 export(rpw_enroll)
 export(rpwexp)

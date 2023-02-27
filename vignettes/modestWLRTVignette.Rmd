@@ -177,7 +177,7 @@ xx
 Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
-xx %>% pMaxCombo()
+xx %>% pvalue_maxcombo()
 ```
 
 Next, we consider the @MagirrBurman modestly weighted logrank test with down-weighting specified for the first 6 months but a maximum weight of 2.
@@ -206,7 +206,7 @@ xx
 Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
-xx %>% pMaxCombo()
+xx %>% pvalue_maxcombo()
 ```
 
 Thus, with less down-weighting the MaxCombo test appears less problematic.

@@ -55,7 +55,7 @@ reference:
     - tenFHcorr
     - counting_process
     - wMB
-    - pMaxCombo
+    - pvalue_maxcombo
 - title: "Randomization algorithms"
   contents:
     - randomize_by_fixed_block
@@ -65,5 +65,5 @@ articles:
   contents:
   - arbitraryhazard
   - modestWLRTVignette
-  - pMaxComboVignette
+  - pvalue_maxcomboVignette
   - simtrialroutines
