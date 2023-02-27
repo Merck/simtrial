@@ -35,7 +35,7 @@ NULL
 #' - `Treatment`: Treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
-#' @param txval value in the input `Treatment` column that indicates treatment group value.
+#' @param arm value in the input `Treatment` column that indicates treatment group value.
 #'
 #' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
 #' Remain rows with at least one event in the population, at least one subject
@@ -63,17 +63,17 @@ NULL
 #'             Treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
-#' tensurv(x, txval = 1)
+#' tensurv(x, arm = 1)
 #'
 #' # example 2
 #' x <- simPWSurv(n = 400)
-#' y <- cutDataAtCount(x, 150) %>% tensurv(txval = "Experimental")
+#' y <- cutDataAtCount(x, 150) %>% tensurv(arm = "Experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
 #' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 #' c(z, pnorm(z))
 #'
 #' @export
-tensurv <- function(x, txval){
+tensurv <- function(x, arm){
 
     unique_treatment <- unique(x$Treatment)
 
@@ -81,8 +81,8 @@ tensurv <- function(x, txval){
       stop("tensurv: expected two groups!")
     }
 
-    if(! txval %in% unique_treatment){
-      stop("tensurv: txval is not a valid treatment group value!")
+    if(! arm %in% unique_treatment){
+      stop("tensurv: arm is not a valid treatment group value!")
     }
 
     if(! all(unique(x$event) %in% c(0, 1) ) ){
@@ -94,11 +94,11 @@ tensurv <- function(x, txval){
       arrange(desc(tte)) %>%
       mutate(one = 1,
              n_risk_tol = cumsum(one),
-             n_risk_trt = cumsum(Treatment == txval)) %>%
+             n_risk_trt = cumsum(Treatment == arm)) %>%
       # Handling ties using Breslow's method
       group_by(Stratum, mtte = desc(tte)) %>%
       dplyr::summarise(events = sum(event),
-                       n_event_tol = sum((Treatment == txval) * event),
+                       n_event_tol = sum((Treatment == arm) * event),
                        tte = first(tte),
                        n_risk_tol = max(n_risk_tol),
                        n_risk_trt = max(n_risk_trt)) %>%
