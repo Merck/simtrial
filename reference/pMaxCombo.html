@@ -106,16 +106,16 @@ compute p-values for multiple simulations.</p></dd>
 <span class="r-in"><span>            rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Events      lnhr rho gamma         Z        V1        V2        V3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    358 -0.573532   0     0 -5.415943 1.0000000 0.8509816 0.9324641</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    358 -0.573532   0     1 -4.323059 0.8509816 1.0000000 0.9277781</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    358 -0.573532   1     1 -5.230156 0.9324641 0.9277781 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Events       lnhr rho gamma         Z        V1        V2        V3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    382 -0.6468504   0     0 -6.270150 1.0000000 0.8531966 0.9338309</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    382 -0.6468504   0     1 -5.768054 0.8531966 1.0000000 0.9239729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    382 -0.6468504   1     1 -6.371445 0.9338309 0.9239729 1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             cut Duration Sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Max(min follow-up, event cut) 73.98757   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Max(min follow-up, event cut) 73.98757   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Max(min follow-up, event cut) 73.98757   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Max(min follow-up, event cut) 76.19867   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Max(min follow-up, event cut) 76.19867   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Max(min follow-up, event cut) 76.19867   1</span>
 <span class="r-in"><span><span class="fu">pMaxCombo</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.132183e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.362777e-11</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Only use cuts for events, events + min follow-up</span></span></span>
@@ -125,23 +125,23 @@ compute p-values for multiple simulations.</p></dd>
 <span class="r-in"><span>                         gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Events       lnhr rho gamma         Z        V1        V2        V3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    369 -0.2788876   0     0 -2.659203 1.0000000 0.8553854 0.9350250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    369 -0.2788876   0     1 -3.634755 0.8553854 1.0000000 0.9278504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    369 -0.2788876   1     1 -2.763454 0.9350250 0.9278504 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    365 -0.4581016   0     0 -4.345373 1.0000000 0.8527195 0.9339968</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    365 -0.4581016   0     1 -5.000126 0.8527195 1.0000000 0.9254351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    365 -0.4581016   1     1 -5.290588 0.9339968 0.9254351 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    376 -0.2937118   0     0 -2.840800 1.0000000 0.8568488 0.9362990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    376 -0.2937118   0     1 -2.238711 0.8568488 1.0000000 0.9256862</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    376 -0.2937118   1     1 -2.633033 0.9362990 0.9256862 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    377 -0.3252201   0     0 -3.154465 1.0000000 0.8561586 0.9359273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    377 -0.3252201   0     1 -2.651839 0.8561586 1.0000000 0.9213249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    377 -0.3252201   1     1 -3.041089 0.9359273 0.9213249 1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             cut Duration Sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Max(min follow-up, event cut) 76.38757   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Max(min follow-up, event cut) 76.38757   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Max(min follow-up, event cut) 76.38757   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Max(min follow-up, event cut) 72.68584   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Max(min follow-up, event cut) 72.68584   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Max(min follow-up, event cut) 72.68584   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Max(min follow-up, event cut) 77.47579   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Max(min follow-up, event cut) 77.47579   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Max(min follow-up, event cut) 77.47579   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Max(min follow-up, event cut) 71.94705   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Max(min follow-up, event cut) 71.94705   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Max(min follow-up, event cut) 71.94705   2</span>
 <span class="r-in"><span><span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pMaxCombo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.97</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
