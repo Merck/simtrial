@@ -2,11 +2,11 @@
 
 export(cutData)
 export(cutDataAtCount)
-export(fixedBlockRand)
+export(fit_pwexp)
 export(getCutDateForCount)
 export(pMaxCombo)
-export(pwexpfit)
 export(rpw_enroll)
+export(randomize_by_fixed_block)
 export(rpwexp)
 export(rpwexpRcpp)
 export(rpwexpinvRcpp)

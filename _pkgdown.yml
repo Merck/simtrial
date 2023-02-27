@@ -38,7 +38,7 @@ reference:
     - rpwexpRcpp
     - rpwexpinvRcpp
     - rpw_enroll
-    - pwexpfit
+    - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
@@ -58,7 +58,7 @@ reference:
     - pMaxCombo
 - title: "Randomization algorithms"
   contents:
-    - fixedBlockRand
+    - randomize_by_fixed_block
 
 articles:
 - title: "Example simulation workflows"
