@@ -235,9 +235,9 @@ simfix <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% counting_process(txval = "Experimental") %>% tenFH(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% tenFH(rg = rg))$Z)
     } else{
-      Z <- d %>% counting_process(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(

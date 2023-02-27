@@ -167,7 +167,8 @@ Once we have cut data for analysis, we can create a dataset that is very simple 
 The counting process format is further discussed in the next section where we compute a weighted logrank test.
 
 ```{r}
-ten150 <- counting_process(y150, txval = "Experimental")
+ten150 <- counting_process(y150, arm = "Experimental")
+
 head(ten150) %>% kable(digits = 2)
 ```
 

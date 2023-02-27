@@ -55,7 +55,7 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   if(Z.tst.rslt1[max.tst] >= 0){pval <- 1 - pval2/2}
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   p1=pval
-  a2 <- y %>% counting_process(txval="Experimental")
+  a2 <- y %>% counting_process(arm="Experimental")
   aa=tenFHcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
   p2= simtrial::pvalue_maxcombo(Z = aa)
 

@@ -85,7 +85,7 @@ We begin with the default of `wmax=\Inf` which corresponds to the original @Magi
 
 ```{r}
 ZMB <- MBdelay %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   wMB(delay = 6) %>%
   summarize(S = sum(o_minus_e * wMB), V = sum(var_o_minus_e * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -96,7 +96,7 @@ Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` 
 
 ```{r}
 ZMB <- MBdelay %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   wMB(delay = Inf, wmax = 2) %>%
   summarize(S = sum(o_minus_e * wMB), V = sum(var_o_minus_e * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -112,7 +112,7 @@ and let $\gamma=0, \rho = -1/2.$
 ```{r}
 wmax <- 2
 Z_modified_FH <- MBdelay %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   mutate(w = pmin(wmax, 1 / S)) %>%
   summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -168,7 +168,7 @@ We perform a logrank and weighted logrank tests as suggested for more limited do
 
 ```{r}
 xx <- FHwn %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   tenFHcorr(rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
   mutate(p = pnorm(Z))
 xx
@@ -185,7 +185,7 @@ This requires generating weights and then computing the test.
 
 ```{r}
 ZMB <- FHwn %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   wMB(delay = 6, wmax = 2) %>%
   summarize(S = sum(o_minus_e * wMB), V = sum(var_o_minus_e * wMB^2), Z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -197,7 +197,7 @@ Results are quite similar to the results with greater down-weighting.
 
 ```{r}
 xx <- FHwn %>%
-  counting_process(txval = "Experimental") %>%
+  counting_process(arm = "Experimental") %>%
   tenFHcorr(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
   mutate(p = pnorm(Z))
 xx
