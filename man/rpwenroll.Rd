@@ -4,13 +4,13 @@
 \alias{rpwenroll}
 \title{Generate Piecewise Exponential Enrollment}
 \usage{
-rpwenroll(n = NULL, enrollRates = tibble(duration = c(1, 2), rate = c(2, 5)))
+rpwenroll(n = NULL, enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5)))
 }
 \arguments{
 \item{n}{Number of observations.
 Default of \code{NULL} yields random enrollment size.}
 
-\item{enrollRates}{A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
+\item{enroll_rate}{A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
 for specified enrollment periods.
 If necessary, last period will be extended to ensure enrollment of specified \code{n}.}
 }
@@ -30,7 +30,7 @@ library(tibble)
 # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
 x <- rpwenroll(n = 1e5,
-               enrollRates = tibble(rate = c(5, 15, 30),
+               enroll_rate = tibble(rate = c(5, 15, 30),
                                     duration = c(100, 200, 100)))
 plot(x, 1:1e5,
      main = "Piecewise uniform enrollment simulation",
@@ -40,7 +40,7 @@ plot(x, 1:1e5,
 # Example 2
 # exponential enrollment
 x <- rpwenroll(n = 1e5,
-               enrollRates = tibble(rate = .03, duration = 1))
+               enroll_rate = tibble(rate = .03, duration = 1))
 plot(x, 1:1e5,
      main = "Simulated exponential inter-arrival times",
      xlab = "Time",
