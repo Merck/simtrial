@@ -27,7 +27,7 @@ The routines are as follows:
 * `cutData` - cut data for analysis at a specified calendar time
 * `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
 * `getCutDateForCount` - find date at which an event count is reached
-* `tensurv` - pre-process survival data into a counting process format
+* `counting_process` - pre-process survival data into a counting process format
 
 Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
 
@@ -167,7 +167,7 @@ Once we have cut data for analysis, we can create a dataset that is very simple 
 The counting process format is further discussed in the next section where we compute a weighted logrank test.
 
 ```{r}
-ten150 <- tensurv(y150, txval = "Experimental")
+ten150 <- counting_process(y150, txval = "Experimental")
 head(ten150) %>% kable(digits = 2)
 ```
 
