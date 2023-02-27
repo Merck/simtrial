@@ -24,7 +24,7 @@
 #'
 #' # Set up time, event, number of event dataset for testing
 #' # with arbitrary weights
-#' ten <- MBdelayed %>% counting_process(txval = "Experimental")
+#' ten <- MBdelayed %>% counting_process(arm = "Experimental")
 #' head(ten)
 #'
 #' # MaxCombo with logrank, FH(0,1), FH(1,1)
