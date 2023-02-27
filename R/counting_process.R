@@ -32,10 +32,10 @@ NULL
 #'
 #' @param x a tibble with no missing values and contain variables
 #' - `Stratum`: Stratum
-#' - `Treatment`: Treatment group
+#' - `treatment`: treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
-#' @param txval value in the input `Treatment` column that indicates treatment group value.
+#' @param txval value in the input `treatment` column that indicates treatment group value.
 #'
 #' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
 #' Remain rows with at least one event in the population, at least one subject
@@ -60,7 +60,7 @@ NULL
 #'
 #' # example 1
 #' x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
-#'             Treatment = rep(c(1, 1, 0, 0), 4),
+#'             treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
 #' counting_process(x, txval = 1)
@@ -75,7 +75,7 @@ NULL
 #' @export
 counting_process <- function(x, txval){
 
-    unique_treatment <- unique(x$Treatment)
+    unique_treatment <- unique(x$treatment)
 
     if(length(unique_treatment) > 2){
       stop("counting_process: expected two groups!")
@@ -94,11 +94,11 @@ counting_process <- function(x, txval){
       arrange(desc(tte)) %>%
       mutate(one = 1,
              n_risk_tol = cumsum(one),
-             n_risk_trt = cumsum(Treatment == txval)) %>%
+             n_risk_trt = cumsum(treatment == txval)) %>%
       # Handling ties using Breslow's method
       group_by(Stratum, mtte = desc(tte)) %>%
       dplyr::summarise(events = sum(event),
-                       n_event_tol = sum((Treatment == txval) * event),
+                       n_event_tol = sum((treatment == txval) * event),
                        tte = first(tte),
                        n_risk_tol = max(n_risk_tol),
                        n_risk_trt = max(n_risk_trt)) %>%

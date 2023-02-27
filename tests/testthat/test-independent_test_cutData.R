@@ -3,7 +3,7 @@ x <- simPWSurv(n=200)
 test_that("x is a time-to-event data set", {
   testthat::expect_equal(1,max(names(x)=="Stratum"))
   testthat::expect_equal(1,max(names(x)=="enrollTime"))
-  testthat::expect_equal(1,max(names(x)=="Treatment"))
+  testthat::expect_equal(1,max(names(x)=="treatment"))
   testthat::expect_equal(1,max(names(x)=="failTime"))
   testthat::expect_equal(1,max(names(x)=="dropoutTime"))
   testthat::expect_equal(1,max(names(x)=="fail"))

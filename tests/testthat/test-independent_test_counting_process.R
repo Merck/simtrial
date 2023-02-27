@@ -12,7 +12,7 @@ surv_to_count <- function(time, status, trt, strats){
   }
   km <- db %>% group_by(strats) %>% do( tidy_survfit(Surv(time, status) ~ 1, data = .) )
 
-  # KM estimator by Stratum and Treatment Group Predicted at Specified Time
+  # KM estimator by Stratum and treatment Group Predicted at Specified Time
   pred_survfit <- function(pred_time, ...){
     .survfit <- survfit(...)
 
@@ -42,12 +42,12 @@ surv_to_count <- function(time, status, trt, strats){
 
 testthat::test_that("Counting Process Format without ties", {
   x=tibble(Stratum = c(rep(1,10),rep(2,6)),
-           Treatment = rep(c(1,1,0,0),4),
+           treatment = rep(c(1,1,0,0),4),
            tte = 1:16,
            event= rep(c(0,1),8))
   txval=1
   res_counting_process <- simtrial::counting_process(x, txval)
-  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$Stratum)
+  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)
@@ -60,12 +60,12 @@ testthat::test_that("Counting Process Format without ties", {
 
 testthat::test_that("Counting Process Format with ties", {
   x=tibble(Stratum = c(rep(1,10),rep(2,6)),
-           Treatment = rep(c(1,1,0,0),4),
+           treatment = rep(c(1,1,0,0),4),
            tte = c(rep(1:4, each = 4) ),
            event= rep(c(0,1),8))
   txval=1
   res_counting_process <- counting_process(x, txval)
-  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$Stratum)
+  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)

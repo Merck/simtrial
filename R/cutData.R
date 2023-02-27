@@ -40,7 +40,7 @@ cutData <- function(x, cutDate){
     filter(enrollTime <= cutDate) %>%
     mutate(tte = pmin(cte, cutDate) - enrollTime,
            event = fail * (cte <= cutDate)) %>%
-    select(tte, event, Stratum, Treatment)
+    select(tte, event, Stratum, treatment)
 
   return(ans)
 }
