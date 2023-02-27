@@ -10,12 +10,12 @@ counting_process(x, txval)
 \item{x}{a tibble with no missing values and contain variables
 \itemize{
 \item \code{Stratum}: Stratum
-\item \code{Treatment}: Treatment group
+\item \code{treatment}: treatment group
 \item \code{tte}: Observed time
 \item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
 }}
 
-\item{txval}{value in the input \code{Treatment} column that indicates treatment group value.}
+\item{txval}{value in the input \code{treatment} column that indicates treatment group value.}
 }
 \value{
 A \code{tibble} grouped by \code{Stratum} and sorted within strata by \code{tte}.
@@ -54,7 +54,7 @@ library(tibble)
 
 # example 1
 x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
-            Treatment = rep(c(1, 1, 0, 0), 4),
+            treatment = rep(c(1, 1, 0, 0), 4),
             tte = 1:16,
             event= rep(c(0, 1), 8))
 counting_process(x, txval = 1)

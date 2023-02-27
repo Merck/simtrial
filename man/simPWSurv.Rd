@@ -7,13 +7,13 @@
 simPWSurv(
   n = 100,
   strata = tibble(Stratum = "All", p = 1),
-  block = c(rep("Control", 2), rep("Experimental", 2)),
+  block = c(rep("control", 2), rep("Experimental", 2)),
   enrollRates = tibble(rate = 9, duration = 1),
-  failRates = tibble(Stratum = rep("All", 4), period = rep(1:2, 2), Treatment =
-    c(rep("Control", 2), rep("Experimental", 2)), duration = rep(c(3, 1), 2), rate =
+  failRates = tibble(Stratum = rep("All", 4), period = rep(1:2, 2), treatment =
+    c(rep("control", 2), rep("Experimental", 2)), duration = rep(c(3, 1), 2), rate =
     log(2)/c(9, 9, 9, 18)),
-  dropoutRates = tibble(Stratum = rep("All", 2), period = rep(1, 2), Treatment =
-    c("Control", "Experimental"), duration = rep(100, 2), rate = rep(0.001, 2))
+  dropoutRates = tibble(Stratum = rep("All", 2), period = rep(1, 2), treatment =
+    c("control", "Experimental"), duration = rep(100, 2), rate = rep(0.001, 2))
 )
 }
 \arguments{
@@ -67,7 +67,7 @@ simPWSurv(n = 20)
 # example 2
 # 3:1 randomization
 simPWSurv(n = 20,
-          block = c(rep("Experimental",3), "Control"))
+          block = c(rep("Experimental",3), "control"))
 
 # example 3
 # Simulate 2 strata; will use defaults for blocking and enrollRates
@@ -76,30 +76,30 @@ simPWSurv(n = 20,
           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
           failRates = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
                              period = rep(1:2, 4),
-                             Treatment = rep(c(rep("Control", 2),
+                             treatment= rep(c(rep("control", 2),
                                          rep("Experimental", 2)), 2),
                              duration = rep(c(3,1), 4),
                              rate = c(.03, .05, .03, .03, .05, .08, .07, .04)),
           dropoutRates = tibble(Stratum = c(rep("Low", 2), rep("High", 2)),
                                 period = rep(1, 4),
-                                Treatment = rep(c("Control", "Experimental"), 2),
+                                treatment = rep(c("control", "Experimental"), 2),
                                 duration = rep(1, 4),
                                 rate = rep(.001, 4)))
 # example 4
 # If you want a more rectangular entry for a tibble
 failRates <- bind_rows(
-  tibble(Stratum = "Low" , period = 1, Treatment = "Control"     , duration = 3, rate = .03),
-  tibble(Stratum = "Low" , period = 1, Treatment = "Experimental", duration = 3, rate = .03),
-  tibble(Stratum = "Low" , period = 2, Treatment = "Experimental", duration = 3, rate = .02),
-  tibble(Stratum = "High", period = 1, Treatment = "Control"     , duration = 3, rate = .05),
-  tibble(Stratum = "High", period = 1, Treatment = "Experimental", duration = 3, rate = .06),
-  tibble(Stratum = "High", period = 2, Treatment = "Experimental", duration = 3, rate = .03))
+  tibble(Stratum = "Low" , period = 1, treatment = "control"     , duration = 3, rate = .03),
+  tibble(Stratum = "Low" , period = 1, treatment = "Experimental", duration = 3, rate = .03),
+  tibble(Stratum = "Low" , period = 2, treatment = "Experimental", duration = 3, rate = .02),
+  tibble(Stratum = "High", period = 1, treatment = "control"     , duration = 3, rate = .05),
+  tibble(Stratum = "High", period = 1, treatment = "Experimental", duration = 3, rate = .06),
+  tibble(Stratum = "High", period = 2, treatment = "Experimental", duration = 3, rate = .03))
 
 dropoutRates <- bind_rows(
-  tibble(Stratum = "Low" , period=1, Treatment = "Control"     , duration = 3, rate = .001),
-  tibble(Stratum = "Low" , period=1, Treatment = "Experimental", duration = 3, rate = .001),
-  tibble(Stratum = "High", period=1, Treatment = "Control"     , duration = 3, rate = .001),
-  tibble(Stratum = "High", period=1, Treatment = "Experimental", duration = 3, rate = .001))
+  tibble(Stratum = "Low" , period=1, treatment = "control"     , duration = 3, rate = .001),
+  tibble(Stratum = "Low" , period=1, treatment = "Experimental", duration = 3, rate = .001),
+  tibble(Stratum = "High", period=1, treatment = "control"     , duration = 3, rate = .001),
+  tibble(Stratum = "High", period=1, treatment = "Experimental", duration = 3, rate = .001))
 
 simPWSurv(n = 12,
          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),

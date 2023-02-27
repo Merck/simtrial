@@ -8,8 +8,8 @@ testthat::test_that("the Z values match with the correspondings in tenFH",{
   HT.est      = FALSE
   max         = TRUE
   alpha       = 0.025
-  data.anal <- data.frame(cbind(y$tte,y$event,y$Treatment))
-  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  data.anal <- data.frame(cbind(y$tte,y$event,y$treatment))
+  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing
   survMisc::comp(fit, p= sapply(wt, function(x){x[1]}), q= sapply(wt, function(x){x[2]}))
