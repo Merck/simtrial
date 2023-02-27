@@ -36,7 +36,7 @@
 
 cutDataAtCount <- function(x, count){
   cut_date <- getCutDateForCount(x, count)
-  ans <- x %>% cutData(cutDate = cut_date)
+  ans <- x %>% cutData(cut_date = cut_date)
 
   return(ans)
 }

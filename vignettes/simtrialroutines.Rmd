@@ -22,7 +22,7 @@ This vignette demonstrates the lower-level routines in the simtrial package spec
 The routines are as follows:
 
 * `randomize_by_fixed_block` - fixed block randomization
-* `rpwenroll` - random inter-arrival times with piecewise constant enrollment rates
+* `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
 * `cutData` - cut data for analysis at a specified calendar time
 * `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
@@ -67,7 +67,7 @@ randomize_by_fixed_block(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpwenroll(n = 20, enrollRates = tibble(
+rpw_enroll(n = 20, enrollRates = tibble(
   duration = c(1, 2),
   rate = c(2, 5)
 ))
@@ -139,10 +139,10 @@ head(x) %>% kable(digits = 2)
 
 There two ways to cut off data in the generated dataset `x` from above. 
 The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`Stratum`) and the treatment group assigned (`Treatment`).
-Observations enrolled after the input `cutDate` are deleted and events and censoring from `x` that are after the `cutDate` are censored at the specified `cutDate`. 
+Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
-y <- cutData(x, cutDate = 5)
+y <- cutData(x, cut_date = 5)
 head(y) %>% kable(digits = 2)
 ```
 
@@ -247,7 +247,7 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 simfix(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
-  targetEvents = 350, # Targeted events at analysis
+  target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
   enrollRates = enrollRates, # Enrollment rates
   failRates = failRates, # Failure rates

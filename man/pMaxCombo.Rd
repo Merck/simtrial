@@ -4,12 +4,12 @@
 \alias{pMaxCombo}
 \title{MaxCombo p-value}
 \usage{
-pMaxCombo(Z, dummyvar, algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05))
+pMaxCombo(Z, dummy_var, algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05))
 }
 \arguments{
 \item{Z}{a dataset output from \code{tenFHcorr()}; see examples.}
 
-\item{dummyvar}{a dummy input that allows \code{group_map()} to be used to
+\item{dummy_var}{a dummy input that allows \code{group_map()} to be used to
 compute p-values for multiple simulations.}
 
 \item{algorithm}{This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}}
