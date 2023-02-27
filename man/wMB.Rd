@@ -53,7 +53,7 @@ library(dplyr)
 # For transparency, may be good to set either `delay` or `wmax` to Inf`
 x <- simPWSurv(n = 200) \%>\%
   cutDataAtCount(125) \%>\%
-  tensurv(txval = "Experimental")
+  tensurv(arm = "Experimental")
 
 # example 1
 # compute Magirr-Burman weights with `delay = 6`
