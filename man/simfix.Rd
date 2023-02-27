@@ -13,7 +13,7 @@ simfix(
   failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
     hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
   totalDuration = 30,
-  block = rep(c("Experimental", "Control"), 2),
+  block = rep(c("Experimental", "control"), 2),
   timingType = 1:5,
   rg = tibble(rho = 0, gamma = 0),
   seed = NULL

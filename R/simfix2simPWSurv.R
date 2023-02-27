@@ -81,29 +81,29 @@ simfix2simPWSurv <- function(
   # put failure rates into simPWSurv format
   fr <- rbind(failRates %>%
                 group_by(Stratum) %>%
-                mutate(Treatment = "Control",
+                mutate(treatment = "control",
                        rate = failRate, period = 1:n()) %>%
                 ungroup(),
               failRates %>%
                 group_by(Stratum) %>%
-                mutate(Treatment = "Experimental",
+                mutate(treatment = "Experimental",
                        rate = failRate * hr,
                        period = 1:n()) %>%
                 ungroup()
               ) %>%
-    select("Stratum", "period", "Treatment", "duration", "rate")
+    select("Stratum", "period", "treatment", "duration", "rate")
 
   # put dropout rates into simPWSurv format
   dr <- failRates %>%
     group_by(Stratum) %>%
-    mutate(Treatment = "Control",
+    mutate(treatment = "control",
            rate = dropoutRate,
            period = 1:n()) %>%
-    select("Stratum", "period", "Treatment", "duration", "rate") %>%
+    select("Stratum", "period", "treatment", "duration", "rate") %>%
     ungroup()
 
   dr <- rbind(dr,
-              dr %>% mutate(Treatment = "Experimental"))
+              dr %>% mutate(treatment = "Experimental"))
 
   return(list(failRates = fr, dropoutRates = dr))
 }

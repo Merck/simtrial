@@ -19,21 +19,21 @@ testthat::test_that("Stratum values must be the same and stratum length must be 
   strata4 <- names(table(dropoutRatesPWSurv$Stratum))
   testthat::expect_equal(strata3,strata4)
   testthat::expect_equal(length(failRates$Stratum)*2,length(dropoutRatesPWSurv$Stratum))
-}) 
+})
 
-testthat::test_that("Treatment after converting contains only Control and Experimental with the right length",{
-  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(failRatesPWSurv$Treatment, "Control")))
-  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(failRatesPWSurv$Treatment, "Experimental")))
-  testthat::expect_equal(length(failRatesPWSurv$Treatment),length(failRates$Stratum)*2)
-  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(dropoutRatesPWSurv$Treatment, "Control")))
-  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(dropoutRatesPWSurv$Treatment, "Experimental")))
-  testthat::expect_equal(length(dropoutRatesPWSurv$Treatment),length(failRates$Stratum)*2)
+testthat::test_that("treatment after converting contains only Control and Experimental with the right length",{
+  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(failRatesPWSurv$treatment, "control")))
+  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(failRatesPWSurv$treatment, "Experimental")))
+  testthat::expect_equal(length(failRatesPWSurv$treatment),length(failRates$Stratum)*2)
+  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(dropoutRatesPWSurv$treatment, "control")))
+  testthat::expect_equal(length(failRates$Stratum),sum(stringr::str_detect(dropoutRatesPWSurv$treatment, "Experimental")))
+  testthat::expect_equal(length(dropoutRatesPWSurv$treatment),length(failRates$Stratum)*2)
 })
 
 testthat::test_that("Duration values match before and after converting and in right length ",{
   testthat::expect_equal(rep(c(failRates$duration),2),failRatesPWSurv$duration)
   testthat::expect_equal(rep(c(failRates$duration),2),dropoutRatesPWSurv$duration)
-}) 
+})
 
 testthat::test_that("failRates match before and after converting and are in right length ",{
   testthat::expect_equal(failRates$failRate,failRatesPWSurv$rate[1:length(failRates$failRate)])

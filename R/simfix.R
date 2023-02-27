@@ -124,7 +124,7 @@ simfix <- function(nsim = 1000,
                    # total planned trial duration; single value
                    totalDuration = 30,
                    # Fixed block randomization specification
-                   block = rep(c("Experimental", "Control"), 2),
+                   block = rep(c("Experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
                    timingType = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
@@ -243,8 +243,8 @@ simfix <- function(nsim = 1000,
     ans <- tibble(
       Events = sum(d$event),
       lnhr = ifelse(n_stratum > 1,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(Stratum), data = d)$coefficients,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental"), data = d)$coefficients
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "Experimental") + survival::strata(Stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "Experimental"), data = d)$coefficients
                     ) %>% as.numeric()
       )
 

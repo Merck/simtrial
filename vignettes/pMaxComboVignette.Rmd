@@ -114,7 +114,7 @@ head(aml) %>% kable()
 We rename variables and create a stratum variable as follows:
 
 ```{r,warning=FALSE,message=FALSE}
-x <- aml %>% transmute(tte = time, event = status, Stratum = "All", Treatment = as.character(x))
+x <- aml %>% transmute(tte = time, event = status, Stratum = "All", treatment = as.character(x))
 head(x) %>% kable()
 ```
 

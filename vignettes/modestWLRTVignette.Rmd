@@ -63,13 +63,13 @@ xpar <- simfix2simPWSurv(failRates)
 MBdelay <- simPWSurv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
-  block = c(rep("Control", 2), rep("Experimental", 2)),
+  block = c(rep("control", 2), rep("Experimental", 2)),
   enrollRates = enrollRates,
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
   cutData(studyDuration)
-fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelay)
+fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelay)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
@@ -153,13 +153,13 @@ xpar <- simfix2simPWSurv(failRates)
 FHwn <- simPWSurv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
-  block = c(rep("Control", 2), rep("Experimental", 2)),
+  block = c(rep("control", 2), rep("Experimental", 2)),
   enrollRates = enrollRates,
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
   cutData(studyDuration)
-fit <- survfit(Surv(tte, event) ~ Treatment, data = FHwn)
+fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
