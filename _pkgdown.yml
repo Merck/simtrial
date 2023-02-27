@@ -38,7 +38,7 @@ reference:
     - rpwexpRcpp
     - rpwexpinvRcpp
     - rpwenroll
-    - pwexpfit
+    - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
@@ -53,7 +53,7 @@ reference:
   contents:
     - tenFH
     - tenFHcorr
-    - tensurv
+    - counting_process
     - wMB
     - pMaxCombo
 - title: "Randomization algorithms"

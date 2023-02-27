@@ -9,15 +9,15 @@ test_wMB <- function(x, delay = 4){
     outi$wMB[(locmaxt+1):nrow(outi)] <- outi$wMB[locmaxt]
     out <- rbind(out,outi)
   }
-  
+
   return(out)
 }
 
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum",{
-  x <- simPWSurv(n=200) %>% cutDataAtCount(125) %>% tensurv(txval="Experimental")
-  
+  x <- simPWSurv(n=200) %>% cutDataAtCount(125) %>% counting_process(txval="Experimental")
+
   out1 <- test_wMB(x, delay=3)
   out1 <- data.frame(out1[order(out1$Stratum,out1$tte),])
   out2 <- wMB(x, delay=3)
@@ -40,10 +40,10 @@ test_that("Validation passed for the situation of multiple strata",{
                                              period=rep(1,4),
                                              Treatment=rep(c("Control","Experimental"),2),
                                              duration=rep(1,4),
-                                             rate=rep(.001,4))) %>% 
-    cutDataAtCount(125) %>% 
-    tensurv(txval="Experimental")
-  
+                                             rate=rep(.001,4))) %>%
+    cutDataAtCount(125) %>%
+    counting_process(txval="Experimental")
+
   out1 <- test_wMB(x, delay=3)
   out1 <- data.frame(out1[order(out1$Stratum,out1$tte),])
   out2 <- wMB(x, delay=3)

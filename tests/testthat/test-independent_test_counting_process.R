@@ -46,14 +46,14 @@ testthat::test_that("Counting Process Format without ties", {
            tte = 1:16,
            event= rep(c(0,1),8))
   txval=1
-  res_tensurv <- simtrial::tensurv(x, txval)
+  res_counting_process <- simtrial::counting_process(x, txval)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$Stratum)
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)
 
-  testthat::expect_equal(res_tensurv$o_minus_e, res_test$OminusE)
-  testthat::expect_equal(res_tensurv$var_o_minus_e, res_test$Var)
+  testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE)
+  testthat::expect_equal(res_counting_process$var_o_minus_e, res_test$Var)
 
 })
 
@@ -64,13 +64,13 @@ testthat::test_that("Counting Process Format with ties", {
            tte = c(rep(1:4, each = 4) ),
            event= rep(c(0,1),8))
   txval=1
-  res_tensurv <- tensurv(x, txval)
+  res_counting_process <- counting_process(x, txval)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$Stratum)
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)
 
-  testthat::expect_equal(res_tensurv$o_minus_e, res_test$OminusE )
-  testthat::expect_equal(res_tensurv$var_o_minus_e, res_test$Var)
+  testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE )
+  testthat::expect_equal(res_counting_process$var_o_minus_e, res_test$Var)
 
 })
