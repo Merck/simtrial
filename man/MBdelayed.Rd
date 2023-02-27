@@ -34,7 +34,7 @@ legend("topright", legend = c("Control", "Experimental"), lty = 1:2)
 
 # Set up time, event, number of event dataset for testing
 # with arbitrary weights
-ten <- MBdelayed \%>\% tensurv(txval = "Experimental")
+ten <- MBdelayed \%>\% tensurv(arm = "Experimental")
 head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
