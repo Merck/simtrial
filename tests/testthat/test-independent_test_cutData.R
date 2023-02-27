@@ -2,7 +2,7 @@ x <- simPWSurv(n=200)
 
 test_that("x is a time-to-event data set", {
   testthat::expect_equal(1,max(names(x)=="Stratum"))
-  testthat::expect_equal(1,max(names(x)=="enrollTime"))
+  testthat::expect_equal(1,max(names(x)=="enroll_time"))
   testthat::expect_equal(1,max(names(x)=="Treatment"))
   testthat::expect_equal(1,max(names(x)=="failTime"))
   testthat::expect_equal(1,max(names(x)=="dropoutTime"))
@@ -13,7 +13,7 @@ test_that("x is a time-to-event data set", {
 cutDate=10
 xcut<-cutData(x,cutDate)
 test_that("only paitients recorded by cutData are included", {
-  Npts=dim(filter(x,enrollTime <= cutDate))[1]
+  Npts=dim(filter(x,enroll_time <= cutDate))[1]
   Nptscut=length(xcut$tte)
   testthat::expect_equal(Npts,Nptscut)
 })
