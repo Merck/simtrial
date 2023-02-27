@@ -139,10 +139,10 @@ head(x) %>% kable(digits = 2)
 
 There two ways to cut off data in the generated dataset `x` from above. 
 The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`Stratum`) and the treatment group assigned (`Treatment`).
-Observations enrolled after the input `cutDate` are deleted and events and censoring from `x` that are after the `cutDate` are censored at the specified `cutDate`. 
+Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
-y <- cutData(x, cutDate = 5)
+y <- cutData(x, cut_date = 5)
 head(y) %>% kable(digits = 2)
 ```
 

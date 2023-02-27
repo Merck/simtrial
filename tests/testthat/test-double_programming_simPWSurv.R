@@ -46,7 +46,7 @@ for (i in seq(1,floor(nrow(block2)/4))){
 }
 
 #prepare to test failRates
-y <- cutData(x,cutDate=300)
+y <- cutData(x,cut_date=300)
 intervals<-c(3)
 rate00 <- with(subset(y,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
 rate01 <- with(subset(y,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
@@ -102,7 +102,7 @@ z <- simPWSurv(n=300000,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
-y1 <- cutData(z,cutDate=300)
+y1 <- cutData(z,cut_date=300)
 intervals<-c(3)
 rate00 <- with(subset(y1,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
 rate01 <- with(subset(y1,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
