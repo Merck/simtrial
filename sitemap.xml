@@ -16,7 +16,7 @@
     <loc>https://merck.github.io/simtrial/articles/modestWLRTVignette.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/simtrial/articles/pMaxComboVignette.html</loc>
+    <loc>https://merck.github.io/simtrial/articles/pvalue_maxcomboVignette.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/articles/simtrialroutines.html</loc>
@@ -70,7 +70,7 @@
     <loc>https://merck.github.io/simtrial/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/simtrial/reference/pMaxCombo.html</loc>
+    <loc>https://merck.github.io/simtrial/reference/pvalue_maxcombo.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc>

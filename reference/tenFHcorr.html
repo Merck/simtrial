@@ -113,7 +113,7 @@ with <code>V</code></p>
 <span class="r-in"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">Z</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            corr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.matrix.html" class="external-link">data.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rho</span>, <span class="va">gamma</span>, <span class="va">Z</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">GenzBretz</a></span><span class="op">(</span>maxpts <span class="op">=</span> <span class="fl">50000</span>, abseps <span class="op">=</span> <span class="fl">0.00001</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.002886695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1040772</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># check that covariance is as expected</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="simPWSurv.html">simPWSurv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -124,22 +124,22 @@ with <code>V</code></p>
 <span class="r-in"><span>                            gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                corr <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         Z        V1       V2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -2.160909 24.507920 6.901327</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -1.496265  6.901327 2.841510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -4.837504 23.263135 5.813034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -4.194377  5.813034 2.053076</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Off-diagonal element should be variance in following</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tenFHcorr</span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>                            gamma <span class="op">=</span><span class="fl">.5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                corr <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         Z       V1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0   0.5 -1.794247 6.901327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0   0.5 -4.593488 5.813034</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compare off diagonal result with tenFH()</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="tenFH.html">tenFH</a></span><span class="op">(</span>rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span><span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma     Z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0   0.5 -<span style="color: #BB0000;">1.79</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0   0.5 -<span style="color: #BB0000;">4.59</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
