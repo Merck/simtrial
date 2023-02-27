@@ -61,14 +61,14 @@ Initial version assumes observations are right censored or events only.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_pwexp</span><span class="op">(</span></span>
-<span>  Srv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">Ex1delayedEffect</span><span class="op">$</span><span class="va">month</span>, event <span class="op">=</span> <span class="va">Ex1delayedEffect</span><span class="op">$</span><span class="va">evntd</span><span class="op">)</span>,</span>
+<span>  srv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">Ex1delayedEffect</span><span class="op">$</span><span class="va">month</span>, event <span class="op">=</span> <span class="va">Ex1delayedEffect</span><span class="op">$</span><span class="va">evntd</span><span class="op">)</span>,</span>
 <span>  intervals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>Srv</dt>
+    <dl><dt>srv</dt>
 <dd><p>input survival object (see <code>Surv</code>);
 note that only 0 = censored, 1 = event for <code>Surv</code></p></dd>
 
