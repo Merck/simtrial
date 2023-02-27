@@ -5,12 +5,8 @@ export(cutData)
 export(cutDataAtCount)
 export(fit_pwexp)
 export(getCutDateForCount)
-<<<<<<< HEAD
 export(pvalue_maxcombo)
-=======
-export(pMaxCombo)
 export(rpw_enroll)
->>>>>>> main
 export(randomize_by_fixed_block)
 export(rpwexp)
 export(rpwexpRcpp)
