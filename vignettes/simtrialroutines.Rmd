@@ -24,7 +24,7 @@ The routines are as follows:
 * `fixedBlockRand` - fixed block randomization
 * `rpwenroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
-* `cutData` - cut data for analysis at a specified calendar time
+* `cut_data_by_date` - cut data for analysis at a specified calendar time
 * `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
 * `getCutDateForCount` - find date at which an event count is reached
 * `tensurv` - pre-process survival data into a counting process format
@@ -142,7 +142,7 @@ The first uses a calendar cutoff date. The output only includes the time from ra
 Observations enrolled after the input `cutDate` are deleted and events and censoring from `x` that are after the `cutDate` are censored at the specified `cutDate`. 
 
 ```{r}
-y <- cutData(x, cutDate = 5)
+y <- cut_data_by_date(x, cutDate = 5)
 head(y) %>% kable(digits = 2)
 ```
 
@@ -150,7 +150,7 @@ For instance, if we wish to cut the entire dataset when 50 events are observed i
 
 ```{r}
 cut50Positive <- getCutDateForCount(filter(x, Stratum == "Positive"), 50)
-y50Positive <- cutData(x, cut50Positive)
+y50Positive <- cut_data_by_date(x, cut50Positive)
 with(y50Positive, table(Stratum, event))
 ```
 
