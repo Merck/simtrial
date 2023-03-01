@@ -35,7 +35,7 @@
 #' @export
 
 cutDataAtCount <- function(x, count){
-  cut_date <- getCutDateForCount(x, count)
+  cut_date <- get_cut_date_by_event(x, count)
   ans <- x %>% cutData(cut_date = cut_date)
 
   return(ans)

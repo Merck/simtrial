@@ -42,7 +42,7 @@ NULL
 #'                         duration = rep(1, 4),
 #'                         rate = rep(.001, 4)))
 #'
-#' d <- getCutDateForCount(x %>% filter(Stratum == "Positive"), count = 50)
+#' d <- get_cut_date_by_event(x %>% filter(Stratum == "Positive"), count = 50)
 #'
 #' y <- cutData(x, cut_date = d)
 #' table(y$Stratum, y$event)
@@ -52,7 +52,7 @@ NULL
 #'
 #' @export
 
-getCutDateForCount <- function(x, count){
+get_cut_date_by_event <- function(x, count){
   y <- x %>%
     ungroup() %>%
     select(cte, fail) %>%
