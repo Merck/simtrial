@@ -61,7 +61,7 @@ counting_process(x, arm = 1)
 
 # example 2
 x <- simPWSurv(n = 400)
-y <- cutDataAtCount(x, 150) \%>\% counting_process(arm = "Experimental")
+y <- cut_data_by_event(x, 150) \%>\% counting_process(arm = "Experimental")
 # weighted logrank test (Z-value and 1-sided p-value)
 z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 c(z, pnorm(z))

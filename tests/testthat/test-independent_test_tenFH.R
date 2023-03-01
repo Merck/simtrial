@@ -1,6 +1,6 @@
 testthat::test_that("the Z values match with the correspondings in tenFH",{
   set.seed(1234)
-  y=simPWSurv(n=300) %>% cutDataAtCount(30)
+  y=simPWSurv(n=300) %>% cut_data_by_event(30)
   adjust.methods="asymp"
   wt=list(a1=c(0,0),a2=c(0,1),a3=c(1,0),a4=c(1,1))
   ties.method = "efron"
