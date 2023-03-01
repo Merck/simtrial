@@ -25,7 +25,7 @@ The routines are as follows:
 * `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
 * `cutData` - cut data for analysis at a specified calendar time
-* `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
+* `cut_data_by_event` - cut data for analysis at a specified event count, including ties on the cutoff date
 * `getCutDateForCount` - find date at which an event count is reached
 * `counting_process` - pre-process survival data into a counting process format
 
@@ -154,10 +154,10 @@ y50Positive <- cutData(x, cut50Positive)
 with(y50Positive, table(Stratum, event))
 ```
 
-Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cutDataAtCount` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
+Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cut_data_by_event` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
 
 ```{r}
-y150 <- cutDataAtCount(x, 150)
+y150 <- cut_data_by_event(x, 150)
 table(y150$event, y150$Treatment)
 ```
 

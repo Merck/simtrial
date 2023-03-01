@@ -41,7 +41,7 @@ NULL
 #'
 #' # Use default enrollment and event rates at cut of 100 events
 #' x <- simPWSurv(n = 200) %>%
-#'   cutDataAtCount(100) %>%
+#'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "Experimental")
 #'
 #' # compute logrank (FH(0,0)) and FH(0,1)
@@ -56,7 +56,7 @@ NULL
 #'
 #' # check that covariance is as expected
 #' x <- simPWSurv(n = 200) %>%
-#'   cutDataAtCount(100) %>%
+#'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "Experimental")
 #'
 #' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
@@ -74,7 +74,7 @@ NULL
 #' @export
 #' @rdname tenFHcorr
 tenFHcorr <- function(x = simPWSurv(n = 200) %>%
-                            cutDataAtCount(100) %>%
+                            cut_data_by_event(100) %>%
                             counting_process(arm = "Experimental"),
                       rg = tibble(rho = c(0, 0, 1, 1),
                                   gamma = c(0, 1, 0, 1)),

@@ -2,7 +2,7 @@
 
 export(counting_process)
 export(cutData)
-export(cutDataAtCount)
+export(cut_data_by_event)
 export(fit_pwexp)
 export(getCutDateForCount)
 export(pvalue_maxcombo)

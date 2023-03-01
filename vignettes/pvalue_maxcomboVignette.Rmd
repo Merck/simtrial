@@ -72,7 +72,7 @@ head(s) %>% kable(digits = 2)
 Once generated, we need to cut the data for analysis. Here we cut after 75 events.
 
 ```{r,warning=FALSE,message=FALSE}
-x <- s %>% cutDataAtCount(75)
+x <- s %>% cut_data_by_event(75)
 head(x) %>% kable(digits = 2)
 ```
 
@@ -81,7 +81,7 @@ In this case, we use the 4 test combination suggested in @NPHWGSimulation, @NPHW
 
 ```{r,warning=FALSE,message=FALSE}
 Z <- s %>%
-  cutDataAtCount(75) %>%
+  cut_data_by_event(75) %>%
   counting_process(arm = "Experimental") %>%
   tenFHcorr(rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
 Z %>% kable(digits = 2)

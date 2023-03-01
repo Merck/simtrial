@@ -47,7 +47,7 @@ reference:
 - title: "Cut data"
   contents:
     - cutData
-    - cutDataAtCount
+    - cut_data_by_event
     - getCutDateForCount
 - title: "Compute p-values/test statistics"
   contents:
