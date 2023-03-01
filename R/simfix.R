@@ -283,7 +283,7 @@ simfix <- function(nsim = 1000,
                      block = block)
 
     # study date that targeted event rate achieved
-    tedate <- sim %>% getCutDateForCount(target_event)
+    tedate <- sim %>% get_cut_date_by_event(target_event)
 
     # study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enrollTime) + minFollow
