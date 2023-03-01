@@ -1,7 +1,7 @@
 testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   set.seed(2022)
   # this part is a double programming
-  y=simPWSurv(n=300) %>% cutDataAtCount(30)
+  y=simPWSurv(n=300) %>% cut_data_by_event(30)
   adjust.methods="asymp"
   wt=list(a1=c(0,0),a2=c(0,1),a3=c(1,0),a4=c(1,1))
   ties.method = "efron"
