@@ -46,12 +46,14 @@ for (i in seq(1,floor(nrow(block2)/4))){
 }
 
 #prepare to test failRates
-y <- cut_data_by_date(x,cutDate=300)
+
+y <- cut_data_by_date(x,cut_date=300)
+
 intervals<-c(3)
-rate00 <- with(subset(y,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate01 <- with(subset(y,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
-rate10 <- with(subset(y,Treatment=='Experimental'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate11 <- with(subset(y,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
+rate00 <- with(subset(y,Treatment=='Control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y,Treatment=='Control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y,Treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y,Treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 ratetest<- c(rate00$rate,rate10$rate,rate01$rate, rate11$rate)
 xevent<-bind_rows(rate00, rate01,rate10,rate11)
 
@@ -102,12 +104,14 @@ z <- simPWSurv(n=300000,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
-y1 <- cut_data_by_date(z,cutDate=300)
+
+y1 <- cut_data_by_date(z,cut_date=300)
+
 intervals<-c(3)
-rate00 <- with(subset(y1,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate01 <- with(subset(y1,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
-rate10 <- with(subset(y1,Treatment=='Experimental'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate11 <- with(subset(y1,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
+rate00 <- with(subset(y1,Treatment=='Control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y1,Treatment=='Control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y1,Treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y1,Treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 zevent<-bind_rows(rate00, rate01,rate10,rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size",{

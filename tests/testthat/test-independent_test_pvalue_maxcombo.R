@@ -1,7 +1,7 @@
-testthat::test_that("the p-values correspond to pMaxCombo",{
+testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   set.seed(2022)
   # this part is a double programming
-  y=simPWSurv(n=300) %>% cutDataAtCount(30)
+  y=simPWSurv(n=300) %>% cut_data_by_event(30)
   adjust.methods="asymp"
   wt=list(a1=c(0,0),a2=c(0,1),a3=c(1,0),a4=c(1,1))
   ties.method = "efron"
@@ -55,9 +55,9 @@ testthat::test_that("the p-values correspond to pMaxCombo",{
   if(Z.tst.rslt1[max.tst] >= 0){pval <- 1 - pval2/2}
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   p1=pval
-  a2 <- y %>% tensurv(txval="Experimental")
+  a2 <- y %>% counting_process(arm="Experimental")
   aa=tenFHcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-  p2= simtrial::pMaxCombo(Z = aa)
+  p2= simtrial::pvalue_maxcombo(Z = aa)
 
   expect_equal(p1, p2, tolerance = 0.005)
 })

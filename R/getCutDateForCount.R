@@ -42,9 +42,9 @@ NULL
 #'                         duration = rep(1, 4),
 #'                         rate = rep(.001, 4)))
 #'
-#' d <- getCutDateForCount(x %>% filter(Stratum == "Positive"), count = 50)
+#' d <- get_cut_date_by_event(x %>% filter(Stratum == "Positive"), count = 50)
 #'
-#' y <- cut_data_by_date(x, cutDate = d)
+#' y <- cut_data_by_date(x, cut_date = d)
 #' table(y$Stratum, y$event)
 #'
 #' @return The a numeric value with the \code{cte} from the input dataset at which the targeted event count
@@ -52,7 +52,7 @@ NULL
 #'
 #' @export
 
-getCutDateForCount <- function(x, count){
+get_cut_date_by_event <- function(x, count){
   y <- x %>%
     ungroup() %>%
     select(cte, fail) %>%
