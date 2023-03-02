@@ -54,7 +54,7 @@ reference:
     - tenFH
     - tenFHcorr
     - counting_process
-    - wMB
+    - mb_weight
     - pvalue_maxcombo
 - title: "Randomization algorithms"
   contents:
