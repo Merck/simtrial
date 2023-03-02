@@ -63,7 +63,7 @@
 #'                    "All",        1,   "Experimental", 42,        0)
 #'        )
 #' # Cut data at 24 months after final enrollment
-#' MBdelayed2 <- ds %>% cutData(max(ds$enrollTime) + 24)
+#' MBdelayed2 <- ds %>% cutData(max(ds$enroll_time) + 24)
 #'
 #' @references
 #' Magirr, Dominic, and Carl‐Fredrik Burman.
