@@ -71,8 +71,8 @@ NULL
 #' # Use default enrollment and event rates at cut at 100 events
 #' # For transparency, may be good to set either `delay` or `wmax` to Inf`
 #' x <- simPWSurv(n = 200) %>%
-#'   cutDataAtCount(125) %>%
-#'   counting_process(txval = "Experimental")
+#'   cut_data_by_event(125) %>%
+#'   counting_process(arm = "Experimental")
 #'
 #' # example 1
 #' # compute Magirr-Burman weights with `delay = 6`

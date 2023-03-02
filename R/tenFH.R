@@ -74,9 +74,8 @@ NULL
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
 #' x <- simPWSurv(n = 200) %>%
-#'   cutDataAtCount(100) %>%
-#'   counting_process(txval ="Experimental")
-#'
+#'   cut_data_by_event(100) %>%
+#'   counting_process(arm ="Experimental")
 #' # compute logrank (FH(0,0)) and FH(0,1)
 #' tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
 #'
@@ -84,8 +83,8 @@ NULL
 #' @rdname tenFH
 #'
 tenFH <- function(x = simPWSurv(n = 200) %>%
-                        cutDataAtCount(150) %>%
-                        counting_process(txval = "Experimental"),
+                        cut_data_by_event(150) %>%
+                        counting_process(arm = "Experimental"),
                   rg = tibble(rho = c(0, 0, 1, 1),
                               gamma = c(0, 1, 0, 1)),
                   returnVariance = FALSE){

@@ -45,6 +45,7 @@ testthat::test_that("Counting Process Format without ties", {
            treatment = rep(c(1,1,0,0),4),
            tte = 1:16,
            event= rep(c(0,1),8))
+
   txval=1
   res_counting_process <- simtrial::counting_process(x, txval)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
@@ -63,8 +64,8 @@ testthat::test_that("Counting Process Format with ties", {
            treatment = rep(c(1,1,0,0),4),
            tte = c(rep(1:4, each = 4) ),
            event= rep(c(0,1),8))
-  txval=1
-  res_counting_process <- counting_process(x, txval)
+  arm=1
+  res_counting_process <- counting_process(x, arm)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%

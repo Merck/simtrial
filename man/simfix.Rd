@@ -7,7 +7,7 @@
 simfix(
   nsim = 1000,
   sampleSize = 500,
-  targetEvents = 350,
+  target_event = 350,
   strata = tibble(Stratum = "All", p = 1),
   enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
   failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
@@ -24,7 +24,7 @@ simfix(
 
 \item{sampleSize}{Total sample size per simulation.}
 
-\item{targetEvents}{Targeted event count for analysis.}
+\item{target_event}{Targeted event count for analysis.}
 
 \item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
 
@@ -96,7 +96,7 @@ xx \%>\%
 p <- xx \%>\%
   filter(cut != "Targeted events") \%>\%
   group_by(Sim) \%>\%
-  group_map(pMaxCombo) \%>\%
+  group_map(pvalue_maxcombo) \%>\%
   unlist()
 
 mean(p < .025)
@@ -105,7 +105,7 @@ mean(p < .025)
 p <- xx \%>\%
   filter(cut == "Targeted events") \%>\%
   group_by(Sim) \%>\%
-  group_map(pMaxCombo) \%>\%
+  group_map(pvalue_maxcombo) \%>\%
   unlist()
 
 mean(p < .025)

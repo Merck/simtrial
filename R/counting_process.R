@@ -35,7 +35,7 @@ NULL
 #' - `treatment`: treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
-#' @param txval value in the input `treatment` column that indicates treatment group value.
+#' @param arm value in the input `Treatment` column that indicates treatment group value.
 #'
 #' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
 #' Remain rows with at least one event in the population, at least one subject
@@ -63,17 +63,17 @@ NULL
 #'             treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
-#' counting_process(x, txval = 1)
+#' counting_process(x, arm = 1)
 #'
 #' # example 2
 #' x <- simPWSurv(n = 400)
-#' y <- cutDataAtCount(x, 150) %>% counting_process(txval = "Experimental")
+#' y <- cut_data_by_event(x, 150) %>% counting_process(arm = "Experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
 #' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 #' c(z, pnorm(z))
 #'
 #' @export
-counting_process <- function(x, txval){
+counting_process <- function(x, arm){
 
     unique_treatment <- unique(x$treatment)
 
@@ -81,8 +81,8 @@ counting_process <- function(x, txval){
       stop("counting_process: expected two groups!")
     }
 
-    if(! txval %in% unique_treatment){
-      stop("counting_process: txval is not a valid treatment group value!")
+    if(! arm %in% unique_treatment){
+      stop("tensurv: arm is not a valid treatment group value!")
     }
 
     if(! all(unique(x$event) %in% c(0, 1) ) ){

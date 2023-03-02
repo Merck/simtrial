@@ -24,7 +24,7 @@ NULL
 #' on input dataset and intervals for piecewise constant failure rates.
 #' Initial version assumes observations are right censored or events only.
 #'
-#' @param Srv input survival object (see \code{Surv});
+#' @param srv input survival object (see \code{Surv});
 #' note that only 0 = censored, 1 = event for \code{Surv}
 #' @param intervals Vector containing positive values indicating interval lengths where the
 #' exponential rates are assumed.
@@ -75,17 +75,17 @@ NULL
 #' @export
 #'
 fit_pwexp <- function(
-    Srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+    srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
                intervals = array(3, 3)){
 
-  if (!is.Surv(Srv)){
-    stop("fit_pwexp: Srv must be a survival object!")
+  if (!is.Surv(srv)){
+    stop("fit_pwexp: srv must be a survival object!")
   }
 
   # only allow status 0,1
-  xx <- data.frame(time = Srv[ , "time"], status = Srv[ , "status"])
+  xx <- data.frame(time = srv[ , "time"], status = srv[ , "status"])
   if (nrow(subset(xx, status != 0 & status != 1))){
-    stop("fit_pwexp: Srv may only have status values of 0 or 1!")
+    stop("fit_pwexp: srv may only have status values of 0 or 1!")
   }
 
   # check for late observation after sum(intervals)
