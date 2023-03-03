@@ -82,7 +82,7 @@ counting_process <- function(x, arm){
     }
 
     if(! arm %in% unique_treatment){
-      stop("tensurv: arm is not a valid treatment group value!")
+      stop("counting_process: arm is not a valid treatment group value!")
     }
 
     if(! all(unique(x$event) %in% c(0, 1) ) ){
