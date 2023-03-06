@@ -10,10 +10,12 @@ test_that("x is a time-to-event data set", {
   testthat::expect_equal(1,max(names(x)=="cte"))
 })
 
+
 cut_date=10
-xcut<-cutData(x,cut_date)
-test_that("only paitients recorded by cutData are included", {
+xcut<-cut_data_by_date(x,cut_date)
+test_that("only paitients recorded by cut_data_by_date are included", {
   Npts=dim(filter(x,enrollTime <= cut_date))[1]
+
   Nptscut=length(xcut$tte)
   testthat::expect_equal(Npts,Nptscut)
 })

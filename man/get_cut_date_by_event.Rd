@@ -40,7 +40,7 @@ x <- simPWSurv(
 
 d <- get_cut_date_by_event(x \%>\% filter(Stratum == "Positive"), count = 50)
 
-y <- cutData(x, cut_date = d)
+y <- cut_data_by_date(x, cut_date = d)
 table(y$Stratum, y$event)
 
 }
