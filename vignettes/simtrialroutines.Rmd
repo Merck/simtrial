@@ -24,17 +24,10 @@ The routines are as follows:
 * `randomize_by_fixed_block` - fixed block randomization
 * `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
-<<<<<<< HEAD
 * `cut_data_by_date` - cut data for analysis at a specified calendar time
-* `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
-* `getCutDateForCount` - find date at which an event count is reached
-* `tensurv` - pre-process survival data into a counting process format
-=======
-* `cutData` - cut data for analysis at a specified calendar time
 * `cut_data_by_event` - cut data for analysis at a specified event count, including ties on the cutoff date
 * `get_cut_date_by_event` - find date at which an event count is reached
 * `counting_process` - pre-process survival data into a counting process format
->>>>>>> 5ce9aed969bb71c6ddba4c514c203b924a4ae023
 
 Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
 
