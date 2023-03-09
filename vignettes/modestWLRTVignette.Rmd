@@ -158,8 +158,13 @@ FHwn <- simPWSurv(
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
+<<<<<<< HEAD
   cutData(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
+=======
+  cut_data_by_date(studyDuration)
+fit <- survfit(Surv(tte, event) ~ Treatment, data = FHwn)
+>>>>>>> 029772b4e84b55df7dc1b9b777c7c5712d4aad1e
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
