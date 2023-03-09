@@ -8,8 +8,8 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   HT.est      = FALSE
   max         = TRUE
   alpha       = 0.025
-  data.anal <- data.frame(cbind(y$tte,y$event,y$Treatment))
-  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  data.anal <- data.frame(cbind(y$tte,y$event,y$treatment))
+  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing
   survMisc::comp(fit, p= sapply(wt, function(x){x[1]}), q= sapply(wt, function(x){x[2]}))
@@ -29,7 +29,7 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   d1 <- data.frame(do.call(rbind,wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind,wt3))
-  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing (for calculating the covariances)
   survMisc::comp(fit2, p= sapply(wt3, function(x){x[1]}), q= sapply(wt3, function(x){x[2]}))
