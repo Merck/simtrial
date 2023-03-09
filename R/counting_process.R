@@ -94,11 +94,11 @@ counting_process <- function(x, arm){
       arrange(desc(tte)) %>%
       mutate(one = 1,
              n_risk_tol = cumsum(one),
-             n_risk_trt = cumsum(treatment == txval)) %>%
+             n_risk_trt = cumsum(treatment == arm)) %>%
       # Handling ties using Breslow's method
       group_by(Stratum, mtte = desc(tte)) %>%
       dplyr::summarise(events = sum(event),
-                       n_event_tol = sum((treatment == txval) * event),
+                       n_event_tol = sum((treatment == arm) * event),
                        tte = first(tte),
                        n_risk_tol = max(n_risk_tol),
                        n_risk_trt = max(n_risk_trt)) %>%
