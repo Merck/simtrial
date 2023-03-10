@@ -16,11 +16,11 @@
 #' library(dplyr)
 #' library(survival)
 #' library(mvtnorm)
-#' fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelayed)
+#' fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelayed)
 #'
 #' # Plot survival
 #' plot(fit, lty=1:2)
-#' legend("topright", legend = c("Control", "Experimental"), lty = 1:2)
+#' legend("topright", legend = c("control", "Experimental"), lty = 1:2)
 #'
 #' # Set up time, event, number of event dataset for testing
 #' # with arbitrary weights
@@ -53,13 +53,13 @@
 #' ds <- simPWSurv(n = 200,
 #'                 enrollRates = tibble(rate = 200 / 12, duration = 12),
 #'                 failRates = tribble(
-#'                    ~Stratum, ~Period, ~Treatment,     ~duration, ~rate,
-#'                    "All",        1,   "Control",      42,        log(2) / 15,
+#'                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
+#'                    "All",        1,   "control",      42,        log(2) / 15,
 #'                    "All",        1,   "Experimental", 6,         log(2) / 15,
 #'                    "All",        2,   "Experimental", 36,        log(2) / 15 * 0.6),
 #'                 dropoutRates = tribble(
-#'                    ~Stratum, ~Period, ~Treatment,     ~duration, ~rate,
-#'                    "All",        1,   "Control",      42,        0,
+#'                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
+#'                    "All",        1,   "control",      42,        0,
 #'                    "All",        1,   "Experimental", 42,        0)
 #'        )
 #' # Cut data at 24 months after final enrollment
