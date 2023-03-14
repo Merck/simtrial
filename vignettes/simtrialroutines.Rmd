@@ -29,7 +29,7 @@ The routines are as follows:
 * `get_cut_date_by_event` - find date at which an event count is reached
 * `counting_process` - pre-process survival data into a counting process format
 
-Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
+Application of the above is demonstrated using higher-level routines `simPWSurv()` and `sim_fixed_n()` to generate simulations and weighted logrank analysis for a stratified design.
 
 The intent has been to write these routines in the spirit of the tidyverse approach (alternately referred to as data wrangling, tidy data, R for Data Science, or split-apply-combine). 
 The other objectives are to have an easily documentable and validated package that is easy to use and efficient as a broadly-useful tool for simulation of time-to-event clinical trials.
@@ -220,7 +220,7 @@ pvalue_maxcombo(x)
 
 ## Simplification for 2-arm trials
 
-The `simfix()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
+The `sim_fixed_n()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
 Here the argument structure is meant to be simpler than for `simPWSurv()`.
 
 ```{r}
@@ -249,7 +249,7 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 5) the maximum of 2 and 3.
 
 ```{r}
-simfix(
+sim_fixed_n(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis

@@ -2,7 +2,7 @@
 % Please edit documentation in R/simfix2simPWSurv.R
 \name{simfix2simPWSurv}
 \alias{simfix2simPWSurv}
-\title{Conversion of enrollment and failure rates from simfix() to simPWSurv() format}
+\title{Conversion of enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format}
 \usage{
 simfix2simPWSurv(
   failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
@@ -14,18 +14,18 @@ simfix2simPWSurv(
 and dropout rates by stratum and time period.}
 }
 \value{
-A \code{list} of two \code{tibble} components formatted for \code{simtrial::simPWSurv()}:
+A \code{list} of two \code{tibble} components formatted for \code{simtrial::sim_pw_surv()}:
 \code{failRates} and \code{dropoutRates}.
 }
 \description{
 \code{simfix2simPWSurv()} converts failure rates and dropout rates entered in the simpler
-format for \code{simfix()} to that used for \code{simtrial::simPWSurv()}.
-The \code{failRates} argument for \code{simfix()} requires enrollment rates, failure rates
-hazard ratios and dropout rates by strata for a 2-arm trial, \code{simtrial::simPWSurv()}
+format for \code{sim_fixed_n()} to that used for \code{simtrial::sim_pw_surv()}.
+The \code{failRates} argument for \code{sim_fixed_n()} requires enrollment rates, failure rates
+hazard ratios and dropout rates by strata for a 2-arm trial, \code{simtrial::sim_pw_surv()}
 is in a more flexible but less obvious but more flexible format.
-Since \code{simfix()} automatically analyzes data and \code{simtrial::simPWSurv()} just produces
+Since \code{sim_fixed_n()} automatically analyzes data and \code{simtrial::sim_pw_surv()} just produces
 a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
-individual simulations in ways that \code{simfix()} does not.
+individual simulations in ways that \code{sim_fixed_n()} does not.
 }
 \examples{
 library(tidyr)
@@ -49,7 +49,7 @@ x <- simfix2simPWSurv(failRates)
 
 # Do a single simulation with the above rates
 # Enroll 300 patients in ~12 months at constant rate
-sim <- simPWSurv(n = 300,
+sim <- sim_pw_surv(n = 300,
                  strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
                  enrollRates = tibble(duration = 12, rate = 300 / 12),
                  failRates = x$failRates,
