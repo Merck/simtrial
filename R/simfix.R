@@ -283,7 +283,7 @@ simfix <- function(nsim = 1000,
                      block = block)
 
     # study date that targeted event rate achieved
-    tedate <- sim %>% getCutDateForCount(target_event)
+    tedate <- sim %>% get_cut_date_by_event(target_event)
 
     # study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enrollTime) + minFollow
@@ -326,19 +326,19 @@ simfix <- function(nsim = 1000,
 
     # Total duration cutoff
     if (tests[1]){
-      d <- sim %>% cutData(totalDuration)
+      d <- sim %>% cut_data_by_date(totalDuration)
       r1 <- d %>% doAnalysis(rg, n_stratum)
     }
 
     # targeted events cutoff
     if (tests[2]){
-      d <- sim %>% cutData(tedate)
+      d <- sim %>% cut_data_by_date(tedate)
       r2 <- d %>% doAnalysis(rg, n_stratum)
     }
 
     # minimum follow-up cutoff
     if (tests[3]){
-      d <- sim %>% cutData(tmfdate)
+      d <- sim %>% cut_data_by_date(tmfdate)
       r3 <- d %>% doAnalysis(rg, n_stratum)
     }
 

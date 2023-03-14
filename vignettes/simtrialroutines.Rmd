@@ -24,9 +24,9 @@ The routines are as follows:
 * `randomize_by_fixed_block` - fixed block randomization
 * `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
-* `cutData` - cut data for analysis at a specified calendar time
-* `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
-* `getCutDateForCount` - find date at which an event count is reached
+* `cut_data_by_date` - cut data for analysis at a specified calendar time
+* `cut_data_by_event` - cut data for analysis at a specified event count, including ties on the cutoff date
+* `get_cut_date_by_event` - find date at which an event count is reached
 * `counting_process` - pre-process survival data into a counting process format
 
 Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
@@ -142,22 +142,26 @@ The first uses a calendar cutoff date. The output only includes the time from ra
 Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
-y <- cutData(x, cut_date = 5)
+
+y <- cut_data_by_date(x, cut_date = 5)
+
 head(y) %>% kable(digits = 2)
 ```
 
-For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `getCutDateForCount` function as follows:
+For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `get_cut_date_by_event` function as follows:
 
 ```{r}
-cut50Positive <- getCutDateForCount(filter(x, Stratum == "Positive"), 50)
-y50Positive <- cutData(x, cut50Positive)
+
+cut50Positive <- get_cut_date_by_event(filter(x, Stratum == "Positive"), 50)
+y50Positive <- cut_data_by_date(x, cut50Positive)
+
 with(y50Positive, table(Stratum, event))
 ```
 
-Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cutDataAtCount` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
+Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cut_data_by_event` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
 
 ```{r}
-y150 <- cutDataAtCount(x, 150)
+y150 <- cut_data_by_event(x, 150)
 table(y150$event, y150$Treatment)
 ```
 

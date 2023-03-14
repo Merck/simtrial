@@ -68,7 +68,7 @@ MBdelay <- simPWSurv(
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
-  cutData(studyDuration)
+  cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelay)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
@@ -158,7 +158,7 @@ FHwn <- simPWSurv(
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
-  cutData(studyDuration)
+  cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ Treatment, data = FHwn)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))

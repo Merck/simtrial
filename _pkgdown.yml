@@ -46,9 +46,10 @@ reference:
     - simfix2simPWSurv
 - title: "Cut data"
   contents:
-    - cutData
-    - cutDataAtCount
-    - getCutDateForCount
+    - cut_data_by_date
+    - cut_data_by_event
+    - get_cut_date_by_event
+
 - title: "Compute p-values/test statistics"
   contents:
     - tenFH
