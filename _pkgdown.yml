@@ -42,7 +42,7 @@ reference:
 - title: "Simulate data under the piecewise model"
   contents:
     - simPWSurv
-    - simfix
+    - sim_fixed_n
     - simfix2simPWSurv
 - title: "Cut data"
   contents:
