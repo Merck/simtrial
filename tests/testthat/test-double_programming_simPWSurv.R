@@ -22,7 +22,7 @@ dropoutRates <- bind_rows(
   tibble::tibble(Stratum="High",period=1,Treatment="Experimental",duration=300,rate=.001)
 )
 set.seed(1)
-x <- simPWSurv(n=400000,
+x <- sim_pw_surv(n=400000,
                strata = strata,
                block = block,
                enrollRates = enrollRates,
@@ -97,7 +97,7 @@ testthat::test_that("enrollRates calculated from simulated dataset must be withi
 
 #check the arguments, by changing n, the actual number of events changes
 set.seed(2468)
-z <- simPWSurv(n=300000,
+z <- sim_pw_surv(n=300000,
                strata = strata,
                block = block,
                enrollRates = enrollRates,

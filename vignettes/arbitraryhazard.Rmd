@@ -54,7 +54,7 @@ tx <- "Log-logistic"
 enrollRates <- tibble(duration = .5, rate = 500)
 dropoutRates <- tibble(Treatment = tx, duration = 3, rate = .05, period = 1, Stratum = "All")
 block <- rep(tx, 2)
-x <- simPWSurv(
+x <- sim_pw_surv(
   n = 250, # sample size
   block = block,
   enrollRates = enrollRates,

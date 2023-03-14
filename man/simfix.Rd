@@ -37,7 +37,7 @@ and dropout rates by stratum and time period.}
 
 \item{totalDuration}{Total follow-up from start of enrollment to data cutoff.}
 
-\item{block}{As in \code{simtrial::simPWSurv()}. Vector of treatments to be included in each block.}
+\item{block}{As in \code{simtrial::sim_pw_surv()}. Vector of treatments to be included in each block.}
 
 \item{timingType}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
