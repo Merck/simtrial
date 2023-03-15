@@ -16,7 +16,7 @@
 #' library(dplyr)
 #' library(survival)
 #' library(mvtnorm)
-#' fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelayed)
+#' fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelayed)
 #'
 #' # Plot survival
 #' plot(fit, lty=1:2)
