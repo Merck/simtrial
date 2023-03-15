@@ -73,7 +73,7 @@ ds <- simPWSurv(n = 200,
                    "All",        1,   "experimental", 42,        0)
        )
 # Cut data at 24 months after final enrollment
-MBdelayed2 <- ds \%>\% cutData(max(ds$enrollTime) + 24)
+MBdelayed2 <- ds \%>\% cut_data_by_date(max(ds$enrollTime) + 24)
 
 }
 \references{
