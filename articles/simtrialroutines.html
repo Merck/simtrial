@@ -148,11 +148,11 @@ with one string repeated twice in each block and three other strings
 appearing once each.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/randomize_by_fixed_block.html">randomize_by_fixed_block</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"Dog"</span>, <span class="st">"Cat"</span>, <span class="st">"Cat"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "A"   "Cat" "Dog" "Cat" "Cat" "Cat" "A"   "Dog" "Dog" "A"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "A"   "Cat" "Dog" "Cat" "A"   "Cat" "Cat" "Dog" "Dog" "A"</span></span></code></pre></div>
 <p>More normally, with a default of blocks of size four:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/randomize_by_fixed_block.html">randomize_by_fixed_block</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 1 1 0 0 0 0 1 1 0 1 0 1 1 0 0 1 1 0 1 0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] 1 0 1 0 1 0 1 0 1 0 0 1 0 0 1 1 0 1 0 1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="enrollment">Enrollment<a class="anchor" aria-label="anchor" href="#enrollment"></a>
@@ -166,9 +166,9 @@ number of observations.</p>
 <span>  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 0.3915408 0.4041387 0.7727399 1.0482849 1.0630175 1.0817318 1.0879440</span></span>
-<span><span class="co">#&gt;  [8] 1.2294317 1.2721501 1.5485742 1.6265676 1.7388102 1.7771037 1.8919892</span></span>
-<span><span class="co">#&gt; [15] 2.0884294 2.1550861 3.0222178 3.0661873 3.1176234 3.2734051</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] 1.395456 1.754110 1.804373 1.901120 2.553627 2.762070 3.367677 3.702460</span></span>
+<span><span class="co">#&gt;  [9] 3.931472 4.123746 4.168732 4.341327 4.493268 4.650185 4.738985 4.981868</span></span>
+<span><span class="co">#&gt; [17] 5.148479 5.444548 5.669925 6.130227</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="time-to-event-and-time-to-dropout">Time-to-event and time-to-dropout<a class="anchor" aria-label="anchor" href="#time-to-event-and-time-to-dropout"></a>
@@ -261,56 +261,56 @@ event time.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Negative</td>
-<td align="right">0.55</td>
+<td align="right">0.02</td>
 <td align="left">Control</td>
-<td align="right">23.76</td>
-<td align="right">190.77</td>
-<td align="right">24.31</td>
+<td align="right">30.53</td>
+<td align="right">200.66</td>
+<td align="right">30.54</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">Positive</td>
-<td align="right">0.75</td>
-<td align="left">Experimental</td>
-<td align="right">0.08</td>
-<td align="right">1457.33</td>
-<td align="right">0.83</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Negative</td>
-<td align="right">1.23</td>
-<td align="left">Experimental</td>
-<td align="right">1.57</td>
-<td align="right">2068.58</td>
-<td align="right">2.80</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Negative</td>
-<td align="right">1.99</td>
-<td align="left">Experimental</td>
-<td align="right">2.47</td>
-<td align="right">5436.26</td>
-<td align="right">4.46</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Negative</td>
-<td align="right">2.81</td>
+<td align="right">0.51</td>
 <td align="left">Control</td>
-<td align="right">14.41</td>
-<td align="right">216.48</td>
-<td align="right">17.22</td>
+<td align="right">18.78</td>
+<td align="right">597.55</td>
+<td align="right">19.30</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Positive</td>
-<td align="right">3.18</td>
+<td align="right">0.99</td>
 <td align="left">Control</td>
-<td align="right">56.89</td>
-<td align="right">406.60</td>
-<td align="right">60.08</td>
+<td align="right">0.91</td>
+<td align="right">94.19</td>
+<td align="right">1.90</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Negative</td>
+<td align="right">1.13</td>
+<td align="left">Control</td>
+<td align="right">18.04</td>
+<td align="right">229.02</td>
+<td align="right">19.17</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Positive</td>
+<td align="right">1.46</td>
+<td align="left">Experimental</td>
+<td align="right">8.04</td>
+<td align="right">901.02</td>
+<td align="right">9.50</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Negative</td>
+<td align="right">1.52</td>
+<td align="left">Experimental</td>
+<td align="right">0.35</td>
+<td align="right">100.89</td>
+<td align="right">1.87</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -343,40 +343,40 @@ the specified <code>cut_date</code>.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">4.45</td>
+<td align="right">4.98</td>
 <td align="right">0</td>
 <td align="left">Negative</td>
 <td align="left">Control</td>
 </tr>
 <tr class="even">
-<td align="right">0.08</td>
-<td align="right">1</td>
-<td align="left">Positive</td>
-<td align="left">Experimental</td>
-</tr>
-<tr class="odd">
-<td align="right">1.57</td>
-<td align="right">1</td>
-<td align="left">Negative</td>
-<td align="left">Experimental</td>
-</tr>
-<tr class="even">
-<td align="right">2.47</td>
-<td align="right">1</td>
-<td align="left">Negative</td>
-<td align="left">Experimental</td>
-</tr>
-<tr class="odd">
-<td align="right">2.19</td>
-<td align="right">0</td>
-<td align="left">Negative</td>
-<td align="left">Control</td>
-</tr>
-<tr class="even">
-<td align="right">1.82</td>
+<td align="right">4.49</td>
 <td align="right">0</td>
 <td align="left">Positive</td>
 <td align="left">Control</td>
+</tr>
+<tr class="odd">
+<td align="right">0.91</td>
+<td align="right">1</td>
+<td align="left">Positive</td>
+<td align="left">Control</td>
+</tr>
+<tr class="even">
+<td align="right">3.87</td>
+<td align="right">0</td>
+<td align="left">Negative</td>
+<td align="left">Control</td>
+</tr>
+<tr class="odd">
+<td align="right">3.54</td>
+<td align="right">0</td>
+<td align="left">Positive</td>
+<td align="left">Experimental</td>
+</tr>
+<tr class="even">
+<td align="right">0.35</td>
+<td align="right">1</td>
+<td align="left">Negative</td>
+<td align="left">Experimental</td>
 </tr>
 </tbody>
 </table>
@@ -391,8 +391,8 @@ observed in the Positive stratum we can use the
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">y50Positive</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Stratum</span>, <span class="va">event</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           event</span></span>
 <span><span class="co">#&gt; Stratum     0  1</span></span>
-<span><span class="co">#&gt;   Negative 45 63</span></span>
-<span><span class="co">#&gt;   Positive 39 50</span></span></code></pre></div>
+<span><span class="co">#&gt;   Negative 40 47</span></span>
+<span><span class="co">#&gt;   Positive 40 50</span></span></code></pre></div>
 <p>Perhaps the most common way to cut data is with an event count for
 the overall population, which is done using the
 <code>cut_data_by_event</code> function. Note that if there are tied
@@ -404,7 +404,7 @@ included in the cut - with no indication of an error.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y150</span><span class="op">$</span><span class="va">event</span>, <span class="va">y150</span><span class="op">$</span><span class="va">Treatment</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    </span></span>
 <span><span class="co">#&gt;     Control Experimental</span></span>
-<span><span class="co">#&gt;   0      35           41</span></span>
+<span><span class="co">#&gt;   0      48           51</span></span>
 <span><span class="co">#&gt;   1      77           73</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -447,67 +447,67 @@ the next section where we compute a weighted logrank test.</p>
 <tr class="odd">
 <td align="left">Negative</td>
 <td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0.02</td>
-<td align="right">125</td>
-<td align="right">63</td>
-<td align="right">1.00</td>
-<td align="right">-0.50</td>
-<td align="right">0.25</td>
-</tr>
-<tr class="even">
-<td align="left">Negative</td>
 <td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0.08</td>
+<td align="right">0.12</td>
 <td align="right">124</td>
-<td align="right">63</td>
-<td align="right">0.99</td>
-<td align="right">-0.51</td>
-<td align="right">0.25</td>
-</tr>
-<tr class="odd">
-<td align="left">Negative</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0.16</td>
-<td align="right">123</td>
-<td align="right">63</td>
-<td align="right">0.98</td>
-<td align="right">-0.51</td>
-<td align="right">0.25</td>
-</tr>
-<tr class="even">
-<td align="left">Negative</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0.19</td>
-<td align="right">122</td>
-<td align="right">63</td>
-<td align="right">0.98</td>
-<td align="right">0.48</td>
-<td align="right">0.25</td>
-</tr>
-<tr class="odd">
-<td align="left">Negative</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0.21</td>
-<td align="right">121</td>
 <td align="right">62</td>
+<td align="right">1.00</td>
+<td align="right">0.50</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="even">
+<td align="left">Negative</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.13</td>
+<td align="right">123</td>
+<td align="right">61</td>
+<td align="right">0.99</td>
+<td align="right">0.50</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="odd">
+<td align="left">Negative</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.21</td>
+<td align="right">122</td>
+<td align="right">60</td>
+<td align="right">0.98</td>
+<td align="right">0.51</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="even">
+<td align="left">Negative</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.24</td>
+<td align="right">121</td>
+<td align="right">59</td>
+<td align="right">0.98</td>
+<td align="right">0.51</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="odd">
+<td align="left">Negative</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.35</td>
+<td align="right">120</td>
+<td align="right">58</td>
 <td align="right">0.97</td>
-<td align="right">-0.51</td>
+<td align="right">0.52</td>
 <td align="right">0.25</td>
 </tr>
 <tr class="even">
 <td align="left">Negative</td>
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">0.59</td>
-<td align="right">116</td>
-<td align="right">60</td>
+<td align="right">0.36</td>
+<td align="right">119</td>
+<td align="right">57</td>
 <td align="right">0.96</td>
-<td align="right">-0.52</td>
+<td align="right">-0.48</td>
 <td align="right">0.25</td>
 </tr>
 </tbody>
@@ -535,7 +535,7 @@ p-value, we simply do the following:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">ten150</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -0.7203114  0.2356667</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -0.3227068  0.3734587</span></span></code></pre></div>
 <p>A Fleming-Harrington <span class="math inline">\(\rho=1\)</span>,
 <span class="math inline">\(\gamma=2\)</span> is nearly as simple. We
 again compute a z-statistic and its corresponding one-sided p-value.</p>
@@ -543,7 +543,7 @@ again compute a z-statistic and its corresponding one-sided p-value.</p>
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">ten150</span>, w <span class="op">=</span> <span class="va">S</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">S</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">xx</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">w</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">w</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">z</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -0.08104507  0.46770306</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -0.07767924  0.46904161</span></span></code></pre></div>
 <p>For Fleming-Harrington tests, a routine has been built to do these
 tests for you:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -558,22 +558,22 @@ tests for you:</p>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-0.72</td>
+<td align="right">-0.32</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-0.79</td>
+<td align="right">-0.83</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-0.57</td>
+<td align="right">0.01</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-0.70</td>
+<td align="right">-0.66</td>
 </tr>
 </tbody>
 </table>
@@ -590,6 +590,9 @@ in <code>V1</code>-<code>V4</code>.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">simtrial</span> package.</span></span>
 <span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/Merck/simtrial/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -605,36 +608,36 @@ in <code>V1</code>-<code>V4</code>.</p>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-0.72</td>
+<td align="right">-0.32</td>
 <td align="right">1.00</td>
 <td align="right">0.84</td>
-<td align="right">0.94</td>
-<td align="right">0.93</td>
+<td align="right">0.95</td>
+<td align="right">0.92</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-0.79</td>
+<td align="right">-0.83</td>
 <td align="right">0.84</td>
 <td align="right">1.00</td>
-<td align="right">0.62</td>
-<td align="right">0.93</td>
+<td align="right">0.63</td>
+<td align="right">0.94</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-0.57</td>
-<td align="right">0.94</td>
-<td align="right">0.62</td>
+<td align="right">0.01</td>
+<td align="right">0.95</td>
+<td align="right">0.63</td>
 <td align="right">1.00</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-0.70</td>
-<td align="right">0.93</td>
-<td align="right">0.93</td>
+<td align="right">-0.66</td>
+<td align="right">0.92</td>
+<td align="right">0.94</td>
 <td align="right">0.79</td>
 <td align="right">1.00</td>
 </tr>
@@ -648,7 +651,7 @@ the example in the help file.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compute p-value for MaxCombo</span></span>
 <span><span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.3322363</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.3140577</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="simplification-for-2-arm-trials">Simplification for 2-arm trials<a class="anchor" aria-label="anchor" href="#simplification-for-2-arm-trials"></a>
@@ -705,49 +708,49 @@ structure is meant to be simpler than for <code><a href="../reference/simPWSurv.
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">103</td>
-<td align="right">-0.76</td>
-<td align="right">-3.75</td>
+<td align="right">90</td>
+<td align="right">-0.02</td>
+<td align="right">-0.11</td>
 <td align="left">Planned duration</td>
 <td align="right">30.00</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.59</td>
-<td align="right">-5.41</td>
+<td align="right">-0.28</td>
+<td align="right">-2.65</td>
 <td align="left">Targeted events</td>
-<td align="right">70.04</td>
+<td align="right">65.24</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">352</td>
-<td align="right">-0.60</td>
-<td align="right">-5.52</td>
+<td align="right">372</td>
+<td align="right">-0.29</td>
+<td align="right">-2.80</td>
 <td align="left">Minimum follow-up</td>
-<td align="right">70.77</td>
+<td align="right">70.16</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.59</td>
-<td align="right">-5.41</td>
+<td align="right">-0.28</td>
+<td align="right">-2.65</td>
 <td align="left">Max(planned duration, event cut)</td>
-<td align="right">70.04</td>
+<td align="right">65.24</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">352</td>
-<td align="right">-0.60</td>
-<td align="right">-5.52</td>
+<td align="right">372</td>
+<td align="right">-0.29</td>
+<td align="right">-2.80</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">70.77</td>
+<td align="right">70.16</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">99</td>
-<td align="right">-0.18</td>
-<td align="right">-0.92</td>
+<td align="right">117</td>
+<td align="right">-0.43</td>
+<td align="right">-2.33</td>
 <td align="left">Planned duration</td>
 <td align="right">30.00</td>
 <td align="right">2</td>
@@ -757,15 +760,15 @@ structure is meant to be simpler than for <code><a href="../reference/simPWSurv.
 <td align="right">-0.43</td>
 <td align="right">-4.02</td>
 <td align="left">Targeted events</td>
-<td align="right">70.06</td>
+<td align="right">68.50</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">363</td>
-<td align="right">-0.45</td>
-<td align="right">-4.26</td>
+<td align="right">356</td>
+<td align="right">-0.43</td>
+<td align="right">-4.06</td>
 <td align="left">Minimum follow-up</td>
-<td align="right">73.72</td>
+<td align="right">70.05</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
@@ -773,15 +776,15 @@ structure is meant to be simpler than for <code><a href="../reference/simPWSurv.
 <td align="right">-0.43</td>
 <td align="right">-4.02</td>
 <td align="left">Max(planned duration, event cut)</td>
-<td align="right">70.06</td>
+<td align="right">68.50</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">363</td>
-<td align="right">-0.45</td>
-<td align="right">-4.26</td>
+<td align="right">356</td>
+<td align="right">-0.43</td>
+<td align="right">-4.06</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">73.72</td>
+<td align="right">70.05</td>
 <td align="right">2</td>
 </tr>
 </tbody>
