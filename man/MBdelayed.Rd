@@ -61,7 +61,7 @@ ten \%>\% summarise(S = sum(o_minus_e*w6),
 
 # Generate another dataset
 ds <- simPWSurv(n = 200,
-                enrollRates = tibble(rate = 200 / 12, duration = 12),
+                enroll_rate = tibble(rate = 200 / 12, duration = 12),
                 failRates = tribble(
                    ~Stratum, ~Period, ~Treatment,     ~duration, ~rate,
                    "All",        1,   "Control",      42,        log(2) / 15,
