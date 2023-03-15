@@ -73,7 +73,7 @@ NULL
 #' @examples
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
-#' x <- simPWSurv(n = 200) %>%
+#' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm ="Experimental")
 #' # compute logrank (FH(0,0)) and FH(0,1)
@@ -82,7 +82,7 @@ NULL
 #' @export
 #' @rdname tenFH
 #'
-tenFH <- function(x = simPWSurv(n = 200) %>%
+tenFH <- function(x = sim_pw_surv(n = 200) %>%
                         cut_data_by_event(150) %>%
                         counting_process(arm = "Experimental"),
                   rg = tibble(rho = c(0, 0, 1, 1),
