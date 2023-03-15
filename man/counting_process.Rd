@@ -15,7 +15,7 @@ counting_process(x, arm)
 \item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
 }}
 
-\item{arm}{value in the input \code{Treatment} column that indicates treatment group value.}
+\item{arm}{value in the input \code{treatment} column that indicates treatment group value.}
 }
 \value{
 A \code{tibble} grouped by \code{Stratum} and sorted within strata by \code{tte}.

@@ -35,7 +35,7 @@ NULL
 #' - `treatment`: treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
-#' @param arm value in the input `Treatment` column that indicates treatment group value.
+#' @param arm value in the input `treatment` column that indicates treatment group value.
 #'
 #' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
 #' Remain rows with at least one event in the population, at least one subject

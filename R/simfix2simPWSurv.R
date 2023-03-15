@@ -65,7 +65,7 @@ NULL
 #' # Cut after 200 events and do a stratified logrank test
 #' dat <- sim %>%
 #'   cut_data_by_event(200) %>%              # cut data
-#'   counting_process(arm = "Experimental") %>%  # convert format for tenFH
+#'   counting_process(arm = "experimental") %>%  # convert format for tenFH
 #'   tenFH(rg = tibble(rho=0,gamma=0))    # stratified logrank
 #'
 #' @export
@@ -86,7 +86,7 @@ simfix2simPWSurv <- function(
                 ungroup(),
               failRates %>%
                 group_by(Stratum) %>%
-                mutate(treatment = "Experimental",
+                mutate(treatment = "experimental",
                        rate = failRate * hr,
                        period = 1:n()) %>%
                 ungroup()
@@ -103,7 +103,7 @@ simfix2simPWSurv <- function(
     ungroup()
 
   dr <- rbind(dr,
-              dr %>% mutate(treatment = "Experimental"))
+              dr %>% mutate(treatment = "experimental"))
 
   return(list(failRates = fr, dropoutRates = dr))
 }
