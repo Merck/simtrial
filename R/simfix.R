@@ -124,7 +124,7 @@ simfix <- function(nsim = 1000,
                    # total planned trial duration; single value
                    totalDuration = 30,
                    # Fixed block randomization specification
-                   block = rep(c("Experimental", "control"), 2),
+                   block = rep(c("experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
                    timingType = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
@@ -235,16 +235,16 @@ simfix <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% tenFH(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% counting_process(arm = "experimental") %>% tenFH(rg = rg))$Z)
     } else{
-      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(arm = "experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(
       Events = sum(d$event),
       lnhr = ifelse(n_stratum > 1,
-                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "Experimental") + survival::strata(Stratum), data = d)$coefficients,
-                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "Experimental"), data = d)$coefficients
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(Stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
                     ) %>% as.numeric()
       )
 

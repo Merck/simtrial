@@ -30,11 +30,11 @@ fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelayed)
 
 # Plot survival
 plot(fit, lty=1:2)
-legend("topright", legend = c("control", "Experimental"), lty = 1:2)
+legend("topright", legend = c("control", "experimental"), lty = 1:2)
 
 # Set up time, event, number of event dataset for testing
 # with arbitrary weights
-ten <- MBdelayed \%>\% counting_process(arm = "Experimental")
+ten <- MBdelayed \%>\% counting_process(arm = "experimental")
 head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
@@ -65,12 +65,12 @@ ds <- simPWSurv(n = 200,
                 failRates = tribble(
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        log(2) / 15,
-                   "All",        1,   "Experimental", 6,         log(2) / 15,
-                   "All",        2,   "Experimental", 36,        log(2) / 15 * 0.6),
+                   "All",        1,   "experimental", 6,         log(2) / 15,
+                   "All",        2,   "experimental", 36,        log(2) / 15 * 0.6),
                 dropoutRates = tribble(
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        0,
-                   "All",        1,   "Experimental", 42,        0)
+                   "All",        1,   "experimental", 42,        0)
        )
 # Cut data at 24 months after final enrollment
 MBdelayed2 <- ds \%>\% cutData(max(ds$enrollTime) + 24)

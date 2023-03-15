@@ -1,25 +1,25 @@
 
 strata <- tibble::tibble(Stratum=c("Low","High"),p=c(.4,.6))
 
-block <- c(rep("control",2),rep("Experimental",2))
+block <- c(rep("control",2),rep("experimental",2))
 
 enrollRates = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
 failRates <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=3,rate=.03),
   tibble::tibble(Stratum="Low" ,period=2,treatment="control"     ,duration=297,rate=.03),
-  tibble::tibble(Stratum="Low" ,period=1,treatment="Experimental",duration=3,rate=.03),
-  tibble::tibble(Stratum="Low" ,period=2,treatment="Experimental",duration=297,rate=.02),
+  tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=3,rate=.03),
+  tibble::tibble(Stratum="Low" ,period=2,treatment="experimental",duration=297,rate=.02),
   tibble::tibble(Stratum="High",period=1,treatment="control"     ,duration=3,rate=.05),
   tibble::tibble(Stratum="High",period=2,treatment="control"     ,duration=297,rate=.05),
-  tibble::tibble(Stratum="High",period=1,treatment="Experimental",duration=3,rate=.06),
-  tibble::tibble(Stratum="High",period=2,treatment="Experimental",duration=297,rate=.03)
+  tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=3,rate=.06),
+  tibble::tibble(Stratum="High",period=2,treatment="experimental",duration=297,rate=.03)
 )
 dropoutRates <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=300,rate=.001),
-  tibble::tibble(Stratum="Low" ,period=1,treatment="Experimental",duration=300,rate=.001),
+  tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=300,rate=.001),
   tibble::tibble(Stratum="High",period=1,treatment="control"     ,duration=300,rate=.001),
-  tibble::tibble(Stratum="High",period=1,treatment="Experimental",duration=300,rate=.001)
+  tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=300,rate=.001)
 )
 set.seed(1)
 x <- simPWSurv(n=400000,
