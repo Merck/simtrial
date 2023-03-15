@@ -51,7 +51,7 @@
 #'
 #' # Generate another dataset
 #' ds <- simPWSurv(n = 200,
-#'                 enrollRates = tibble(rate = 200 / 12, duration = 12),
+#'                 enroll_rate = tibble(rate = 200 / 12, duration = 12),
 #'                 failRates = tribble(
 #'                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
 #'                    "All",        1,   "control",      42,        log(2) / 15,
