@@ -124,7 +124,7 @@ simPWSurv <- function(
                                size = n,
                                replace = TRUE,
                                prob = strata$p)) %>%
-    mutate(enroll_time = rpwenroll(n, enroll_rate)) %>%
+    mutate(enroll_time = rpw_enroll(n, enroll_rate)) %>%
     group_by(Stratum) %>%
     # assign treatment
     mutate(Treatment = randomize_by_fixed_block(n = n(), block = block)) %>%

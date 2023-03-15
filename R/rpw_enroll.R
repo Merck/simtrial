@@ -23,7 +23,7 @@ NULL
 #' Generate Piecewise Exponential Enrollment
 #'
 #' With piecewise exponential enrollment rate generation any enrollment rate distribution can be easily approximated.
-#' \code{rpwenroll()} is to support simulation of both the Lachin and Foulkes (1986) sample size
+#' \code{rpw_enroll()} is to support simulation of both the Lachin and Foulkes (1986) sample size
 #' method for (fixed trial duration) as well as the Kim and Tsiatis(1990) method
 #' (fixed enrollment rates and either fixed enrollment duration or fixed minimum follow-up);
 #' see \code{\link[gsDesign:nSurv]{gsDesign}}.
@@ -41,7 +41,7 @@ NULL
 #' # Example 1
 #' # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 #' # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-#' x <- rpwenroll(n = 1e5,
+#' x <- rpw_enroll(n = 1e5,
 #'                enroll_rate = tibble(rate = c(5, 15, 30),
 #'                                     duration = c(100, 200, 100)))
 #' plot(x, 1:1e5,
@@ -51,7 +51,7 @@ NULL
 #'
 #' # Example 2
 #' # exponential enrollment
-#' x <- rpwenroll(n = 1e5,
+#' x <- rpw_enroll(n = 1e5,
 #'                enroll_rate = tibble(rate = .03, duration = 1))
 #' plot(x, 1:1e5,
 #'      main = "Simulated exponential inter-arrival times",
@@ -59,8 +59,8 @@ NULL
 #'      ylab = "Enrollment")
 #'
 #' @export
-rpwenroll <- function(n = NULL,
-                      enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5))
+rpw_enroll <- function(n = NULL,
+                       enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5))
 ){
 
   # take care of the simple case first
@@ -68,7 +68,7 @@ rpwenroll <- function(n = NULL,
   if(nrow(enroll_rate) == 1) {
     # stop with error message if only 1 enrollment period and the enrollment rate is less or equal with 0
     if (enroll_rate$rate <= 0){
-      stop("rpwenroll: please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
+      stop("rpw_enroll: please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
     }
     # otherwise, return inter-arrival exponential times
     else{
@@ -96,7 +96,7 @@ rpwenroll <- function(n = NULL,
 
     if (dplyr::last(enroll_rate$rate) <= 0){
       # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-      stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+      stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
     }else{
       # otherwise, return inter-arrival exponential times
       ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enroll_rate$rate))) + dplyr::last(y$finish)
@@ -124,7 +124,7 @@ rpwenroll <- function(n = NULL,
   n_add <- n - nrow(z)
   # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
   if (dplyr::last(enroll_rate$rate) <= 0){
-    stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+    stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
   }
   # Otherwise, return inter-arrival exponential times
   else{

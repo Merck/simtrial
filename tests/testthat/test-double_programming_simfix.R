@@ -16,7 +16,7 @@ PE <- gsDesign::nSurv(alpha = alpha, beta = c(1-0.93), sided = 1, lambdaC = log(
 set.seed(1234)
 test2<-simfix(nsim=100,
               sampleSize=434,
-              targetEvents=227,
+              target_event=227,
               strata = tibble::tibble(Stratum = "All", p = 1),
               enroll_rate=tibble::tibble(duration=c(1,1,9),
                                          rate= c(5,5,47)),
