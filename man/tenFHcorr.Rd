@@ -5,7 +5,7 @@
 \title{Fleming-Harrington Weighted Logrank Tests plus Correlations}
 \usage{
 tenFHcorr(
-  x = simPWSurv(n = 200) \%>\% cut_data_by_event(100) \%>\% counting_process(arm =
+  x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(100) \%>\% counting_process(arm =
     "Experimental"),
   rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   corr = TRUE
@@ -34,7 +34,7 @@ library(tidyr)
 library(dplyr)
 
 # Use default enrollment and event rates at cut of 100 events
-x <- simPWSurv(n = 200) \%>\%
+x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "Experimental")
 
@@ -49,7 +49,7 @@ library(mvtnorm)
             algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
 
 # check that covariance is as expected
-x <- simPWSurv(n = 200) \%>\%
+x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "Experimental")
 

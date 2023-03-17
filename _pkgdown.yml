@@ -41,7 +41,7 @@ reference:
     - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
-    - simPWSurv
+    - sim_pw_surv
     - simfix
     - simfix2simPWSurv
 - title: "Cut data"

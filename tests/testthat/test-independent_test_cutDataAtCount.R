@@ -1,4 +1,4 @@
-TTEdata <- simPWSurv(n=200)
+TTEdata <- sim_pw_surv(n=200)
 test_that("the input is a time-to-event data set", {
 
             testthat::expect_equal(1,max(names(TTEdata)=="Stratum"))

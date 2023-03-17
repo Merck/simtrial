@@ -19,19 +19,19 @@
 #' @importFrom tibble tibble
 NULL
 
-#' Conversion of enrollment and failure rates from simfix() to simPWSurv() format
+#' Conversion of enrollment and failure rates from simfix() to sim_pw_surv() format
 #'
 #' `simfix2simPWSurv()` converts failure rates and dropout rates entered in the simpler
-#' format for `simfix()` to that used for `simtrial::simPWSurv()`.
+#' format for `simfix()` to that used for `simtrial::sim_pw_surv()`.
 #' The `failRates` argument for `simfix()` requires enrollment rates, failure rates
-#' hazard ratios and dropout rates by strata for a 2-arm trial, `simtrial::simPWSurv()`
+#' hazard ratios and dropout rates by strata for a 2-arm trial, `simtrial::sim_pw_surv()`
 #' is in a more flexible but less obvious but more flexible format.
-#' Since `simfix()` automatically analyzes data and `simtrial::simPWSurv()` just produces
+#' Since `simfix()` automatically analyzes data and `simtrial::sim_pw_surv()` just produces
 #' a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
 #' individual simulations in ways that `simfix()` does not.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
-#' @return A \code{list} of two `tibble` components formatted for `simtrial::simPWSurv()`:
+#' @return A \code{list} of two `tibble` components formatted for `simtrial::sim_pw_surv()`:
 #' `failRates` and `dropoutRates`.
 #'
 #' @examples
@@ -56,7 +56,7 @@ NULL
 #'
 #' # Do a single simulation with the above rates
 #' # Enroll 300 patients in ~12 months at constant rate
-#' sim <- simPWSurv(n = 300,
+#' sim <- sim_pw_surv(n = 300,
 #'                  strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
 #'                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
 #'                  failRates = x$failRates,
@@ -78,7 +78,7 @@ simfix2simPWSurv <- function(
                      hr = c(.9, .6),
                      dropoutRate = rep(.001, 2))
   ){
-  # put failure rates into simPWSurv format
+  # put failure rates into sim_pw_surv format
   fr <- rbind(failRates %>%
                 group_by(Stratum) %>%
                 mutate(Treatment = "Control",
@@ -93,7 +93,7 @@ simfix2simPWSurv <- function(
               ) %>%
     select("Stratum", "period", "Treatment", "duration", "rate")
 
-  # put dropout rates into simPWSurv format
+  # put dropout rates into sim_pw_surv format
   dr <- failRates %>%
     group_by(Stratum) %>%
     mutate(Treatment = "Control",

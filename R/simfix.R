@@ -35,7 +35,7 @@ NULL
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
-#' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
+#' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
@@ -255,7 +255,7 @@ simfix <- function(nsim = 1000,
   # compute minimum planned follow-up time
   minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
 
-  # put failure rates into simPWSurv format
+  # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(failRates)
   fr <- temp$failRates
   dr <- temp$dropoutRates
@@ -275,7 +275,7 @@ simfix <- function(nsim = 1000,
     }
 
     # generate piecewise data
-    sim <- simPWSurv(n = sampleSize,
+    sim <- sim_pw_surv(n = sampleSize,
                      strata = strata,
                      enroll_rate = enroll_rate,
                      failRates = fr,

@@ -22,6 +22,6 @@ Cut a Dataset for Analysis at a Specified Date
 # Use default enrollment and event rates and
 # cut at calendar time 5 after start of randomization
 library(dplyr)
-simPWSurv(n = 20) \%>\% cut_data_by_date(5)
+sim_pw_surv(n = 20) \%>\% cut_data_by_date(5)
 
 }

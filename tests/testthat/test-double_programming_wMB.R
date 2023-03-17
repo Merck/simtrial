@@ -16,7 +16,7 @@ test_mb_weight <- function(x, delay = 4){
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum",{
-  x <- simPWSurv(n=200) %>% cut_data_by_event(125) %>% counting_process(arm="Experimental")
+  x <- sim_pw_surv(n=200) %>% cut_data_by_event(125) %>% counting_process(arm="Experimental")
 
   out1 <- test_mb_weight(x, delay=3)
   out1 <- data.frame(out1[order(out1$Stratum,out1$tte),])
@@ -28,7 +28,7 @@ test_that("Validation passed for the situation of single stratum",{
 # Test 2: for the situation of multiple strata ####
 
 test_that("Validation passed for the situation of multiple strata",{
-  x <- simPWSurv(n=200,
+  x <- sim_pw_surv(n=200,
                  # 2 strata,30% and 70% prevalence
                  strata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
                  failRates=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
