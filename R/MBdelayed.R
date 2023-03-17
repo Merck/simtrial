@@ -51,7 +51,7 @@
 #'
 #' # Generate another dataset
 #' ds <- sim_pw_surv(n = 200,
-#'                 enrollRates = tibble(rate = 200 / 12, duration = 12),
+#'                 enroll_rate = tibble(rate = 200 / 12, duration = 12),
 #'                 failRates = tribble(
 #'                    ~Stratum, ~Period, ~Treatment,     ~duration, ~rate,
 #'                    "All",        1,   "Control",      42,        log(2) / 15,
@@ -63,7 +63,7 @@
 #'                    "All",        1,   "Experimental", 42,        0)
 #'        )
 #' # Cut data at 24 months after final enrollment
-#' MBdelayed2 <- ds %>% cut_data_by_date(max(ds$enrollTime) + 24)
+#' MBdelayed2 <- ds %>% cut_data_by_date(max(ds$enroll_time) + 24)
 #'
 #' @references
 #' Magirr, Dominic, and Carl‐Fredrik Burman.

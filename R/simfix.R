@@ -29,7 +29,7 @@ NULL
 #' @param sampleSize Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
 #' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
-#' @param enrollRates Piecewise constant enrollment rates by time period.
+#' @param enroll_rate Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
@@ -114,7 +114,7 @@ simfix <- function(nsim = 1000,
                    # multinomial probability distribution for strata enrollment
                    strata = tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
-                   enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+                   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
                    failRates = tibble(Stratum = "All",
                                       duration = c(3, 100),
@@ -134,12 +134,12 @@ simfix <- function(nsim = 1000,
                    ){
   # check input values
   # check input enrollment rate assumptions
-  if(!("duration" %in% names(enrollRates)) ){
-    stop("simfix: enrollRates column names in `simfix()` must contain duration!")
+  if(!("duration" %in% names(enroll_rate)) ){
+    stop("simfix: enroll_rate column names in `simfix()` must contain duration!")
   }
 
-  if(!("rate" %in% names(enrollRates))){
-    stop("simfix: enrollRates column names in `simfix()` must contain  rate!")
+  if(!("rate" %in% names(enroll_rate))){
+    stop("simfix: enroll_rate column names in `simfix()` must contain  rate!")
   }
 
 
@@ -253,7 +253,7 @@ simfix <- function(nsim = 1000,
   }
 
   # compute minimum planned follow-up time
-  minFollow <- max(0, totalDuration - sum(enrollRates$duration))
+  minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
 
   # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(failRates)
@@ -277,7 +277,7 @@ simfix <- function(nsim = 1000,
     # generate piecewise data
     sim <- sim_pw_surv(n = sampleSize,
                      strata = strata,
-                     enrollRates = enrollRates,
+                     enroll_rate = enroll_rate,
                      failRates = fr,
                      dropoutRates = dr,
                      block = block)
@@ -286,7 +286,7 @@ simfix <- function(nsim = 1000,
     tedate <- sim %>% get_cut_date_by_event(target_event)
 
     # study data that targeted minimum follow-up achieved
-    tmfdate <- max(sim$enrollTime) + minFollow
+    tmfdate <- max(sim$enroll_time) + minFollow
 
     # Compute tests for all specified cutoff options
     r1 <- NULL

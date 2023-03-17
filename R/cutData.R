@@ -39,8 +39,8 @@ cut_data_by_date <- function(x, cut_date){
 
 
   ans <- x %>%
-    filter(enrollTime <= cut_date) %>%
-    mutate(tte = pmin(cte, cut_date) - enrollTime,
+    filter(enroll_time <= cut_date) %>%
+    mutate(tte = pmin(cte, cut_date) - enroll_time,
            event = fail * (cte <= cut_date)) %>%
     select(tte, event, Stratum, Treatment)
 
