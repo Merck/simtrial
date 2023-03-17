@@ -21,7 +21,7 @@ NULL
 
 #' Simulate a stratified time-to-event outcome randomized trial
 #'
-#' \code{simPWSurv} enables simulation of a clinical trial with essentially arbitrary
+#' \code{sim_pw_surv} enables simulation of a clinical trial with essentially arbitrary
 #' patterns of enrollment, failure rates and censoring.
 #' The piecewise exponential distribution allows a simple method to specify a distribtuion
 #' and enrollment pattern
@@ -39,7 +39,7 @@ NULL
 #' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum
 #' in `p`
 #' @param block Vector of treatments to be included in each  block
-#' @param enrollRates Enrollment rates; see details and examples
+#' @param enroll_rate Enrollment rates; see details and examples
 #' @param failRates Failure rates; see details and examples; note that treatments need
 #' to be the same as input in block
 #' @param dropoutRates Dropout rates; see details and examples; note that treatments need
@@ -47,7 +47,7 @@ NULL
 #'
 #' @return a \code{tibble} with the following variables for each observation
 #' \code{Stratum},
-#' \code{enrollTime} (enrollment time for the observation),
+#' \code{enroll_time} (enrollment time for the observation),
 #' \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
 #' \code{failTime} (failure time generated using \code{rpwexp()}),
 #' \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
@@ -59,16 +59,16 @@ NULL
 #' library(tibble)
 #'
 #' # example 1
-#' simPWSurv(n = 20)
+#' sim_pw_surv(n = 20)
 #'
 #' # example 2
 #' # 3:1 randomization
-#' simPWSurv(n = 20,
+#' sim_pw_surv(n = 20,
 #'           block = c(rep("Experimental",3), "Control"))
 #'
 #' # example 3
 #' # Simulate 2 strata; will use defaults for blocking and enrollRates
-#' simPWSurv(n = 20,
+#' sim_pw_surv(n = 20,
 #'           # 2 strata,30% and 70% prevalence
 #'           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
 #'           failRates = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
@@ -98,16 +98,16 @@ NULL
 #'   tibble(Stratum = "High", period=1, Treatment = "Control"     , duration = 3, rate = .001),
 #'   tibble(Stratum = "High", period=1, Treatment = "Experimental", duration = 3, rate = .001))
 #'
-#'simPWSurv(n = 12,
+#'sim_pw_surv(n = 12,
 #'          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
 #'          failRates = failRates,
 #'          dropoutRates = dropoutRates)
 #' @export
-simPWSurv <- function(
+sim_pw_surv <- function(
     n = 100,
     strata = tibble(Stratum = "All", p = 1),
     block = c(rep("Control", 2), rep("Experimental", 2)),
-    enrollRates = tibble(rate = 9, duration = 1),
+    enroll_rate = tibble(rate = 9, duration = 1),
     failRates = tibble(Stratum = rep("All", 4),
                        period = rep(1:2,2),
                        Treatment = c(rep("Control", 2), rep("Experimental", 2)),
@@ -124,7 +124,7 @@ simPWSurv <- function(
                                size = n,
                                replace = TRUE,
                                prob = strata$p)) %>%
-    mutate(enrollTime = rpw_enroll(n, enrollRates)) %>%
+    mutate(enroll_time = rpw_enroll(n, enroll_rate)) %>%
     group_by(Stratum) %>%
     # assign treatment
     mutate(Treatment = randomize_by_fixed_block(n = n(), block = block)) %>%
@@ -148,7 +148,7 @@ simPWSurv <- function(
 
     # set calendar time-to-event and failure indicator
     ans <- x %>%
-      mutate(cte = pmin(dropoutTime, failTime) + enrollTime,
+      mutate(cte = pmin(dropoutTime, failTime) + enroll_time,
              fail = (failTime <= dropoutTime) * 1)
     return(ans)
 }

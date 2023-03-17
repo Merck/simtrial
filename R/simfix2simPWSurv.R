@@ -56,9 +56,9 @@ NULL
 #'
 #' # Do a single simulation with the above rates
 #' # Enroll 300 patients in ~12 months at constant rate
-#' sim <- simPWSurv(n = 300,
+#' sim <- sim_pw_surv(n = 300,
 #'                  strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
-#'                  enrollRates = tibble(duration = 12, rate = 300 / 12),
+#'                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
 #'                  failRates = x$failRates,
 #'                  dropoutRates = x$dropoutRates)
 #'

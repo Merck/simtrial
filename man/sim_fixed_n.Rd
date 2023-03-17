@@ -9,7 +9,7 @@ sim_fixed_n(
   sampleSize = 500,
   target_event = 350,
   strata = tibble(Stratum = "All", p = 1),
-  enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+  enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
   failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
     hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
   totalDuration = 30,
@@ -28,7 +28,7 @@ sim_fixed_n(
 
 \item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
 
-\item{enrollRates}{Piecewise constant enrollment rates by time period.
+\item{enroll_rate}{Piecewise constant enrollment rates by time period.
 Note that these are overall population enrollment rates and the \code{strata} argument controls the
 random distribution between strata.}
 
@@ -37,7 +37,7 @@ and dropout rates by stratum and time period.}
 
 \item{totalDuration}{Total follow-up from start of enrollment to data cutoff.}
 
-\item{block}{As in \code{simtrial::simPWSurv()}. Vector of treatments to be included in each block.}
+\item{block}{As in \code{simtrial::sim_pw_surv()}. Vector of treatments to be included in each block.}
 
 \item{timingType}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
