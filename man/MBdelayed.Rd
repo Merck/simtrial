@@ -47,8 +47,8 @@ ten <- ten \%>\% mb_weight(6)
 head(ten)
 
 # Now compute test based on these weights
-ten \%>\% summarise(S = sum(o_minus_e*wMB),
-                  V = sum(var_o_minus_e*wMB^2),
+ten \%>\% summarise(S = sum(o_minus_e*mb_weight),
+                  V = sum(var_o_minus_e*mb_weight^2),
                   Z = S/sqrt(V)) \%>\%
         mutate(p = pnorm(Z))
 
