@@ -82,7 +82,7 @@ NULL
 #' @export
 #' @rdname wlr
 #'
-tenFH <- function(x = sim_pw_surv(n = 200) %>%
+wlr <- function(x = sim_pw_surv(n = 200) %>%
                         cut_data_by_event(150) %>%
                         counting_process(arm = "Experimental"),
                   rg = tibble(rho = c(0, 0, 1, 1),
