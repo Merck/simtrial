@@ -67,7 +67,7 @@ randomize_by_fixed_block(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpw_enroll(n = 20, enrollRates = tibble(
+rpw_enroll(n = 20, enroll_rate = tibble(
   duration = c(1, 2),
   rate = c(2, 5)
 ))
@@ -105,7 +105,7 @@ strata <- tibble(Stratum = c("Negative", "Positive"), p = c(.5, .5))
 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
-enrollRates <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
+enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
 failRates <- tibble(
   Stratum = c(rep("Negative", 4), rep("Positive", 4)),
@@ -128,7 +128,7 @@ x <- simPWSurv(
   n = 400,
   strata = strata,
   block = block,
-  enrollRates = enrollRates,
+  enroll_rate = enroll_rate,
   failRates = failRates,
   dropoutRates = dropoutRates
 )
@@ -225,7 +225,7 @@ Here the argument structure is meant to be simpler than for `simPWSurv()`.
 
 ```{r}
 strata <- tibble(Stratum = "All", p = 1)
-enrollRates <- tibble(
+enroll_rate <- tibble(
   duration = c(2, 2, 10),
   rate = c(3, 6, 9)
 )
@@ -254,7 +254,7 @@ simfix(
   sampleSize = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
-  enrollRates = enrollRates, # Enrollment rates
+  enroll_rate = enroll_rate, # Enrollment rates
   failRates = failRates, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
@@ -264,17 +264,17 @@ simfix(
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
-To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enrollRates`:
+To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
-enrollRates %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
+enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enrollRates`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
 totalDuration <- 30 # From above
-totalDuration - sum(enrollRates$duration)
+totalDuration - sum(enroll_rate$duration)
 ```
 
 It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with "Minimum follow-up" cutoff in the simulations above.

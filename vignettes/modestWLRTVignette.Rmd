@@ -46,7 +46,7 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 36
 sampleSize <- 300
-enrollRates <- tibble::tibble(duration = 12, rate = 200 / 12)
+ enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
 failRates <- tibble::tribble(
   ~Stratum, ~duration, ~failRate, ~hr, ~dropoutRate,
   "All", 6, log(2) / 15, 1, 0,
@@ -64,7 +64,7 @@ MBdelay <- simPWSurv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
-  enrollRates = enrollRates,
+   enroll_rate =  enroll_rate,
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%
@@ -134,7 +134,7 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 studyDuration <- 5
 sampleSize <- 2000
 enrollDuration <- .0001
-enrollRates <- tibble::tibble(duration = enrollDuration, rate = sampleSize / enrollDuration)
+ enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sampleSize / enrollDuration)
 failRates <- tibble::tibble(
   Stratum = "All",
   failRate = 0.25,
@@ -154,7 +154,7 @@ FHwn <- simPWSurv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
-  enrollRates = enrollRates,
+   enroll_rate =  enroll_rate,
   failRates = xpar$failRates,
   dropoutRates = xpar$dropoutRates
 ) %>%

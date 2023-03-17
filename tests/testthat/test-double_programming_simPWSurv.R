@@ -3,7 +3,7 @@ strata <- tibble::tibble(Stratum=c("Low","High"),p=c(.4,.6))
 
 block <- c(rep("Control",2),rep("Experimental",2))
 
-enrollRates = tibble::tibble(duration = c(5,195), rate = c(100,3000))
+enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
 failRates <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,Treatment="Control"     ,duration=3,rate=.03),
@@ -25,7 +25,7 @@ set.seed(1)
 x <- simPWSurv(n=400000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
+               enroll_rate = enroll_rate,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
@@ -83,12 +83,12 @@ testthat::test_that("DropoutRates calculated from simulated dataset must be with
   }
   expect_equal(object=drtest, expected=rep(0.001,300), tolerance=0.001)})
 
-testthat::test_that("enrollRates calculated from simulated dataset must be within
-                    the relative tolerance=0.05 of enrollRates in setup",{
+testthat::test_that("enroll_rate calculated from simulated dataset must be within
+                    the relative tolerance=0.05 of enroll_rate in setup",{
   duration=300
   entest<-0
   for (i in 1:duration){
-    entest[i]=sum(x$enrollTime<=i&x$enrollTime>(i-1))
+    entest[i]=sum(x$enroll_time<=i&x$enroll_time>(i-1))
   }
   entest1<-entest[entest!=0]
   entestexp<-c(rep(100,5), rep(3000,length(entest1)-5))
@@ -100,7 +100,7 @@ set.seed(2468)
 z <- simPWSurv(n=300000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
+               enroll_rate = enroll_rate,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
