@@ -19,16 +19,16 @@
 #' @importFrom tibble tibble
 NULL
 
-#' Conversion of enrollment and failure rates from simfix() to sim_pw_surv() format
+#' Conversion of enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format
 #'
 #' `simfix2simPWSurv()` converts failure rates and dropout rates entered in the simpler
-#' format for `simfix()` to that used for `simtrial::sim_pw_surv()`.
-#' The `failRates` argument for `simfix()` requires enrollment rates, failure rates
+#' format for `sim_fixed_n()` to that used for `simtrial::sim_pw_surv()`.
+#' The `failRates` argument for `sim_fixed_n()` requires enrollment rates, failure rates
 #' hazard ratios and dropout rates by strata for a 2-arm trial, `simtrial::sim_pw_surv()`
 #' is in a more flexible but less obvious but more flexible format.
-#' Since `simfix()` automatically analyzes data and `simtrial::sim_pw_surv()` just produces
+#' Since `sim_fixed_n()` automatically analyzes data and `simtrial::sim_pw_surv()` just produces
 #' a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
-#' individual simulations in ways that `simfix()` does not.
+#' individual simulations in ways that `sim_fixed_n()` does not.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @return A \code{list} of two `tibble` components formatted for `simtrial::sim_pw_surv()`:
@@ -71,7 +71,7 @@ NULL
 #' @export
 #'
 simfix2simPWSurv <- function(
-  # failure rates as in simfix()
+  # failure rates as in sim_fixed_n()
   failRates = tibble(Stratum = "All",
                      duration = c(3, 100),
                      failRate = log(2) / c(9, 18),

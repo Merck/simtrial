@@ -12,9 +12,9 @@ PE <- gsDesign::nSurv(alpha = alpha, beta = c(1-0.9), sided = 1, lambdaC = log(2
 PE <- gsDesign::nSurv(alpha = alpha, beta = c(1-0.93), sided = 1, lambdaC = log(2)/median.c, hr = hr,
                       eta = -log(1-dropout)/12, gamma = gamma, R = R, T=18)
 
-#test for power comparing simfix results with simple study design
+#test for power comparing sim_fixed_n results with simple study design
 set.seed(1234)
-test2<-simfix(nsim=100,
+test2<-sim_fixed_n(nsim=100,
               sampleSize=434,
               target_event=227,
               strata = tibble::tibble(Stratum = "All", p = 1),
@@ -31,12 +31,12 @@ test2<-simfix(nsim=100,
               rg=tibble::tibble(rho=0,gamma=0)
 )
 #load("./fixtures/test_data_simfix.Rdata")
-testthat::test_that("test for simfix power comparing to gsDesign results with fixed duration in timingType=1",{
+testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timingType=1",{
   tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
   expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/100, expected=0.93, tolerance=0.02)
 })
 
-testthat::test_that("test for simfix power comparing to gsDesign results with target events in timingType=2",{
+testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with target events in timingType=2",{
   tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
   expect_equal(object=sum(as.integer(tt2test$Z<(-1.96)))/100, expected=0.90, tolerance=0.02)
 })

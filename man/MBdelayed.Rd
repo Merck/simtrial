@@ -74,7 +74,6 @@ ds <- sim_pw_surv(n = 200,
        )
 # Cut data at 24 months after final enrollment
 MBdelayed2 <- ds \%>\% cut_data_by_date(max(ds$enroll_time) + 24)
-
 }
 \references{
 Magirr, Dominic, and Carl‐Fredrik Burman.
