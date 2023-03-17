@@ -70,6 +70,9 @@
     <loc>https://merck.github.io/simtrial/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/mb_weight.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/pvalue_maxcombo.html</loc>
   </url>
   <url>
@@ -104,8 +107,5 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/tenFHcorr.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/wMB.html</loc>
   </url>
 </urlset>
