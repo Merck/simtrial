@@ -3,7 +3,7 @@ strata <- tibble::tibble(Stratum=c("Low","High"),p=c(.4,.6))
 
 block <- c(rep("Control",2),rep("Experimental",2))
 
-enrollRates = tibble::tibble(duration = c(5,195), rate = c(100,3000))
+enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
 failRates <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,Treatment="Control"     ,duration=3,rate=.03),
@@ -22,10 +22,10 @@ dropoutRates <- bind_rows(
   tibble::tibble(Stratum="High",period=1,Treatment="Experimental",duration=300,rate=.001)
 )
 set.seed(1)
-x <- simPWSurv(n=400000,
+x <- sim_pw_surv(n=400000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
+               enroll_rate = enroll_rate,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
@@ -46,12 +46,14 @@ for (i in seq(1,floor(nrow(block2)/4))){
 }
 
 #prepare to test failRates
-y <- cutData(x,cutDate=300)
+
+y <- cut_data_by_date(x,cut_date=300)
+
 intervals<-c(3)
-rate00 <- with(subset(y,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate01 <- with(subset(y,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
-rate10 <- with(subset(y,Treatment=='Experimental'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate11 <- with(subset(y,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
+rate00 <- with(subset(y,Treatment=='Control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y,Treatment=='Control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y,Treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y,Treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 ratetest<- c(rate00$rate,rate10$rate,rate01$rate, rate11$rate)
 xevent<-bind_rows(rate00, rate01,rate10,rate11)
 
@@ -81,12 +83,12 @@ testthat::test_that("DropoutRates calculated from simulated dataset must be with
   }
   expect_equal(object=drtest, expected=rep(0.001,300), tolerance=0.001)})
 
-testthat::test_that("enrollRates calculated from simulated dataset must be within
-                    the relative tolerance=0.05 of enrollRates in setup",{
+testthat::test_that("enroll_rate calculated from simulated dataset must be within
+                    the relative tolerance=0.05 of enroll_rate in setup",{
   duration=300
   entest<-0
   for (i in 1:duration){
-    entest[i]=sum(x$enrollTime<=i&x$enrollTime>(i-1))
+    entest[i]=sum(x$enroll_time<=i&x$enroll_time>(i-1))
   }
   entest1<-entest[entest!=0]
   entestexp<-c(rep(100,5), rep(3000,length(entest1)-5))
@@ -95,19 +97,21 @@ testthat::test_that("enrollRates calculated from simulated dataset must be withi
 
 #check the arguments, by changing n, the actual number of events changes
 set.seed(2468)
-z <- simPWSurv(n=300000,
+z <- sim_pw_surv(n=300000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
+               enroll_rate = enroll_rate,
                failRates=failRates,
                dropoutRates=dropoutRates)
 
-y1 <- cutData(z,cutDate=300)
+
+y1 <- cut_data_by_date(z,cut_date=300)
+
 intervals<-c(3)
-rate00 <- with(subset(y1,Treatment=='Control'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate01 <- with(subset(y1,Treatment=='Control'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
-rate10 <- with(subset(y1,Treatment=='Experimental'|Stratum=='Low'), pwexpfit(Surv(tte,event),intervals))
-rate11 <- with(subset(y1,Treatment=='Experimental'|Stratum=='High'), pwexpfit(Surv(tte,event),intervals))
+rate00 <- with(subset(y1,Treatment=='Control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y1,Treatment=='Control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y1,Treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y1,Treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 zevent<-bind_rows(rate00, rate01,rate10,rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size",{

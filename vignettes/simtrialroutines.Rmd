@@ -21,15 +21,15 @@ This vignette demonstrates the lower-level routines in the simtrial package spec
 
 The routines are as follows:
 
-* `fixedBlockRand` - fixed block randomization
-* `rpwenroll` - random inter-arrival times with piecewise constant enrollment rates
+* `randomize_by_fixed_block` - fixed block randomization
+* `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
 * `rpwexp` - piecewise exponential failure rate generation
-* `cutData` - cut data for analysis at a specified calendar time
-* `cutDataAtCount` - cut data for analysis at a specified event count, including ties on the cutoff date
-* `getCutDateForCount` - find date at which an event count is reached
-* `tensurv` - pre-process survival data into a counting process format
+* `cut_data_by_date` - cut data for analysis at a specified calendar time
+* `cut_data_by_event` - cut data for analysis at a specified event count, including ties on the cutoff date
+* `get_cut_date_by_event` - find date at which an event count is reached
+* `counting_process` - pre-process survival data into a counting process format
 
-Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
+Application of the above is demonstrated using higher-level routines `sim_pw_surv()` and `sim_fixed_n()` to generate simulations and weighted logrank analysis for a stratified design.
 
 The intent has been to write these routines in the spirit of the tidyverse approach (alternately referred to as data wrangling, tidy data, R for Data Science, or split-apply-combine). 
 The other objectives are to have an easily documentable and validated package that is easy to use and efficient as a broadly-useful tool for simulation of time-to-event clinical trials.
@@ -54,12 +54,12 @@ library(dplyr)
 Fixed block randomization with an arbitrary block contents is performed as demonstrated below. In this case we have a block size of 5 with one string repeated twice in each block and three other strings appearing once each.
 
 ```{r}
-fixedBlockRand(n = 10, block = c("A", "Dog", "Cat", "Cat"))
+randomize_by_fixed_block(n = 10, block = c("A", "Dog", "Cat", "Cat"))
 ```
 More normally, with a default of blocks of size four:
 
 ```{r}
-fixedBlockRand(n = 20)
+randomize_by_fixed_block(n = 20)
 ```
 
 ## Enrollment
@@ -67,7 +67,7 @@ fixedBlockRand(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpwenroll(n = 20, enrollRates = tibble(
+rpw_enroll(n = 20, enroll_rate = tibble(
   duration = c(1, 2),
   rate = c(2, 5)
 ))
@@ -98,14 +98,14 @@ For now, stratified randomization, piecewise constant enrollment, fixed block ra
 At present, follow this format very carefully as little checking of input has been developed to-date.
 The methods used here have all be demonstrated above, but here they are combined in a single routine to generate a trial. Note that in the generated output dataset, `cte` is the calendar time of an event or dropout, whichever comes first, and `fail` is an indicator that `cte` represents an event time.  
 
-First we set up input variables to make the later call to `simPWSurv()` more straightforward to read.
+First we set up input variables to make the later call to `sim_pw_surv()` more straightforward to read.
 
 ```{r}
 strata <- tibble(Stratum = c("Negative", "Positive"), p = c(.5, .5))
 
 block <- c(rep("Control", 2), rep("Experimental", 2))
 
-enrollRates <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
+enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
 failRates <- tibble(
   Stratum = c(rep("Negative", 4), rep("Positive", 4)),
@@ -124,11 +124,11 @@ dropoutRates <- tibble(
 ```
 
 ```{r}
-x <- simPWSurv(
+x <- sim_pw_surv(
   n = 400,
   strata = strata,
   block = block,
-  enrollRates = enrollRates,
+  enroll_rate = enroll_rate,
   failRates = failRates,
   dropoutRates = dropoutRates
 )
@@ -139,25 +139,29 @@ head(x) %>% kable(digits = 2)
 
 There two ways to cut off data in the generated dataset `x` from above. 
 The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`Stratum`) and the treatment group assigned (`Treatment`).
-Observations enrolled after the input `cutDate` are deleted and events and censoring from `x` that are after the `cutDate` are censored at the specified `cutDate`. 
+Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
-y <- cutData(x, cutDate = 5)
+
+y <- cut_data_by_date(x, cut_date = 5)
+
 head(y) %>% kable(digits = 2)
 ```
 
-For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `getCutDateForCount` function as follows:
+For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `get_cut_date_by_event` function as follows:
 
 ```{r}
-cut50Positive <- getCutDateForCount(filter(x, Stratum == "Positive"), 50)
-y50Positive <- cutData(x, cut50Positive)
+
+cut50Positive <- get_cut_date_by_event(filter(x, Stratum == "Positive"), 50)
+y50Positive <- cut_data_by_date(x, cut50Positive)
+
 with(y50Positive, table(Stratum, event))
 ```
 
-Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cutDataAtCount` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
+Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cut_data_by_event` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
 
 ```{r}
-y150 <- cutDataAtCount(x, 150)
+y150 <- cut_data_by_event(x, 150)
 table(y150$event, y150$Treatment)
 ```
 
@@ -167,7 +171,8 @@ Once we have cut data for analysis, we can create a dataset that is very simple 
 The counting process format is further discussed in the next section where we compute a weighted logrank test.
 
 ```{r}
-ten150 <- tensurv(y150, txval = "Experimental")
+ten150 <- counting_process(y150, arm = "Experimental")
+
 head(ten150) %>% kable(digits = 2)
 ```
 
@@ -210,17 +215,18 @@ We can compute a p-value for the MaxCombo as follows using the `pmvnorm` functio
 
 ```{r,message=FALSE}
 # Compute p-value for MaxCombo
-pMaxCombo(x)
+pvalue_maxcombo(x)
 ```
 
 ## Simplification for 2-arm trials
 
-The `simfix()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
-Here the argument structure is meant to be simpler than for `simPWSurv()`.
+The `sim_fixed_n()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
+Here the argument structure is meant to be simpler than for `sim_pw_surv()`.
+
 
 ```{r}
 strata <- tibble(Stratum = "All", p = 1)
-enrollRates <- tibble(
+enroll_rate <- tibble(
   duration = c(2, 2, 10),
   rate = c(3, 6, 9)
 )
@@ -244,12 +250,12 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 5) the maximum of 2 and 3.
 
 ```{r}
-simfix(
+sim_fixed_n(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
-  targetEvents = 350, # Targeted events at analysis
+  target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
-  enrollRates = enrollRates, # Enrollment rates
+  enroll_rate = enroll_rate, # Enrollment rates
   failRates = failRates, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
@@ -259,17 +265,17 @@ simfix(
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
-To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enrollRates`:
+To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
-enrollRates %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
+enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enrollRates`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
 totalDuration <- 30 # From above
-totalDuration - sum(enrollRates$duration)
+totalDuration - sum(enroll_rate$duration)
 ```
 
 It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with "Minimum follow-up" cutoff in the simulations above.

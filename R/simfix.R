@@ -23,19 +23,19 @@ NULL
 
 #' Simulation of fixed sample size design for time-to-event endpoint
 #'
-#' `simfix()` provide simulations of a single endpoint two-arm trial
+#' `sim_fixed_n()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
 #' @param sampleSize Total sample size per simulation.
-#' @param targetEvents Targeted event count for analysis.
+#' @param target_event Targeted event count for analysis.
 #' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
-#' @param enrollRates Piecewise constant enrollment rates by time period.
+#' @param enroll_rate Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
 #' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
-#' @param block As in `simtrial::simPWSurv()`. Vector of treatments to be included in each block.
+#' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
 #' @param timingType A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
@@ -64,16 +64,16 @@ NULL
 #'
 #' # example 1
 #' # Show output structure
-#' simfix(nsim = 3)
+#' sim_fixed_n(nsim = 3)
 #'
 #' # example 2
 #' # Example with 2 tests: logrank and FH(0,1)
-#' simfix(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
+#' sim_fixed_n(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
 #'
 #' # example 3
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- simfix(nsim = 100,
+#' xx <- sim_fixed_n(nsim = 100,
 #'              timingType = c(2, 5),
 #'              rg = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
@@ -85,7 +85,7 @@ NULL
 #' p <- xx %>%
 #'   filter(cut != "Targeted events") %>%
 #'   group_by(Sim) %>%
-#'   group_map(pMaxCombo) %>%
+#'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
 #' mean(p < .025)
@@ -94,7 +94,7 @@ NULL
 #' p <- xx %>%
 #'   filter(cut == "Targeted events") %>%
 #'   group_by(Sim) %>%
-#'   group_map(pMaxCombo) %>%
+#'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
 #' mean(p < .025)
@@ -102,19 +102,19 @@ NULL
 #' # example 3
 #' # Use two cores
 #' registerDoParallel(2)
-#' simfix(nsim = 10, seed = 2022)
+#' sim_fixed_n(nsim = 10, seed = 2022)
 #' stopImplicitCluster()
 #' registerDoSEQ()
 #'
 #' @export
 #'
-simfix <- function(nsim = 1000,
+sim_fixed_n <- function(nsim = 1000,
                    sampleSize = 500, # sample size
-                   targetEvents = 350,  # targeted total event count
+                   target_event = 350,  # targeted total event count
                    # multinomial probability distribution for strata enrollment
                    strata = tibble(Stratum = "All", p = 1),
                    # enrollment rates as in AHR()
-                   enrollRates = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+                   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
                    failRates = tibble(Stratum = "All",
                                       duration = c(3, 100),
@@ -134,99 +134,99 @@ simfix <- function(nsim = 1000,
                    ){
   # check input values
   # check input enrollment rate assumptions
-  if(!("duration" %in% names(enrollRates)) ){
-    stop("simfix: enrollRates column names in `simfix()` must contain duration!")
+  if(!("duration" %in% names(enroll_rate)) ){
+    stop("sim_fixed_n: enrollRates column names in `sim_fixed_n()` must contain duration!")
   }
 
-  if(!("rate" %in% names(enrollRates))){
-    stop("simfix: enrollRates column names in `simfix()` must contain  rate!")
+  if(!("rate" %in% names(enroll_rate))){
+    stop("sim_fixed_n: enrollRates column names in `sim_fixed_n()` must contain  rate!")
   }
 
 
   # check input failure rate assumptions
   if(!("Stratum" %in% names(failRates))){
-    stop("simfix: failRates column names in `simfix()` must contain Stratum!")
+    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain Stratum!")
   }
 
   if(!("duration" %in% names(failRates))){
-    stop("simfix: failRates column names in `simfix()` must contain duration!")
+    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain duration!")
   }
 
   if(!("failRate" %in% names(failRates))){
-    stop("simfix: failRates column names in `simfix()` must contain failRate!")
+    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain failRate!")
   }
 
   if(!("hr" %in% names(failRates))){
-    stop("simfix: failRates column names in `simfix()` must contain hr")
+    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain hr")
   }
 
   if(!("dropoutRate" %in% names(failRates))){
-    stop("simfix: failRates column names in `simfix()` must contain dropoutRate")
+    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain dropoutRate")
   }
 
   # check input trial duration
   if(!is.numeric(totalDuration)){
-    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
   }
 
   if(!is.vector(totalDuration)){
-    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
   }
 
   if(length(totalDuration) != 1){
-    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
   }
 
   if(!min(totalDuration) > 0){
-    stop("simfix: totalDuration in `simfix()` must be a single positive number!")
+    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
   }
 
   # check stratum
   strata2 <- names(table(failRates$Stratum))
   if(nrow(strata) != length(strata2)){
-    stop("simfix: Stratum in `simfix()` must be the same in strata and failRates!")
+    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and failRates!")
   }
 
   if(any(is.na(match(strata$Stratum, strata2))) | any(is.na(match(strata2, strata$Stratum)))){
-    stop("simfix: Stratum in `simfix()` must be the same in strata and failRates!")
+    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and failRates!")
   }
 
   # check nsim
   if(nsim <= 0){
-    stop("simfix: nsim in `simfix()` must be positive integer!")
+    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
   }
 
   if(length(nsim) != 1){
-    stop("simfix: nsim in `simfix()` must be positive integer!")
+    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
   }
 
   if(nsim != ceiling(nsim)){
-    stop("simfix: nsim in `simfix()` must be positive integer!")
+    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
   }
 
-  # check targetEvents
-  if(targetEvents <= 0){
-    stop("simfix: targetEvents in `simfix()` must be positive!")
+  # check target_event
+  if(target_event <= 0){
+    stop("sim_fixed_n: target_event in `sim_fixed_n()` must be positive!")
   }
 
-  if(length(targetEvents) != 1){
-    stop(("simfix: targetEvents in `simfix()` must be positive!"))
+  if(length(target_event) != 1){
+    stop(("sim_fixed_n: target_event in `sim_fixed_n()` must be positive!"))
   }
 
   # check sampleSize
   if(sampleSize <= 0){
-    stop("simfix: sampleSize in `simfix()` must be positive!")
+    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive!")
   }
 
   if(length(sampleSize) != 1){
-    stop("simfix: sampleSize in `simfix()` must be positive")
+    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive")
   }
 
   # check seed
   if(is.null(seed)) {
     setSeed <- FALSE
   } else {
-    if (!is.numeric(seed)){stop("simfix: seed in `simfix()` must be a number")}
+    if (!is.numeric(seed)){stop("sim_fixed_n: seed in `sim_fixed_n()` must be a number")}
     setSeed <- TRUE
   }
 
@@ -235,9 +235,9 @@ simfix <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% tensurv(txval = "Experimental") %>% wlr(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% wlr(rg = rg))$Z)
     } else{
-      Z <- d %>% tensurv(txval = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(
@@ -253,9 +253,9 @@ simfix <- function(nsim = 1000,
   }
 
   # compute minimum planned follow-up time
-  minFollow <- max(0, totalDuration - sum(enrollRates$duration))
+  minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
 
-  # put failure rates into simPWSurv format
+  # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(failRates)
   fr <- temp$failRates
   dr <- temp$dropoutRates
@@ -275,18 +275,18 @@ simfix <- function(nsim = 1000,
     }
 
     # generate piecewise data
-    sim <- simPWSurv(n = sampleSize,
+    sim <- sim_pw_surv(n = sampleSize,
                      strata = strata,
-                     enrollRates = enrollRates,
+                     enroll_rate = enroll_rate,
                      failRates = fr,
                      dropoutRates = dr,
                      block = block)
 
     # study date that targeted event rate achieved
-    tedate <- sim %>% getCutDateForCount(targetEvents)
+    tedate <- sim %>% get_cut_date_by_event(target_event)
 
     # study data that targeted minimum follow-up achieved
-    tmfdate <- max(sim$enrollTime) + minFollow
+    tmfdate <- max(sim$enroll_time) + minFollow
 
     # Compute tests for all specified cutoff options
     r1 <- NULL
@@ -326,19 +326,19 @@ simfix <- function(nsim = 1000,
 
     # Total duration cutoff
     if (tests[1]){
-      d <- sim %>% cutData(totalDuration)
+      d <- sim %>% cut_data_by_date(totalDuration)
       r1 <- d %>% doAnalysis(rg, n_stratum)
     }
 
     # targeted events cutoff
     if (tests[2]){
-      d <- sim %>% cutData(tedate)
+      d <- sim %>% cut_data_by_date(tedate)
       r2 <- d %>% doAnalysis(rg, n_stratum)
     }
 
     # minimum follow-up cutoff
     if (tests[3]){
-      d <- sim %>% cutData(tmfdate)
+      d <- sim %>% cut_data_by_date(tmfdate)
       r3 <- d %>% doAnalysis(rg, n_stratum)
     }
 

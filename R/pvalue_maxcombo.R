@@ -22,14 +22,14 @@ NULL
 
 #' MaxCombo p-value
 #'
-#' \code{pMaxCombo()} computes p-values for the MaxCombo test
-#' based on output from \code{simtrial::wlrcorr()}.
+#' \code{pvalue_maxcombo()} computes p-values for the MaxCombo test
+#' based on output from \code{simtrial::tenFHcorr()}.
 #' This is still in an experimental stage and is intended for use with
-#' the \code{simtrial::simfix()} trial simulation routine.
+#' the \code{simtrial::sim_fixed_n()} trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as that provided in the
 #' ADaM ADTTE format.
-#' @param Z a dataset output from \code{wlrcorr()}; see examples.
-#' @param dummyvar a dummy input that allows \code{group_map()} to be used to
+#' @param Z a dataset output from \code{tenFHcorr()}; see examples.
+#' @param dummy_var a dummy input that allows \code{group_map()} to be used to
 #' compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}
 #'
@@ -41,29 +41,29 @@ NULL
 #' library(dplyr)
 #'
 #' # example 1
-#' x <- simfix(nsim = 1,
+#' x <- sim_fixed_n(nsim = 1,
 #'             timingType = 5,
 #'             rg = tibble(rho = c(0, 0, 1),
 #'                         gamma = c(0, 1, 1)))
 #' head(x)
-#' pMaxCombo(x)
+#' pvalue_maxcombo(x)
 #'
 #' # example 2
 #' # Only use cuts for events, events + min follow-up
-#' xx <- simfix(nsim = 100,
+#' xx <- sim_fixed_n(nsim = 100,
 #'              timingType = 5,
 #'              rg = tibble(rho = c(0, 0, 1),
 #'                          gamma = c(0, 1, 1)))
 #' head(xx)
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx %>% group_by(Sim) %>% group_map(pMaxCombo) %>% unlist()
+#' p <- xx %>% group_by(Sim) %>% group_map(pvalue_maxcombo) %>% unlist()
 #' mean(p < .025)
 #'
 #' @export
 #'
-pMaxCombo <- function(Z,
-                      dummyvar,
-                      algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
+pvalue_maxcombo<- function(Z,
+                           dummy_var,
+                           algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
 
   ans <- (1 - mvtnorm::pmvnorm(lower = rep(Z$Z %>% min() %>% as.numeric(),
                                            nrow(Z)),

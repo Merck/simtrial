@@ -37,33 +37,34 @@ reference:
     - rpwexp
     - rpwexpRcpp
     - rpwexpinvRcpp
-    - rpwenroll
-    - pwexpfit
+    - rpw_enroll
+    - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
-    - simPWSurv
-    - simfix
+    - sim_pw_surv
+    - sim_fixed_n
     - simfix2simPWSurv
 - title: "Cut data"
   contents:
-    - cutData
-    - cutDataAtCount
-    - getCutDateForCount
+    - cut_data_by_date
+    - cut_data_by_event
+    - get_cut_date_by_event
+
 - title: "Compute p-values/test statistics"
   contents:
     - wlr
     - tenFHcorr
-    - tensurv
-    - wMB
-    - pMaxCombo
+    - counting_process
+    - mb_weight
+    - pvalue_maxcombo
 - title: "Randomization algorithms"
   contents:
-    - fixedBlockRand
+    - randomize_by_fixed_block
 
 articles:
 - title: "Example simulation workflows"
   contents:
   - arbitraryhazard
   - modestWLRTVignette
-  - pMaxComboVignette
+  - pvalue_maxcomboVignette
   - simtrialroutines

@@ -33,10 +33,10 @@ NULL
 #' is greater than or equal to underlying survival in the experimental group,
 #' Type I error is controlled as the specified level.
 #'
-#' This function computes Magirr-Burman weights and adds them to a dataset created by the \code{tensurv()} function.
+#' This function computes Magirr-Burman weights and adds them to a dataset created by the \code{counting_process()} function.
 #' These weights can then be used to compute a Z-statistic for the modestly weighted logrank test proposed.
 #'
-#' @param x a \code{tensurv}-class \code{tibble} with a counting process dataset
+#' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
 #' @param delay The initial delay period where weights increase;
 #' after this, weights are constant at the final weight in the delay period
 #' @param wmax Maximum weight to be returned.
@@ -70,16 +70,16 @@ NULL
 #'
 #' # Use default enrollment and event rates at cut at 100 events
 #' # For transparency, may be good to set either `delay` or `wmax` to Inf`
-#' x <- simPWSurv(n = 200) %>%
-#'   cutDataAtCount(125) %>%
-#'   tensurv(txval = "Experimental")
+#' x <- sim_pw_surv(n = 200) %>%
+#'   cut_data_by_event(125) %>%
+#'   counting_process(arm = "Experimental")
 #'
 #' # example 1
 #' # compute Magirr-Burman weights with `delay = 6`
 #' ZMB <- x %>%
-#'   wMB(delay = 6, wmax = Inf) %>%
-#'   summarize(S = sum(o_minus_e * wMB),
-#'             V = sum(var_o_minus_e * wMB^2),
+#'   mb_weight(delay = 6, wmax = Inf) %>%
+#'   summarize(S = sum(o_minus_e * mb_weight),
+#'             V = sum(var_o_minus_e * mb_weight^2),
 #'             Z = S / sqrt(V))
 #'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -88,49 +88,49 @@ NULL
 #' # example 2
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 #' ZMB2 <- x %>%
-#'   wMB(delay = Inf, wmax = 2) %>%
-#'   summarize(S = sum(o_minus_e * wMB),
-#'             V = sum(var_o_minus_e * wMB^2),
+#'   mb_weight(delay = Inf, wmax = 2) %>%
+#'   summarize(S = sum(o_minus_e * mb_weight),
+#'             V = sum(var_o_minus_e * mb_weight^2),
 #'             Z = S / sqrt(V))
 #'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB2$Z)
 #'
 #' @export
-wMB <- function(x, delay = 4, wmax = Inf)
+mb_weight <- function(x, delay = 4, wmax = Inf)
 {
   # check input failure rate assumptions
   if(!is.data.frame(x)){
-    stop("x in `wMB()` must be a data frame")
+    stop("x in `mb_weight()` must be a data frame")
   }
 
   # check input delay
   if(!is.numeric(delay)){
-    stop("delay in `wMB()` must be a non-negative number")
+    stop("delay in `mb_weight()` must be a non-negative number")
   }
 
   if(!delay >= 0){
-    stop("delay in `wMB()` must be a non-negative number")
+    stop("delay in `mb_weight()` must be a non-negative number")
   }
 
   if(!is.numeric(wmax)){
-    stop("wmax (maximum weight) in `wMB()` must be a positive number")
+    stop("wmax (maximum weight) in `mb_weight()` must be a positive number")
   }
 
   if(!delay > 0){
-    stop("wmax (maximum weight) in `wMB()` must be a positive number")
+    stop("wmax (maximum weight) in `mb_weight()` must be a positive number")
   }
 
   if(max(names(x)=="Stratum") != 1){
-    stop("x column names in `wMB()` must contain Stratum")
+    stop("x column names in `mb_weight()` must contain Stratum")
   }
 
   if(max(names(x)=="tte") != 1){
-    stop("x column names in `wMB()` must contain tte")
+    stop("x column names in `mb_weight()` must contain tte")
   }
 
   if(max(names(x)=="S") != 1){
-    stop("x column names in `wMB()` must contain S")
+    stop("x column names in `mb_weight()` must contain S")
   }
 
   # Compute max weight by stratum
@@ -152,7 +152,7 @@ wMB <- function(x, delay = 4, wmax = Inf)
     # Now merge max_weight back to stratified dataset
     full_join(x2, by = "Stratum") %>%
     # Weight is min of max_weight and 1/S which will increase up to delay
-    mutate(wMB = pmin(max_weight, 1/S)) %>%
+    mutate(mb_weight = pmin(max_weight, 1/S)) %>%
     select(-max_weight)
 
   return(ans)

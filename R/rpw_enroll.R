@@ -23,14 +23,14 @@ NULL
 #' Generate Piecewise Exponential Enrollment
 #'
 #' With piecewise exponential enrollment rate generation any enrollment rate distribution can be easily approximated.
-#' \code{rpwenroll()} is to support simulation of both the Lachin and Foulkes (1986) sample size
+#' \code{rpw_enroll()} is to support simulation of both the Lachin and Foulkes (1986) sample size
 #' method for (fixed trial duration) as well as the Kim and Tsiatis(1990) method
 #' (fixed enrollment rates and either fixed enrollment duration or fixed minimum follow-up);
 #' see \code{\link[gsDesign:nSurv]{gsDesign}}.
 #'
 #' @param n Number of observations.
 #' Default of \code{NULL} yields random enrollment size.
-#' @param enrollRates A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
+#' @param enroll_rate A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
 #' for specified enrollment periods.
 #' If necessary, last period will be extended to ensure enrollment of specified \code{n}.
 #'
@@ -41,8 +41,8 @@ NULL
 #' # Example 1
 #' # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 #' # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-#' x <- rpwenroll(n = 1e5,
-#'                enrollRates = tibble(rate = c(5, 15, 30),
+#' x <- rpw_enroll(n = 1e5,
+#'                enroll_rate = tibble(rate = c(5, 15, 30),
 #'                                     duration = c(100, 200, 100)))
 #' plot(x, 1:1e5,
 #'      main = "Piecewise uniform enrollment simulation",
@@ -51,34 +51,34 @@ NULL
 #'
 #' # Example 2
 #' # exponential enrollment
-#' x <- rpwenroll(n = 1e5,
-#'                enrollRates = tibble(rate = .03, duration = 1))
+#' x <- rpw_enroll(n = 1e5,
+#'                enroll_rate = tibble(rate = .03, duration = 1))
 #' plot(x, 1:1e5,
 #'      main = "Simulated exponential inter-arrival times",
 #'      xlab = "Time",
 #'      ylab = "Enrollment")
 #'
 #' @export
-rpwenroll <- function(n = NULL,
-                      enrollRates = tibble(duration = c(1, 2), rate = c(2, 5))
+rpw_enroll <- function(n = NULL,
+                       enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5))
 ){
 
   # take care of the simple case first
   # if it is exponential enrollment
-  if(nrow(enrollRates) == 1) {
+  if(nrow(enroll_rate) == 1) {
     # stop with error message if only 1 enrollment period and the enrollment rate is less or equal with 0
-    if (enrollRates$rate <= 0){
-      stop("rpwenroll: please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
+    if (enroll_rate$rate <= 0){
+      stop("rpw_enroll: please specify > 0 enrollment rate, otherwise enrollment cannot finish.")
     }
     # otherwise, return inter-arrival exponential times
     else{
-      ans <- cumsum(stats::rexp(n = n,rate = enrollRates$rate))
+      ans <- cumsum(stats::rexp(n = n,rate = enroll_rate$rate))
       return(ans)
     }
   }
 
   # build `y` summarizes the start/end time, period order, etc..
-  y <- enrollRates %>%
+  y <- enroll_rate %>%
     dplyr::mutate(period = row_number(),
            finish = cumsum(duration),
            lambda = duration * rate,
@@ -94,28 +94,28 @@ rpwenroll <- function(n = NULL,
       return(ans)
     }
 
-    if (dplyr::last(enrollRates$rate) <= 0){
+    if (dplyr::last(enroll_rate$rate) <= 0){
       # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-      stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+      stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
     }else{
       # otherwise, return inter-arrival exponential times
-      ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish)
+      ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enroll_rate$rate))) + dplyr::last(y$finish)
       return(ans)
     }
   }
 
   # generate sorted uniform observations for Poisson count for each interval
-  z <- tidyr::expand(y, enrollTime = sort(stats::runif(n = N, min = origin, max = finish)))
+  z <- tidyr::expand(y, enroll_time = sort(stats::runif(n = N, min = origin, max = finish)))
 
   # if n not specified, return generated times
   if (is.null(n)){
-    ans <- z$enrollTime
+    ans <- z$enroll_time
     return(ans)
   }
 
   # if n already achieved, return first n observations
   if (nrow(z) >= n){
-    ans <- z$enrollTime[1:n]
+    ans <- z$enroll_time[1:n]
     return(ans)
   }
 
@@ -123,13 +123,13 @@ rpwenroll <- function(n = NULL,
   # exponential inter-arrival times
   n_add <- n - nrow(z)
   # stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
-  if (dplyr::last(enrollRates$rate) <= 0){
-    stop("rpwenroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
+  if (dplyr::last(enroll_rate$rate) <= 0){
+    stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
   }
   # Otherwise, return inter-arrival exponential times
   else{
-    ans <- c(z$enrollTime,
-             cumsum(stats::rexp(n_add, rate = dplyr::last(enrollRates$rate))) + dplyr::last(y$finish))
+    ans <- c(z$enroll_time,
+             cumsum(stats::rexp(n_add, rate = dplyr::last(enroll_rate$rate))) + dplyr::last(y$finish))
     return(ans)
   }
 }
