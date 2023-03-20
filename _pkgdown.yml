@@ -52,7 +52,7 @@ reference:
 
 - title: "Compute p-values/test statistics"
   contents:
-    - tenFH
+    - wlr
     - tenFHcorr
     - counting_process
     - mb_weight

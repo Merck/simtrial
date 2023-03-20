@@ -68,8 +68,8 @@ NULL
 #'                             gamma =.5),
 #'                 corr = FALSE)
 #'
-#' # compare off diagonal result with tenFH()
-#' x %>% tenFH(rg = tibble(rho = 0, gamma =.5))
+#' # compare off diagonal result with wlr()
+#' x %>% wlr(rg = tibble(rho = 0, gamma =.5))
 #'
 #' @export
 #' @rdname tenFHcorr
@@ -100,7 +100,7 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
 
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  rg_fh <- rg_new %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
+  rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, returnVariance = TRUE),
                                 by = c("rho" = "rho","gamma" = "gamma"))
 
   # get Z statistics for input rho, gamma combinations
