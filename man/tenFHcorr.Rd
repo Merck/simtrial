@@ -62,7 +62,7 @@ x \%>\% tenFHcorr(rg = tibble(rho = 0,
                             gamma =.5),
                 corr = FALSE)
 
-# compare off diagonal result with tenFH()
-x \%>\% tenFH(rg = tibble(rho = 0, gamma =.5))
+# compare off diagonal result with wlr()
+x \%>\% wlr(rg = tibble(rho = 0, gamma =.5))
 
 }
