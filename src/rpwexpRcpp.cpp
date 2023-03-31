@@ -5,13 +5,13 @@ using namespace Rcpp;
 //' The Piecewise Exponential Distribution in C++
 //'
 //' @param n Number of observations to be generated.
-//' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
+//' @param fail_rate A dataframe containing \code{duration} and \code{rate} variables.
 //' @export
 // [[Rcpp::export]]
 NumericVector rpwexpRcpp(int n,
-                      DataFrame failRates) {
-  NumericVector duration = failRates["duration"];
-  NumericVector rate = failRates["rate"];
+                      DataFrame fail_rate) {
+  NumericVector duration = fail_rate["duration"];
+  NumericVector rate = fail_rate["rate"];
   int n_rates = duration.size();
 
   // Initialize failure times to Inf

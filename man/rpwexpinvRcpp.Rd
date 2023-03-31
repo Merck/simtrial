@@ -4,12 +4,12 @@
 \alias{rpwexpinvRcpp}
 \title{The Piecewise Exponential Distribution using inverse CDF method in C++}
 \usage{
-rpwexpinvRcpp(n, failRates)
+rpwexpinvRcpp(n, fail_rate)
 }
 \arguments{
 \item{n}{Number of observations to be generated.}
 
-\item{failRates}{A dataframe containing \code{duration} and \code{rate} variables.}
+\item{fail_rate}{A dataframe containing \code{duration} and \code{rate} variables.}
 }
 \description{
 The Piecewise Exponential Distribution using inverse CDF method in C++

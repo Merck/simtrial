@@ -4,18 +4,18 @@
 #' The Piecewise Exponential Distribution in C++
 #'
 #' @param n Number of observations to be generated.
-#' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
+#' @param fail_rate A dataframe containing \code{duration} and \code{rate} variables.
 #' @export
-rpwexpRcpp <- function(n, failRates) {
-    .Call(`_simtrial_rpwexpRcpp`, n, failRates)
+rpwexpRcpp <- function(n, fail_rate) {
+    .Call(`_simtrial_rpwexpRcpp`, n, fail_rate)
 }
 
 #' The Piecewise Exponential Distribution using inverse CDF method in C++
 #'
 #' @param n Number of observations to be generated.
-#' @param failRates A dataframe containing \code{duration} and \code{rate} variables.
+#' @param fail_rate A dataframe containing \code{duration} and \code{rate} variables.
 #' @export
-rpwexpinvRcpp <- function(n, failRates) {
-    .Call(`_simtrial_rpwexpinvRcpp`, n, failRates)
+rpwexpinvRcpp <- function(n, fail_rate) {
+    .Call(`_simtrial_rpwexpinvRcpp`, n, fail_rate)
 }
 

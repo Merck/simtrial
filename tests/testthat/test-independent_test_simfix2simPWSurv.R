@@ -7,12 +7,12 @@ fail_rate <- tibble::tibble(Stratum=c(rep("Low",3),rep("High",3)),
                             dropoutRate=.01
 )
 
-fail_ratePWSurv<-simfix2simPWSurv(fail_rate)$fail_rate
+failRatesPWSurv<-simfix2simPWSurv(fail_rate)$fail_rate
 dropoutRatesPWSurv<-simfix2simPWSurv(fail_rate)$dropoutRates
 
 testthat::test_that("Stratum values must be the same and stratum length must be doubled after converting",{
   strata1 <- names(table(fail_rate$Stratum))
-  strata2 <- names(table(fail_ratePWSurv$Stratum))
+  strata2 <- names(table(failRatesPWSurv$Stratum))
   testthat::expect_equal(strata1,strata2)
   testthat::expect_equal(length(fail_rate$Stratum)*2,length(failRatesPWSurv$Stratum))
   strata3 <- names(table(dropoutRatesPWSurv$Stratum))
@@ -37,7 +37,7 @@ testthat::test_that("Duration values match before and after converting and in ri
 
 testthat::test_that("fail_rate match before and after converting and are in right length ",{
   testthat::expect_equal(fail_rate$fail_rate,failRatesPWSurv$rate[1:length(fail_rate$fail_rate)])
-  testthat::expect_equal(fail_rate$fail_rate*fail_rate$hr,fail_ratePWSurv$rate[(length(fail_rate$fail_rate)+1):(length(fail_rate$fail_rate)*2)])
+  testthat::expect_equal(fail_rate$fail_rate*fail_rate$hr,failRatesPWSurv$rate[(length(fail_rate$fail_rate)+1):(length(fail_rate$fail_rate)*2)])
 })
 
 testthat::test_that("dropoutRates match before and after converting and are in right length ",{
