@@ -5,7 +5,7 @@ block <- c(rep("Control",2),rep("Experimental",2))
 
 enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
-failRates <- bind_rows(
+fail_rate <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,Treatment="Control"     ,duration=3,rate=.03),
   tibble::tibble(Stratum="Low" ,period=2,Treatment="Control"     ,duration=297,rate=.03),
   tibble::tibble(Stratum="Low" ,period=1,Treatment="Experimental",duration=3,rate=.03),
@@ -26,7 +26,7 @@ x <- sim_pw_surv(n=400000,
                strata = strata,
                block = block,
                enroll_rate = enroll_rate,
-               failRates=failRates,
+               fail_rate=fail_rate,
                dropoutRates=dropoutRates)
 
 #prepare to test block
@@ -45,7 +45,7 @@ for (i in seq(1,floor(nrow(block2)/4))){
   bktest2[i]<-sum(stringr::str_count(block2$Treatment[j:(j+3)], "Control"))
 }
 
-#prepare to test failRates
+#prepare to test fail_rate
 
 y <- cut_data_by_date(x,cut_date=300)
 
@@ -70,9 +70,9 @@ testthat::test_that("block calculated from simulated dataset equals size of 4 wi
   expect_equal(object=bktest2, expected=rep(2,length(bktest2)))
 })
 
-testthat::test_that("failRates calculated from simulated dataset must be within the
-                    tolerance=0.1 of failRates in setting",{
-  expect_equal(object=ratetest, expected=failRates$rate, tolerance=0.1)})
+testthat::test_that("fail_rate calculated from simulated dataset must be within the
+                    tolerance=0.1 of fail_rate in setting",{
+  expect_equal(object=ratetest, expected=fail_rate$rate, tolerance=0.1)})
 
 testthat::test_that("DropoutRates calculated from simulated dataset must be within
                     the tolerance=0.0005 of DropoutRates=0.001 in setup",{
@@ -101,7 +101,7 @@ z <- sim_pw_surv(n=300000,
                strata = strata,
                block = block,
                enroll_rate = enroll_rate,
-               failRates=failRates,
+               fail_rate=fail_rate,
                dropoutRates=dropoutRates)
 
 

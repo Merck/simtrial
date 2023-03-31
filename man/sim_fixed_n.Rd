@@ -10,7 +10,7 @@ sim_fixed_n(
   target_event = 350,
   strata = tibble(Stratum = "All", p = 1),
   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
-  failRates = tibble(Stratum = "All", duration = c(3, 100), failRate = log(2)/c(9, 18),
+  fail_rate = tibble(Stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
     hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
   totalDuration = 30,
   block = rep(c("Experimental", "Control"), 2),
@@ -32,7 +32,7 @@ sim_fixed_n(
 Note that these are overall population enrollment rates and the \code{strata} argument controls the
 random distribution between strata.}
 
-\item{failRates}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+\item{fail_rate}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 and dropout rates by stratum and time period.}
 
 \item{totalDuration}{Total follow-up from start of enrollment to data cutoff.}

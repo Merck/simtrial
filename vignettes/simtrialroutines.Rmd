@@ -79,7 +79,7 @@ Time-to-event and time-to-dropout random number generation for observations is g
 
 ```{r,fig.width=6}
 x <- rpwexp(10000,
-  failRates = tibble(
+  fail_rate = tibble(
     rate = c(1, 3, 10),
     duration = c(.5, .5, 1)
   )
@@ -107,7 +107,7 @@ block <- c(rep("Control", 2), rep("Experimental", 2))
 
 enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
-failRates <- tibble(
+fail_rate <- tibble(
   Stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
   Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
@@ -129,7 +129,7 @@ x <- sim_pw_surv(
   strata = strata,
   block = block,
   enroll_rate = enroll_rate,
-  failRates = failRates,
+  fail_rate = fail_rate,
   dropoutRates = dropoutRates
 )
 head(x) %>% kable(digits = 2)
@@ -230,10 +230,10 @@ enroll_rate <- tibble(
   duration = c(2, 2, 10),
   rate = c(3, 6, 9)
 )
-failRates <- tibble(
+fail_rate <- tibble(
   Stratum = "All",
   duration = c(3, 100),
-  failRate = log(2) / c(9, 18),
+  fail_rate = log(2) / c(9, 18),
   hr = c(0.9, 0.6),
   dropoutRate = rep(0.001, 2)
 )
@@ -256,7 +256,7 @@ sim_fixed_n(
   target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
   enroll_rate = enroll_rate, # Enrollment rates
-  failRates = failRates, # Failure rates
+  fail_rate = fail_rate, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
   timingType = 1:5, # Use all possible data cutoff methods

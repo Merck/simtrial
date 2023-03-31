@@ -40,7 +40,7 @@ NULL
 #' in `p`
 #' @param block Vector of treatments to be included in each  block
 #' @param enroll_rate Enrollment rates; see details and examples
-#' @param failRates Failure rates; see details and examples; note that treatments need
+#' @param fail_rate Failure rates; see details and examples; note that treatments need
 #' to be the same as input in block
 #' @param dropoutRates Dropout rates; see details and examples; note that treatments need
 #' to be the same as input in block
@@ -49,7 +49,7 @@ NULL
 #' \code{Stratum},
 #' \code{enroll_time} (enrollment time for the observation),
 #' \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
-#' \code{failTime} (failure time generated using \code{rpwexp()}),
+#' \code{fail_time} (failure time generated using \code{rpwexp()}),
 #' \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
 #' \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
 #' \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
@@ -71,7 +71,7 @@ NULL
 #' sim_pw_surv(n = 20,
 #'           # 2 strata,30% and 70% prevalence
 #'           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
-#'           failRates = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
+#'           fail_rate = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
 #'                              period = rep(1:2, 4),
 #'                              Treatment = rep(c(rep("Control", 2),
 #'                                          rep("Experimental", 2)), 2),
@@ -84,7 +84,7 @@ NULL
 #'                                 rate = rep(.001, 4)))
 #' # example 4
 #' # If you want a more rectangular entry for a tibble
-#' failRates <- bind_rows(
+#' fail_rate <- bind_rows(
 #'   tibble(Stratum = "Low" , period = 1, Treatment = "Control"     , duration = 3, rate = .03),
 #'   tibble(Stratum = "Low" , period = 1, Treatment = "Experimental", duration = 3, rate = .03),
 #'   tibble(Stratum = "Low" , period = 2, Treatment = "Experimental", duration = 3, rate = .02),
@@ -100,7 +100,7 @@ NULL
 #'
 #'sim_pw_surv(n = 12,
 #'          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
-#'          failRates = failRates,
+#'          fail_rate = fail_rate,
 #'          dropoutRates = dropoutRates)
 #' @export
 sim_pw_surv <- function(
@@ -108,7 +108,7 @@ sim_pw_surv <- function(
     strata = tibble(Stratum = "All", p = 1),
     block = c(rep("Control", 2), rep("Experimental", 2)),
     enroll_rate = tibble(rate = 9, duration = 1),
-    failRates = tibble(Stratum = rep("All", 4),
+    fail_rate = tibble(Stratum = rep("All", 4),
                        period = rep(1:2,2),
                        Treatment = c(rep("Control", 2), rep("Experimental", 2)),
                        duration = rep(c(3, 1), 2),
@@ -133,22 +133,22 @@ sim_pw_surv <- function(
 
     unique_stratum <- unique(x$Stratum)
     unique_treatment <- unique(x$Treatment)
-    x$failTime <- 0
+    x$fail_time <- 0
     x$dropoutTime <- 0
 
     for(sr in unique_stratum){
       for(tr in unique_treatment){
       indx <- x$Stratum ==sr & x$Treatment == tr
-      x$failTime[indx] <- rpwexpinvRcpp(n = sum(indx),
-                                        failRates = failRates[failRates$Stratum == sr & failRates$Treatment == tr, , drop = FALSE])
+      x$fail_time[indx] <- rpwexpinvRcpp(n = sum(indx),
+                                        fail_rate = fail_rate[fail_rate$Stratum == sr & fail_rate$Treatment == tr, , drop = FALSE])
       x$dropoutTime[indx] <- rpwexpinvRcpp(n = sum(indx),
-                                           failRates = dropoutRates[dropoutRates$Stratum == sr & dropoutRates$Treatment == tr, ,drop = FALSE])
+                                           fail_rate = dropoutRates[dropoutRates$Stratum == sr & dropoutRates$Treatment == tr, ,drop = FALSE])
       }
     }
 
     # set calendar time-to-event and failure indicator
     ans <- x %>%
-      mutate(cte = pmin(dropoutTime, failTime) + enroll_time,
-             fail = (failTime <= dropoutTime) * 1)
+      mutate(cte = pmin(dropoutTime, fail_time) + enroll_time,
+             fail = (fail_time <= dropoutTime) * 1)
     return(ans)
 }
