@@ -4,7 +4,7 @@ test_that("x is a time-to-event data set", {
   testthat::expect_equal(1,max(names(x)=="Stratum"))
   testthat::expect_equal(1,max(names(x)=="enroll_time"))
   testthat::expect_equal(1,max(names(x)=="Treatment"))
-  testthat::expect_equal(1,max(names(x)=="failTime"))
+  testthat::expect_equal(1,max(names(x)=="fail_time"))
   testthat::expect_equal(1,max(names(x)=="dropoutTime"))
   testthat::expect_equal(1,max(names(x)=="fail"))
   testthat::expect_equal(1,max(names(x)=="cte"))

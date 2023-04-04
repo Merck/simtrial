@@ -31,7 +31,7 @@ test_that("Validation passed for the situation of multiple strata",{
   x <- sim_pw_surv(n=200,
                  # 2 strata,30% and 70% prevalence
                  strata=tibble::tibble(Stratum=c("Low","High"),p=c(.3,.7)),
-                 failRates=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
+                 fail_rate=tibble::tibble(Stratum=c(rep("Low",4),rep("High",4)),
                                           period=rep(1:2,4),
                                           Treatment=rep(c(rep("Control",2),rep("Experimental",2)),2),
                                           duration=rep(c(3,1),4),

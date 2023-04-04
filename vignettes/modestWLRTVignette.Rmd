@@ -47,8 +47,8 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 studyDuration <- 36
 sampleSize <- 300
  enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
-failRates <- tibble::tribble(
-  ~Stratum, ~duration, ~failRate, ~hr, ~dropoutRate,
+fail_rate <- tibble::tribble(
+  ~Stratum, ~duration, ~fail_rate, ~hr, ~dropoutRate,
   "All", 6, log(2) / 15, 1, 0,
   "All", 36, log(2) / 15, .6, 0
 )
@@ -59,13 +59,13 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE, warning=FALSE, fig.width=7.5, fig.height=4}
 set.seed(7789)
-xpar <- simfix2simPWSurv(failRates)
+xpar <- simfix2simPWSurv(fail_rate)
 MBdelay <- sim_pw_surv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
    enroll_rate =  enroll_rate,
-  failRates = xpar$failRates,
+  fail_rate = xpar$fail_rate,
   dropoutRates = xpar$dropoutRates
 ) %>%
   cut_data_by_date(studyDuration)
@@ -135,9 +135,9 @@ studyDuration <- 5
 sampleSize <- 2000
 enrollDuration <- .0001
  enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sampleSize / enrollDuration)
-failRates <- tibble::tibble(
+fail_rate <- tibble::tibble(
   Stratum = "All",
-  failRate = 0.25,
+  fail_rate = 0.25,
   dropoutRate = 0,
   hr = c(4 / .25, .19 / .25),
   duration = c(.1, 4.9)
@@ -149,13 +149,13 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
 set.seed(7783)
-xpar <- simfix2simPWSurv(failRates)
+xpar <- simfix2simPWSurv(fail_rate)
 FHwn <- sim_pw_surv(
   n = sampleSize,
   strata = tibble::tibble(Stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
    enroll_rate =  enroll_rate,
-  failRates = xpar$failRates,
+  fail_rate = xpar$fail_rate,
   dropoutRates = xpar$dropoutRates
 ) %>%
   cut_data_by_date(studyDuration)

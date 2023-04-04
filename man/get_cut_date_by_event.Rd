@@ -27,7 +27,7 @@ x <- sim_pw_surv(
   n = 200,
   strata = tibble(Stratum = c("Positive", "Negative"),
                   p = c(.5, .5)),
-  failRates = tibble(Stratum = rep(c("Positive","Negative"), 2),
+  fail_rate = tibble(Stratum = rep(c("Positive","Negative"), 2),
                      period = rep(1, 4),
                      Treatment = c(rep("Control", 2), rep("Experimental", 2)),
                      duration = rep(1, 4),

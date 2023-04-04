@@ -32,7 +32,7 @@ NULL
 #' @param enroll_rate Piecewise constant enrollment rates by time period.
 #' Note that these are overall population enrollment rates and the `strata` argument controls the
 #' random distribution between strata.
-#' @param failRates Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+#' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
@@ -116,9 +116,9 @@ sim_fixed_n <- function(nsim = 1000,
                    # enrollment rates as in AHR()
                    enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
-                   failRates = tibble(Stratum = "All",
+                   fail_rate = tibble(Stratum = "All",
                                       duration = c(3, 100),
-                                      failRate = log(2) / c(9, 18),
+                                      fail_rate = log(2) / c(9, 18),
                                       hr = c(.9, .6),
                                       dropoutRate = rep(.001, 2)),
                    # total planned trial duration; single value
@@ -144,24 +144,24 @@ sim_fixed_n <- function(nsim = 1000,
 
 
   # check input failure rate assumptions
-  if(!("Stratum" %in% names(failRates))){
-    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain Stratum!")
+  if(!("Stratum" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain Stratum!")
   }
 
-  if(!("duration" %in% names(failRates))){
-    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain duration!")
+  if(!("duration" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain duration!")
   }
 
-  if(!("failRate" %in% names(failRates))){
-    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain failRate!")
+  if(!("fail_rate" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain fail_rate!")
   }
 
-  if(!("hr" %in% names(failRates))){
-    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain hr")
+  if(!("hr" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain hr")
   }
 
-  if(!("dropoutRate" %in% names(failRates))){
-    stop("sim_fixed_n: failRates column names in `sim_fixed_n()` must contain dropoutRate")
+  if(!("dropoutRate" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain dropoutRate")
   }
 
   # check input trial duration
@@ -182,13 +182,13 @@ sim_fixed_n <- function(nsim = 1000,
   }
 
   # check stratum
-  strata2 <- names(table(failRates$Stratum))
+  strata2 <- names(table(fail_rate$Stratum))
   if(nrow(strata) != length(strata2)){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and failRates!")
+    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
   }
 
   if(any(is.na(match(strata$Stratum, strata2))) | any(is.na(match(strata2, strata$Stratum)))){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and failRates!")
+    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
   }
 
   # check nsim
@@ -256,8 +256,8 @@ sim_fixed_n <- function(nsim = 1000,
   minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
 
   # put failure rates into sim_pw_surv format
-  temp <- simfix2simPWSurv(failRates)
-  fr <- temp$failRates
+  temp <- simfix2simPWSurv(fail_rate)
+  fr <- temp$fail_rate
   dr <- temp$dropoutRates
   results <- NULL
 
@@ -278,7 +278,7 @@ sim_fixed_n <- function(nsim = 1000,
     sim <- sim_pw_surv(n = sampleSize,
                      strata = strata,
                      enroll_rate = enroll_rate,
-                     failRates = fr,
+                     fail_rate = fr,
                      dropoutRates = dr,
                      block = block)
 

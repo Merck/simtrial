@@ -52,7 +52,7 @@
 #' # Generate another dataset
 #' ds <- sim_pw_surv(n = 200,
 #'                 enroll_rate = tibble(rate = 200 / 12, duration = 12),
-#'                 failRates = tribble(
+#'                 fail_rate = tribble(
 #'                    ~Stratum, ~Period, ~Treatment,     ~duration, ~rate,
 #'                    "All",        1,   "Control",      42,        log(2) / 15,
 #'                    "All",        1,   "Experimental", 6,         log(2) / 15,
