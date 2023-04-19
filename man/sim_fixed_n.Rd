@@ -14,7 +14,7 @@ sim_fixed_n(
     hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
   totalDuration = 30,
   block = rep(c("Experimental", "Control"), 2),
-  timingType = 1:5,
+  timing_type = 1:5,
   rg = tibble(rho = 0, gamma = 0),
   seed = NULL
 )
@@ -39,7 +39,7 @@ and dropout rates by stratum and time period.}
 
 \item{block}{As in \code{simtrial::sim_pw_surv()}. Vector of treatments to be included in each block.}
 
-\item{timingType}{A numeric vector determining data cutoffs used; see details.
+\item{timing_type}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
 
 \item{rg}{As in \code{simtrial::tenFHCorr()}.
@@ -52,7 +52,7 @@ to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
 \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
-One row per simulated dataset per cutoff specified in \code{timingType}, per test statistic specified.
+One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
 are also included.
 }
@@ -61,7 +61,7 @@ are also included.
 where the enrollment, hazard ratio, and failure and dropout rates change over time.
 }
 \details{
-\code{timingType} has up to 5 elements indicating different options for data cutoff.
+\code{timing_type} has up to 5 elements indicating different options for data cutoff.
 1 uses the planned study duration, 2 the time the targeted event count is achieved,
 3 the planned minimum follow-up after enrollment is complete,
 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
@@ -85,7 +85,7 @@ sim_fixed_n(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
 # Power by test
 # Only use cuts for events, events + min follow-up
 xx <- sim_fixed_n(nsim = 100,
-             timingType = c(2, 5),
+             timing_type = c(2, 5),
              rg = tibble(rho = 0, gamma = c(0, 1)))
 # Get power approximation for FH, data cutoff combination
 xx \%>\%
