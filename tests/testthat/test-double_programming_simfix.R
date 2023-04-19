@@ -15,7 +15,7 @@ PE <- gsDesign::nSurv(alpha = alpha, beta = c(1-0.93), sided = 1, lambdaC = log(
 #test for power comparing sim_fixed_n results with simple study design
 set.seed(1234)
 test2<-sim_fixed_n(nsim=100,
-              sampleSize=434,
+              sample_size=434,
               target_event=227,
               strata = tibble::tibble(Stratum = "All", p = 1),
               enroll_rate=tibble::tibble(duration=c(1,1,9),

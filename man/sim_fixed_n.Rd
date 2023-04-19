@@ -6,7 +6,7 @@
 \usage{
 sim_fixed_n(
   nsim = 1000,
-  sampleSize = 500,
+  sample_size = 500,
   target_event = 350,
   strata = tibble(Stratum = "All", p = 1),
   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
@@ -22,7 +22,7 @@ sim_fixed_n(
 \arguments{
 \item{nsim}{Number of simulations to perform.}
 
-\item{sampleSize}{Total sample size per simulation.}
+\item{sample_size}{Total sample size per simulation.}
 
 \item{target_event}{Targeted event count for analysis.}
 
