@@ -5,7 +5,7 @@ block <- c(rep("control",2),rep("experimental",2))
 
 enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
-failRates <- bind_rows(
+fail_rate <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=3,rate=.03),
   tibble::tibble(Stratum="Low" ,period=2,treatment="control"     ,duration=297,rate=.03),
   tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=3,rate=.03),
