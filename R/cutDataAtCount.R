@@ -27,7 +27,7 @@
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
 #' x <- sim_pw_surv(n = 200) %>% cut_data_by_event(100)
-#' table(x$event, x$Treatment)
+#' table(x$event, x$treatment)
 #'
 #' @return a \code{tibble} ready for survival analysis, including culumns time to event (`tte`),
 #' `event`, the `stratum` and the `treatment.`
