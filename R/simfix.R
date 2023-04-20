@@ -36,14 +36,14 @@ NULL
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
-#' @param timingType A numeric vector determining data cutoffs used; see details.
+#' @param timing_type A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations
 #'
-#' @details \code{timingType} has up to 5 elements indicating different options for data cutoff.
+#' @details \code{timing_type} has up to 5 elements indicating different options for data cutoff.
 #' 1 uses the planned study duration, 2 the time the targeted event count is achieved,
 #' 3 the planned minimum follow-up after enrollment is complete,
 #' 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
@@ -52,7 +52,7 @@ NULL
 #' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
 #' \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
-#' One row per simulated dataset per cutoff specified in \code{timingType}, per test statistic specified.
+#' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
 #' are also included.
 #'
@@ -74,7 +74,7 @@ NULL
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
 #' xx <- sim_fixed_n(nsim = 100,
-#'              timingType = c(2, 5),
+#'              timing_type = c(2, 5),
 #'              rg = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>%
@@ -126,7 +126,7 @@ sim_fixed_n <- function(nsim = 1000,
                    # Fixed block randomization specification
                    block = rep(c("Experimental", "Control"), 2),
                    # select desired cutoffs for analysis (default is all types)
-                   timingType = 1:5,
+                   timing_type = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
                    rg = tibble(rho = 0, gamma = 0),
@@ -296,19 +296,19 @@ sim_fixed_n <- function(nsim = 1000,
     tests <- rep(FALSE, 3)
 
     ## Total planned trial duration or max of this and targeted events
-    if (1 %in% timingType){
+    if (1 %in% timing_type){
       tests[1] <- TRUE       # planned duration cutoff
     }
 
-    if (2 %in% timingType){
+    if (2 %in% timing_type){
       tests[2] <- TRUE       # targeted events cutoff
     }
 
-    if (3 %in% timingType){
+    if (3 %in% timing_type){
       tests[3] <- TRUE       # minimum follow-up duration target
     }
 
-    if (4 %in% timingType){  # max of planned duration, targeted events
+    if (4 %in% timing_type){  # max of planned duration, targeted events
       if (tedate > totalDuration){
         tests[2] <- TRUE
       }else{
@@ -316,7 +316,7 @@ sim_fixed_n <- function(nsim = 1000,
       }
     }
 
-    if (5 %in% timingType){  # max of minimum follow-up, targeted events
+    if (5 %in% timing_type){  # max of minimum follow-up, targeted events
       if (tedate > tmfdate){
         tests[2] <- TRUE
       }else{
@@ -344,28 +344,28 @@ sim_fixed_n <- function(nsim = 1000,
 
     addit <- NULL
     # planned duration cutoff
-    if (1 %in% timingType){
+    if (1 %in% timing_type){
       addit <- rbind(addit,
                      r1 %>% mutate(cut = "Planned duration",
                                    Duration = totalDuration))
     }
 
     # targeted events cutoff
-    if (2 %in% timingType){
+    if (2 %in% timing_type){
       addit <- rbind(addit,
                      r2 %>% mutate(cut = "Targeted events",
                                    Duration = tedate))
     }
 
     # minimum follow-up duration target
-    if (3 %in% timingType){
+    if (3 %in% timing_type){
       addit <- rbind(addit,
                      r3 %>% mutate(cut = "Minimum follow-up",
                                    Duration = tmfdate))
     }
 
     # max of planned duration, targeted events
-    if (4 %in% timingType){
+    if (4 %in% timing_type){
       if (tedate > totalDuration){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(planned duration, event cut)",
@@ -378,7 +378,7 @@ sim_fixed_n <- function(nsim = 1000,
     }
 
     # max of minimum follow-up, targeted events
-    if (5 %in% timingType){
+    if (5 %in% timing_type){
       if (tedate > tmfdate){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(min follow-up, event cut)",

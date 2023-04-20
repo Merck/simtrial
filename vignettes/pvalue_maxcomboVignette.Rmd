@@ -49,7 +49,7 @@ library(dplyr)
 ```
 
 ```{r}
-x <- sim_fixed_n(nsim = 1, timingType = 5, rg = tibble::tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
+x <- sim_fixed_n(nsim = 1, timing_type = 5, rg = tibble::tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 x %>% kable(digits = 2)
 ```
 
@@ -133,7 +133,7 @@ We now consider the example simulation from the `pvalue_maxcombo()` help file to
 
 ```{r,cache=FALSE,warning=FALSE,message=FALSE}
 # Only use cut events + min follow-up
-xx <- sim_fixed_n(nsim = 100, timingType = 5, rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
+xx <- sim_fixed_n(nsim = 100, timing_type = 5, rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 p <- unlist(xx %>% group_by(Sim) %>% group_map(pvalue_maxcombo))
 mean(p < .001)
@@ -145,7 +145,7 @@ The latter can be done without having to re-run all simulations as follows, demo
 
 ```{r,cache=FALSE,warning=FALSE,message=FALSE}
 # Only use cuts for events and events + min follow-up
-xx <- sim_fixed_n(nsim = 100, timingType = c(2, 5), rg = tibble(rho = 0, gamma = c(0, 1)))
+xx <- sim_fixed_n(nsim = 100, timing_type = c(2, 5), rg = tibble(rho = 0, gamma = c(0, 1)))
 head(xx) %>% kable(digits = 2)
 ```
 

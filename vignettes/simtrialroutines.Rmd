@@ -241,7 +241,7 @@ block <- rep(c("Experimental", "Control"), 2)
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
-Now we simulate a trial 2 times and cut data for analysis based on `timingType = 1:5` which translates to: 
+Now we simulate a trial 2 times and cut data for analysis based on `timing_type = 1:5` which translates to: 
 
 1) the planned study duration, 
 2) targeted event count is achieved, 
@@ -259,7 +259,7 @@ sim_fixed_n(
   fail_rate = fail_rate, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
-  timingType = 1:5, # Use all possible data cutoff methods
+  timing_type = 1:5, # Use all possible data cutoff methods
   rg = rg # FH test(s) to use; in this case, logrank
 ) %>% kable(digits = 2)
 ```
