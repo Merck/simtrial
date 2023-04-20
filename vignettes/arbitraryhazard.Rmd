@@ -52,7 +52,7 @@ We assume that observations are censored at an exponential rate of about 5% per 
 ```{r,fig.height=4,fig.width=7.5}
 tx <- "Log-logistic"
 enroll_rate <- tibble(duration = .5, rate = 500)
-dropoutRates <- tibble(treatment = tx, duration = 3, rate = .05, period = 1, Stratum = "All")
+dropout_rate  <- tibble(treatment = tx, duration = 3, rate = .05, period = 1, Stratum = "All")
 block <- rep(tx, 2)
 x <- sim_pw_surv(
   n = 250, # sample size
@@ -60,7 +60,7 @@ x <- sim_pw_surv(
 
   enroll_rate = enroll_rate,
   fail_rate = xx %>% mutate(Stratum = "All", treatment = tx, period = 1:n(), Stratum = "All"),
-  dropoutRates = dropoutRates
+  dropout_rate  = dropout_rate 
 )
 ```
 

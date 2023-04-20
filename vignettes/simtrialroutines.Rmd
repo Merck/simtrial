@@ -114,7 +114,7 @@ fail_rate <- tibble(
   duration = rep(c(3, 1), 4),
   rate = log(2) / c(4, 9, 4.5, 10, 4, 9, 8, 18)
 )
-dropoutRates <- tibble(
+dropout_rate <- tibble(
   Stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
   treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
@@ -130,7 +130,7 @@ x <- sim_pw_surv(
   block = block,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  dropoutRates = dropoutRates
+  dropout_rate = dropout_rate 
 )
 head(x) %>% kable(digits = 2)
 ```
@@ -236,7 +236,7 @@ fail_rate <- tibble(
   duration = c(3, 100),
   fail_rate = log(2) / c(9, 18),
   hr = c(0.9, 0.6),
-  dropoutRate = rep(0.001, 2)
+  dropout_rate = rep(0.001, 2)
 )
 block <- rep(c("experimental", "control"), 2)
 rg <- tibble(rho = 0, gamma = 0)

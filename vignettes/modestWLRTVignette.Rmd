@@ -48,7 +48,7 @@ studyDuration <- 36
 sampleSize <- 300
  enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
 fail_rate <- tibble::tribble(
-  ~Stratum, ~duration, ~fail_rate, ~hr, ~dropoutRate,
+  ~Stratum, ~duration, ~fail_rate, ~hr, ~dropout_rate,
   "All", 6, log(2) / 15, 1, 0,
   "All", 36, log(2) / 15, .6, 0
 )
@@ -66,7 +66,7 @@ MBdelay <- sim_pw_surv(
   block = c(rep("control", 2), rep("experimental", 2)),
    enroll_rate =  enroll_rate,
   fail_rate = xpar$fail_rate,
-  dropoutRates = xpar$dropoutRates
+  dropout_rate = xpar$dropout_rate
 ) %>%
   cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelay)
@@ -138,7 +138,7 @@ enrollDuration <- .0001
 fail_rate <- tibble::tibble(
   Stratum = "All",
   fail_rate = 0.25,
-  dropoutRate = 0,
+  dropout_rate = 0,
   hr = c(4 / .25, .19 / .25),
   duration = c(.1, 4.9)
 )
@@ -156,7 +156,7 @@ FHwn <- sim_pw_surv(
   block = c(rep("control", 2), rep("experimental", 2)),
    enroll_rate =  enroll_rate,
   fail_rate = xpar$fail_rate,
-  dropoutRates = xpar$dropoutRates
+  dropout_rate = xpar$dropout_rate
 ) %>%
 cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
