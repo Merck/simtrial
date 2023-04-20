@@ -32,7 +32,7 @@ x <- sim_pw_surv(
                      treatment = c(rep("control", 2), rep("experimental", 2)),
                      duration = rep(1, 4),
                      rate = log(2) / c(6, 9, 9, 12)),
-  dropoutRates = tibble(Stratum = rep(c("Positive", "Negative"),2),
+  dropout_rate = tibble(Stratum = rep(c("Positive", "Negative"),2),
                         period = rep(1, 4),
                         treatment = c(rep("control", 2), rep("experimental", 2)),
                         duration = rep(1, 4),
