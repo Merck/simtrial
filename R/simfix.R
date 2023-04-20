@@ -26,7 +26,7 @@ NULL
 #' `sim_fixed_n()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
-#' @param sampleSize Total sample size per simulation.
+#' @param sample_size Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
 #' @param stratum A tibble with stratum specified in `stratum`, probability (incidence) of each stratum in `p`.
 #' @param enroll_rate Piecewise constant enrollment rates by time period.
@@ -109,7 +109,7 @@ NULL
 #' @export
 #'
 sim_fixed_n <- function(nsim = 1000,
-                   sampleSize = 500, # sample size
+                   sample_size = 500, # sample size
                    target_event = 350,  # targeted total event count
                    # multinomial probability distribution for stratum enrollment
                    stratum = tibble(stratum = "All", p = 1),
@@ -213,13 +213,13 @@ sim_fixed_n <- function(nsim = 1000,
     stop(("sim_fixed_n: target_event in `sim_fixed_n()` must be positive!"))
   }
 
-  # check sampleSize
-  if(sampleSize <= 0){
-    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive!")
+  # check sample_size
+  if(sample_size <= 0){
+    stop("sim_fixed_n: sample_size in `sim_fixed_n()` must be positive!")
   }
 
-  if(length(sampleSize) != 1){
-    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive")
+  if(length(sample_size) != 1){
+    stop("sim_fixed_n: sample_size in `sim_fixed_n()` must be positive")
   }
 
   # check seed
@@ -275,7 +275,7 @@ sim_fixed_n <- function(nsim = 1000,
     }
 
     # generate piecewise data
-    sim <- sim_pw_surv(n = sampleSize,
+    sim <- sim_pw_surv(n = sample_size,
                      stratum = stratum,
                      enroll_rate = enroll_rate,
                      fail_rate = fr,

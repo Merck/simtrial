@@ -252,7 +252,7 @@ Now we simulate a trial 2 times and cut data for analysis based on `timing_type 
 ```{r}
 sim_fixed_n(
   nsim = 2, # Number of simulations
-  sampleSize = 500, # Trial sample size
+  sample_size = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis
   stratum = stratum, # Study stratum
   enroll_rate = enroll_rate, # Enrollment rates
@@ -265,13 +265,13 @@ sim_fixed_n(
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
-To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enroll_rate`:
+To explain, we note that generally you will want `sample_size` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
 enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sample_size` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
 totalDuration <- 30 # From above
