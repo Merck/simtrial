@@ -32,7 +32,7 @@ NULL
 #' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @return A \code{list} of two `tibble` components formatted for `simtrial::sim_pw_surv()`:
-#' `fail_rate` and `dropoutRates`.
+#' `fail_rate` and `dropout_rate`.
 #'
 #' @examples
 #' library(tidyr)
@@ -50,7 +50,7 @@ NULL
 #'                                  .08,.16,.12),
 #'                     hr = c(1.5, .5, 2/3,
 #'                            2, 10/16, 10/12),
-#'                     dropoutRate =.01)
+#'                     dropout_rate =.01)
 #'
 #' x <- simfix2simPWSurv(fail_rate)
 #'
@@ -60,7 +60,7 @@ NULL
 #'                  strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
 #'                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
 #'                  fail_rate = x$fail_rate,
-#'                  dropoutRates = x$dropoutRates)
+#'                  dropout_rate = x$dropout_rate)
 #'
 #' # Cut after 200 events and do a stratified logrank test
 #' dat <- sim %>%
@@ -75,7 +75,7 @@ simfix2simPWSurv <- function(
                      duration = c(3, 100),
                      fail_rate = log(2) / c(9, 18),
                      hr = c(.9, .6),
-                     dropoutRate = rep(.001, 2))
+                     dropout_rate = rep(.001, 2))
   ){
   # put failure rates into sim_pw_surv format
   fr <- rbind(fail_rate %>%
@@ -96,7 +96,7 @@ simfix2simPWSurv <- function(
   dr <- fail_rate %>%
     group_by(Stratum) %>%
     mutate(treatment = "control",
-           rate = dropoutRate,
+           rate = dropout_rate,
            period = 1:n()) %>%
     select("Stratum", "period", "treatment", "duration", "rate") %>%
     ungroup()
@@ -104,5 +104,5 @@ simfix2simPWSurv <- function(
   dr <- rbind(dr,
               dr %>% mutate(treatment = "experimental"))
 
-  return(list(fail_rate = fr, dropoutRates = dr))
+  return(list(fail_rate = fr, dropout_rate = dr))
 }
