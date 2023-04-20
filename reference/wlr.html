@@ -96,7 +96,7 @@ the this will be returned in the column <code>Var</code></p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The input value <code>x</code> produced by <code><a href="counting_process.html">counting_process()</a></code> produces a counting process dataset
-grouped by strata and sorted within strata by increasing times where events occur.</p><ul><li><p>\(Z\) - standardized normal Fleming-Harrington weighted logrank test</p></li>
+grouped by stratum and sorted within stratum by increasing times where events occur.</p><ul><li><p>\(Z\) - standardized normal Fleming-Harrington weighted logrank test</p></li>
 <li><p>\(i\)  - stratum index</p></li>
 <li><p>\(d_i\) - number of distinct times at which events occurred in stratum \(i\)</p></li>
 <li><p>\(t_{ij}\) - ordered times at which events in stratum \(i\), \(j=1,2,\ldots d_i\) were observed;
@@ -138,8 +138,8 @@ $$Z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma     Z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">4.15</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">3.96</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">3.23</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">2.52</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
