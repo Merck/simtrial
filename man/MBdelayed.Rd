@@ -61,13 +61,13 @@ ten \%>\% summarise(S = sum(o_minus_e*w6),
 
 # Generate another dataset
 ds <- sim_pw_surv(n = 200,
-                enrollRates = tibble(rate = 200 / 12, duration = 12),
-                failRates = tribble(
+                enroll_rate = tibble(rate = 200 / 12, duration = 12),
+                fail_rate = tribble(
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        log(2) / 15,
                    "All",        1,   "experimental", 6,         log(2) / 15,
                    "All",        2,   "experimental", 36,        log(2) / 15 * 0.6),
-                dropoutRates = tribble(
+                dropout_rate = tribble(
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        0,
                    "All",        1,   "experimental", 42,        0)

@@ -12,7 +12,7 @@ sim_pw_surv(
   fail_rate = tibble(Stratum = rep("All", 4), period = rep(1:2, 2), treatment =
     c(rep("control", 2), rep("experimental", 2)), duration = rep(c(3, 1), 2), rate =
     log(2)/c(9, 9, 9, 18)),
-  dropoutRates = tibble(Stratum = rep("All", 2), period = rep(1, 2), treatment =
+  dropout_rate = tibble(Stratum = rep("All", 2), period = rep(1, 2), treatment =
     c("control", "experimental"), duration = rep(100, 2), rate = rep(0.001, 2))
 )
 }
@@ -30,7 +30,7 @@ in \code{p}}
 \item{fail_rate}{Failure rates; see details and examples; note that treatments need
 to be the same as input in block}
 
-\item{dropoutRates}{Dropout rates; see details and examples; note that treatments need
+\item{dropout_rate}{Dropout rates; see details and examples; note that treatments need
 to be the same as input in block}
 }
 \value{
@@ -80,7 +80,7 @@ sim_pw_surv(n = 20,
                                          rep("experimental", 2)), 2),
                              duration = rep(c(3,1), 4),
                              rate = c(.03, .05, .03, .03, .05, .08, .07, .04)),
-          dropoutRates = tibble(Stratum = c(rep("Low", 2), rep("High", 2)),
+          dropout_rate = tibble(Stratum = c(rep("Low", 2), rep("High", 2)),
                                 period = rep(1, 4),
                                 treatment = rep(c("control", "experimental"), 2),
                                 duration = rep(1, 4),
@@ -95,7 +95,7 @@ fail_rate <- bind_rows(
   tibble(Stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
   tibble(Stratum = "High", period = 2, treatment = "experimental", duration = 3, rate = .03))
 
-dropoutRates <- bind_rows(
+dropout_rate <- bind_rows(
   tibble(Stratum = "Low" , period=1, treatment = "control"     , duration = 3, rate = .001),
   tibble(Stratum = "Low" , period=1, treatment = "experimental", duration = 3, rate = .001),
   tibble(Stratum = "High", period=1, treatment = "control"     , duration = 3, rate = .001),
@@ -104,5 +104,5 @@ dropoutRates <- bind_rows(
 sim_pw_surv(n = 12,
          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
          fail_rate = fail_rate,
-         dropoutRates = dropoutRates)
+         dropout_rate = dropout_rate)
 }
