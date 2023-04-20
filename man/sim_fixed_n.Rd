@@ -11,7 +11,7 @@ sim_fixed_n(
   strata = tibble(Stratum = "All", p = 1),
   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
   fail_rate = tibble(Stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
-    hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2)),
+    hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   totalDuration = 30,
   block = rep(c("experimental", "control"), 2),
   timingType = 1:5,
