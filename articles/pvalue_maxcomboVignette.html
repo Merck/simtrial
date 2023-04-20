@@ -132,7 +132,7 @@ enrollment and the date at which the targeted event count was reached.
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">1</span>, timingType <span class="op">=</span> <span class="fl">5</span>, rg <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">1</span>, timing_type <span class="op">=</span> <span class="fl">5</span>, rg <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if</span></span>
 <span><span class="co">#&gt; `.name_repair` is omitted as of tibble 2.0.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span></span>
@@ -171,42 +171,42 @@ enrollment and the date at which the targeted event count was reached.
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">350</td>
-<td align="right">-0.42</td>
+<td align="right">382</td>
+<td align="right">-0.38</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.90</td>
+<td align="right">-3.72</td>
 <td align="right">1.00</td>
 <td align="right">0.86</td>
-<td align="right">0.93</td>
+<td align="right">0.94</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">78.15</td>
+<td align="right">74.49</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">350</td>
-<td align="right">-0.42</td>
+<td align="right">382</td>
+<td align="right">-0.38</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-3.68</td>
+<td align="right">-4.43</td>
 <td align="right">0.86</td>
 <td align="right">1.00</td>
-<td align="right">0.95</td>
+<td align="right">0.91</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">78.15</td>
+<td align="right">74.49</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">350</td>
-<td align="right">-0.42</td>
+<td align="right">382</td>
+<td align="right">-0.38</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-3.78</td>
-<td align="right">0.93</td>
-<td align="right">0.95</td>
+<td align="right">-4.17</td>
+<td align="right">0.94</td>
+<td align="right">0.91</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">78.15</td>
+<td align="right">74.49</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -216,7 +216,7 @@ follows (note that you will need to have the package
 <strong>mvtnorm</strong> installed):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4.836748e-05</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 5.612042e-06</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="generating-data-with-simtrialsim_pw_surv">Generating data with <code>simtrial::sim_pw_surv()</code><a class="anchor" aria-label="anchor" href="#generating-data-with-simtrialsim_pw_surv"></a>
@@ -249,56 +249,56 @@ routine.</p>
 <tbody>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.22</td>
-<td align="left">Experimental</td>
-<td align="right">2.28</td>
-<td align="right">1942.64</td>
-<td align="right">2.50</td>
+<td align="right">0.02</td>
+<td align="left">Control</td>
+<td align="right">38.92</td>
+<td align="right">1468.02</td>
+<td align="right">38.95</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.22</td>
+<td align="right">0.04</td>
 <td align="left">Control</td>
-<td align="right">19.18</td>
-<td align="right">453.06</td>
-<td align="right">19.40</td>
+<td align="right">8.92</td>
+<td align="right">82.52</td>
+<td align="right">8.96</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.25</td>
+<td align="right">0.21</td>
 <td align="left">Experimental</td>
-<td align="right">0.34</td>
-<td align="right">2009.40</td>
-<td align="right">0.59</td>
+<td align="right">1.87</td>
+<td align="right">891.19</td>
+<td align="right">2.08</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.25</td>
-<td align="left">Control</td>
-<td align="right">0.31</td>
-<td align="right">250.36</td>
-<td align="right">0.56</td>
+<td align="right">0.39</td>
+<td align="left">Experimental</td>
+<td align="right">13.46</td>
+<td align="right">777.01</td>
+<td align="right">13.85</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">All</td>
-<td align="right">0.31</td>
+<td align="right">0.45</td>
 <td align="left">Experimental</td>
-<td align="right">2.01</td>
-<td align="right">1301.49</td>
-<td align="right">2.32</td>
+<td align="right">21.59</td>
+<td align="right">1397.39</td>
+<td align="right">22.04</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">All</td>
-<td align="right">0.48</td>
+<td align="right">0.53</td>
 <td align="left">Control</td>
-<td align="right">8.85</td>
-<td align="right">602.10</td>
-<td align="right">9.34</td>
+<td align="right">22.72</td>
+<td align="right">1719.45</td>
+<td align="right">23.25</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -317,37 +317,37 @@ after 75 events.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">2.28</td>
-<td align="right">1</td>
+<td align="right">26.45</td>
+<td align="right">0</td>
 <td align="left">All</td>
-<td align="left">Experimental</td>
+<td align="left">Control</td>
 </tr>
 <tr class="even">
-<td align="right">19.18</td>
+<td align="right">8.92</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Control</td>
 </tr>
 <tr class="odd">
-<td align="right">0.34</td>
+<td align="right">1.87</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">0.31</td>
+<td align="right">13.46</td>
 <td align="right">1</td>
 <td align="left">All</td>
-<td align="left">Control</td>
+<td align="left">Experimental</td>
 </tr>
 <tr class="odd">
-<td align="right">2.01</td>
+<td align="right">21.59</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Experimental</td>
 </tr>
 <tr class="even">
-<td align="right">8.85</td>
+<td align="right">22.72</td>
 <td align="right">1</td>
 <td align="left">All</td>
 <td align="left">Control</td>
@@ -379,36 +379,36 @@ combination suggested in <span class="citation">Lin et al.
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-1.80</td>
+<td align="right">-1.26</td>
 <td align="right">1.00</td>
 <td align="right">0.86</td>
-<td align="right">0.95</td>
+<td align="right">0.94</td>
 <td align="right">0.93</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.00</td>
+<td align="right">-1.13</td>
 <td align="right">0.86</td>
 <td align="right">1.00</td>
-<td align="right">0.66</td>
-<td align="right">0.95</td>
+<td align="right">0.64</td>
+<td align="right">0.94</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">-1.43</td>
-<td align="right">0.95</td>
-<td align="right">0.66</td>
+<td align="right">-1.16</td>
+<td align="right">0.94</td>
+<td align="right">0.64</td>
 <td align="right">1.00</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">-1.78</td>
+<td align="right">-1.47</td>
 <td align="right">0.93</td>
-<td align="right">0.95</td>
+<td align="right">0.94</td>
 <td align="right">0.79</td>
 <td align="right">1.00</td>
 </tr>
@@ -417,14 +417,14 @@ combination suggested in <span class="citation">Lin et al.
 <p>Now we compute our p-value as before:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.04294513</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1239273</span></span></code></pre></div>
 <p>Suppose we want the p-value just based on the logrank and FH(0,1) and
 FH(1,0) as suggested by <span class="citation">Lee (2007)</span>. We
 remove the rows and columns associated with FH(0,0) and FH(1,1) and then
 apply <code><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="va">Z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">V1</span>, <span class="va">V4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">rho</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">gamma</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">rho</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">gamma</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.03896369</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1921169</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="using-survival-data-in-another-format">Using survival data in another format<a class="anchor" aria-label="anchor" href="#using-survival-data-in-another-format"></a>
@@ -547,11 +547,11 @@ simulations to 100 in this case; a larger number should be used (e.g.,
 the <span class="math inline">\(\alpha=0.001\)</span> level.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Only use cut events + min follow-up</span></span>
-<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">100</span>, timingType <span class="op">=</span> <span class="fl">5</span>, rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">100</span>, timing_type <span class="op">=</span> <span class="fl">5</span>, rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pvalue_maxcombo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.001</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.8</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.82</span></span></code></pre></div>
 <p>We note the use of <code>group_map</code> in the above produces a
 list of p-values for each simulation. It would be nice to have something
 that worked more like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarize()</a></code> to avoid
@@ -560,7 +560,7 @@ methods. The latter can be done without having to re-run all simulations
 as follows, demonstrated with a smaller number of simulations.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Only use cuts for events and events + min follow-up</span></span>
-<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">100</span>, timingType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span>nsim <span class="op">=</span> <span class="fl">100</span>, timing_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, rg <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -590,50 +590,50 @@ as follows, demonstrated with a smaller number of simulations.</p>
 <tbody>
 <tr class="odd">
 <td align="right">350</td>
-<td align="right">-0.38</td>
+<td align="right">-0.41</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.58</td>
+<td align="right">-3.79</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">65.09</td>
+<td align="right">71.17</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">350</td>
-<td align="right">-0.38</td>
+<td align="right">-0.41</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.74</td>
+<td align="right">-5.05</td>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">65.09</td>
+<td align="right">71.17</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="right">369</td>
-<td align="right">-0.39</td>
+<td align="right">361</td>
+<td align="right">-0.40</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-3.77</td>
+<td align="right">-3.74</td>
 <td align="right">1.00</td>
-<td align="right">0.86</td>
+<td align="right">0.85</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">69.36</td>
+<td align="right">73.57</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">369</td>
-<td align="right">-0.39</td>
+<td align="right">361</td>
+<td align="right">-0.40</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-2.93</td>
-<td align="right">0.86</td>
+<td align="right">-4.91</td>
+<td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Max(min follow-up, event cut)</td>
-<td align="right">69.36</td>
+<td align="right">73.57</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
@@ -641,11 +641,11 @@ as follows, demonstrated with a smaller number of simulations.</p>
 <td align="right">-0.50</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">-4.70</td>
+<td align="right">-4.69</td>
 <td align="right">1.00</td>
 <td align="right">0.85</td>
 <td align="left">Targeted events</td>
-<td align="right">67.78</td>
+<td align="right">68.80</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
@@ -657,7 +657,7 @@ as follows, demonstrated with a smaller number of simulations.</p>
 <td align="right">0.85</td>
 <td align="right">1.00</td>
 <td align="left">Targeted events</td>
-<td align="right">67.78</td>
+<td align="right">68.80</td>
 <td align="right">2</td>
 </tr>
 </tbody>
@@ -675,7 +675,7 @@ cutoffs.</p>
 <code class="sourceCode R"><span><span class="co"># Subset to targeted events cutoff tests</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">xx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">!=</span> <span class="st">"Targeted events"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_map</a></span><span class="op">(</span><span class="va">pvalue_maxcombo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.99</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.98</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
