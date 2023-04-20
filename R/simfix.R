@@ -243,7 +243,7 @@ sim_fixed_n <- function(nsim = 1000,
     ans <- tibble(
       Events = sum(d$event),
       lnhr = ifelse(n_stratum > 1,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::stratum(stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(stratum), data = d)$coefficients,
                     survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental"), data = d)$coefficients
                     ) %>% as.numeric()
       )
