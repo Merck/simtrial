@@ -40,7 +40,7 @@ NULL
 #' library(dplyr)
 #'
 #' # Use default enrollment and event rates at cut of 100 events
-#' x <- simPWSurv(n = 200) %>%
+#' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "Experimental")
 #'
@@ -55,7 +55,7 @@ NULL
 #'             algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
 #'
 #' # check that covariance is as expected
-#' x <- simPWSurv(n = 200) %>%
+#' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "Experimental")
 #'
@@ -68,12 +68,12 @@ NULL
 #'                             gamma =.5),
 #'                 corr = FALSE)
 #'
-#' # compare off diagonal result with tenFH()
-#' x %>% tenFH(rg = tibble(rho = 0, gamma =.5))
+#' # compare off diagonal result with wlr()
+#' x %>% wlr(rg = tibble(rho = 0, gamma =.5))
 #'
 #' @export
 #' @rdname tenFHcorr
-tenFHcorr <- function(x = simPWSurv(n = 200) %>%
+tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
                             cut_data_by_event(100) %>%
                             counting_process(arm = "Experimental"),
                       rg = tibble(rho = c(0, 0, 1, 1),
@@ -100,7 +100,7 @@ tenFHcorr <- function(x = simPWSurv(n = 200) %>%
 
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  rg_fh <- rg_new %>% left_join(tenFH(x, rg_unique, returnVariance = TRUE),
+  rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, returnVariance = TRUE),
                                 by = c("rho" = "rho","gamma" = "gamma"))
 
   # get Z statistics for input rho, gamma combinations

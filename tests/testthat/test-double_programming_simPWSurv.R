@@ -3,7 +3,7 @@ strata <- tibble::tibble(Stratum=c("Low","High"),p=c(.4,.6))
 
 block <- c(rep("control",2),rep("experimental",2))
 
-enrollRates = tibble::tibble(duration = c(5,195), rate = c(100,3000))
+enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
 failRates <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=3,rate=.03),
@@ -22,11 +22,11 @@ dropoutRates <- bind_rows(
   tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=300,rate=.001)
 )
 set.seed(1)
-x <- simPWSurv(n=400000,
+x <- sim_pw_surv(n=400000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
-               failRates=failRates,
+               enroll_rate = enroll_rate,
+               fail_rate=fail_rate,
                dropoutRates=dropoutRates)
 
 #prepare to test block
@@ -45,7 +45,7 @@ for (i in seq(1,floor(nrow(block2)/4))){
   bktest2[i]<-sum(stringr::str_count(block2$treatment[j:(j+3)], "control"))
 }
 
-#prepare to test failRates
+#prepare to test fail_rate
 
 y <- cut_data_by_date(x,cut_date=300)
 
@@ -70,9 +70,9 @@ testthat::test_that("block calculated from simulated dataset equals size of 4 wi
   expect_equal(object=bktest2, expected=rep(2,length(bktest2)))
 })
 
-testthat::test_that("failRates calculated from simulated dataset must be within the
-                    tolerance=0.1 of failRates in setting",{
-  expect_equal(object=ratetest, expected=failRates$rate, tolerance=0.1)})
+testthat::test_that("fail_rate calculated from simulated dataset must be within the
+                    tolerance=0.1 of fail_rate in setting",{
+  expect_equal(object=ratetest, expected=fail_rate$rate, tolerance=0.1)})
 
 testthat::test_that("DropoutRates calculated from simulated dataset must be within
                     the tolerance=0.0005 of DropoutRates=0.001 in setup",{
@@ -83,12 +83,12 @@ testthat::test_that("DropoutRates calculated from simulated dataset must be with
   }
   expect_equal(object=drtest, expected=rep(0.001,300), tolerance=0.001)})
 
-testthat::test_that("enrollRates calculated from simulated dataset must be within
-                    the relative tolerance=0.05 of enrollRates in setup",{
+testthat::test_that("enroll_rate calculated from simulated dataset must be within
+                    the relative tolerance=0.05 of enroll_rate in setup",{
   duration=300
   entest<-0
   for (i in 1:duration){
-    entest[i]=sum(x$enrollTime<=i&x$enrollTime>(i-1))
+    entest[i]=sum(x$enroll_time<=i&x$enroll_time>(i-1))
   }
   entest1<-entest[entest!=0]
   entestexp<-c(rep(100,5), rep(3000,length(entest1)-5))
@@ -97,11 +97,11 @@ testthat::test_that("enrollRates calculated from simulated dataset must be withi
 
 #check the arguments, by changing n, the actual number of events changes
 set.seed(2468)
-z <- simPWSurv(n=300000,
+z <- sim_pw_surv(n=300000,
                strata = strata,
                block = block,
-               enrollRates = enrollRates,
-               failRates=failRates,
+               enroll_rate = enroll_rate,
+               fail_rate=fail_rate,
                dropoutRates=dropoutRates)
 
 

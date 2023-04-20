@@ -30,20 +30,18 @@ NULL
 #' # Use default enrollment and event rates and
 #' # cut at calendar time 5 after start of randomization
 #' library(dplyr)
-#' simPWSurv(n = 20) %>% cut_data_by_date(5)
+#' sim_pw_surv(n = 20) %>% cut_data_by_date(5)
 #'
 #' @export
 #'
 
 cut_data_by_date <- function(x, cut_date){
-
-
   ans <- x %>%
+    filter(enroll_time <= cut_date) %>%
+    mutate(tte = pmin(cte, cut_date) - enroll_time,
+           event = fail * (cte <= cut_date)) %>%
+      select(tte, event, Stratum, treatment)
 
-    filter(enrollTime <= cut_date) %>%
-      mutate(tte = pmin(cte, cut_date) - enrollTime,
-             event = fail * (cte <= cut_date)) %>%
-    select(tte, event, Stratum, treatment)
 
   return(ans)
 }

@@ -21,7 +21,7 @@ NULL
 
 #' Simulate a stratified time-to-event outcome randomized trial
 #'
-#' \code{simPWSurv} enables simulation of a clinical trial with essentially arbitrary
+#' \code{sim_pw_surv} enables simulation of a clinical trial with essentially arbitrary
 #' patterns of enrollment, failure rates and censoring.
 #' The piecewise exponential distribution allows a simple method to specify a distribtuion
 #' and enrollment pattern
@@ -39,17 +39,17 @@ NULL
 #' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum
 #' in `p`
 #' @param block Vector of treatments to be included in each  block
-#' @param enrollRates Enrollment rates; see details and examples
-#' @param failRates Failure rates; see details and examples; note that treatments need
+#' @param enroll_rate Enrollment rates; see details and examples
+#' @param fail_rate Failure rates; see details and examples; note that treatments need
 #' to be the same as input in block
 #' @param dropoutRates Dropout rates; see details and examples; note that treatments need
 #' to be the same as input in block
 #'
 #' @return a \code{tibble} with the following variables for each observation
 #' \code{Stratum},
-#' \code{enrollTime} (enrollment time for the observation),
+#' \code{enroll_time} (enrollment time for the observation),
 #' \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
-#' \code{failTime} (failure time generated using \code{rpwexp()}),
+#' \code{fail_time} (failure time generated using \code{rpwexp()}),
 #' \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
 #' \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
 #' \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
@@ -59,19 +59,19 @@ NULL
 #' library(tibble)
 #'
 #' # example 1
-#' simPWSurv(n = 20)
+#' sim_pw_surv(n = 20)
 #'
 #' # example 2
 #' # 3:1 randomization
-#' simPWSurv(n = 20,
+#' sim_pw_surv(n = 20,
 #'           block = c(rep("experimental",3), "control"))
 #'
 #' # example 3
 #' # Simulate 2 strata; will use defaults for blocking and enrollRates
-#' simPWSurv(n = 20,
+#' sim_pw_surv(n = 20,
 #'           # 2 strata,30% and 70% prevalence
 #'           strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
-#'           failRates = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
+#'           fail_rate = tibble(Stratum = c(rep("Low", 4), rep("High", 4)),
 #'                              period = rep(1:2, 4),
 #'                              treatment= rep(c(rep("control", 2),
 #'                                          rep("experimental", 2)), 2),
@@ -84,7 +84,7 @@ NULL
 #'                                 rate = rep(.001, 4)))
 #' # example 4
 #' # If you want a more rectangular entry for a tibble
-#' failRates <- bind_rows(
+#' fail_rate <- bind_rows(
 #'   tibble(Stratum = "Low" , period = 1, treatment = "control"     , duration = 3, rate = .03),
 #'   tibble(Stratum = "Low" , period = 1, treatment = "experimental", duration = 3, rate = .03),
 #'   tibble(Stratum = "Low" , period = 2, treatment = "experimental", duration = 3, rate = .02),
@@ -98,17 +98,17 @@ NULL
 #'   tibble(Stratum = "High", period=1, treatment = "control"     , duration = 3, rate = .001),
 #'   tibble(Stratum = "High", period=1, treatment = "experimental", duration = 3, rate = .001))
 #'
-#'simPWSurv(n = 12,
+#'sim_pw_surv(n = 12,
 #'          strata = tibble(Stratum = c("Low","High"), p = c(.3, .7)),
-#'          failRates = failRates,
+#'          fail_rate = fail_rate,
 #'          dropoutRates = dropoutRates)
 #' @export
-simPWSurv <- function(
+sim_pw_surv <- function(
     n = 100,
     strata = tibble(Stratum = "All", p = 1),
-    block = c(rep("control", 2), rep("experimental", 2)),
-    enrollRates = tibble(rate = 9, duration = 1),
-    failRates = tibble(Stratum = rep("All", 4),
+  block = c(rep("control", 2), rep("experimental", 2)),
+    enroll_rate = tibble(rate = 9, duration = 1),
+    fail_rate = tibble(Stratum = rep("All", 4),
                        period = rep(1:2,2),
                        treatment = c(rep("control", 2), rep("experimental", 2)),
                        duration = rep(c(3, 1), 2),
@@ -124,7 +124,7 @@ simPWSurv <- function(
                                size = n,
                                replace = TRUE,
                                prob = strata$p)) %>%
-    mutate(enrollTime = rpw_enroll(n, enrollRates)) %>%
+    mutate(enroll_time = rpw_enroll(n, enroll_rate)) %>%
     group_by(Stratum) %>%
     # assign treatment
     mutate(treatment = randomize_by_fixed_block(n = n(), block = block)) %>%
@@ -133,22 +133,22 @@ simPWSurv <- function(
 
     unique_stratum <- unique(x$Stratum)
     unique_treatment <- unique(x$treatment)
-    x$failTime <- 0
+    x$fail_time <- 0
     x$dropoutTime <- 0
 
     for(sr in unique_stratum){
       for(tr in unique_treatment){
-      indx <- x$Stratum ==sr & x$treatment == tr
-      x$failTime[indx] <- rpwexpinvRcpp(n = sum(indx),
-                                        failRates = failRates[failRates$Stratum == sr & failRates$treatment == tr, , drop = FALSE])
+        indx <- x$Stratum ==sr & x$treatment == tr
+      x$fail_time[indx] <- rpwexpinvRcpp(n = sum(indx),
+                                        fail_rate = fail_rate[fail_rate$Stratum == sr & fail_rate$treatment == tr, , drop = FALSE])
       x$dropoutTime[indx] <- rpwexpinvRcpp(n = sum(indx),
-                                           failRates = dropoutRates[dropoutRates$Stratum == sr & dropoutRates$treatment == tr, ,drop = FALSE])
+                                           fail_rate = dropoutRates[dropoutRates$Stratum == sr & dropoutRates$treatment == tr, ,drop = FALSE])
       }
     }
 
     # set calendar time-to-event and failure indicator
     ans <- x %>%
-      mutate(cte = pmin(dropoutTime, failTime) + enrollTime,
-             fail = (failTime <= dropoutTime) * 1)
+      mutate(cte = pmin(dropoutTime, fail_time) + enroll_time,
+             fail = (fail_time <= dropoutTime) * 1)
     return(ans)
 }

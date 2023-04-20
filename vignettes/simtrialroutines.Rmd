@@ -29,7 +29,7 @@ The routines are as follows:
 * `get_cut_date_by_event` - find date at which an event count is reached
 * `counting_process` - pre-process survival data into a counting process format
 
-Application of the above is demonstrated using higher-level routines `simPWSurv()` and `simfix()` to generate simulations and weighted logrank analysis for a stratified design.
+Application of the above is demonstrated using higher-level routines `sim_pw_surv()` and `sim_fixed_n()` to generate simulations and weighted logrank analysis for a stratified design.
 
 The intent has been to write these routines in the spirit of the tidyverse approach (alternately referred to as data wrangling, tidy data, R for Data Science, or split-apply-combine). 
 The other objectives are to have an easily documentable and validated package that is easy to use and efficient as a broadly-useful tool for simulation of time-to-event clinical trials.
@@ -67,7 +67,7 @@ randomize_by_fixed_block(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpw_enroll(n = 20, enrollRates = tibble(
+rpw_enroll(n = 20, enroll_rate = tibble(
   duration = c(1, 2),
   rate = c(2, 5)
 ))
@@ -79,7 +79,7 @@ Time-to-event and time-to-dropout random number generation for observations is g
 
 ```{r,fig.width=6}
 x <- rpwexp(10000,
-  failRates = tibble(
+  fail_rate = tibble(
     rate = c(1, 3, 10),
     duration = c(.5, .5, 1)
   )
@@ -98,16 +98,16 @@ For now, stratified randomization, piecewise constant enrollment, fixed block ra
 At present, follow this format very carefully as little checking of input has been developed to-date.
 The methods used here have all be demonstrated above, but here they are combined in a single routine to generate a trial. Note that in the generated output dataset, `cte` is the calendar time of an event or dropout, whichever comes first, and `fail` is an indicator that `cte` represents an event time.  
 
-First we set up input variables to make the later call to `simPWSurv()` more straightforward to read.
+First we set up input variables to make the later call to `sim_pw_surv()` more straightforward to read.
 
 ```{r}
 strata <- tibble(Stratum = c("Negative", "Positive"), p = c(.5, .5))
 
 block <- c(rep("control", 2), rep("experimental", 2))
 
-enrollRates <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
+enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
-failRates <- tibble(
+fail_rate <- tibble(
   Stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
   treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
@@ -124,12 +124,12 @@ dropoutRates <- tibble(
 ```
 
 ```{r}
-x <- simPWSurv(
+x <- sim_pw_surv(
   n = 400,
   strata = strata,
   block = block,
-  enrollRates = enrollRates,
-  failRates = failRates,
+  enroll_rate = enroll_rate,
+  fail_rate = fail_rate,
   dropoutRates = dropoutRates
 )
 head(x) %>% kable(digits = 2)
@@ -200,7 +200,7 @@ c(z, pnorm(z))
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-tenFH(x = ten150, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
+wlr(x = ten150, rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `tenFHcorr` to compute a correlation matrix for the above Z-statistics as follows.
@@ -221,19 +221,20 @@ pvalue_maxcombo(x)
 
 ## Simplification for 2-arm trials
 
-The `simfix()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
-Here the argument structure is meant to be simpler than for `simPWSurv()`.
+The `sim_fixed_n()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
+Here the argument structure is meant to be simpler than for `sim_pw_surv()`.
+
 
 ```{r}
 strata <- tibble(Stratum = "All", p = 1)
-enrollRates <- tibble(
+enroll_rate <- tibble(
   duration = c(2, 2, 10),
   rate = c(3, 6, 9)
 )
-failRates <- tibble(
+fail_rate <- tibble(
   Stratum = "All",
   duration = c(3, 100),
-  failRate = log(2) / c(9, 18),
+  fail_rate = log(2) / c(9, 18),
   hr = c(0.9, 0.6),
   dropoutRate = rep(0.001, 2)
 )
@@ -250,13 +251,13 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 5) the maximum of 2 and 3.
 
 ```{r}
-simfix(
+sim_fixed_n(
   nsim = 2, # Number of simulations
   sampleSize = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis
   strata = strata, # Study strata
-  enrollRates = enrollRates, # Enrollment rates
-  failRates = failRates, # Failure rates
+  enroll_rate = enroll_rate, # Enrollment rates
+  fail_rate = fail_rate, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
   timingType = 1:5, # Use all possible data cutoff methods
@@ -265,17 +266,17 @@ simfix(
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
-To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enrollRates`:
+To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
-enrollRates %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
+enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enrollRates`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
 totalDuration <- 30 # From above
-totalDuration - sum(enrollRates$duration)
+totalDuration - sum(enroll_rate$duration)
 ```
 
 It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with "Minimum follow-up" cutoff in the simulations above.

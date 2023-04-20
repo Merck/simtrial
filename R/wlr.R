@@ -73,16 +73,16 @@ NULL
 #' @examples
 #' library(tidyr)
 #' # Use default enrollment and event rates at cut at 100 events
-#' x <- simPWSurv(n = 200) %>%
+#' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm ="Experimental")
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' tenFH(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
+#' wlr(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
 #'
 #' @export
-#' @rdname tenFH
+#' @rdname wlr
 #'
-tenFH <- function(x = simPWSurv(n = 200) %>%
+wlr <- function(x = sim_pw_surv(n = 200) %>%
                         cut_data_by_event(150) %>%
                         counting_process(arm = "Experimental"),
                   rg = tibble(rho = c(0, 0, 1, 1),
@@ -91,19 +91,19 @@ tenFH <- function(x = simPWSurv(n = 200) %>%
 
   # check input failure rate assumptions
   if(!is.data.frame(x)){
-    stop("tenFH: x in `tenFH()` must be a data frame!")
+    stop("wlr: x in `wlr()` must be a data frame!")
   }
 
   if(!("S" %in% names(x))){
-    stop("tenFH: x column names in `tenFH()` must contain S!")
+    stop("wlr: x column names in `wlr()` must contain S!")
   }
 
   if(!("o_minus_e" %in% names(x))){
-    stop("tenFH: x column names in `tenFH()` must contain o_minus_e!")
+    stop("wlr: x column names in `wlr()` must contain o_minus_e!")
   }
 
   if(!("var_o_minus_e" %in% names(x))){
-    stop("tenFH: x column names in `tenFH()` must contain var_o_minus_e!")
+    stop("wlr: x column names in `wlr()` must contain var_o_minus_e!")
   }
 
   # get minimal columns from counting_process item

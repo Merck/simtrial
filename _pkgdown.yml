@@ -41,8 +41,8 @@ reference:
     - fit_pwexp
 - title: "Simulate data under the piecewise model"
   contents:
-    - simPWSurv
-    - simfix
+    - sim_pw_surv
+    - sim_fixed_n
     - simfix2simPWSurv
 - title: "Cut data"
   contents:
@@ -52,10 +52,10 @@ reference:
 
 - title: "Compute p-values/test statistics"
   contents:
-    - tenFH
+    - wlr
     - tenFHcorr
     - counting_process
-    - wMB
+    - mb_weight
     - pvalue_maxcombo
 - title: "Randomization algorithms"
   contents:

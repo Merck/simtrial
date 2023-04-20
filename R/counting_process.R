@@ -66,7 +66,7 @@ NULL
 #' counting_process(x, arm = 1)
 #'
 #' # example 2
-#' x <- simPWSurv(n = 400)
+#' x <- sim_pw_surv(n = 400)
 #' y <- cut_data_by_event(x, 150) %>% counting_process(arm = "experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
 #' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))

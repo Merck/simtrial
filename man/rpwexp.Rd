@@ -4,12 +4,12 @@
 \alias{rpwexp}
 \title{The Piecewise Exponential Distribution}
 \usage{
-rpwexp(n = 100, failRates = tibble(duration = c(1, 1), rate = c(10, 20)))
+rpwexp(n = 100, fail_rate = tibble(duration = c(1, 1), rate = c(10, 20)))
 }
 \arguments{
 \item{n}{Number of observations to be generated.}
 
-\item{failRates}{A tibble containing \code{duration} and \code{rate} variables.
+\item{fail_rate}{A tibble containing \code{duration} and \code{rate} variables.
 \code{rate} specifies failure rates during the corresponding interval duration
 specified in \code{duration}. The final interval is extended to be infinite
 to ensure all observations are generated.}
@@ -34,7 +34,7 @@ library(tibble)
 # example 1
 # exponential failure times
 x <- rpwexp(n = 10000,
-            failRates = tibble(rate = 5, duration = 1))
+            fail_rate = tibble(rate = 5, duration = 1))
 plot(sort(x),(10000:1)/10001,
      log = "y", main = "Exponential simulated survival curve",
      xlab = "Time",ylab = "P{Survival}")
@@ -46,7 +46,7 @@ plot(sort(x),(10000:1)/10001,
 # intervals specifies duration of each failure rate interval
 # with the final interval running to infinity
 x <- rpwexp(n = 1e4,
-            failRates = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1)))
+            fail_rate = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1)))
 plot(sort(x), (1e4:1)/10001,
      log = "y", main = "PW Exponential simulated survival curve",
      xlab = "Time", ylab = "P{Survival}")
