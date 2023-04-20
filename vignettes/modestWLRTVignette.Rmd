@@ -48,7 +48,7 @@ studyDuration <- 36
 sample_size <- 300
  enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
 fail_rate <- tibble::tribble(
-  ~Stratum, ~duration, ~fail_rate, ~hr, ~dropoutRate,
+  ~stratum, ~duration, ~fail_rate, ~hr, ~dropoutRate,
   "All", 6, log(2) / 15, 1, 0,
   "All", 36, log(2) / 15, .6, 0
 )
@@ -62,7 +62,7 @@ set.seed(7789)
 xpar <- simfix2simPWSurv(fail_rate)
 MBdelay <- sim_pw_surv(
   n = sample_size,
-  strata = tibble::tibble(Stratum = "All", p = 1),
+  stratum = tibble::tibble(stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
    enroll_rate =  enroll_rate,
   fail_rate = xpar$fail_rate,
@@ -136,7 +136,7 @@ sample_size <- 2000
 enrollDuration <- .0001
  enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sample_size / enrollDuration)
 fail_rate <- tibble::tibble(
-  Stratum = "All",
+  stratum = "All",
   fail_rate = 0.25,
   dropoutRate = 0,
   hr = c(4 / .25, .19 / .25),
@@ -152,7 +152,7 @@ set.seed(7783)
 xpar <- simfix2simPWSurv(fail_rate)
 FHwn <- sim_pw_surv(
   n = sample_size,
-  strata = tibble::tibble(Stratum = "All", p = 1),
+  stratum = tibble::tibble(stratum = "All", p = 1),
   block = c(rep("Control", 2), rep("Experimental", 2)),
    enroll_rate =  enroll_rate,
   fail_rate = xpar$fail_rate,

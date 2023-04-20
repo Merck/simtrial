@@ -28,10 +28,10 @@ NULL
 #' @param nsim Number of simulations to perform.
 #' @param sample_size Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
-#' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
+#' @param stratum A tibble with stratum specified in `stratum`, probability (incidence) of each stratum in `p`.
 #' @param enroll_rate Piecewise constant enrollment rates by time period.
-#' Note that these are overall population enrollment rates and the `strata` argument controls the
-#' random distribution between strata.
+#' Note that these are overall population enrollment rates and the `stratum` argument controls the
+#' random distribution between stratum.
 #' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
@@ -111,12 +111,12 @@ NULL
 sim_fixed_n <- function(nsim = 1000,
                    sample_size = 500, # sample size
                    target_event = 350,  # targeted total event count
-                   # multinomial probability distribution for strata enrollment
-                   strata = tibble(Stratum = "All", p = 1),
+                   # multinomial probability distribution for stratum enrollment
+                   stratum = tibble(stratum = "All", p = 1),
                    # enrollment rates as in AHR()
                    enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
-                   fail_rate = tibble(Stratum = "All",
+                   fail_rate = tibble(stratum = "All",
                                       duration = c(3, 100),
                                       fail_rate = log(2) / c(9, 18),
                                       hr = c(.9, .6),
@@ -144,8 +144,8 @@ sim_fixed_n <- function(nsim = 1000,
 
 
   # check input failure rate assumptions
-  if(!("Stratum" %in% names(fail_rate))){
-    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain Stratum!")
+  if(!("stratum" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain stratum!")
   }
 
   if(!("duration" %in% names(fail_rate))){
@@ -182,13 +182,13 @@ sim_fixed_n <- function(nsim = 1000,
   }
 
   # check stratum
-  strata2 <- names(table(fail_rate$Stratum))
-  if(nrow(strata) != length(strata2)){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
+  stratum2 <- names(table(fail_rate$stratum))
+  if(nrow(stratum) != length(stratum2)){
+    stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate!")
   }
 
-  if(any(is.na(match(strata$Stratum, strata2))) | any(is.na(match(strata2, strata$Stratum)))){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
+  if(any(is.na(match(stratum$stratum, stratum2))) | any(is.na(match(stratum2, stratum$stratum)))){
+    stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate!")
   }
 
   # check nsim
@@ -230,7 +230,7 @@ sim_fixed_n <- function(nsim = 1000,
     setSeed <- TRUE
   }
 
-  n_stratum <- nrow(strata)
+  n_stratum <- nrow(stratum)
 
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
@@ -243,7 +243,7 @@ sim_fixed_n <- function(nsim = 1000,
     ans <- tibble(
       Events = sum(d$event),
       lnhr = ifelse(n_stratum > 1,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(Stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(stratum), data = d)$coefficients,
                     survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental"), data = d)$coefficients
                     ) %>% as.numeric()
       )
@@ -276,7 +276,7 @@ sim_fixed_n <- function(nsim = 1000,
 
     # generate piecewise data
     sim <- sim_pw_surv(n = sample_size,
-                     strata = strata,
+                     stratum = stratum,
                      enroll_rate = enroll_rate,
                      fail_rate = fr,
                      dropoutRates = dr,

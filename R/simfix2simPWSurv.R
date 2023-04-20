@@ -24,7 +24,7 @@ NULL
 #' `simfix2simPWSurv()` converts failure rates and dropout rates entered in the simpler
 #' format for `sim_fixed_n()` to that used for `simtrial::sim_pw_surv()`.
 #' The `fail_rate` argument for `sim_fixed_n()` requires enrollment rates, failure rates
-#' hazard ratios and dropout rates by strata for a 2-arm trial, `simtrial::sim_pw_surv()`
+#' hazard ratios and dropout rates by stratum for a 2-arm trial, `simtrial::sim_pw_surv()`
 #' is in a more flexible but less obvious but more flexible format.
 #' Since `sim_fixed_n()` automatically analyzes data and `simtrial::sim_pw_surv()` just produces
 #' a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
@@ -44,7 +44,7 @@ NULL
 #' simfix2simPWSurv()
 #'
 #' # Stratified example
-#' fail_rate <- tibble(Stratum = c(rep("Low", 3),rep("High", 3)),
+#' fail_rate <- tibble(stratum = c(rep("Low", 3),rep("High", 3)),
 #'                     duration = rep(c(4, 10, 100), 2),
 #'                     fail_rate = c(.04, .1, .06,
 #'                                  .08,.16,.12),
@@ -57,7 +57,7 @@ NULL
 #' # Do a single simulation with the above rates
 #' # Enroll 300 patients in ~12 months at constant rate
 #' sim <- sim_pw_surv(n = 300,
-#'                  strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
+#'                  stratum = tibble(stratum = c("Low","High"), p = c(.6, .4)),
 #'                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
 #'                  fail_rate = x$fail_rate,
 #'                  dropoutRates = x$dropoutRates)
@@ -72,7 +72,7 @@ NULL
 #'
 simfix2simPWSurv <- function(
   # failure rates as in sim_fixed_n()
-  fail_rate = tibble(Stratum = "All",
+  fail_rate = tibble(stratum = "All",
                      duration = c(3, 100),
                      fail_rate = log(2) / c(9, 18),
                      hr = c(.9, .6),
@@ -80,26 +80,26 @@ simfix2simPWSurv <- function(
   ){
   # put failure rates into sim_pw_surv format
   fr <- rbind(fail_rate %>%
-                group_by(Stratum) %>%
+                group_by(stratum) %>%
                 mutate(Treatment = "Control",
                        rate = fail_rate, period = 1:n()) %>%
                 ungroup(),
               fail_rate %>%
-                group_by(Stratum) %>%
+                group_by(stratum) %>%
                 mutate(Treatment = "Experimental",
                        rate = fail_rate * hr,
                        period = 1:n()) %>%
                 ungroup()
               ) %>%
-    select("Stratum", "period", "Treatment", "duration", "rate")
+    select("stratum", "period", "Treatment", "duration", "rate")
 
   # put dropout rates into sim_pw_surv format
   dr <- fail_rate %>%
-    group_by(Stratum) %>%
+    group_by(stratum) %>%
     mutate(Treatment = "Control",
            rate = dropoutRate,
            period = 1:n()) %>%
-    select("Stratum", "period", "Treatment", "duration", "rate") %>%
+    select("stratum", "period", "Treatment", "duration", "rate") %>%
     ungroup()
 
   dr <- rbind(dr,
