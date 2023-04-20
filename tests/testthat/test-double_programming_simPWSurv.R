@@ -15,7 +15,7 @@ fail_rate <- bind_rows(
   tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=3,rate=.06),
   tibble::tibble(Stratum="High",period=2,treatment="experimental",duration=297,rate=.03)
 )
-dropoutRates <- bind_rows(
+dropout_rate <- bind_rows(
   tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=300,rate=.001),
   tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=300,rate=.001),
   tibble::tibble(Stratum="High",period=1,treatment="control"     ,duration=300,rate=.001),
@@ -27,7 +27,7 @@ x <- sim_pw_surv(n=400000,
                block = block,
                enroll_rate = enroll_rate,
                fail_rate=fail_rate,
-               dropoutRates=dropoutRates)
+               dropout_rate =dropout_rate)
 
 #prepare to test block
 block1<-x%>%filter(Stratum=='Low')
@@ -74,8 +74,8 @@ testthat::test_that("fail_rate calculated from simulated dataset must be within 
                     tolerance=0.1 of fail_rate in setting",{
   expect_equal(object=ratetest, expected=fail_rate$rate, tolerance=0.1)})
 
-testthat::test_that("DropoutRates calculated from simulated dataset must be within
-                    the tolerance=0.0005 of DropoutRates=0.001 in setup",{
+testthat::test_that("dropout_rate calculated from simulated dataset must be within
+                    the tolerance=0.0005 of dropout_rate=0.001 in setup",{
   duration=300
   drtest<-0
   for (i in 1:duration){
@@ -102,7 +102,7 @@ z <- sim_pw_surv(n=300000,
                block = block,
                enroll_rate = enroll_rate,
                fail_rate=fail_rate,
-               dropoutRates=dropoutRates)
+               dropout_rate=dropout_rate)
 
 
 y1 <- cut_data_by_date(z,cut_date=300)

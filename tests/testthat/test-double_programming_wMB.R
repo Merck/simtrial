@@ -36,7 +36,7 @@ test_that("Validation passed for the situation of multiple strata",{
                                           treatment=rep(c(rep("control",2),rep("experimental",2)),2),
                                           duration=rep(c(3,1),4),
                                           rate=c(.03,.05,.03,.03,.05,.08,.07,.04)),
-                 dropoutRates=tibble::tibble(Stratum=c(rep("Low",2),rep("High",2)),
+                 dropout_rate=tibble::tibble(Stratum=c(rep("Low",2),rep("High",2)),
                                              period=rep(1,4),
                                              treatment=rep(c("control","experimental"),2),
                                              duration=rep(1,4),

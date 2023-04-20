@@ -4,11 +4,11 @@ fail_rate <- tibble::tibble(Stratum=c(rep("Low",3),rep("High",3)),
                                        .08,.16,.12),
                             hr=c(1.5,.5,2/3,
                                  2, 10/16, 10/12),
-                            dropoutRate=.01
+                            dropout_rate=.01
 )
 
 failRatesPWSurv<-simfix2simPWSurv(fail_rate)$fail_rate
-dropoutRatesPWSurv<-simfix2simPWSurv(fail_rate)$dropoutRates
+dropoutRatesPWSurv<-simfix2simPWSurv(fail_rate)$dropout_rate
 
 testthat::test_that("Stratum values must be the same and stratum length must be doubled after converting",{
   strata1 <- names(table(fail_rate$Stratum))
@@ -40,19 +40,19 @@ testthat::test_that("fail_rate match before and after converting and are in righ
   testthat::expect_equal(fail_rate$fail_rate*fail_rate$hr,failRatesPWSurv$rate[(length(fail_rate$fail_rate)+1):(length(fail_rate$fail_rate)*2)])
 })
 
-testthat::test_that("dropoutRates match before and after converting and are in right length ",{
-  testthat::expect_equal(fail_rate$dropoutRate,dropoutRatesPWSurv$rate[1:length(fail_rate$dropoutRate)])
-  testthat::expect_equal(fail_rate$dropoutRate,dropoutRatesPWSurv$rate[(length(fail_rate$fail_rate)+1):(length(fail_rate$fail_rate)*2)])
+testthat::test_that("dropout_rate match before and after converting and are in right length ",{
+  testthat::expect_equal(fail_rate$dropout_rate,dropoutRatesPWSurv$rate[1:length(fail_rate$dropout_rate)])
+  testthat::expect_equal(fail_rate$dropout_rate,dropoutRatesPWSurv$rate[(length(fail_rate$fail_rate)+1):(length(fail_rate$fail_rate)*2)])
 })
 
 
 # "meaningful error messages when the inputs are incorrect"
-testthat::test_that("fail_rate column names must contain Stratum, duration, fail_rate, hr and dropoutRate",{
+testthat::test_that("fail_rate column names must contain Stratum, duration, fail_rate, hr and dropout_rate",{
   testthat::expect_equal(1,max(names(fail_rate)=="Stratum"))
   testthat::expect_equal(1,max(names(fail_rate)=="duration"))
   testthat::expect_equal(1,max(names(fail_rate)=="fail_rate"))
   testthat::expect_equal(1,max(names(fail_rate)=="hr"))
-  testthat::expect_equal(1,max(names(fail_rate)=="dropoutRate"))
+  testthat::expect_equal(1,max(names(fail_rate)=="dropout_rate"))
 })
 
 testthat::test_that("duration must be longer than 0",{
@@ -71,6 +71,6 @@ testthat::test_that("hr must be postiive",{
 })
 
 
-testthat::test_that("dropoutRate must be smaller than 1 and positive",{
-  testthat::expect_lt(max(fail_rate$dropoutRate),1)
-  testthat::expect_gt(min(fail_rate$dropoutRate),0)})
+testthat::test_that("dropout_rate must be smaller than 1 and positive",{
+  testthat::expect_lt(max(fail_rate$dropout_rate),1)
+  testthat::expect_gt(min(fail_rate$dropout_rate),0)})
