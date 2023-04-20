@@ -120,7 +120,7 @@ sim_fixed_n <- function(nsim = 1000,
                                       duration = c(3, 100),
                                       fail_rate = log(2) / c(9, 18),
                                       hr = c(.9, .6),
-                                      dropoutRate = rep(.001, 2)),
+                                      dropout_rate = rep(.001, 2)),
                    # total planned trial duration; single value
                    totalDuration = 30,
                    # Fixed block randomization specification
@@ -160,8 +160,8 @@ sim_fixed_n <- function(nsim = 1000,
     stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain hr")
   }
 
-  if(!("dropoutRate" %in% names(fail_rate))){
-    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain dropoutRate")
+  if(!("dropout_rate" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain dropout_rate")
   }
 
   # check input trial duration
@@ -258,7 +258,7 @@ sim_fixed_n <- function(nsim = 1000,
   # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(fail_rate)
   fr <- temp$fail_rate
-  dr <- temp$dropoutRates
+  dr <- temp$dropout_rate
   results <- NULL
 
   # parallel
@@ -279,7 +279,7 @@ sim_fixed_n <- function(nsim = 1000,
                      strata = strata,
                      enroll_rate = enroll_rate,
                      fail_rate = fr,
-                     dropoutRates = dr,
+                     dropout_rate = dr,
                      block = block)
 
     # study date that targeted event rate achieved
