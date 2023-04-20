@@ -121,8 +121,8 @@ mb_weight <- function(x, delay = 4, wmax = Inf)
     stop("wmax (maximum weight) in `mb_weight()` must be a positive number")
   }
 
-  if(max(names(x)=="Stratum") != 1){
-    stop("x column names in `mb_weight()` must contain Stratum")
+  if(max(names(x)=="stratum") != 1){
+    stop("x column names in `mb_weight()` must contain stratum")
   }
 
   if(max(names(x)=="tte") != 1){
@@ -134,8 +134,8 @@ mb_weight <- function(x, delay = 4, wmax = Inf)
   }
 
   # Compute max weight by stratum
-  x2 <- x %>% group_by(Stratum)
-  # Make sure you don't lose any strata!
+  x2 <- x %>% group_by(stratum)
+  # Make sure you don't lose any stratum!
   tbl_all_stratum <- x2 %>% summarize()
 
   ans <- x2 %>%
@@ -143,14 +143,14 @@ mb_weight <- function(x, delay = 4, wmax = Inf)
     filter(tte <= delay) %>%
     # weight before delay specified as 1/S
     summarize(max_weight = max(1/S)) %>%
-    # get back strata with no records before delay ends
-    right_join(tbl_all_stratum, by = "Stratum") %>%
+    # get back stratum with no records before delay ends
+    right_join(tbl_all_stratum, by = "stratum") %>%
     # max_weight is 1 when there are no records before delay ends
     mutate(max_weight = tidyr::replace_na(max_weight, 1)) %>%
     # Cut off weights at wmax
     mutate(max_weight = pmin(wmax, max_weight)) %>%
     # Now merge max_weight back to stratified dataset
-    full_join(x2, by = "Stratum") %>%
+    full_join(x2, by = "stratum") %>%
     # Weight is min of max_weight and 1/S which will increase up to delay
     mutate(mb_weight = pmin(max_weight, 1/S)) %>%
     select(-max_weight)

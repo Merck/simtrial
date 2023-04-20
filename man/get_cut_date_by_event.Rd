@@ -25,22 +25,22 @@ library(tibble)
 # Use default enrollment and calendar cut date for 50 events in Positive stratum
 x <- sim_pw_surv(
   n = 200,
-  strata = tibble(Stratum = c("Positive", "Negative"),
+  stratum = tibble(stratum = c("Positive", "Negative"),
                   p = c(.5, .5)),
-  fail_rate = tibble(Stratum = rep(c("Positive","Negative"), 2),
+  fail_rate = tibble(stratum = rep(c("Positive","Negative"), 2),
                      period = rep(1, 4),
                      Treatment = c(rep("Control", 2), rep("Experimental", 2)),
                      duration = rep(1, 4),
                      rate = log(2) / c(6, 9, 9, 12)),
-  dropoutRates = tibble(Stratum = rep(c("Positive", "Negative"),2),
+  dropoutRates = tibble(stratum = rep(c("Positive", "Negative"),2),
                         period = rep(1, 4),
                         Treatment = c(rep("Control", 2), rep("Experimental", 2)),
                         duration = rep(1, 4),
                         rate = rep(.001, 4)))
 
-d <- get_cut_date_by_event(x \%>\% filter(Stratum == "Positive"), count = 50)
+d <- get_cut_date_by_event(x \%>\% filter(stratum == "Positive"), count = 50)
 
 y <- cut_data_by_date(x, cut_date = d)
-table(y$Stratum, y$event)
+table(y$stratum, y$event)
 
 }

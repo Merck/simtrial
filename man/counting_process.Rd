@@ -9,7 +9,7 @@ counting_process(x, arm)
 \arguments{
 \item{x}{a tibble with no missing values and contain variables
 \itemize{
-\item \code{Stratum}: Stratum
+\item \code{stratum}: stratum
 \item \code{Treatment}: Treatment group
 \item \code{tte}: Observed time
 \item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
@@ -18,7 +18,7 @@ counting_process(x, arm)
 \item{arm}{value in the input \code{Treatment} column that indicates treatment group value.}
 }
 \value{
-A \code{tibble} grouped by \code{Stratum} and sorted within strata by \code{tte}.
+A \code{tibble} grouped by \code{stratum} and sorted within stratum by \code{tte}.
 Remain rows with at least one event in the population, at least one subject
 is at risk in both treatment group and control group.
 Other variables in this represent the following within each stratum at
@@ -40,8 +40,8 @@ events at a time. (Same assumption of log-rank test under the null hypothesis)
 \description{
 Produces a tibble that is sorted by stratum and time.
 Included in this is only the times at which one or more event occurs.
-The output dataset contains Stratum, tte (time-to-event), at risk count and count of events at the specified tte
-sorted by Stratum and tte.
+The output dataset contains stratum, tte (time-to-event), at risk count and count of events at the specified tte
+sorted by stratum and tte.
 }
 \details{
 The function only considered two group situation.
@@ -53,7 +53,7 @@ library(dplyr)
 library(tibble)
 
 # example 1
-x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
+x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
             Treatment = rep(c(1, 1, 0, 0), 4),
             tte = 1:16,
             event= rep(c(0, 1), 8))
