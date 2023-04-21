@@ -12,7 +12,7 @@ surv_to_count <- function(time, status, trt, strats){
   }
   km <- db %>% group_by(strats) %>% do( tidy_survfit(Surv(time, status) ~ 1, data = .) )
 
-  # KM estimator by Stratum and treatment Group Predicted at Specified Time
+  # KM estimator by stratum and treatment Group Predicted at Specified Time
   pred_survfit <- function(pred_time, ...){
     .survfit <- survfit(...)
 
