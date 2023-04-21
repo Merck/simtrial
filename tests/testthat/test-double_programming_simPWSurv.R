@@ -50,10 +50,10 @@ for (i in seq(1,floor(nrow(block2)/4))){
 y <- cut_data_by_date(x,cut_date=300)
 
 intervals<-c(3)
-rate00 <- with(subset(y,treatment=='control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate01 <- with(subset(y,treatment=='control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
-rate10 <- with(subset(y,treatment=='experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate11 <- with(subset(y,treatment=='experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate00 <- with(subset(y,treatment=='control'|stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y,treatment=='control'|stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y,treatment=='experimental'|stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y,treatment=='experimental'|stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 ratetest<- c(rate00$rate,rate10$rate,rate01$rate, rate11$rate)
 xevent<-bind_rows(rate00, rate01,rate10,rate11)
 

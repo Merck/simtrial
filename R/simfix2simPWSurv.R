@@ -94,7 +94,7 @@ simfix2simPWSurv <- function(
 
   # put dropout rates into sim_pw_surv format
   dr <- fail_rate %>%
-    group_by(Stratum) %>%
+    group_by(stratum) %>%
     mutate(treatment = "control",
            rate = dropout_rate,
            period = 1:n()) %>%
