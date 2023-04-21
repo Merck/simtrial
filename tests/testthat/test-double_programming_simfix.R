@@ -30,7 +30,7 @@ test2<-sim_fixed_n(nsim=100,
               timingType=1:5,
               rg=tibble::tibble(rho=0,gamma=0)
 )
-#load("./fixtures/test_data_simfix.Rdata")
+
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timingType=1",{
   tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
   expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/100, expected=0.93, tolerance=0.02)
