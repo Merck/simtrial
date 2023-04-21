@@ -31,13 +31,8 @@ NULL
 #' The tie is handled by the Breslow's Method.
 #'
 #' @param x a tibble with no missing values and contain variables
-<<<<<<< HEAD
-#' - `Stratum`: Stratum
-#' - `treatment`: treatment group
-=======
 #' - `stratum`: stratum
-#' - `Treatment`: Treatment group
->>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
+#' - `treatment`: treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
 #' @param arm value in the input `treatment` column that indicates treatment group value.

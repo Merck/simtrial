@@ -36,11 +36,7 @@ NULL
 #'                      treatment = c(rep("control", 2), rep("experimental", 2)),
 #'                      duration = rep(1, 4),
 #'                      rate = log(2) / c(6, 9, 9, 12)),
-<<<<<<< HEAD
-#'   dropout_rate = tibble(Stratum = rep(c("Positive", "Negative"),2),
-=======
-#'   dropoutRates = tibble(stratum = rep(c("Positive", "Negative"),2),
->>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
+#'   dropout_rate = tibble(stratum = rep(c("Positive", "Negative"),2),
 #'                         period = rep(1, 4),
 #'                         treatment = c(rep("control", 2), rep("experimental", 2)),
 #'                         duration = rep(1, 4),

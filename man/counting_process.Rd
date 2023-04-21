@@ -9,13 +9,8 @@ counting_process(x, arm)
 \arguments{
 \item{x}{a tibble with no missing values and contain variables
 \itemize{
-<<<<<<< HEAD
-\item \code{Stratum}: Stratum
-\item \code{treatment}: treatment group
-=======
 \item \code{stratum}: stratum
-\item \code{Treatment}: Treatment group
->>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
+\item \code{treatment}: treatment group
 \item \code{tte}: Observed time
 \item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
 }}
@@ -58,13 +53,8 @@ library(dplyr)
 library(tibble)
 
 # example 1
-<<<<<<< HEAD
-x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
-            treatment = rep(c(1, 1, 0, 0), 4),
-=======
 x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
-            Treatment = rep(c(1, 1, 0, 0), 4),
->>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
+            treatment = rep(c(1, 1, 0, 0), 4),
             tte = 1:16,
             event= rep(c(0, 1), 8))
 counting_process(x, arm = 1)
