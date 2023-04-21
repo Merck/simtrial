@@ -23,21 +23,26 @@ NULL
 #'
 #' Produces a tibble that is sorted by stratum and time.
 #' Included in this is only the times at which one or more event occurs.
-#' The output dataset contains Stratum, tte (time-to-event), at risk count and count of events at the specified tte
-#' sorted by Stratum and tte.
+#' The output dataset contains stratum, tte (time-to-event), at risk count and count of events at the specified tte
+#' sorted by stratum and tte.
 #'
 #' The function only considered two group situation.
 #'
 #' The tie is handled by the Breslow's Method.
 #'
 #' @param x a tibble with no missing values and contain variables
+<<<<<<< HEAD
 #' - `Stratum`: Stratum
 #' - `treatment`: treatment group
+=======
+#' - `stratum`: stratum
+#' - `Treatment`: Treatment group
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
 #' @param arm value in the input `treatment` column that indicates treatment group value.
 #'
-#' @return A `tibble` grouped by `Stratum` and sorted within strata by `tte`.
+#' @return A `tibble` grouped by `stratum` and sorted within stratum by `tte`.
 #' Remain rows with at least one event in the population, at least one subject
 #' is at risk in both treatment group and control group.
 #' Other variables in this represent the following within each stratum at
@@ -59,7 +64,7 @@ NULL
 #' library(tibble)
 #'
 #' # example 1
-#' x <- tibble(Stratum = c(rep(1, 10),rep(2, 6)),
+#' x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
 #'             treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
@@ -90,13 +95,13 @@ counting_process <- function(x, arm){
     }
 
     ans <- x %>%
-      group_by(Stratum) %>%
+      group_by(stratum) %>%
       arrange(desc(tte)) %>%
       mutate(one = 1,
              n_risk_tol = cumsum(one),
              n_risk_trt = cumsum(treatment == arm)) %>%
       # Handling ties using Breslow's method
-      group_by(Stratum, mtte = desc(tte)) %>%
+      group_by(stratum, mtte = desc(tte)) %>%
       dplyr::summarise(events = sum(event),
                        n_event_tol = sum((treatment == arm) * event),
                        tte = first(tte),
@@ -107,8 +112,8 @@ counting_process <- function(x, arm){
       filter(events > 0, n_risk_tol - n_risk_trt > 0, n_risk_trt > 0) %>%
       select(-mtte) %>%
       mutate(s = 1 - events / n_risk_tol) %>%
-      arrange(Stratum, tte) %>%
-      group_by(Stratum) %>%
+      arrange(stratum, tte) %>%
+      group_by(stratum) %>%
       mutate( # left continuous Kaplan-Meier Estimator
              S = lag(cumprod(s), default = 1),
              # observed events minus Expected events in treatment group

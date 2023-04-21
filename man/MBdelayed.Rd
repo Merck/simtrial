@@ -63,6 +63,7 @@ ten \%>\% summarise(S = sum(o_minus_e*w6),
 ds <- sim_pw_surv(n = 200,
                 enroll_rate = tibble(rate = 200 / 12, duration = 12),
                 fail_rate = tribble(
+<<<<<<< HEAD
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        log(2) / 15,
                    "All",        1,   "experimental", 6,         log(2) / 15,
@@ -71,6 +72,16 @@ ds <- sim_pw_surv(n = 200,
                    ~Stratum, ~Period, ~treatment,     ~duration, ~rate,
                    "All",        1,   "control",      42,        0,
                    "All",        1,   "experimental", 42,        0)
+=======
+                   ~stratum, ~Period, ~Treatment,     ~duration, ~rate,
+                   "All",        1,   "Control",      42,        log(2) / 15,
+                   "All",        1,   "Experimental", 6,         log(2) / 15,
+                   "All",        2,   "Experimental", 36,        log(2) / 15 * 0.6),
+                dropoutRates = tribble(
+                   ~stratum, ~Period, ~Treatment,     ~duration, ~rate,
+                   "All",        1,   "Control",      42,        0,
+                   "All",        1,   "Experimental", 42,        0)
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
        )
 # Cut data at 24 months after final enrollment
 MBdelayed2 <- ds \%>\% cut_data_by_date(max(ds$enroll_time) + 24)

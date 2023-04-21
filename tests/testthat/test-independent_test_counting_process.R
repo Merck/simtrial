@@ -1,7 +1,7 @@
 surv_to_count <- function(time, status, trt, strats){
   db <- data.frame(time, status, trt, strats)
 
-  # KM estimator by Stratum
+  # KM estimator by stratum
   tidy_survfit <- function(...){
     .survfit <- summary(survfit(...))
     n <- length(.survfit$time)
@@ -12,7 +12,11 @@ surv_to_count <- function(time, status, trt, strats){
   }
   km <- db %>% group_by(strats) %>% do( tidy_survfit(Surv(time, status) ~ 1, data = .) )
 
+<<<<<<< HEAD
   # KM estimator by Stratum and treatment Group Predicted at Specified Time
+=======
+  # KM estimator by stratum and Treatment Group Predicted at Specified Time
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
   pred_survfit <- function(pred_time, ...){
     .survfit <- survfit(...)
 
@@ -41,6 +45,7 @@ surv_to_count <- function(time, status, trt, strats){
 }
 
 testthat::test_that("Counting Process Format without ties", {
+<<<<<<< HEAD
   x=tibble(Stratum = c(rep(1,10),rep(2,6)),
            treatment = rep(c(1,1,0,0),4),
            tte = 1:16,
@@ -49,6 +54,16 @@ testthat::test_that("Counting Process Format without ties", {
   txval=1
   res_counting_process <- simtrial::counting_process(x, txval)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
+=======
+  x=tibble(stratum = c(rep(1,10),rep(2,6)),
+           Treatment = rep(c(1,1,0,0),4),
+           tte = 1:16,
+           event= rep(c(0,1),8))
+
+  arm=1
+  res_counting_process <- simtrial::counting_process(x, arm)
+  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$stratum)
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)
@@ -60,13 +75,22 @@ testthat::test_that("Counting Process Format without ties", {
 
 
 testthat::test_that("Counting Process Format with ties", {
+<<<<<<< HEAD
   x=tibble(Stratum = c(rep(1,10),rep(2,6)),
            treatment = rep(c(1,1,0,0),4),
+=======
+  x=tibble(stratum = c(rep(1,10),rep(2,6)),
+           Treatment = rep(c(1,1,0,0),4),
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
            tte = c(rep(1:4, each = 4) ),
            event= rep(c(0,1),8))
   arm=1
   res_counting_process <- counting_process(x, arm)
+<<<<<<< HEAD
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$Stratum)
+=======
+  res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$Treatment, strats = x$stratum)
+>>>>>>> 4f79d3c28a0775bb59fbd2ef739449867b3fcce9
 
   res_test <- as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event>0 & n.risk - tn.risk > 0 & tn.risk >0)

@@ -33,7 +33,7 @@ With output from the function \code{counting_process}
 }
 \details{
 The input value \code{x} produced by \code{counting_process()} produces a counting process dataset
-grouped by strata and sorted within strata by increasing times where events occur.
+grouped by stratum and sorted within stratum by increasing times where events occur.
 \itemize{
 \item \eqn{Z} - standardized normal Fleming-Harrington weighted logrank test
 \item \eqn{i}  - stratum index

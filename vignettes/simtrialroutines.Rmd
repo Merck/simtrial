@@ -101,21 +101,21 @@ The methods used here have all be demonstrated above, but here they are combined
 First we set up input variables to make the later call to `sim_pw_surv()` more straightforward to read.
 
 ```{r}
-strata <- tibble(Stratum = c("Negative", "Positive"), p = c(.5, .5))
+stratum <- tibble(stratum = c("Negative", "Positive"), p = c(.5, .5))
 
 block <- c(rep("control", 2), rep("experimental", 2))
 
 enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
 fail_rate <- tibble(
-  Stratum = c(rep("Negative", 4), rep("Positive", 4)),
+  stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
   treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
   duration = rep(c(3, 1), 4),
   rate = log(2) / c(4, 9, 4.5, 10, 4, 9, 8, 18)
 )
 dropout_rate <- tibble(
-  Stratum = c(rep("Negative", 4), rep("Positive", 4)),
+  stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
   treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
   duration = rep(c(3, 1), 4),
@@ -126,7 +126,7 @@ dropout_rate <- tibble(
 ```{r}
 x <- sim_pw_surv(
   n = 400,
-  strata = strata,
+  stratum = stratum,
   block = block,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
@@ -138,8 +138,7 @@ head(x) %>% kable(digits = 2)
 ## Cutting data for analysis
 
 There two ways to cut off data in the generated dataset `x` from above. 
- 
-The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`Stratum`) and the treatment group assigned (`treatment`).
+The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`stratum`) and the treatment group assigned (`treatment`).
 Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
@@ -153,10 +152,10 @@ For instance, if we wish to cut the entire dataset when 50 events are observed i
 
 ```{r}
 
-cut50Positive <- get_cut_date_by_event(filter(x, Stratum == "Positive"), 50)
+cut50Positive <- get_cut_date_by_event(filter(x, stratum == "Positive"), 50)
 y50Positive <- cut_data_by_date(x, cut50Positive)
 
-with(y50Positive, table(Stratum, event))
+with(y50Positive, table(stratum, event))
 ```
 
 Perhaps the most common way to cut data is with an event count for the overall population, which is done using the `cut_data_by_event` function. Note that if there are tied events at the date the `cte` the count is reached, all are included. Also, if the count is never reached, all event times are included in the cut - with no indication of an error.
@@ -226,13 +225,13 @@ Here the argument structure is meant to be simpler than for `sim_pw_surv()`.
 
 
 ```{r}
-strata <- tibble(Stratum = "All", p = 1)
+stratum <- tibble(stratum = "All", p = 1)
 enroll_rate <- tibble(
   duration = c(2, 2, 10),
   rate = c(3, 6, 9)
 )
 fail_rate <- tibble(
-  Stratum = "All",
+  stratum = "All",
   duration = c(3, 100),
   fail_rate = log(2) / c(9, 18),
   hr = c(0.9, 0.6),
@@ -242,7 +241,7 @@ block <- rep(c("experimental", "control"), 2)
 rg <- tibble(rho = 0, gamma = 0)
 ```
 
-Now we simulate a trial 2 times and cut data for analysis based on `timingType = 1:5` which translates to: 
+Now we simulate a trial 2 times and cut data for analysis based on `timing_type = 1:5` which translates to: 
 
 1) the planned study duration, 
 2) targeted event count is achieved, 
@@ -253,26 +252,26 @@ Now we simulate a trial 2 times and cut data for analysis based on `timingType =
 ```{r}
 sim_fixed_n(
   nsim = 2, # Number of simulations
-  sampleSize = 500, # Trial sample size
+  sample_size = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis
-  strata = strata, # Study strata
+  stratum = stratum, # Study stratum
   enroll_rate = enroll_rate, # Enrollment rates
   fail_rate = fail_rate, # Failure rates
   totalDuration = 30, # Planned trial duration
   block = block, # Block for treatment
-  timingType = 1:5, # Use all possible data cutoff methods
+  timing_type = 1:5, # Use all possible data cutoff methods
   rg = rg # FH test(s) to use; in this case, logrank
 ) %>% kable(digits = 2)
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
-To explain, we note that generally you will want `sampleSize` above to match the enrollment specified in `enroll_rate`:
+To explain, we note that generally you will want `sample_size` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
 enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sampleSize` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sample_size` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
 
 ```{r}
 totalDuration <- 30 # From above

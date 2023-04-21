@@ -36,8 +36,8 @@
 #'
 #' # example 2
 #' # Stratified randomization
-#' tibble(Stratum = c(rep("A", 10), rep("B", 10))) %>%
-#'   group_by(Stratum) %>%
+#' tibble(stratum = c(rep("A", 10), rep("B", 10))) %>%
+#'   group_by(stratum) %>%
 #'   mutate(Treatment = randomize_by_fixed_block())
 #'
 #' @export

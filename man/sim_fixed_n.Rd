@@ -6,15 +6,15 @@
 \usage{
 sim_fixed_n(
   nsim = 1000,
-  sampleSize = 500,
+  sample_size = 500,
   target_event = 350,
-  strata = tibble(Stratum = "All", p = 1),
+  stratum = tibble(stratum = "All", p = 1),
   enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
-  fail_rate = tibble(Stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
+  fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
     hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   totalDuration = 30,
   block = rep(c("experimental", "control"), 2),
-  timingType = 1:5,
+  timing_type = 1:5,
   rg = tibble(rho = 0, gamma = 0),
   seed = NULL
 )
@@ -22,15 +22,15 @@ sim_fixed_n(
 \arguments{
 \item{nsim}{Number of simulations to perform.}
 
-\item{sampleSize}{Total sample size per simulation.}
+\item{sample_size}{Total sample size per simulation.}
 
 \item{target_event}{Targeted event count for analysis.}
 
-\item{strata}{A tibble with strata specified in \code{Stratum}, probability (incidence) of each stratum in \code{p}.}
+\item{stratum}{A tibble with stratum specified in \code{stratum}, probability (incidence) of each stratum in \code{p}.}
 
 \item{enroll_rate}{Piecewise constant enrollment rates by time period.
-Note that these are overall population enrollment rates and the \code{strata} argument controls the
-random distribution between strata.}
+Note that these are overall population enrollment rates and the \code{stratum} argument controls the
+random distribution between stratum.}
 
 \item{fail_rate}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 and dropout rates by stratum and time period.}
@@ -39,7 +39,7 @@ and dropout rates by stratum and time period.}
 
 \item{block}{As in \code{simtrial::sim_pw_surv()}. Vector of treatments to be included in each block.}
 
-\item{timingType}{A numeric vector determining data cutoffs used; see details.
+\item{timing_type}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
 
 \item{rg}{As in \code{simtrial::tenFHCorr()}.
@@ -52,7 +52,7 @@ to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
 \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
-One row per simulated dataset per cutoff specified in \code{timingType}, per test statistic specified.
+One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
 are also included.
 }
@@ -61,7 +61,7 @@ are also included.
 where the enrollment, hazard ratio, and failure and dropout rates change over time.
 }
 \details{
-\code{timingType} has up to 5 elements indicating different options for data cutoff.
+\code{timing_type} has up to 5 elements indicating different options for data cutoff.
 1 uses the planned study duration, 2 the time the targeted event count is achieved,
 3 the planned minimum follow-up after enrollment is complete,
 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
@@ -85,7 +85,7 @@ sim_fixed_n(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
 # Power by test
 # Only use cuts for events, events + min follow-up
 xx <- sim_fixed_n(nsim = 100,
-             timingType = c(2, 5),
+             timing_type = c(2, 5),
              rg = tibble(rho = 0, gamma = c(0, 1)))
 # Get power approximation for FH, data cutoff combination
 xx \%>\%

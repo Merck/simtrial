@@ -1,5 +1,5 @@
 
-strata <- tibble::tibble(Stratum=c("Low","High"),p=c(.4,.6))
+stratum <- tibble::tibble(stratum=c("Low","High"),p=c(.4,.6))
 
 block <- c(rep("control",2),rep("experimental",2))
 
@@ -23,15 +23,15 @@ dropout_rate <- bind_rows(
 )
 set.seed(1)
 x <- sim_pw_surv(n=400000,
-               strata = strata,
+               stratum = stratum,
                block = block,
                enroll_rate = enroll_rate,
                fail_rate=fail_rate,
                dropout_rate =dropout_rate)
 
 #prepare to test block
-block1<-x%>%filter(Stratum=='Low')
-block2<-x%>%filter(Stratum=='High')
+block1<-x%>%filter(stratum=='Low')
+block2<-x%>%filter(stratum=='High')
 bktest1 <- c()
 j=1
 for (i in seq(1,floor(nrow(block1)/4))){
@@ -52,15 +52,15 @@ y <- cut_data_by_date(x,cut_date=300)
 intervals<-c(3)
 rate00 <- with(subset(y,treatment=='control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
 rate01 <- with(subset(y,treatment=='control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
-rate10 <- with(subset(y,treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate11 <- with(subset(y,treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y,treatment=='experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y,treatment=='experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 ratetest<- c(rate00$rate,rate10$rate,rate01$rate, rate11$rate)
 xevent<-bind_rows(rate00, rate01,rate10,rate11)
 
-testthat::test_that("Strata percentage calculated from simulated dataset must be within
-                    the tolerance=0.002 of strata in setup (0.4,0.6)",{
-  expect_equal(object=c(sum(stringr::str_count(x$Stratum, "Low"))/400000,
-                        sum(stringr::str_count(x$Stratum, "High"))/400000),
+testthat::test_that("stratum percentage calculated from simulated dataset must be within
+                    the tolerance=0.002 of stratum in setup (0.4,0.6)",{
+  expect_equal(object=c(sum(stringr::str_count(x$stratum, "Low"))/400000,
+                        sum(stringr::str_count(x$stratum, "High"))/400000),
                expected=c(0.4, 0.6), tolerance=0.002)
 })
 
@@ -98,7 +98,7 @@ testthat::test_that("enroll_rate calculated from simulated dataset must be withi
 #check the arguments, by changing n, the actual number of events changes
 set.seed(2468)
 z <- sim_pw_surv(n=300000,
-               strata = strata,
+               stratum = stratum,
                block = block,
                enroll_rate = enroll_rate,
                fail_rate=fail_rate,
@@ -110,8 +110,8 @@ y1 <- cut_data_by_date(z,cut_date=300)
 intervals<-c(3)
 rate00 <- with(subset(y1,treatment=='control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
 rate01 <- with(subset(y1,treatment=='control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
-rate10 <- with(subset(y1,treatment=='Experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate11 <- with(subset(y1,treatment=='Experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y1,treatment=='experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y1,treatment=='experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 zevent<-bind_rows(rate00, rate01,rate10,rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size",{

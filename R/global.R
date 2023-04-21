@@ -30,7 +30,7 @@ utils::globalVariables(
     's',
     'S',
     'status',
-    'Stratum',
+    'stratum',
     'time',
     'treatment',
     'tte',

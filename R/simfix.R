@@ -26,24 +26,24 @@ NULL
 #' `sim_fixed_n()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
 #' @param nsim Number of simulations to perform.
-#' @param sampleSize Total sample size per simulation.
+#' @param sample_size Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
-#' @param strata A tibble with strata specified in `Stratum`, probability (incidence) of each stratum in `p`.
+#' @param stratum A tibble with stratum specified in `stratum`, probability (incidence) of each stratum in `p`.
 #' @param enroll_rate Piecewise constant enrollment rates by time period.
-#' Note that these are overall population enrollment rates and the `strata` argument controls the
-#' random distribution between strata.
+#' Note that these are overall population enrollment rates and the `stratum` argument controls the
+#' random distribution between stratum.
 #' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
 #' @param totalDuration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
-#' @param timingType A numeric vector determining data cutoffs used; see details.
+#' @param timing_type A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
 #' @param rg As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations
 #'
-#' @details \code{timingType} has up to 5 elements indicating different options for data cutoff.
+#' @details \code{timing_type} has up to 5 elements indicating different options for data cutoff.
 #' 1 uses the planned study duration, 2 the time the targeted event count is achieved,
 #' 3 the planned minimum follow-up after enrollment is complete,
 #' 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
@@ -52,7 +52,7 @@ NULL
 #' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
 #' \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
-#' One row per simulated dataset per cutoff specified in \code{timingType}, per test statistic specified.
+#' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
 #' are also included.
 #'
@@ -74,7 +74,7 @@ NULL
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
 #' xx <- sim_fixed_n(nsim = 100,
-#'              timingType = c(2, 5),
+#'              timing_type = c(2, 5),
 #'              rg = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>%
@@ -109,14 +109,14 @@ NULL
 #' @export
 #'
 sim_fixed_n <- function(nsim = 1000,
-                   sampleSize = 500, # sample size
+                   sample_size = 500, # sample size
                    target_event = 350,  # targeted total event count
-                   # multinomial probability distribution for strata enrollment
-                   strata = tibble(Stratum = "All", p = 1),
+                   # multinomial probability distribution for stratum enrollment
+                   stratum = tibble(stratum = "All", p = 1),
                    # enrollment rates as in AHR()
                    enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
                    # failure rates as in AHR()
-                   fail_rate = tibble(Stratum = "All",
+                   fail_rate = tibble(stratum = "All",
                                       duration = c(3, 100),
                                       fail_rate = log(2) / c(9, 18),
                                       hr = c(.9, .6),
@@ -126,7 +126,7 @@ sim_fixed_n <- function(nsim = 1000,
                    # Fixed block randomization specification
                    block = rep(c("experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
-                   timingType = 1:5,
+                   timing_type = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
                    rg = tibble(rho = 0, gamma = 0),
@@ -144,8 +144,8 @@ sim_fixed_n <- function(nsim = 1000,
 
 
   # check input failure rate assumptions
-  if(!("Stratum" %in% names(fail_rate))){
-    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain Stratum!")
+  if(!("stratum" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain stratum!")
   }
 
   if(!("duration" %in% names(fail_rate))){
@@ -182,13 +182,13 @@ sim_fixed_n <- function(nsim = 1000,
   }
 
   # check stratum
-  strata2 <- names(table(fail_rate$Stratum))
-  if(nrow(strata) != length(strata2)){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
+  stratum2 <- names(table(fail_rate$stratum))
+  if(nrow(stratum) != length(stratum2)){
+    stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate!")
   }
 
-  if(any(is.na(match(strata$Stratum, strata2))) | any(is.na(match(strata2, strata$Stratum)))){
-    stop("sim_fixed_n: Stratum in `sim_fixed_n()` must be the same in strata and fail_rate!")
+  if(any(is.na(match(stratum$stratum, stratum2))) | any(is.na(match(stratum2, stratum$stratum)))){
+    stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate!")
   }
 
   # check nsim
@@ -213,13 +213,13 @@ sim_fixed_n <- function(nsim = 1000,
     stop(("sim_fixed_n: target_event in `sim_fixed_n()` must be positive!"))
   }
 
-  # check sampleSize
-  if(sampleSize <= 0){
-    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive!")
+  # check sample_size
+  if(sample_size <= 0){
+    stop("sim_fixed_n: sample_size in `sim_fixed_n()` must be positive!")
   }
 
-  if(length(sampleSize) != 1){
-    stop("sim_fixed_n: sampleSize in `sim_fixed_n()` must be positive")
+  if(length(sample_size) != 1){
+    stop("sim_fixed_n: sample_size in `sim_fixed_n()` must be positive")
   }
 
   # check seed
@@ -230,7 +230,7 @@ sim_fixed_n <- function(nsim = 1000,
     setSeed <- TRUE
   }
 
-  n_stratum <- nrow(strata)
+  n_stratum <- nrow(stratum)
 
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
@@ -275,8 +275,8 @@ sim_fixed_n <- function(nsim = 1000,
     }
 
     # generate piecewise data
-    sim <- sim_pw_surv(n = sampleSize,
-                     strata = strata,
+    sim <- sim_pw_surv(n = sample_size,
+                     stratum = stratum,
                      enroll_rate = enroll_rate,
                      fail_rate = fr,
                      dropout_rate = dr,
@@ -296,19 +296,19 @@ sim_fixed_n <- function(nsim = 1000,
     tests <- rep(FALSE, 3)
 
     ## Total planned trial duration or max of this and targeted events
-    if (1 %in% timingType){
+    if (1 %in% timing_type){
       tests[1] <- TRUE       # planned duration cutoff
     }
 
-    if (2 %in% timingType){
+    if (2 %in% timing_type){
       tests[2] <- TRUE       # targeted events cutoff
     }
 
-    if (3 %in% timingType){
+    if (3 %in% timing_type){
       tests[3] <- TRUE       # minimum follow-up duration target
     }
 
-    if (4 %in% timingType){  # max of planned duration, targeted events
+    if (4 %in% timing_type){  # max of planned duration, targeted events
       if (tedate > totalDuration){
         tests[2] <- TRUE
       }else{
@@ -316,7 +316,7 @@ sim_fixed_n <- function(nsim = 1000,
       }
     }
 
-    if (5 %in% timingType){  # max of minimum follow-up, targeted events
+    if (5 %in% timing_type){  # max of minimum follow-up, targeted events
       if (tedate > tmfdate){
         tests[2] <- TRUE
       }else{
@@ -344,28 +344,28 @@ sim_fixed_n <- function(nsim = 1000,
 
     addit <- NULL
     # planned duration cutoff
-    if (1 %in% timingType){
+    if (1 %in% timing_type){
       addit <- rbind(addit,
                      r1 %>% mutate(cut = "Planned duration",
                                    Duration = totalDuration))
     }
 
     # targeted events cutoff
-    if (2 %in% timingType){
+    if (2 %in% timing_type){
       addit <- rbind(addit,
                      r2 %>% mutate(cut = "Targeted events",
                                    Duration = tedate))
     }
 
     # minimum follow-up duration target
-    if (3 %in% timingType){
+    if (3 %in% timing_type){
       addit <- rbind(addit,
                      r3 %>% mutate(cut = "Minimum follow-up",
                                    Duration = tmfdate))
     }
 
     # max of planned duration, targeted events
-    if (4 %in% timingType){
+    if (4 %in% timing_type){
       if (tedate > totalDuration){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(planned duration, event cut)",
@@ -378,7 +378,7 @@ sim_fixed_n <- function(nsim = 1000,
     }
 
     # max of minimum follow-up, targeted events
-    if (5 %in% timingType){
+    if (5 %in% timing_type){
       if (tedate > tmfdate){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(min follow-up, event cut)",

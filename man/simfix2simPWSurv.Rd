@@ -5,7 +5,7 @@
 \title{Conversion of enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format}
 \usage{
 simfix2simPWSurv(
-  fail_rate = tibble(Stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
+  fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
     hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2))
 )
 }
@@ -21,7 +21,7 @@ A \code{list} of two \code{tibble} components formatted for \code{simtrial::sim_
 \code{simfix2simPWSurv()} converts failure rates and dropout rates entered in the simpler
 format for \code{sim_fixed_n()} to that used for \code{simtrial::sim_pw_surv()}.
 The \code{fail_rate} argument for \code{sim_fixed_n()} requires enrollment rates, failure rates
-hazard ratios and dropout rates by strata for a 2-arm trial, \code{simtrial::sim_pw_surv()}
+hazard ratios and dropout rates by stratum for a 2-arm trial, \code{simtrial::sim_pw_surv()}
 is in a more flexible but less obvious but more flexible format.
 Since \code{sim_fixed_n()} automatically analyzes data and \code{simtrial::sim_pw_surv()} just produces
 a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
@@ -37,7 +37,7 @@ library(tibble)
 simfix2simPWSurv()
 
 # Stratified example
-fail_rate <- tibble(Stratum = c(rep("Low", 3),rep("High", 3)),
+fail_rate <- tibble(stratum = c(rep("Low", 3),rep("High", 3)),
                     duration = rep(c(4, 10, 100), 2),
                     fail_rate = c(.04, .1, .06,
                                  .08,.16,.12),
@@ -50,7 +50,7 @@ x <- simfix2simPWSurv(fail_rate)
 # Do a single simulation with the above rates
 # Enroll 300 patients in ~12 months at constant rate
 sim <- sim_pw_surv(n = 300,
-                 strata = tibble(Stratum = c("Low","High"), p = c(.6, .4)),
+                 stratum = tibble(stratum = c("Low","High"), p = c(.6, .4)),
                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
                  fail_rate = x$fail_rate,
                  dropout_rate = x$dropout_rate)
