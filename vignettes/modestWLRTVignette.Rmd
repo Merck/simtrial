@@ -169,7 +169,7 @@ We perform a logrank and weighted logrank tests as suggested for more limited do
 ```{r}
 xx <- FHwn %>%
   counting_process(arm = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
+  tenFHcorr(rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
   mutate(p = pnorm(Z))
 xx
 ```
@@ -198,7 +198,7 @@ Results are quite similar to the results with greater down-weighting.
 ```{r}
 xx <- FHwn %>%
   counting_process(arm = "Experimental") %>%
-  tenFHcorr(rg = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
+  tenFHcorr(rho_gamma = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5))) %>%
   mutate(p = pnorm(Z))
 xx
 ```
