@@ -27,7 +27,7 @@ test2<-sim_fixed_n(nsim=100,
                                        dropout_rate=-log(1-0.05)/12),
               totalDuration=18,
               block=rep(c("experimental","control"),2),
-              timingType=1:5,
+              timing_type=1:5,
               rg=tibble::tibble(rho=0,gamma=0)
 )
 
