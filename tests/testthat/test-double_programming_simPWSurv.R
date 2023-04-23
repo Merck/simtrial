@@ -6,20 +6,20 @@ block <- c(rep("control",2),rep("experimental",2))
 enroll_rate = tibble::tibble(duration = c(5,195), rate = c(100,3000))
 
 fail_rate <- bind_rows(
-  tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=3,rate=.03),
-  tibble::tibble(Stratum="Low" ,period=2,treatment="control"     ,duration=297,rate=.03),
-  tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=3,rate=.03),
-  tibble::tibble(Stratum="Low" ,period=2,treatment="experimental",duration=297,rate=.02),
-  tibble::tibble(Stratum="High",period=1,treatment="control"     ,duration=3,rate=.05),
-  tibble::tibble(Stratum="High",period=2,treatment="control"     ,duration=297,rate=.05),
-  tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=3,rate=.06),
-  tibble::tibble(Stratum="High",period=2,treatment="experimental",duration=297,rate=.03)
+  tibble::tibble(stratum="Low" ,period=1,treatment="control"     ,duration=3,rate=.03),
+  tibble::tibble(stratum="Low" ,period=2,treatment="control"     ,duration=297,rate=.03),
+  tibble::tibble(stratum="Low" ,period=1,treatment="experimental",duration=3,rate=.03),
+  tibble::tibble(stratum="Low" ,period=2,treatment="experimental",duration=297,rate=.02),
+  tibble::tibble(stratum="High",period=1,treatment="control"     ,duration=3,rate=.05),
+  tibble::tibble(stratum="High",period=2,treatment="control"     ,duration=297,rate=.05),
+  tibble::tibble(stratum="High",period=1,treatment="experimental",duration=3,rate=.06),
+  tibble::tibble(stratum="High",period=2,treatment="experimental",duration=297,rate=.03)
 )
 dropout_rate <- bind_rows(
-  tibble::tibble(Stratum="Low" ,period=1,treatment="control"     ,duration=300,rate=.001),
-  tibble::tibble(Stratum="Low" ,period=1,treatment="experimental",duration=300,rate=.001),
-  tibble::tibble(Stratum="High",period=1,treatment="control"     ,duration=300,rate=.001),
-  tibble::tibble(Stratum="High",period=1,treatment="experimental",duration=300,rate=.001)
+  tibble::tibble(stratum="Low" ,period=1,treatment="control"     ,duration=300,rate=.001),
+  tibble::tibble(stratum="Low" ,period=1,treatment="experimental",duration=300,rate=.001),
+  tibble::tibble(stratum="High",period=1,treatment="control"     ,duration=300,rate=.001),
+  tibble::tibble(stratum="High",period=1,treatment="experimental",duration=300,rate=.001)
 )
 set.seed(1)
 x <- sim_pw_surv(n=400000,
@@ -108,10 +108,10 @@ z <- sim_pw_surv(n=300000,
 y1 <- cut_data_by_date(z,cut_date=300)
 
 intervals<-c(3)
-rate00 <- with(subset(y1,treatment=='control'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate01 <- with(subset(y1,treatment=='control'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
-rate10 <- with(subset(y1,treatment=='experimental'|Stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
-rate11 <- with(subset(y1,treatment=='experimental'|Stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate00 <- with(subset(y1,treatment=='control'|stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate01 <- with(subset(y1,treatment=='control'|stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
+rate10 <- with(subset(y1,treatment=='experimental'|stratum=='Low'), fit_pwexp(Surv(tte,event),intervals))
+rate11 <- with(subset(y1,treatment=='experimental'|stratum=='High'), fit_pwexp(Surv(tte,event),intervals))
 zevent<-bind_rows(rate00, rate01,rate10,rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size",{
