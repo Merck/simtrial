@@ -59,7 +59,7 @@ x <- sim_pw_surv(
   block = block,
 
   enroll_rate = enroll_rate,
-  fail_rate = xx %>% mutate(stratum = "All", treatment = tx, period = 1:n(), Stratum = "All"),
+  fail_rate = xx %>% mutate(stratum = "All", treatment = tx, period = 1:n(), stratum = "All"),
   dropout_rate  = dropout_rate 
 )
 ```
