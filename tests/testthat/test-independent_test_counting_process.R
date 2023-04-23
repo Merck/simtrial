@@ -43,7 +43,7 @@ surv_to_count <- function(time, status, trt, strats){
 testthat::test_that("Counting Process Format without ties", {
 
   x=tibble(stratum = c(rep(1,10),rep(2,6)),
-           Treatment = rep(c(1,1,0,0),4),
+           treatment = rep(c(1,1,0,0),4),
            tte = 1:16,
            event= rep(c(0,1),8))
 
