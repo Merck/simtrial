@@ -59,6 +59,6 @@ sim <- sim_pw_surv(n = 300,
 dat <- sim \%>\%
   cut_data_by_event(200) \%>\%              # cut data
   counting_process(arm = "Experimental") \%>\%  # convert format for wlr
-  wlr(rg = tibble(rho=0,gamma=0))    # stratified logrank
+  wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
 
 }

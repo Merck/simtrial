@@ -43,7 +43,7 @@ NULL
 #' # example 1
 #' x <- sim_fixed_n(nsim = 1,
 #'             timing_type = 5,
-#'             rg = tibble(rho = c(0, 0, 1),
+#'             rho_gamma = tibble(rho = c(0, 0, 1),
 #'                         gamma = c(0, 1, 1)))
 #' head(x)
 #' pvalue_maxcombo(x)
@@ -52,7 +52,7 @@ NULL
 #' # Only use cuts for events, events + min follow-up
 #' xx <- sim_fixed_n(nsim = 100,
 #'              timing_type = 5,
-#'              rg = tibble(rho = c(0, 0, 1),
+#'              rho_gamma = tibble(rho = c(0, 0, 1),
 #'                          gamma = c(0, 1, 1)))
 #' head(xx)
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up

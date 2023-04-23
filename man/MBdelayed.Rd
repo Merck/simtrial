@@ -38,7 +38,7 @@ ten <- MBdelayed \%>\% counting_process(arm = "Experimental")
 head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
-ten \%>\% tenFHcorr(rg = tibble(rho=c(0, 0, 1), gamma = c(0, 1, 1))) \%>\%
+ten \%>\% tenFHcorr(rho_gamma = tibble(rho=c(0, 0, 1), gamma = c(0, 1, 1))) \%>\%
         pvalue_maxcombo()
 
 # Magirr-Burman modestly down-weighted rank test with 6 month delay

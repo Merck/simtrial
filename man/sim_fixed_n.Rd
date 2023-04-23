@@ -15,7 +15,7 @@ sim_fixed_n(
   totalDuration = 30,
   block = rep(c("Experimental", "Control"), 2),
   timing_type = 1:5,
-  rg = tibble(rho = 0, gamma = 0),
+  rho_gamma = tibble(rho = 0, gamma = 0),
   seed = NULL
 )
 }
@@ -42,7 +42,7 @@ and dropout rates by stratum and time period.}
 \item{timing_type}{A numeric vector determining data cutoffs used; see details.
 Default is to include all available cutoff methods.}
 
-\item{rg}{As in \code{simtrial::tenFHCorr()}.
+\item{rho_gamma}{As in \code{simtrial::tenFHCorr()}.
 A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row.}
 
@@ -53,7 +53,7 @@ A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-
 \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
-If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
+If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
 are also included.
 }
 \description{
@@ -79,14 +79,14 @@ sim_fixed_n(nsim = 3)
 
 # example 2
 # Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
+sim_fixed_n(nsim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 
 # example 3
 # Power by test
 # Only use cuts for events, events + min follow-up
 xx <- sim_fixed_n(nsim = 100,
              timing_type = c(2, 5),
-             rg = tibble(rho = 0, gamma = c(0, 1)))
+             rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 # Get power approximation for FH, data cutoff combination
 xx \%>\%
   group_by(cut, rho, gamma) \%>\%

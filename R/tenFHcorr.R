@@ -27,11 +27,11 @@ NULL
 #' Fleming-Harrington tests
 #'
 #' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
-#' @param rg a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
+#' @param rho_gamma a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row
 #' @param corr a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix
 #'
-#' @return a `tibble` with \code{rg} as input, the FH test statistics specified
+#' @return a `tibble` with \code{rho_gamma} as input, the FH test statistics specified
 #' for the data in \code{Z}, and the correlation or covariance matrix for these tests in variables starting
 #' with \code{V}
 #'
@@ -45,7 +45,7 @@ NULL
 #'   counting_process(arm = "Experimental")
 #'
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' x <- x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
+#' x <- x %>% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
 #'                                  gamma = c(0, 1)))
 #'
 #' # compute p-value for MaxCombo
@@ -59,38 +59,38 @@ NULL
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "Experimental")
 #'
-#' x %>% tenFHcorr(rg = tibble(rho = c(0, 0),
+#' x %>% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
 #'                             gamma = c(0, 1)),
 #'                 corr = FALSE)
 #'
 #' # Off-diagonal element should be variance in following
-#' x %>% tenFHcorr(rg = tibble(rho = 0,
+#' x %>% tenFHcorr(rho_gamma = tibble(rho = 0,
 #'                             gamma =.5),
 #'                 corr = FALSE)
 #'
 #' # compare off diagonal result with wlr()
-#' x %>% wlr(rg = tibble(rho = 0, gamma =.5))
+#' x %>% wlr(rho_gamma = tibble(rho = 0, gamma =.5))
 #'
 #' @export
 #' @rdname tenFHcorr
 tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
                             cut_data_by_event(100) %>%
                             counting_process(arm = "Experimental"),
-                      rg = tibble(rho = c(0, 0, 1, 1),
+                      rho_gamma = tibble(rho = c(0, 0, 1, 1),
                                   gamma = c(0, 1, 0, 1)),
                       corr = TRUE
 ){
 
-  n_weight <- nrow(rg)
+  n_weight <- nrow(rho_gamma)
 
   # Get average rho and gamma for FH covariance matrix
   # We want ave_rho[i,j] = (rho[i] + rho[j])/2
   # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
-  ave_rho <- (matrix(rg$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
-                matrix(rg$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+  ave_rho <- (matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
+                matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
               )/2
-  ave_gamma <- (matrix(rg$gamma, nrow = n_weight, ncol = n_weight) +
-                  matrix(rg$gamma,nrow = n_weight,ncol = n_weight, byrow = TRUE)
+  ave_gamma <- (matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight) +
+                  matrix(rho_gamma$gamma,nrow = n_weight,ncol = n_weight, byrow = TRUE)
                )/2
 
   # Convert back to tibble
@@ -118,6 +118,6 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
   names(corr_mat) <- paste("V", 1:ncol(corr_mat), sep = "")
 
   # return combined values
-  ans <- cbind(rg, Z, as_tibble(corr_mat))
+  ans <- cbind(rho_gamma, Z, as_tibble(corr_mat))
   return(ans)
 }

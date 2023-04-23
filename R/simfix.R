@@ -38,7 +38,7 @@ NULL
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
 #' @param timing_type A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
-#' @param rg As in `simtrial::tenFHCorr()`.
+#' @param rho_gamma As in `simtrial::tenFHCorr()`.
 #' A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations
@@ -53,7 +53,7 @@ NULL
 #' \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
-#' If multiple Fleming-Harrington tests are specified in \code{rg}, then columns {rho,gamma}
+#' If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
 #' are also included.
 #'
 #' @examples
@@ -68,14 +68,14 @@ NULL
 #'
 #' # example 2
 #' # Example with 2 tests: logrank and FH(0,1)
-#' sim_fixed_n(nsim = 1,rg = tibble(rho = 0, gamma = c(0, 1)))
+#' sim_fixed_n(nsim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 #'
 #' # example 3
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
 #' xx <- sim_fixed_n(nsim = 100,
 #'              timing_type = c(2, 5),
-#'              rg = tibble(rho = 0, gamma = c(0, 1)))
+#'              rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>%
 #'   group_by(cut, rho, gamma) %>%
@@ -129,7 +129,7 @@ sim_fixed_n <- function(nsim = 1000,
                    timing_type = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
                    # can be specified
-                   rg = tibble(rho = 0, gamma = 0),
+                   rho_gamma = tibble(rho = 0, gamma = 0),
                    seed = NULL
                    ){
   # check input values
@@ -233,11 +233,11 @@ sim_fixed_n <- function(nsim = 1000,
   n_stratum <- nrow(stratum)
 
   # build a function to calculate Z and log-hr
-  doAnalysis <- function(d, rg, n_stratum){
-    if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% wlr(rg = rg))$Z)
+  doAnalysis <- function(d, rho_gamma, n_stratum){
+    if (nrow(rho_gamma) == 1){
+      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% wlr(rho_gamma = rho_gamma))$Z)
     } else{
-      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rho_gamma = rho_gamma, corr = TRUE)
     }
 
     ans <- tibble(
@@ -327,19 +327,19 @@ sim_fixed_n <- function(nsim = 1000,
     # Total duration cutoff
     if (tests[1]){
       d <- sim %>% cut_data_by_date(totalDuration)
-      r1 <- d %>% doAnalysis(rg, n_stratum)
+      r1 <- d %>% doAnalysis(rho_gamma, n_stratum)
     }
 
     # targeted events cutoff
     if (tests[2]){
       d <- sim %>% cut_data_by_date(tedate)
-      r2 <- d %>% doAnalysis(rg, n_stratum)
+      r2 <- d %>% doAnalysis(rho_gamma, n_stratum)
     }
 
     # minimum follow-up cutoff
     if (tests[3]){
       d <- sim %>% cut_data_by_date(tmfdate)
-      r3 <- d %>% doAnalysis(rg, n_stratum)
+      r3 <- d %>% doAnalysis(rho_gamma, n_stratum)
     }
 
     addit <- NULL

@@ -28,7 +28,7 @@ test2<-sim_fixed_n(nsim=100,
               totalDuration=18,
               block=rep(c("Experimental","Control"),2),
               timing_type=1:5,
-              rg=tibble::tibble(rho=0,gamma=0)
+              rho_gamma=tibble::tibble(rho=0,gamma=0)
 )
 #load("./fixtures/test_data_simfix.Rdata")
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timing_type=1",{

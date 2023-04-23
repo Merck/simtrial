@@ -10,7 +10,7 @@ fail_rate <- tibble::tibble(stratum=c(rep("Low",3),rep("High",3)),
 failRatesPWSurv<-simfix2simPWSurv(fail_rate)$fail_rate
 dropoutRatesPWSurv<-simfix2simPWSurv(fail_rate)$dropoutRates
 
-testthat::test_that("stratum values must be the same and stratum length must be doubled after converting",{
+testthat::test_that("stratgum values must be the same and stratum length must be doubled after converting",{
   stratum1 <- names(table(fail_rate$stratum))
   stratum2 <- names(table(failRatesPWSurv$stratum))
   testthat::expect_equal(stratum1,stratum2)
