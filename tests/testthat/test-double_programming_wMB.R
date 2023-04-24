@@ -16,7 +16,7 @@ test_mb_weight <- function(x, delay = 4){
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum",{
-  x <- sim_pw_surv(n=200) %>% cut_data_by_event(125) %>% counting_process(arm="Experimental")
+  x <- sim_pw_surv(n=200) %>% cut_data_by_event(125) %>% counting_process(arm="experimental")
 
   out1 <- test_mb_weight(x, delay=3)
   out1 <- data.frame(out1[order(out1$stratum,out1$tte),])
@@ -33,16 +33,16 @@ test_that("Validation passed for the situation of multiple stratum",{
                  stratum=tibble::tibble(stratum=c("Low","High"),p=c(.3,.7)),
                  fail_rate=tibble::tibble(stratum=c(rep("Low",4),rep("High",4)),
                                           period=rep(1:2,4),
-                                          Treatment=rep(c(rep("Control",2),rep("Experimental",2)),2),
+                                          treatment=rep(c(rep("control",2),rep("experimental",2)),2),
                                           duration=rep(c(3,1),4),
                                           rate=c(.03,.05,.03,.03,.05,.08,.07,.04)),
-                 dropoutRates=tibble::tibble(stratum=c(rep("Low",2),rep("High",2)),
+                 dropout_rate=tibble::tibble(stratum=c(rep("Low",2),rep("High",2)),
                                              period=rep(1,4),
-                                             Treatment=rep(c("Control","Experimental"),2),
+                                             treatment=rep(c("control","experimental"),2),
                                              duration=rep(1,4),
                                              rate=rep(.001,4))) %>%
     cut_data_by_event(125) %>%
-    counting_process(arm="Experimental")
+    counting_process(arm="experimental")
 
   out1 <- test_mb_weight(x, delay=3)
   out1 <- data.frame(out1[order(out1$stratum,out1$tte),])

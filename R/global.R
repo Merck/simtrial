@@ -32,7 +32,7 @@ utils::globalVariables(
     'status',
     'stratum',
     'time',
-    'Treatment',
+    'treatment',
     'tte',
     'txevents',
     'Var',

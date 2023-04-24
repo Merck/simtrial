@@ -32,10 +32,10 @@ NULL
 #'
 #' @param x a tibble with no missing values and contain variables
 #' - `stratum`: stratum
-#' - `Treatment`: Treatment group
+#' - `treatment`: treatment group
 #' - `tte`: Observed time
 #' - `event`: Binary event indicator, `1` represents event, `0` represents censoring
-#' @param arm value in the input `Treatment` column that indicates treatment group value.
+#' @param arm value in the input `treatment` column that indicates treatment group value.
 #'
 #' @return A `tibble` grouped by `stratum` and sorted within stratum by `tte`.
 #' Remain rows with at least one event in the population, at least one subject
@@ -60,14 +60,14 @@ NULL
 #'
 #' # example 1
 #' x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
-#'             Treatment = rep(c(1, 1, 0, 0), 4),
+#'             treatment = rep(c(1, 1, 0, 0), 4),
 #'             tte = 1:16,
 #'             event= rep(c(0, 1), 8))
 #' counting_process(x, arm = 1)
 #'
 #' # example 2
 #' x <- sim_pw_surv(n = 400)
-#' y <- cut_data_by_event(x, 150) %>% counting_process(arm = "Experimental")
+#' y <- cut_data_by_event(x, 150) %>% counting_process(arm = "experimental")
 #' # weighted logrank test (Z-value and 1-sided p-value)
 #' z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 #' c(z, pnorm(z))
@@ -75,14 +75,14 @@ NULL
 #' @export
 counting_process <- function(x, arm){
 
-    unique_treatment <- unique(x$Treatment)
+    unique_treatment <- unique(x$treatment)
 
     if(length(unique_treatment) > 2){
       stop("counting_process: expected two groups!")
     }
 
     if(! arm %in% unique_treatment){
-      stop("tensurv: arm is not a valid treatment group value!")
+      stop("counting_process: arm is not a valid treatment group value!")
     }
 
     if(! all(unique(x$event) %in% c(0, 1) ) ){
@@ -94,11 +94,11 @@ counting_process <- function(x, arm){
       arrange(desc(tte)) %>%
       mutate(one = 1,
              n_risk_tol = cumsum(one),
-             n_risk_trt = cumsum(Treatment == arm)) %>%
+             n_risk_trt = cumsum(treatment == arm)) %>%
       # Handling ties using Breslow's method
       group_by(stratum, mtte = desc(tte)) %>%
       dplyr::summarise(events = sum(event),
-                       n_event_tol = sum((Treatment == arm) * event),
+                       n_event_tol = sum((treatment == arm) * event),
                        tte = first(tte),
                        n_risk_tol = max(n_risk_tol),
                        n_risk_trt = max(n_risk_trt)) %>%

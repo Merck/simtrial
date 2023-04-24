@@ -120,11 +120,11 @@ sim_fixed_n <- function(nsim = 1000,
                                       duration = c(3, 100),
                                       fail_rate = log(2) / c(9, 18),
                                       hr = c(.9, .6),
-                                      dropoutRate = rep(.001, 2)),
+                                      dropout_rate = rep(.001, 2)),
                    # total planned trial duration; single value
                    totalDuration = 30,
                    # Fixed block randomization specification
-                   block = rep(c("Experimental", "Control"), 2),
+                   block = rep(c("experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
                    timing_type = 1:5,
                    # default is to to logrank testing, but one or more Fleming-Harrington tests
@@ -160,8 +160,8 @@ sim_fixed_n <- function(nsim = 1000,
     stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain hr")
   }
 
-  if(!("dropoutRate" %in% names(fail_rate))){
-    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain dropoutRate")
+  if(!("dropout_rate" %in% names(fail_rate))){
+    stop("sim_fixed_n: fail_rate column names in `sim_fixed_n()` must contain dropout_rate")
   }
 
   # check input trial duration
@@ -235,16 +235,16 @@ sim_fixed_n <- function(nsim = 1000,
   # build a function to calculate Z and log-hr
   doAnalysis <- function(d, rg, n_stratum){
     if (nrow(rg) == 1){
-      Z <- tibble(Z = (d %>% counting_process(arm = "Experimental") %>% wlr(rg = rg))$Z)
+      Z <- tibble(Z = (d %>% counting_process(arm = "experimental") %>% wlr(rg = rg))$Z)
     } else{
-      Z <- d %>% counting_process(arm = "Experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
+      Z <- d %>% counting_process(arm = "experimental") %>% tenFHcorr(rg = rg, corr = TRUE)
     }
 
     ans <- tibble(
       Events = sum(d$event),
       lnhr = ifelse(n_stratum > 1,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental") + survival::strata(stratum), data = d)$coefficients,
-                    survival::coxph(survival::Surv(tte, event) ~ (Treatment == "Experimental"), data = d)$coefficients
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
+                    survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
                     ) %>% as.numeric()
       )
 
@@ -258,7 +258,7 @@ sim_fixed_n <- function(nsim = 1000,
   # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(fail_rate)
   fr <- temp$fail_rate
-  dr <- temp$dropoutRates
+  dr <- temp$dropout_rate
   results <- NULL
 
   # parallel
@@ -279,7 +279,7 @@ sim_fixed_n <- function(nsim = 1000,
                      stratum = stratum,
                      enroll_rate = enroll_rate,
                      fail_rate = fr,
-                     dropoutRates = dr,
+                     dropout_rate = dr,
                      block = block)
 
     # study date that targeted event rate achieved

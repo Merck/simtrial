@@ -82,7 +82,7 @@ In this case, we use the 4 test combination suggested in @NPHWGSimulation, @NPHW
 ```{r,warning=FALSE,message=FALSE}
 Z <- s %>%
   cut_data_by_event(75) %>%
-  counting_process(arm = "Experimental") %>%
+  counting_process(arm = "experimental") %>%
   tenFHcorr(rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
 Z %>% kable(digits = 2)
 ```
@@ -114,10 +114,9 @@ head(aml) %>% kable()
 We rename variables and create a stratum variable as follows:
 
 ```{r,warning=FALSE,message=FALSE}
-x <- aml %>% transmute(tte = time, event = status, stratum = "All", Treatment = as.character(x))
+x <- aml %>% transmute(tte = time, event = status, stratum = "All", treatment = as.character(x))
 head(x) %>% kable()
 ```
-
 Now we analyze the data with a MaxCombo with the logrank and FH(0,1) and compute a p-value.
 
 ```{r,warning=FALSE,message=FALSE}
