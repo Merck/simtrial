@@ -7,20 +7,20 @@
 tenFHcorr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(100) \%>\% counting_process(arm =
     "experimental"),
-  rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
+  rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   corr = TRUE
 )
 }
 \arguments{
 \item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
 
-\item{rg}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
+\item{rho_gamma}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row}
 
 \item{corr}{a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix}
 }
 \value{
-a \code{tibble} with \code{rg} as input, the FH test statistics specified
+a \code{tibble} with \code{rho_gamma} as input, the FH test statistics specified
 for the data in \code{Z}, and the correlation or covariance matrix for these tests in variables starting
 with \code{V}
 }
@@ -39,7 +39,7 @@ x <- sim_pw_surv(n = 200) \%>\%
   counting_process(arm = "experimental")
 
 # compute logrank (FH(0,0)) and FH(0,1)
-x <- x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
+x <- x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
                                  gamma = c(0, 1)))
 
 # compute p-value for MaxCombo
@@ -53,16 +53,16 @@ x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
 
-x \%>\% tenFHcorr(rg = tibble(rho = c(0, 0),
+x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
                             gamma = c(0, 1)),
                 corr = FALSE)
 
 # Off-diagonal element should be variance in following
-x \%>\% tenFHcorr(rg = tibble(rho = 0,
+x \%>\% tenFHcorr(rho_gamma = tibble(rho = 0,
                             gamma =.5),
                 corr = FALSE)
 
 # compare off diagonal result with wlr()
-x \%>\% wlr(rg = tibble(rho = 0, gamma =.5))
+x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma =.5))
 
 }

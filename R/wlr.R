@@ -23,13 +23,13 @@ NULL
 #'
 #' With output from the function \code{counting_process}
 #' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
-#' @param rg a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
+#' @param rho_gamma a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row;
 #' Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
 #' @param returnVariance a logical flag that, if true, adds columns
 #' estimated variance for weighted sum of observed minus expected; see details; Default: FALSE
 #'
-#' @return a `tibble` with \code{rg} as input and the FH test statistic
+#' @return a `tibble` with \code{rho_gamma} as input and the FH test statistic
 #' for the data in \code{x}
 #' (\code{Z}, a directional square root of the usual weighted logrank test);
 #' if variance calculations are specified (e.g., to be used for covariances in a combination test),
@@ -77,7 +77,7 @@ NULL
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm ="experimental")
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' wlr(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
+#' wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
 #'
 #' @export
 #' @rdname wlr
@@ -85,7 +85,7 @@ NULL
 wlr <- function(x = sim_pw_surv(n = 200) %>%
                         cut_data_by_event(150) %>%
                         counting_process(arm = "experimental"),
-                  rg = tibble(rho = c(0, 0, 1, 1),
+                  rho_gamma = tibble(rho = c(0, 0, 1, 1),
                               gamma = c(0, 1, 0, 1)),
                   returnVariance = FALSE){
 
@@ -111,26 +111,26 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
     ungroup() %>%
     select(S, o_minus_e, var_o_minus_e)
 
-  rg$Z <- rep(0, nrow(rg))
+  rho_gamma$Z <- rep(0, nrow(rho_gamma))
 
   if (returnVariance){
-    rg$Var <- rep(0, nrow(rg))
+    rho_gamma$Var <- rep(0, nrow(rho_gamma))
   }
 
-  for(i in 1:nrow(rg)){
+  for(i in 1:nrow(rho_gamma)){
     y <- xx %>%
-      mutate(weight = S^rg$rho[i] * (1 - S)^rg$gamma[i],
+      mutate(weight = S^rho_gamma$rho[i] * (1 - S)^rho_gamma$gamma[i],
              weighted_o_minus_e = weight * o_minus_e,
              weighted_var = weight^2 * var_o_minus_e) %>%
       summarize(weighted_var = sum(weighted_var),
                 weighted_o_minus_e = sum(weighted_o_minus_e))
 
-    rg$Z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
+    rho_gamma$Z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
 
     if (returnVariance){
-      rg$Var[i] <- y$weighted_var
+      rho_gamma$Var[i] <- y$weighted_var
     }
   }
 
-  return(rg)
+  return(rho_gamma)
 }

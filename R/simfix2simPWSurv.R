@@ -66,7 +66,7 @@ NULL
 #' dat <- sim %>%
 #'   cut_data_by_event(200) %>%              # cut data
 #'   counting_process(arm = "experimental") %>%  # convert format for tenFH
-#'    wlr(rg = tibble(rho=0,gamma=0))    # stratified logrank
+#'    wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
 #' @export
 #'
 simfix2simPWSurv <- function(

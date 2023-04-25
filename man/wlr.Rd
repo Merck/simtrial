@@ -7,14 +7,14 @@
 wlr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(150) \%>\% counting_process(arm =
     "experimental"),
-  rg = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
+  rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   returnVariance = FALSE
 )
 }
 \arguments{
 \item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
 
-\item{rg}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
+\item{rho_gamma}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 to zero, to specify one Fleming-Harrington weighted logrank test per row;
 Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}
 
@@ -22,7 +22,7 @@ Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}
 estimated variance for weighted sum of observed minus expected; see details; Default: FALSE}
 }
 \value{
-a \code{tibble} with \code{rg} as input and the FH test statistic
+a \code{tibble} with \code{rho_gamma} as input and the FH test statistic
 for the data in \code{x}
 (\code{Z}, a directional square root of the usual weighted logrank test);
 if variance calculations are specified (e.g., to be used for covariances in a combination test),
@@ -73,6 +73,6 @@ x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm ="experimental")
 # compute logrank (FH(0,0)) and FH(0,1)
-wlr(x, rg = tibble(rho = c(0, 0), gamma = c(0, 1)))
+wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
 
 }
