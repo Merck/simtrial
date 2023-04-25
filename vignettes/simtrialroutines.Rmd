@@ -103,21 +103,21 @@ First we set up input variables to make the later call to `sim_pw_surv()` more s
 ```{r}
 stratum <- tibble(stratum = c("Negative", "Positive"), p = c(.5, .5))
 
-block <- c(rep("Control", 2), rep("Experimental", 2))
+block <- c(rep("control", 2), rep("experimental", 2))
 
 enroll_rate <- tibble(rate = c(3, 6, 9), duration = c(3, 2, 1))
 
 fail_rate <- tibble(
   stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
-  Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
+  treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
   duration = rep(c(3, 1), 4),
   rate = log(2) / c(4, 9, 4.5, 10, 4, 9, 8, 18)
 )
-dropoutRates <- tibble(
+dropout_rate <- tibble(
   stratum = c(rep("Negative", 4), rep("Positive", 4)),
   period = rep(1:2, 4),
-  Treatment = rep(c(rep("Control", 2), rep("Experimental", 2)), 2),
+  treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
   duration = rep(c(3, 1), 4),
   rate = rep(c(.001, .001), 4)
 )
@@ -130,7 +130,7 @@ x <- sim_pw_surv(
   block = block,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  dropoutRates = dropoutRates
+  dropout_rate = dropout_rate 
 )
 head(x) %>% kable(digits = 2)
 ```
@@ -138,7 +138,7 @@ head(x) %>% kable(digits = 2)
 ## Cutting data for analysis
 
 There two ways to cut off data in the generated dataset `x` from above. 
-The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`stratum`) and the treatment group assigned (`Treatment`).
+The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`stratum`) and the treatment group assigned (`treatment`).
 Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
 
 ```{r}
@@ -162,7 +162,7 @@ Perhaps the most common way to cut data is with an event count for the overall p
 
 ```{r}
 y150 <- cut_data_by_event(x, 150)
-table(y150$event, y150$Treatment)
+table(y150$event, y150$treatment)
 ```
 
 ## Generating a counting process dataset
@@ -171,7 +171,7 @@ Once we have cut data for analysis, we can create a dataset that is very simple 
 The counting process format is further discussed in the next section where we compute a weighted logrank test.
 
 ```{r}
-ten150 <- counting_process(y150, arm = "Experimental")
+ten150 <- counting_process(y150, arm = "experimental")
 
 head(ten150) %>% kable(digits = 2)
 ```
@@ -235,9 +235,9 @@ fail_rate <- tibble(
   duration = c(3, 100),
   fail_rate = log(2) / c(9, 18),
   hr = c(0.9, 0.6),
-  dropoutRate = rep(0.001, 2)
+  dropout_rate = rep(0.001, 2)
 )
-block <- rep(c("Experimental", "Control"), 2)
+block <- rep(c("experimental", "control"), 2)
 rho_gamma <- tibble(rho = 0, gamma = 0)
 ```
 

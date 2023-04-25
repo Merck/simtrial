@@ -6,7 +6,7 @@
 \usage{
 simfix2simPWSurv(
   fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
-    hr = c(0.9, 0.6), dropoutRate = rep(0.001, 2))
+    hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2))
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ and dropout rates by stratum and time period.}
 }
 \value{
 A \code{list} of two \code{tibble} components formatted for \code{simtrial::sim_pw_surv()}:
-\code{fail_rate} and \code{dropoutRates}.
+\code{fail_rate} and \code{dropout_rate}.
 }
 \description{
 \code{simfix2simPWSurv()} converts failure rates and dropout rates entered in the simpler
@@ -43,7 +43,7 @@ fail_rate <- tibble(stratum = c(rep("Low", 3),rep("High", 3)),
                                  .08,.16,.12),
                     hr = c(1.5, .5, 2/3,
                            2, 10/16, 10/12),
-                    dropoutRate =.01)
+                    dropout_rate =.01)
 
 x <- simfix2simPWSurv(fail_rate)
 
@@ -53,12 +53,11 @@ sim <- sim_pw_surv(n = 300,
                  stratum = tibble(stratum = c("Low","High"), p = c(.6, .4)),
                  enroll_rate = tibble(duration = 12, rate = 300 / 12),
                  fail_rate = x$fail_rate,
-                 dropoutRates = x$dropoutRates)
+                 dropout_rate = x$dropout_rate)
 
 # Cut after 200 events and do a stratified logrank test
 dat <- sim \%>\%
   cut_data_by_event(200) \%>\%              # cut data
-  counting_process(arm = "Experimental") \%>\%  # convert format for wlr
-  wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
-
+  counting_process(arm = "experimental") \%>\%  # convert format for tenFH
+   wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
 }

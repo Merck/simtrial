@@ -26,15 +26,15 @@ library(tidyr)
 library(dplyr)
 library(survival)
 library(mvtnorm)
-fit <- survfit(Surv(tte, event) ~ Treatment, data = MBdelayed)
+fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelayed)
 
 # Plot survival
 plot(fit, lty=1:2)
-legend("topright", legend = c("Control", "Experimental"), lty = 1:2)
+legend("topright", legend = c("control", "experimental"), lty = 1:2)
 
 # Set up time, event, number of event dataset for testing
 # with arbitrary weights
-ten <- MBdelayed \%>\% counting_process(arm = "Experimental")
+ten <- MBdelayed \%>\% counting_process(arm = "experimental")
 head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
@@ -63,14 +63,14 @@ ten \%>\% summarise(S = sum(o_minus_e*w6),
 ds <- sim_pw_surv(n = 200,
                 enroll_rate = tibble(rate = 200 / 12, duration = 12),
                 fail_rate = tribble(
-                   ~stratum, ~Period, ~Treatment,     ~duration, ~rate,
-                   "All",        1,   "Control",      42,        log(2) / 15,
-                   "All",        1,   "Experimental", 6,         log(2) / 15,
-                   "All",        2,   "Experimental", 36,        log(2) / 15 * 0.6),
-                dropoutRates = tribble(
-                   ~stratum, ~Period, ~Treatment,     ~duration, ~rate,
-                   "All",        1,   "Control",      42,        0,
-                   "All",        1,   "Experimental", 42,        0)
+                   ~stratum, ~Period, ~treatment,     ~duration, ~rate,
+                   "All",        1,   "control",      42,        log(2) / 15,
+                   "All",        1,   "experimental", 6,         log(2) / 15,
+                   "All",        2,   "experimental", 36,        log(2) / 15 * 0.6),
+                dropout_rate = tribble(
+                   ~stratum, ~Period, ~treatment,     ~duration, ~rate,
+                   "All",        1,   "control",      42,        0,
+                   "All",        1,   "experimental", 42,        0)
        )
 # Cut data at 24 months after final enrollment
 MBdelayed2 <- ds \%>\% cut_data_by_date(max(ds$enroll_time) + 24)

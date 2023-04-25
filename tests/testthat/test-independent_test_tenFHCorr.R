@@ -8,8 +8,8 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   HT.est      = FALSE
   max         = TRUE
   alpha       = 0.025
-  data.anal <- data.frame(cbind(y$tte,y$event,y$Treatment))
-  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  data.anal <- data.frame(cbind(y$tte,y$event,y$treatment))
+  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing
   survMisc::comp(fit, p= sapply(wt, function(x){x[1]}), q= sapply(wt, function(x){x[2]}))
@@ -29,7 +29,7 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   d1 <- data.frame(do.call(rbind,wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind,wt3))
-  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing (for calculating the covariances)
   survMisc::comp(fit2, p= sapply(wt3, function(x){x[1]}), q= sapply(wt3, function(x){x[2]}))
@@ -54,8 +54,13 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   if(Z.tst.rslt1[max.tst] >= 0){pval <- 1 - pval2/2}
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   corr1=cor.tst[2:5,2:5]
+<<<<<<< HEAD
   a2 <- y %>% counting_process(arm="Experimental")
   corr2=tenFHcorr(a2,rho_gamma=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
+=======
+  a2 <- y %>% counting_process(arm="experimental")
+  corr2=tenFHcorr(a2,rg=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
+>>>>>>> d6b8e256270c72358538336a221b41809279b7e3
   corr2= rbind(corr2$V1,corr2$V2,corr2$V3,corr2$V4)
   expect_equal(corr1,corr2,tolerance = 0.00001)
 })

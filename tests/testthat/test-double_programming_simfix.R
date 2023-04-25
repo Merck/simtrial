@@ -24,13 +24,13 @@ test2<-sim_fixed_n(nsim=100,
                                        duration=c(100),
                                        fail_rate=log(2)/7,
                                        hr=0.65,
-                                       dropoutRate=-log(1-0.05)/12),
+                                       dropout_rate=-log(1-0.05)/12),
               totalDuration=18,
-              block=rep(c("Experimental","Control"),2),
+              block=rep(c("experimental","control"),2),
               timing_type=1:5,
               rho_gamma=tibble::tibble(rho=0,gamma=0)
 )
-#load("./fixtures/test_data_simfix.Rdata")
+
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timing_type=1",{
   tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
   expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/100, expected=0.93, tolerance=0.02)

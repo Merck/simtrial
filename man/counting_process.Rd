@@ -10,12 +10,12 @@ counting_process(x, arm)
 \item{x}{a tibble with no missing values and contain variables
 \itemize{
 \item \code{stratum}: stratum
-\item \code{Treatment}: Treatment group
+\item \code{treatment}: treatment group
 \item \code{tte}: Observed time
 \item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
 }}
 
-\item{arm}{value in the input \code{Treatment} column that indicates treatment group value.}
+\item{arm}{value in the input \code{treatment} column that indicates treatment group value.}
 }
 \value{
 A \code{tibble} grouped by \code{stratum} and sorted within stratum by \code{tte}.
@@ -54,14 +54,14 @@ library(tibble)
 
 # example 1
 x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
-            Treatment = rep(c(1, 1, 0, 0), 4),
+            treatment = rep(c(1, 1, 0, 0), 4),
             tte = 1:16,
             event= rep(c(0, 1), 8))
 counting_process(x, arm = 1)
 
 # example 2
 x <- sim_pw_surv(n = 400)
-y <- cut_data_by_event(x, 150) \%>\% counting_process(arm = "Experimental")
+y <- cut_data_by_event(x, 150) \%>\% counting_process(arm = "experimental")
 # weighted logrank test (Z-value and 1-sided p-value)
 z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 c(z, pnorm(z))

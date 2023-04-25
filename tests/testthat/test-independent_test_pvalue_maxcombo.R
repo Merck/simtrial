@@ -9,7 +9,7 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   HT.est      = FALSE
   max         = TRUE
   alpha       = 0.025
-  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  fit<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing
   survMisc::comp(fit, p= sapply(wt, function(x){x[1]}), q= sapply(wt, function(x){x[2]}))
@@ -30,7 +30,7 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   d1 <- data.frame(do.call(rbind,wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind,wt3))
-  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$Treatment, data = y)
+  fit2<- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   #Testing (for calculating the covariances)
   survMisc::comp(fit2, p= sapply(wt3, function(x){x[1]}), q= sapply(wt3, function(x){x[2]}))
@@ -55,7 +55,8 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo",{
   if(Z.tst.rslt1[max.tst] >= 0){pval <- 1 - pval2/2}
   if(Z.tst.rslt1[max.tst] < 0){pval <- pval2/2}
   p1=pval
-  a2 <- y %>% counting_process(arm="Experimental")
+
+  a2 <- y %>% counting_process(arm="experimental")
   aa=tenFHcorr(a2,rho_gamma=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
   p2= simtrial::pvalue_maxcombo(Z = aa)
 
