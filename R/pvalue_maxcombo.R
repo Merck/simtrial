@@ -28,7 +28,7 @@ NULL
 #' the \code{simtrial::sim_fixed_n()} trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as that provided in the
 #' ADaM ADTTE format.
-#' @param Z a dataset output from \code{tenFHcorr()}; see examples.
+#' @param z a dataset output from \code{tenFHcorr()}; see examples.
 #' @param dummy_var a dummy input that allows \code{group_map()} to be used to
 #' compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}
@@ -61,13 +61,13 @@ NULL
 #'
 #' @export
 #'
-pvalue_maxcombo<- function(Z,
+pvalue_maxcombo<- function(z,
                            dummy_var,
                            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
 
-  ans <- (1 - mvtnorm::pmvnorm(lower = rep(Z$Z %>% min() %>% as.numeric(),
-                                           nrow(Z)),
-                               corr = Z %>%
+  ans <- (1 - mvtnorm::pmvnorm(lower = rep(z$Z %>% min() %>% as.numeric(),
+                                           nrow(z)),
+                               corr = z %>%
                                         select(starts_with("V")) %>%
                                         data.matrix(),
                                algorithm = algorithm)[1]
