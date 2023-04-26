@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Cut a Dataset for Analysis at a Specified Event event
+#' Cut a Dataset for Analysis at a Specified Event Count
 #'
 #' `cut_data_by_event` takes a time-to-event data set and cuts the data at which an
 #' event count is reached.

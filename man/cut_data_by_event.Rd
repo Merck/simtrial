@@ -2,7 +2,7 @@
 % Please edit documentation in R/cutDataAtCount.R
 \name{cut_data_by_event}
 \alias{cut_data_by_event}
-\title{Cut a Dataset for Analysis at a Specified Event event}
+\title{Cut a Dataset for Analysis at a Specified Event Count}
 \usage{
 cut_data_by_event(x, event)
 }
