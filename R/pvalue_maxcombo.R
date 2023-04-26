@@ -41,7 +41,7 @@ NULL
 #' library(dplyr)
 #'
 #' # example 1
-#' x <- sim_fixed_n(nsim = 1,
+#' x <- sim_fixed_n(n_sim = 1,
 #'             timing_type = 5,
 #'             rho_gamma = tibble(rho = c(0, 0, 1),
 #'                         gamma = c(0, 1, 1)))
@@ -50,7 +50,7 @@ NULL
 #'
 #' # example 2
 #' # Only use cuts for events, events + min follow-up
-#' xx <- sim_fixed_n(nsim = 100,
+#' xx <- sim_fixed_n(n_sim = 100,
 #'              timing_type = 5,
 #'              rho_gamma = tibble(rho = c(0, 0, 1),
 #'                          gamma = c(0, 1, 1)))

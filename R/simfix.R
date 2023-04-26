@@ -25,7 +25,7 @@ NULL
 #'
 #' `sim_fixed_n()` provide simulations of a single endpoint two-arm trial
 #' where the enrollment, hazard ratio, and failure and dropout rates change over time.
-#' @param nsim Number of simulations to perform.
+#' @param n_sim Number of simulations to perform.
 #' @param sample_size Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
 #' @param stratum A tibble with stratum specified in `stratum`, probability (incidence) of each stratum in `p`.
@@ -64,16 +64,16 @@ NULL
 #'
 #' # example 1
 #' # Show output structure
-#' sim_fixed_n(nsim = 3)
+#' sim_fixed_n(n_sim = 3)
 #'
 #' # example 2
 #' # Example with 2 tests: logrank and FH(0,1)
-#' sim_fixed_n(nsim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+#' sim_fixed_n(n_sim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 #'
 #' # example 3
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- sim_fixed_n(nsim = 100,
+#' xx <- sim_fixed_n(n_sim = 100,
 #'              timing_type = c(2, 5),
 #'              rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 #' # Get power approximation for FH, data cutoff combination
@@ -102,13 +102,13 @@ NULL
 #' # example 3
 #' # Use two cores
 #' registerDoParallel(2)
-#' sim_fixed_n(nsim = 10, seed = 2022)
+#' sim_fixed_n(n_sim = 10, seed = 2022)
 #' stopImplicitCluster()
 #' registerDoSEQ()
 #'
 #' @export
 #'
-sim_fixed_n <- function(nsim = 1000,
+sim_fixed_n <- function(n_sim = 1000,
                    sample_size = 500, # sample size
                    target_event = 350,  # targeted total event count
                    # multinomial probability distribution for stratum enrollment
@@ -191,17 +191,17 @@ sim_fixed_n <- function(nsim = 1000,
     stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate!")
   }
 
-  # check nsim
-  if(nsim <= 0){
-    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
+  # check n_sim
+  if(n_sim <= 0){
+    stop("sim_fixed_n: n_sim in `sim_fixed_n()` must be positive integer!")
   }
 
-  if(length(nsim) != 1){
-    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
+  if(length(n_sim) != 1){
+    stop("sim_fixed_n: n_sim in `sim_fixed_n()` must be positive integer!")
   }
 
-  if(nsim != ceiling(nsim)){
-    stop("sim_fixed_n: nsim in `sim_fixed_n()` must be positive integer!")
+  if(n_sim != ceiling(n_sim)){
+    stop("sim_fixed_n: n_sim in `sim_fixed_n()` must be positive integer!")
   }
 
   # check target_event
@@ -264,7 +264,7 @@ sim_fixed_n <- function(nsim = 1000,
   # parallel
   `%op%` <- get_operator()
   results <- foreach::foreach(
-    i = seq_len(nsim),
+    i = seq_len(n_sim),
     .combine = "rbind",
     .errorhandling = "pass"
     ) %op% {

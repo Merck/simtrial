@@ -5,7 +5,7 @@
 \title{Simulation of fixed sample size design for time-to-event endpoint}
 \usage{
 sim_fixed_n(
-  nsim = 1000,
+  n_sim = 1000,
   sample_size = 500,
   target_event = 350,
   stratum = tibble(stratum = "All", p = 1),
@@ -20,7 +20,7 @@ sim_fixed_n(
 )
 }
 \arguments{
-\item{nsim}{Number of simulations to perform.}
+\item{n_sim}{Number of simulations to perform.}
 
 \item{sample_size}{Total sample size per simulation.}
 
@@ -75,16 +75,16 @@ library(tibble)
 
 # example 1
 # Show output structure
-sim_fixed_n(nsim = 3)
+sim_fixed_n(n_sim = 3)
 
 # example 2
 # Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(nsim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+sim_fixed_n(n_sim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 
 # example 3
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- sim_fixed_n(nsim = 100,
+xx <- sim_fixed_n(n_sim = 100,
              timing_type = c(2, 5),
              rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 # Get power approximation for FH, data cutoff combination
@@ -113,7 +113,7 @@ mean(p < .025)
 # example 3
 # Use two cores
 registerDoParallel(2)
-sim_fixed_n(nsim = 10, seed = 2022)
+sim_fixed_n(n_sim = 10, seed = 2022)
 stopImplicitCluster()
 registerDoSEQ()
 
