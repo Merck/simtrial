@@ -251,7 +251,7 @@ Now we simulate a trial 2 times and cut data for analysis based on `timing_type 
 
 ```{r}
 sim_fixed_n(
-  nsim = 2, # Number of simulations
+  n_sim = 2, # Number of simulations
   sample_size = 500, # Trial sample size
   target_event = 350, # Targeted events at analysis
   stratum = stratum, # Study stratum
