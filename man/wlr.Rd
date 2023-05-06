@@ -8,7 +8,7 @@ wlr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(150) \%>\% counting_process(arm =
     "experimental"),
   rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
-  returnVariance = FALSE
+  return_variance = FALSE
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ wlr(
 to zero, to specify one Fleming-Harrington weighted logrank test per row;
 Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}
 
-\item{returnVariance}{a logical flag that, if true, adds columns
+\item{return_variance}{a logical flag that, if true, adds columns
 estimated variance for weighted sum of observed minus expected; see details; Default: FALSE}
 }
 \value{

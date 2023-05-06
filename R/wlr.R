@@ -26,7 +26,7 @@ NULL
 #' @param rho_gamma a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row;
 #' Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
-#' @param returnVariance a logical flag that, if true, adds columns
+#' @param return_variance a logical flag that, if true, adds columns
 #' estimated variance for weighted sum of observed minus expected; see details; Default: FALSE
 #'
 #' @return a `tibble` with \code{rho_gamma} as input and the FH test statistic
@@ -87,7 +87,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
                         counting_process(arm = "experimental"),
                   rho_gamma = tibble(rho = c(0, 0, 1, 1),
                               gamma = c(0, 1, 0, 1)),
-                  returnVariance = FALSE){
+                  return_variance = FALSE){
 
   # check input failure rate assumptions
   if(!is.data.frame(x)){
@@ -113,7 +113,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
 
   rho_gamma$Z <- rep(0, nrow(rho_gamma))
 
-  if (returnVariance){
+  if (return_variance){
     rho_gamma$Var <- rep(0, nrow(rho_gamma))
   }
 
@@ -127,7 +127,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
 
     rho_gamma$Z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
 
-    if (returnVariance){
+    if (return_variance){
       rho_gamma$Var[i] <- y$weighted_var
     }
   }
