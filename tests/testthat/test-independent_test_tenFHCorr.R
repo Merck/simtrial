@@ -16,7 +16,15 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   tst.rslt <- attr(fit, 'lrt')
   #Combination test ("asymp")
   #Calculating the covariace matrix
+
+
+  ##
   tst.rslt1 <- rbind(tst.rslt[1,],subset(tst.rslt, grepl("FH", tst.rslt$W)))
+
+  ##
+
+
+  ##
   Z.tst.rslt1 <- tst.rslt1$Z
   q.tst.rslt1 <- tst.rslt1$Q
   var.tst.rslt1 <- tst.rslt1$Var

@@ -65,7 +65,7 @@ pvalue_maxcombo<- function(z,
                            dummy_var,
                            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
 
-  ans <- (1 - mvtnorm::pmvnorm(lower = rep(z$Z %>% min() %>% as.numeric(),
+  ans <- (1 - mvtnorm::pmvnorm(lower = rep(z$z %>% min() %>% as.numeric(),
                                            nrow(z)),
                                corr = z %>%
                                         select(starts_with("V")) %>%

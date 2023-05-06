@@ -35,7 +35,7 @@ Type I error is controlled as the specified level.
 }
 \details{
 This function computes Magirr-Burman weights and adds them to a dataset created by the \code{counting_process()} function.
-These weights can then be used to compute a Z-statistic for the modestly weighted logrank test proposed.
+These weights can then be used to compute a z-statistic for the modestly weighted logrank test proposed.
 
 We define \eqn{t^*} to be the input variable \code{delay}.
 This specifies an initial period during which weights increase.
@@ -61,10 +61,10 @@ ZMB <- x \%>\%
   mb_weight(delay = 6, wmax = Inf) \%>\%
   summarize(S = sum(o_minus_e * mb_weight),
             V = sum(var_o_minus_e * mb_weight^2),
-            Z = S / sqrt(V))
+            z = S / sqrt(V))
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB$Z)
+pnorm(ZMB$z)
 
 # example 2
 # Now compute with maximum weight of 2 as recommended in Magirr, 2021
@@ -72,10 +72,10 @@ ZMB2 <- x \%>\%
   mb_weight(delay = Inf, wmax = 2) \%>\%
   summarize(S = sum(o_minus_e * mb_weight),
             V = sum(var_o_minus_e * mb_weight^2),
-            Z = S / sqrt(V))
+            z = S / sqrt(V))
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB2$Z)
+pnorm(ZMB2$z)
 
 }
 \references{
