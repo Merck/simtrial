@@ -113,7 +113,7 @@ and let $\gamma=0, \rho = -1/2.$
 w_max <- 2
 Z_modified_FH <- MBdelay %>%
   counting_process(arm = "experimental") %>%
-  mutate(w = pmin(w_max, 1 / S)) %>%
+  mutate(w = pmin(w_max, 1 / s)) %>%
   summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(Z_modified_FH$z)

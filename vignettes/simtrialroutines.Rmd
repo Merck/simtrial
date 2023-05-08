@@ -191,7 +191,7 @@ A Fleming-Harrington $\rho=1$, $\gamma=2$ is nearly as simple.
 We again compute a z-statistic and its corresponding one-sided p-value.
 
 ```{r}
-xx <- mutate(ten150, w = S * (1 - S)^2)
+xx <- mutate(ten150, w = s * (1 - s)^2)
 z <- with(xx, sum(o_minus_e * w) / sum(sqrt(var_o_minus_e * w^2)))
 c(z, pnorm(z))
 ```

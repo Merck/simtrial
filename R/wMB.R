@@ -129,8 +129,8 @@ mb_weight <- function(x, delay = 4, w_max = Inf)
     stop("x column names in `mb_weight()` must contain tte")
   }
 
-  if(max(names(x)=="S") != 1){
-    stop("x column names in `mb_weight()` must contain S")
+  if(max(names(x)=="s") != 1){
+    stop("x column names in `mb_weight()` must contain s")
   }
 
   # Compute max weight by stratum
@@ -142,7 +142,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf)
     # look only up to delay time
     filter(tte <= delay) %>%
     # weight before delay specified as 1/S
-    summarize(max_weight = max(1/S)) %>%
+    summarize(max_weight = max(1/s)) %>%
     # get back stratum with no records before delay ends
     right_join(tbl_all_stratum, by = "stratum") %>%
     # max_weight is 1 when there are no records before delay ends
@@ -152,7 +152,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf)
     # Now merge max_weight back to stratified dataset
     full_join(x2, by = "stratum") %>%
     # Weight is min of max_weight and 1/S which will increase up to delay
-    mutate(mb_weight = pmin(max_weight, 1/S)) %>%
+    mutate(mb_weight = pmin(max_weight, 1/s)) %>%
     select(-max_weight)
 
   return(ans)

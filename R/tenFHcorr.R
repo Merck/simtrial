@@ -115,7 +115,7 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
     corr_mat <- cov_mat
   }
 
-  names(corr_mat) <- paste("V", 1:ncol(corr_mat), sep = "")
+  names(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
 
   # return combined values
   ans <- cbind(rho_gamma, z, as_tibble(corr_mat))
