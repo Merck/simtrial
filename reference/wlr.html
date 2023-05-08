@@ -87,7 +87,7 @@ estimated variance for weighted sum of observed minus expected; see details; Def
 for the data in <code>x</code></p>
 
 
-<p>(<code>Z</code>, a directional square root of the usual weighted logrank test);
+<p>(<code>z</code>, a directional square root of the usual weighted logrank test);
 if variance calculations are specified (e.g., to be used for covariances in a combination test),
 the this will be returned in the column <code>Var</code></p>
 
@@ -96,7 +96,7 @@ the this will be returned in the column <code>Var</code></p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The input value <code>x</code> produced by <code><a href="counting_process.html">counting_process()</a></code> produces a counting process dataset
-grouped by stratum and sorted within stratum by increasing times where events occur.</p><ul><li><p>\(Z\) - standardized normal Fleming-Harrington weighted logrank test</p></li>
+grouped by stratum and sorted within stratum by increasing times where events occur.</p><ul><li><p>\(z\) - standardized normal Fleming-Harrington weighted logrank test</p></li>
 <li><p>\(i\)  - stratum index</p></li>
 <li><p>\(d_i\) - number of distinct times at which events occurred in stratum \(i\)</p></li>
 <li><p>\(t_{ij}\) - ordered times at which events in stratum \(i\), \(j=1,2,\ldots d_i\) were observed;
@@ -123,7 +123,7 @@ $$X_i = \sum_{j=1}^{d_{i}} S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})$$</p></
 <li><p>\(V_{ij}\) - variance used in denominator for Fleming-Harrington weighted logrank tests
 $$V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})$$</p>
 <p>The stratified Fleming-Harrington weighted logrank test is then computed as:
-$$Z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
+$$z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -136,10 +136,10 @@ $$Z = \sum_i X_i/\sqrt{\sum_i V_i}$$</p></li>
 <span class="r-in"><span><span class="co"># compute logrank (FH(0,0)) and FH(0,1)</span></span></span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma     Z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">1.10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">1.48</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma      z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     0 -<span style="color: #BB0000;">0.701</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0     1 -<span style="color: #BB0000;">1.55</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
