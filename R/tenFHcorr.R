@@ -100,7 +100,7 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
 
   # compute FH statistic for unique values
   # and merge back to full set of pairs
-  rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, returnVariance = TRUE),
+  rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, return_variance = TRUE),
                                 by = c("rho" = "rho","gamma" = "gamma"))
 
   # get z statistics for input rho, gamma combinations
