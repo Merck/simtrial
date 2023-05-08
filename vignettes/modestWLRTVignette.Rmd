@@ -81,7 +81,7 @@ Next, we consider the @Magirr2021 extension of the modestly weighted logrank tes
 $$w(t, \tau, w_{\max}) = \min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).$$
 
 This requires generating weights and then computing the test.
-We begin with the default of `wmax=\Inf` which corresponds to the original @MagirrBurman test and set the time until maximum weight $\tau$ with `delay = 6`.
+We begin with the default of `w_max=\Inf` which corresponds to the original @MagirrBurman test and set the time until maximum weight $\tau$ with `delay = 6`.
 
 ```{r}
 ZMB <- MBdelay %>%
@@ -97,7 +97,7 @@ Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` 
 ```{r}
 ZMB <- MBdelay %>%
   counting_process(arm = "experimental") %>%
-  mb_weight(delay = Inf, wmax = 2) %>%
+  mb_weight(delay = Inf, w_max = 2) %>%
   summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
@@ -110,10 +110,10 @@ $$w(t; \rho, \gamma, w_{\max})= \min((1-F(t))^\rho F(t)^\gamma, w_{\max})).$$
 and let $\gamma=0, \rho = -1/2.$
 
 ```{r}
-wmax <- 2
+w_max <- 2
 Z_modified_FH <- MBdelay %>%
   counting_process(arm = "experimental") %>%
-  mutate(w = pmin(wmax, 1 / S)) %>%
+  mutate(w = pmin(w_max, 1 / S)) %>%
   summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(Z_modified_FH$z)
@@ -187,7 +187,7 @@ This requires generating weights and then computing the test.
 ```{r}
 ZMB <- FHwn %>%
   counting_process(arm = "experimental") %>%
-  mb_weight(delay = 6, wmax = 2) %>%
+  mb_weight(delay = 6, w_max = 2) %>%
   summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman

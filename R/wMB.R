@@ -39,8 +39,8 @@ NULL
 #' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
 #' @param delay The initial delay period where weights increase;
 #' after this, weights are constant at the final weight in the delay period
-#' @param wmax Maximum weight to be returned.
-#' set \code{delay = Inf, wmax = 2} to be consistent with recommendation of
+#' @param w_max Maximum weight to be returned.
+#' set \code{delay = Inf, w_max = 2} to be consistent with recommendation of
 #' Magirr (2021).
 #'
 #' @return a vector with weights for the Magirr-Burman weighted logrank test
@@ -69,7 +69,7 @@ NULL
 #' library(dplyr)
 #'
 #' # Use default enrollment and event rates at cut at 100 events
-#' # For transparency, may be good to set either `delay` or `wmax` to Inf`
+#' # For transparency, may be good to set either `delay` or `w_max` to Inf`
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(125) %>%
 #'   counting_process(arm = "experimental")
@@ -77,7 +77,7 @@ NULL
 #' # example 1
 #' # compute Magirr-Burman weights with `delay = 6`
 #' ZMB <- x %>%
-#'   mb_weight(delay = 6, wmax = Inf) %>%
+#'   mb_weight(delay = 6, w_max = Inf) %>%
 #'   summarize(S = sum(o_minus_e * mb_weight),
 #'             V = sum(var_o_minus_e * mb_weight^2),
 #'             z = S / sqrt(V))
@@ -88,7 +88,7 @@ NULL
 #' # example 2
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 #' ZMB2 <- x %>%
-#'   mb_weight(delay = Inf, wmax = 2) %>%
+#'   mb_weight(delay = Inf, w_max = 2) %>%
 #'   summarize(S = sum(o_minus_e * mb_weight),
 #'             V = sum(var_o_minus_e * mb_weight^2),
 #'             z = S / sqrt(V))
@@ -97,7 +97,7 @@ NULL
 #' pnorm(ZMB2$z)
 #'
 #' @export
-mb_weight <- function(x, delay = 4, wmax = Inf)
+mb_weight <- function(x, delay = 4, w_max = Inf)
 {
   # check input failure rate assumptions
   if(!is.data.frame(x)){
@@ -113,12 +113,12 @@ mb_weight <- function(x, delay = 4, wmax = Inf)
     stop("delay in `mb_weight()` must be a non-negative number")
   }
 
-  if(!is.numeric(wmax)){
-    stop("wmax (maximum weight) in `mb_weight()` must be a positive number")
+  if(!is.numeric(w_max)){
+    stop("w_max (maximum weight) in `mb_weight()` must be a positive number")
   }
 
   if(!delay > 0){
-    stop("wmax (maximum weight) in `mb_weight()` must be a positive number")
+    stop("w_max (maximum weight) in `mb_weight()` must be a positive number")
   }
 
   if(max(names(x)=="stratum") != 1){
@@ -147,8 +147,8 @@ mb_weight <- function(x, delay = 4, wmax = Inf)
     right_join(tbl_all_stratum, by = "stratum") %>%
     # max_weight is 1 when there are no records before delay ends
     mutate(max_weight = tidyr::replace_na(max_weight, 1)) %>%
-    # Cut off weights at wmax
-    mutate(max_weight = pmin(wmax, max_weight)) %>%
+    # Cut off weights at w_max
+    mutate(max_weight = pmin(w_max, max_weight)) %>%
     # Now merge max_weight back to stratified dataset
     full_join(x2, by = "stratum") %>%
     # Weight is min of max_weight and 1/S which will increase up to delay

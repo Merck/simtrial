@@ -4,7 +4,7 @@
 \alias{mb_weight}
 \title{Magirr and Burman Modestly Weighted Logrank Tests}
 \usage{
-mb_weight(x, delay = 4, wmax = Inf)
+mb_weight(x, delay = 4, w_max = Inf)
 }
 \arguments{
 \item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
@@ -12,8 +12,8 @@ mb_weight(x, delay = 4, wmax = Inf)
 \item{delay}{The initial delay period where weights increase;
 after this, weights are constant at the final weight in the delay period}
 
-\item{wmax}{Maximum weight to be returned.
-set \code{delay = Inf, wmax = 2} to be consistent with recommendation of
+\item{w_max}{Maximum weight to be returned.
+set \code{delay = Inf, w_max = 2} to be consistent with recommendation of
 Magirr (2021).}
 }
 \value{
@@ -50,7 +50,7 @@ library(tidyr)
 library(dplyr)
 
 # Use default enrollment and event rates at cut at 100 events
-# For transparency, may be good to set either `delay` or `wmax` to Inf`
+# For transparency, may be good to set either `delay` or `w_max` to Inf`
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(125) \%>\%
   counting_process(arm = "experimental")
@@ -58,7 +58,7 @@ x <- sim_pw_surv(n = 200) \%>\%
 # example 1
 # compute Magirr-Burman weights with `delay = 6`
 ZMB <- x \%>\%
-  mb_weight(delay = 6, wmax = Inf) \%>\%
+  mb_weight(delay = 6, w_max = Inf) \%>\%
   summarize(S = sum(o_minus_e * mb_weight),
             V = sum(var_o_minus_e * mb_weight^2),
             z = S / sqrt(V))
@@ -69,7 +69,7 @@ pnorm(ZMB$z)
 # example 2
 # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 ZMB2 <- x \%>\%
-  mb_weight(delay = Inf, wmax = 2) \%>\%
+  mb_weight(delay = Inf, w_max = 2) \%>\%
   summarize(S = sum(o_minus_e * mb_weight),
             V = sum(var_o_minus_e * mb_weight^2),
             z = S / sqrt(V))
