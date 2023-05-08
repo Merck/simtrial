@@ -21,7 +21,7 @@ to zero, to specify one Fleming-Harrington weighted logrank test per row}
 }
 \value{
 a \code{tibble} with \code{rho_gamma} as input, the FH test statistics specified
-for the data in \code{Z}, and the correlation or covariance matrix for these tests in variables starting
+for the data in \code{z}, and the correlation or covariance matrix for these tests in variables starting
 with \code{V}
 }
 \description{
@@ -44,8 +44,8 @@ x <- x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
 
 # compute p-value for MaxCombo
 library(mvtnorm)
-1 - pmvnorm(lower = rep(min(x$Z), nrow(x)),
-            corr = data.matrix(select(x, -c(rho, gamma, Z))),
+1 - pmvnorm(lower = rep(min(x$z), nrow(x)),
+            corr = data.matrix(select(x, -c(rho, gamma, z))),
             algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
 
 # check that covariance is as expected

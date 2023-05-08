@@ -58,7 +58,7 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo",{
 
   a2 <- y %>% counting_process(arm="experimental")
   aa=tenFHcorr(a2,rho_gamma=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-  p2= simtrial::pvalue_maxcombo(Z = aa)
+  p2= simtrial::pvalue_maxcombo(z = aa)
 
   expect_equal(p1, p2, tolerance = 0.005)
 })

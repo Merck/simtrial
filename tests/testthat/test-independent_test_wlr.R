@@ -1,4 +1,4 @@
-testthat::test_that("the Z values match with the correspondings in wlr",{
+testthat::test_that("the z values match with the correspondings in wlr",{
   set.seed(1234)
   y=sim_pw_surv(n=300) %>% cut_data_by_event(30)
   adjust.methods="asymp"
@@ -17,6 +17,6 @@ testthat::test_that("the Z values match with the correspondings in wlr",{
   z1=tst.rslt$Z
   a2 <- y %>% counting_process(arm="experimental")
   aa=wlr(a2,rho_gamma=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-  z2=aa$Z
+  z2=aa$z
   expect_equal(c(z1[1],z1[7:9]),z2,tolerance = 0.00001)
 })

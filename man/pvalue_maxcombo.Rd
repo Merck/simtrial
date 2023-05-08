@@ -5,13 +5,13 @@
 \title{MaxCombo p-value}
 \usage{
 pvalue_maxcombo(
-  Z,
+  z,
   dummy_var,
   algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05)
 )
 }
 \arguments{
-\item{Z}{a dataset output from \code{tenFHcorr()}; see examples.}
+\item{z}{a dataset output from \code{tenFHcorr()}; see examples.}
 
 \item{dummy_var}{a dummy input that allows \code{group_map()} to be used to
 compute p-values for multiple simulations.}
