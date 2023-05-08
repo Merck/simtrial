@@ -34,7 +34,7 @@ NULL
 #' random distribution between stratum.
 #' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
-#' @param totalDuration Total follow-up from start of enrollment to data cutoff.
+#' @param total_duration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
 #' @param timing_type A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
@@ -122,7 +122,7 @@ sim_fixed_n <- function(n_sim = 1000,
                                       hr = c(.9, .6),
                                       dropout_rate = rep(.001, 2)),
                    # total planned trial duration; single value
-                   totalDuration = 30,
+                   total_duration = 30,
                    # Fixed block randomization specification
                    block = rep(c("experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
@@ -165,20 +165,20 @@ sim_fixed_n <- function(n_sim = 1000,
   }
 
   # check input trial duration
-  if(!is.numeric(totalDuration)){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!is.numeric(total_duration)){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(!is.vector(totalDuration)){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!is.vector(total_duration)){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(length(totalDuration) != 1){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(length(total_duration) != 1){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(!min(totalDuration) > 0){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!min(total_duration) > 0){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
   # check stratum
@@ -253,7 +253,7 @@ sim_fixed_n <- function(n_sim = 1000,
   }
 
   # compute minimum planned follow-up time
-  minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
+  minFollow <- max(0, total_duration - sum(enroll_rate$duration))
 
   # put failure rates into sim_pw_surv format
   temp <- simfix2simPWSurv(fail_rate)
@@ -309,7 +309,7 @@ sim_fixed_n <- function(n_sim = 1000,
     }
 
     if (4 %in% timing_type){  # max of planned duration, targeted events
-      if (tedate > totalDuration){
+      if (tedate > total_duration){
         tests[2] <- TRUE
       }else{
         tests[1] <- TRUE
@@ -326,7 +326,7 @@ sim_fixed_n <- function(n_sim = 1000,
 
     # Total duration cutoff
     if (tests[1]){
-      d <- sim %>% cut_data_by_date(totalDuration)
+      d <- sim %>% cut_data_by_date(total_duration)
       r1 <- d %>% doAnalysis(rho_gamma, n_stratum)
     }
 
@@ -347,7 +347,7 @@ sim_fixed_n <- function(n_sim = 1000,
     if (1 %in% timing_type){
       addit <- rbind(addit,
                      r1 %>% mutate(cut = "Planned duration",
-                                   duration = totalDuration))
+                                   duration = total_duration))
     }
 
     # targeted events cutoff
@@ -366,14 +366,14 @@ sim_fixed_n <- function(n_sim = 1000,
 
     # max of planned duration, targeted events
     if (4 %in% timing_type){
-      if (tedate > totalDuration){
+      if (tedate > total_duration){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(planned duration, event cut)",
                                      duration = tedate))
       }else{
         addit <- rbind(addit,
                        r1 %>% mutate(cut = "Max(planned duration, event cut)",
-                                     duration = totalDuration))
+                                     duration = total_duration))
       }
     }
 
