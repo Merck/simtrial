@@ -390,7 +390,7 @@ sim_fixed_n <- function(n_sim = 1000,
       }
     }
 
-    addit %>% mutate(Sim = i)
+    addit %>% mutate(sim = i)
     }
 
   return(results)
