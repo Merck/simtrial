@@ -84,7 +84,7 @@ NULL
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 #' p <- xx %>%
 #'   filter(cut != "Targeted events") %>%
-#'   group_by(Sim) %>%
+#'   group_by(sim) %>%
 #'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
@@ -93,7 +93,7 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- xx %>%
 #'   filter(cut == "Targeted events") %>%
-#'   group_by(Sim) %>%
+#'   group_by(sim) %>%
 #'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
