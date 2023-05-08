@@ -49,7 +49,7 @@ NULL
 #' 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
 #' 5 the maximum of targeted event count and minimum follow-up cuts (2 and 3).
 #'
-#' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
+#' @return A \code{tibble} including columns \code{event} (event count), \code{ln_hr} (log-hazard ratio),
 #' \code{z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
@@ -241,8 +241,8 @@ sim_fixed_n <- function(n_sim = 1000,
     }
 
     ans <- tibble(
-      Events = sum(d$event),
-      lnhr = ifelse(n_stratum > 1,
+      event = sum(d$event),
+      ln_hr = ifelse(n_stratum > 1,
                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
                     ) %>% as.numeric()
