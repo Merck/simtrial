@@ -51,7 +51,7 @@ NULL
 #'
 #' @return A \code{tibble} including columns \code{event} (event count), \code{ln_hr} (log-hazard ratio),
 #' \code{z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
-#' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
+#' \code{duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
 #' are also included.
@@ -347,21 +347,21 @@ sim_fixed_n <- function(n_sim = 1000,
     if (1 %in% timing_type){
       addit <- rbind(addit,
                      r1 %>% mutate(cut = "Planned duration",
-                                   Duration = totalDuration))
+                                   duration = totalDuration))
     }
 
     # targeted events cutoff
     if (2 %in% timing_type){
       addit <- rbind(addit,
                      r2 %>% mutate(cut = "Targeted events",
-                                   Duration = tedate))
+                                   duration = tedate))
     }
 
     # minimum follow-up duration target
     if (3 %in% timing_type){
       addit <- rbind(addit,
                      r3 %>% mutate(cut = "Minimum follow-up",
-                                   Duration = tmfdate))
+                                   duration = tmfdate))
     }
 
     # max of planned duration, targeted events
@@ -369,11 +369,11 @@ sim_fixed_n <- function(n_sim = 1000,
       if (tedate > totalDuration){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(planned duration, event cut)",
-                                     Duration = tedate))
+                                     duration = tedate))
       }else{
         addit <- rbind(addit,
                        r1 %>% mutate(cut = "Max(planned duration, event cut)",
-                                     Duration = totalDuration))
+                                     duration = totalDuration))
       }
     }
 
@@ -382,11 +382,11 @@ sim_fixed_n <- function(n_sim = 1000,
       if (tedate > tmfdate){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(min follow-up, event cut)",
-                                     Duration = tedate))
+                                     duration = tedate))
       }else{
         addit <- rbind(addit,
                        r3 %>% mutate(cut = "Max(min follow-up, event cut)",
-                                     Duration = tmfdate))
+                                     duration = tmfdate))
       }
     }
 
