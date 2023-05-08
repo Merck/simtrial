@@ -50,7 +50,7 @@ NULL
 #' 5 the maximum of targeted event count and minimum follow-up cuts (2 and 3).
 #'
 #' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
-#' \code{Z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
+#' \code{z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
 #' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
@@ -79,7 +79,7 @@ NULL
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>%
 #'   group_by(cut, rho, gamma) %>%
-#'   summarise(mean(Z <= qnorm(.025)))
+#'   summarise(mean(z <= qnorm(.025)))
 #'
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 #' p <- xx %>%
@@ -232,12 +232,12 @@ sim_fixed_n <- function(n_sim = 1000,
 
   n_stratum <- nrow(stratum)
 
-  # build a function to calculate Z and log-hr
+  # build a function to calculate z and log-hr
   doAnalysis <- function(d, rho_gamma, n_stratum){
     if (nrow(rho_gamma) == 1){
-      Z <- tibble(Z = (d %>% counting_process(arm = "experimental") %>% wlr(rho_gamma = rho_gamma))$Z)
+      z <- tibble(z = (d %>% counting_process(arm = "experimental") %>% wlr(rho_gamma = rho_gamma))$z)
     } else{
-      Z <- d %>% counting_process(arm = "experimental") %>% tenFHcorr(rho_gamma = rho_gamma, corr = TRUE)
+      z <- d %>% counting_process(arm = "experimental") %>% tenFHcorr(rho_gamma = rho_gamma, corr = TRUE)
     }
 
     ans <- tibble(
@@ -248,7 +248,7 @@ sim_fixed_n <- function(n_sim = 1000,
                     ) %>% as.numeric()
       )
 
-    ans <- cbind(ans, Z)
+    ans <- cbind(ans, z)
     return(ans)
   }
 

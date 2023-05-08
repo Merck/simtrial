@@ -26,12 +26,12 @@ NULL
 #' @param rho_gamma a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
 #' to zero, to specify one Fleming-Harrington weighted logrank test per row;
 #' Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
-#' @param returnVariance a logical flag that, if true, adds columns
+#' @param return_variance a logical flag that, if true, adds columns
 #' estimated variance for weighted sum of observed minus expected; see details; Default: FALSE
 #'
 #' @return a `tibble` with \code{rho_gamma} as input and the FH test statistic
 #' for the data in \code{x}
-#' (\code{Z}, a directional square root of the usual weighted logrank test);
+#' (\code{z}, a directional square root of the usual weighted logrank test);
 #' if variance calculations are specified (e.g., to be used for covariances in a combination test),
 #' the this will be returned in the column \code{Var}
 #'
@@ -39,7 +39,7 @@ NULL
 #' The input value \code{x} produced by \code{counting_process()} produces a counting process dataset
 #' grouped by stratum and sorted within stratum by increasing times where events occur.
 #' \itemize{
-#' \item \eqn{Z} - standardized normal Fleming-Harrington weighted logrank test
+#' \item \eqn{z} - standardized normal Fleming-Harrington weighted logrank test
 #' \item \eqn{i}  - stratum index
 #' \item \eqn{d_i} - number of distinct times at which events occurred in stratum \eqn{i}
 #' \item \eqn{t_{ij}} - ordered times at which events in stratum \eqn{i}, \eqn{j=1,2,\ldots d_i} were observed;
@@ -67,7 +67,7 @@ NULL
 #' \deqn{V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})}
 #'
 #' The stratified Fleming-Harrington weighted logrank test is then computed as:
-#' \deqn{Z = \sum_i X_i/\sqrt{\sum_i V_i}}
+#' \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}}
 #' }
 #'
 #' @examples
@@ -87,7 +87,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
                         counting_process(arm = "experimental"),
                   rho_gamma = tibble(rho = c(0, 0, 1, 1),
                               gamma = c(0, 1, 0, 1)),
-                  returnVariance = FALSE){
+                  return_variance = FALSE){
 
   # check input failure rate assumptions
   if(!is.data.frame(x)){
@@ -111,9 +111,9 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
     ungroup() %>%
     select(S, o_minus_e, var_o_minus_e)
 
-  rho_gamma$Z <- rep(0, nrow(rho_gamma))
+  rho_gamma$z <- rep(0, nrow(rho_gamma))
 
-  if (returnVariance){
+  if (return_variance){
     rho_gamma$Var <- rep(0, nrow(rho_gamma))
   }
 
@@ -125,9 +125,9 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
       summarize(weighted_var = sum(weighted_var),
                 weighted_o_minus_e = sum(weighted_o_minus_e))
 
-    rho_gamma$Z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
+    rho_gamma$z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
 
-    if (returnVariance){
+    if (return_variance){
       rho_gamma$Var[i] <- y$weighted_var
     }
   }

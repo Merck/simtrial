@@ -32,18 +32,18 @@ test2<-sim_fixed_n(n_sim=100,
 )
 
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timing_type=1",{
-  tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
-  expect_equal(object=sum(as.integer(tt1test$Z<(-1.96)))/100, expected=0.93, tolerance=0.02)
+  tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, z,Duration,Sim))
+  expect_equal(object=sum(as.integer(tt1test$z<(-1.96)))/100, expected=0.93, tolerance=0.02)
 })
 
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with target events in timing_type=2",{
-  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
-  expect_equal(object=sum(as.integer(tt2test$Z<(-1.96)))/100, expected=0.90, tolerance=0.02)
+  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, z,Duration,Sim))
+  expect_equal(object=sum(as.integer(tt2test$z<(-1.96)))/100, expected=0.90, tolerance=0.02)
 })
 
 testthat::test_that("test for events in the correct directions in timing_type=3 comparing to timing_type=2",{
-  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
-  tt3test<-subset(test2,test2$cut=='Minimum follow-up',select=c(Events, lnhr, Z,Duration,Sim))
+  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, z,Duration,Sim))
+  tt3test<-subset(test2,test2$cut=='Minimum follow-up',select=c(Events, lnhr, z,Duration,Sim))
   ttvalue<-0
   for (i in 1:nrow(tt3test)){
     if ((tt3test$Duration[i]>tt2test$Duration[i])&(tt3test$Events[i]>=tt2test$Events[i])) {ttvalue[i]=1 }
@@ -54,9 +54,9 @@ testthat::test_that("test for events in the correct directions in timing_type=3 
 )
 
 testthat::test_that("test for timing_type=4 outputs using timing_type 1 and 2 output",{
-  tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, Z,Duration,Sim))
-  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
-  tt4test<-subset(test2,test2$cut=='Max(planned duration, event cut)',select=c(Events, lnhr, Z,Duration,Sim))
+  tt1test<-subset(test2,test2$cut=='Planned duration',select=c(Events, lnhr, z,Duration,Sim))
+  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, z,Duration,Sim))
+  tt4test<-subset(test2,test2$cut=='Max(planned duration, event cut)',select=c(Events, lnhr, z,Duration,Sim))
   tt4event=0
   for (i in 1:nrow(tt4test)){
     if (tt1test$Duration[i]<tt2test$Duration[i]) {tt4event[i]=tt2test$Events[i]}
@@ -67,9 +67,9 @@ testthat::test_that("test for timing_type=4 outputs using timing_type 1 and 2 ou
 
 
 testthat::test_that("test for timing_type=5 outputs using timing_type 2 and 3 output",{
-  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, Z,Duration,Sim))
-  tt3test<-subset(test2,test2$cut=='Minimum follow-up',select=c(Events, lnhr, Z,Duration,Sim))
-  tt5test<-subset(test2,test2$cut=='Max(min follow-up, event cut)',select=c(Events, lnhr, Z,Duration,Sim))
+  tt2test<-subset(test2,test2$cut=='Targeted events',select=c(Events, lnhr, z,Duration,Sim))
+  tt3test<-subset(test2,test2$cut=='Minimum follow-up',select=c(Events, lnhr, z,Duration,Sim))
+  tt5test<-subset(test2,test2$cut=='Max(min follow-up, event cut)',select=c(Events, lnhr, z,Duration,Sim))
   tt5event=0
   for (i in 1:nrow(tt5test)){
     if (tt2test$Duration[i]<tt3test$Duration[i]) {tt5event[i]=tt3test$Events[i]}
