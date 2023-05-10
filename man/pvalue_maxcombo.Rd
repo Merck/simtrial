@@ -50,7 +50,7 @@ xx <- sim_fixed_n(n_sim = 100,
                          gamma = c(0, 1, 1)))
 head(xx)
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx \%>\% group_by(Sim) \%>\% group_map(pvalue_maxcombo) \%>\% unlist()
+p <- xx \%>\% group_by(sim) \%>\% group_map(pvalue_maxcombo) \%>\% unlist()
 mean(p < .025)
 
 }
