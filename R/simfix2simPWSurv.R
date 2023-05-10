@@ -21,7 +21,7 @@ NULL
 
 #' Conversion of enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format
 #'
-#' `simfix2simPWSurv()` converts failure rates and dropout rates entered in the simpler
+#' `simfix2simpwsurv()` converts failure rates and dropout rates entered in the simpler
 #' format for `sim_fixed_n()` to that used for `simtrial::sim_pw_surv()`.
 #' The `fail_rate` argument for `sim_fixed_n()` requires enrollment rates, failure rates
 #' hazard ratios and dropout rates by stratum for a 2-arm trial, `simtrial::sim_pw_surv()`
@@ -41,7 +41,7 @@ NULL
 #'
 #' # example 1
 #' # Convert standard input
-#' simfix2simPWSurv()
+#' simfix2simpwsurv()
 #'
 #' # Stratified example
 #' fail_rate <- tibble(stratum = c(rep("Low", 3),rep("High", 3)),
@@ -52,7 +52,7 @@ NULL
 #'                            2, 10/16, 10/12),
 #'                     dropout_rate =.01)
 #'
-#' x <- simfix2simPWSurv(fail_rate)
+#' x <- simfix2simpwsurv(fail_rate)
 #'
 #' # Do a single simulation with the above rates
 #' # Enroll 300 patients in ~12 months at constant rate
@@ -69,7 +69,7 @@ NULL
 #'    wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
 #' @export
 #'
-simfix2simPWSurv <- function(
+simfix2simpwsurv <- function(
   # failure rates as in sim_fixed_n()
   fail_rate = tibble(stratum = "All",
                      duration = c(3, 100),

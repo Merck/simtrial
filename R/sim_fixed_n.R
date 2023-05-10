@@ -256,7 +256,7 @@ sim_fixed_n <- function(n_sim = 1000,
   minFollow <- max(0, total_duration - sum(enroll_rate$duration))
 
   # put failure rates into sim_pw_surv format
-  temp <- simfix2simPWSurv(fail_rate)
+  temp <- simfix2simpwsurv(fail_rate)
   fr <- temp$fail_rate
   dr <- temp$dropout_rate
   results <- NULL

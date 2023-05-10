@@ -59,7 +59,7 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE, warning=FALSE, fig.width=7.5, fig.height=4}
 set.seed(7789)
-xpar <- simfix2simPWSurv(fail_rate)
+xpar <- simfix2simpwsurv(fail_rate)
 MBdelay <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),
@@ -149,7 +149,7 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
 set.seed(7783)
-xpar <- simfix2simPWSurv(fail_rate)
+xpar <- simfix2simpwsurv(fail_rate)
 FHwn <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),
