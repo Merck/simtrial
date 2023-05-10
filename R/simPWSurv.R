@@ -50,7 +50,7 @@ NULL
 #' \code{enroll_time} (enrollment time for the observation),
 #' \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
 #' \code{fail_time} (failure time generated using \code{rpwexp()}),
-#' \code{dropoutTime} (dropout time generated using \code{rpwexp()}),
+#' \code{dropout_time} (dropout time generated using \code{rpwexp()}),
 #' \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
 #' \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
 #'
@@ -134,21 +134,21 @@ sim_pw_surv <- function(
     unique_stratum <- unique(x$stratum)
     unique_treatment <- unique(x$treatment)
     x$fail_time <- 0
-    x$dropoutTime <- 0
+    x$dropout_time <- 0
 
     for(sr in unique_stratum){
       for(tr in unique_treatment){
         indx <- x$stratum ==sr & x$treatment == tr
       x$fail_time[indx] <- rpwexpinvRcpp(n = sum(indx),
                                         fail_rate = fail_rate[fail_rate$stratum == sr & fail_rate$treatment == tr, , drop = FALSE])
-      x$dropoutTime[indx] <- rpwexpinvRcpp(n = sum(indx),
+      x$dropout_time[indx] <- rpwexpinvRcpp(n = sum(indx),
                                            fail_rate = dropout_rate[dropout_rate$stratum == sr & dropout_rate$treatment == tr, ,drop = FALSE])
       }
     }
 
     # set calendar time-to-event and failure indicator
     ans <- x %>%
-      mutate(cte = pmin(dropoutTime, fail_time) + enroll_time,
-             fail = (fail_time <= dropoutTime) * 1)
+      mutate(cte = pmin(dropout_time, fail_time) + enroll_time,
+             fail = (fail_time <= dropout_time) * 1)
     return(ans)
 }

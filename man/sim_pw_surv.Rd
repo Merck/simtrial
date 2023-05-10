@@ -39,7 +39,7 @@ a \code{tibble} with the following variables for each observation
 \code{enroll_time} (enrollment time for the observation),
 \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
 \code{fail_time} (failure time generated using \code{rpwexp()}),
-\code{dropoutTime} (dropout time generated using \code{rpwexp()}),
+\code{dropout_time} (dropout time generated using \code{rpwexp()}),
 \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
 \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
 }
