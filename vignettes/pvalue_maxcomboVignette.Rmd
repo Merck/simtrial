@@ -97,7 +97,7 @@ Suppose we want the p-value just based on the logrank and FH(0,1) and FH(1,0) as
 We remove the rows and columns associated with FH(0,0) and FH(1,1) and then apply `pvalue_maxcombo()`.
 
 ```{r,warning=FALSE,message=FALSE}
-pvalue_maxcombo(z %>% select(-c(V1, V4)) %>% filter((rho == 0 & gamma == 1) | (rho == 1 & gamma == 0)))
+pvalue_maxcombo(z %>% select(-c(v1, v4)) %>% filter((rho == 0 & gamma == 1) | (rho == 1 & gamma == 0)))
 ```
 
 ### Using survival data in another format
@@ -134,7 +134,7 @@ We now consider the example simulation from the `pvalue_maxcombo()` help file to
 # Only use cut events + min follow-up
 xx <- sim_fixed_n(n_sim = 100, timing_type = 5, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- unlist(xx %>% group_by(Sim) %>% group_map(pvalue_maxcombo))
+p <- unlist(xx %>% group_by(sim) %>% group_map(pvalue_maxcombo))
 mean(p < .001)
 ```
 
@@ -152,7 +152,7 @@ Now we compute a p-value separately for each cut type, first for targeted event 
 
 ```{r,warning=FALSE,message=FALSE}
 # Subset to targeted events cutoff tests
-p <- unlist(xx %>% filter(cut == "Targeted events") %>% group_by(Sim) %>% group_map(pvalue_maxcombo))
+p <- unlist(xx %>% filter(cut == "Targeted events") %>% group_by(sim) %>% group_map(pvalue_maxcombo))
 mean(p < .025)
 ```
 
@@ -160,7 +160,7 @@ Now we use the later of targeted events and minimum follow-up cutoffs.
 
 ```{r,warning=FALSE,message=FALSE}
 # Subset to targeted events cutoff tests
-p <- unlist(xx %>% filter(cut != "Targeted events") %>% group_by(Sim) %>% group_map(pvalue_maxcombo))
+p <- unlist(xx %>% filter(cut != "Targeted events") %>% group_by(sim) %>% group_map(pvalue_maxcombo))
 mean(p < .025)
 ```
 

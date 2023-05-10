@@ -257,7 +257,7 @@ sim_fixed_n(
   stratum = stratum, # Study stratum
   enroll_rate = enroll_rate, # Enrollment rates
   fail_rate = fail_rate, # Failure rates
-  totalDuration = 30, # Planned trial duration
+  total_duration = 30, # Planned trial duration
   block = block, # Block for treatment
   timing_type = 1:5, # Use all possible data cutoff methods
   rho_gamma = rho_gamma # FH test(s) to use; in this case, logrank
