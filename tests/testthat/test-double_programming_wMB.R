@@ -5,7 +5,7 @@ test_mb_weight <- function(x, delay = 4){
     outi.sort <- outi[order(outi$tte),]
     locmaxt <- length(outi.sort$tte[outi.sort$tte<=delay]) # location of the maximum timepoint (tte) that is less or equal to the input 'delay'
     outi$mb_weight <- NA
-    outi$mb_weight[1:locmaxt] <- 1/outi$S[1:locmaxt]
+    outi$mb_weight[1:locmaxt] <- 1/outi$s[1:locmaxt]
     outi$mb_weight[(locmaxt+1):nrow(outi)] <- outi$mb_weight[locmaxt]
     out <- rbind(out,outi)
   }
@@ -16,7 +16,9 @@ test_mb_weight <- function(x, delay = 4){
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum",{
-  x <- sim_pw_surv(n=200) %>% cut_data_by_event(125) %>% counting_process(arm="experimental")
+  x <- sim_pw_surv(n=200) %>%
+    cut_data_by_event(125) %>%
+    counting_process(arm="experimental")
 
   out1 <- test_mb_weight(x, delay=3)
   out1 <- data.frame(out1[order(out1$stratum,out1$tte),])

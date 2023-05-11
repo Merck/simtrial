@@ -59,7 +59,7 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE, warning=FALSE, fig.width=7.5, fig.height=4}
 set.seed(7789)
-xpar <- simfix2simPWSurv(fail_rate)
+xpar <- simfix2simpwsurv(fail_rate)
 MBdelay <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),
@@ -113,7 +113,7 @@ and let $\gamma=0, \rho = -1/2.$
 w_max <- 2
 Z_modified_FH <- MBdelay %>%
   counting_process(arm = "experimental") %>%
-  mutate(w = pmin(w_max, 1 / S)) %>%
+  mutate(w = pmin(w_max, 1 / s)) %>%
   summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(Z_modified_FH$z)
@@ -149,7 +149,7 @@ Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experi
 
 ```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
 set.seed(7783)
-xpar <- simfix2simPWSurv(fail_rate)
+xpar <- simfix2simpwsurv(fail_rate)
 FHwn <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),

@@ -64,6 +64,6 @@ testthat::test_that("tenFHCorr calculated correct correlation value",{
   corr1=cor.tst[2:5,2:5]
   a2 <- y %>% counting_process(arm="experimental")
   corr2=tenFHcorr(a2,rho_gamma=tibble(rho=c(0,0,1,1),gamma=c(0,1,0,1)))
-  corr2= rbind(corr2$V1,corr2$V2,corr2$V3,corr2$V4)
+  corr2= rbind(corr2$v1,corr2$v2,corr2$v3,corr2$v4)
   expect_equal(corr1,corr2,tolerance = 0.00001)
 })

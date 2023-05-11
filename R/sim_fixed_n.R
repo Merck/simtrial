@@ -34,7 +34,7 @@ NULL
 #' random distribution between stratum.
 #' @param fail_rate Piecewise constant control group failure rates, hazard ratio for experimental vs control,
 #'  and dropout rates by stratum and time period.
-#' @param totalDuration Total follow-up from start of enrollment to data cutoff.
+#' @param total_duration Total follow-up from start of enrollment to data cutoff.
 #' @param block As in `simtrial::sim_pw_surv()`. Vector of treatments to be included in each block.
 #' @param timing_type A numeric vector determining data cutoffs used; see details.
 #' Default is to include all available cutoff methods.
@@ -49,9 +49,9 @@ NULL
 #' 4 the maximum of planned study duration and targeted event count cuts (1 and 2),
 #' 5 the maximum of targeted event count and minimum follow-up cuts (2 and 3).
 #'
-#' @return A \code{tibble} including columns \code{Events} (event count), \code{lnhr} (log-hazard ratio),
+#' @return A \code{tibble} including columns \code{event} (event count), \code{ln_hr} (log-hazard ratio),
 #' \code{z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
-#' \code{Duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
+#' \code{duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
 #' One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
 #' If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
 #' are also included.
@@ -84,7 +84,7 @@ NULL
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 #' p <- xx %>%
 #'   filter(cut != "Targeted events") %>%
-#'   group_by(Sim) %>%
+#'   group_by(sim) %>%
 #'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
@@ -93,7 +93,7 @@ NULL
 #' # MaxCombo estimate for targeted events cutoff
 #' p <- xx %>%
 #'   filter(cut == "Targeted events") %>%
-#'   group_by(Sim) %>%
+#'   group_by(sim) %>%
 #'   group_map(pvalue_maxcombo) %>%
 #'   unlist()
 #'
@@ -122,7 +122,7 @@ sim_fixed_n <- function(n_sim = 1000,
                                       hr = c(.9, .6),
                                       dropout_rate = rep(.001, 2)),
                    # total planned trial duration; single value
-                   totalDuration = 30,
+                   total_duration = 30,
                    # Fixed block randomization specification
                    block = rep(c("experimental", "control"), 2),
                    # select desired cutoffs for analysis (default is all types)
@@ -165,20 +165,20 @@ sim_fixed_n <- function(n_sim = 1000,
   }
 
   # check input trial duration
-  if(!is.numeric(totalDuration)){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!is.numeric(total_duration)){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(!is.vector(totalDuration)){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!is.vector(total_duration)){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(length(totalDuration) != 1){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(length(total_duration) != 1){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
-  if(!min(totalDuration) > 0){
-    stop("sim_fixed_n: totalDuration in `sim_fixed_n()` must be a single positive number!")
+  if(!min(total_duration) > 0){
+    stop("sim_fixed_n: total_duration in `sim_fixed_n()` must be a single positive number!")
   }
 
   # check stratum
@@ -241,8 +241,8 @@ sim_fixed_n <- function(n_sim = 1000,
     }
 
     ans <- tibble(
-      Events = sum(d$event),
-      lnhr = ifelse(n_stratum > 1,
+      event = sum(d$event),
+      ln_hr = ifelse(n_stratum > 1,
                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
                     ) %>% as.numeric()
@@ -253,10 +253,10 @@ sim_fixed_n <- function(n_sim = 1000,
   }
 
   # compute minimum planned follow-up time
-  minFollow <- max(0, totalDuration - sum(enroll_rate$duration))
+  minFollow <- max(0, total_duration - sum(enroll_rate$duration))
 
   # put failure rates into sim_pw_surv format
-  temp <- simfix2simPWSurv(fail_rate)
+  temp <- simfix2simpwsurv(fail_rate)
   fr <- temp$fail_rate
   dr <- temp$dropout_rate
   results <- NULL
@@ -309,7 +309,7 @@ sim_fixed_n <- function(n_sim = 1000,
     }
 
     if (4 %in% timing_type){  # max of planned duration, targeted events
-      if (tedate > totalDuration){
+      if (tedate > total_duration){
         tests[2] <- TRUE
       }else{
         tests[1] <- TRUE
@@ -326,7 +326,7 @@ sim_fixed_n <- function(n_sim = 1000,
 
     # Total duration cutoff
     if (tests[1]){
-      d <- sim %>% cut_data_by_date(totalDuration)
+      d <- sim %>% cut_data_by_date(total_duration)
       r1 <- d %>% doAnalysis(rho_gamma, n_stratum)
     }
 
@@ -347,33 +347,33 @@ sim_fixed_n <- function(n_sim = 1000,
     if (1 %in% timing_type){
       addit <- rbind(addit,
                      r1 %>% mutate(cut = "Planned duration",
-                                   Duration = totalDuration))
+                                   duration = total_duration))
     }
 
     # targeted events cutoff
     if (2 %in% timing_type){
       addit <- rbind(addit,
                      r2 %>% mutate(cut = "Targeted events",
-                                   Duration = tedate))
+                                   duration = tedate))
     }
 
     # minimum follow-up duration target
     if (3 %in% timing_type){
       addit <- rbind(addit,
                      r3 %>% mutate(cut = "Minimum follow-up",
-                                   Duration = tmfdate))
+                                   duration = tmfdate))
     }
 
     # max of planned duration, targeted events
     if (4 %in% timing_type){
-      if (tedate > totalDuration){
+      if (tedate > total_duration){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(planned duration, event cut)",
-                                     Duration = tedate))
+                                     duration = tedate))
       }else{
         addit <- rbind(addit,
                        r1 %>% mutate(cut = "Max(planned duration, event cut)",
-                                     Duration = totalDuration))
+                                     duration = total_duration))
       }
     }
 
@@ -382,15 +382,15 @@ sim_fixed_n <- function(n_sim = 1000,
       if (tedate > tmfdate){
         addit <- rbind(addit,
                        r2 %>% mutate(cut = "Max(min follow-up, event cut)",
-                                     Duration = tedate))
+                                     duration = tedate))
       }else{
         addit <- rbind(addit,
                        r3 %>% mutate(cut = "Max(min follow-up, event cut)",
-                                     Duration = tmfdate))
+                                     duration = tmfdate))
       }
     }
 
-    addit %>% mutate(Sim = i)
+    addit %>% mutate(sim = i)
     }
 
   return(results)

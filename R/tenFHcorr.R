@@ -33,7 +33,7 @@ NULL
 #'
 #' @return a `tibble` with \code{rho_gamma} as input, the FH test statistics specified
 #' for the data in \code{z}, and the correlation or covariance matrix for these tests in variables starting
-#' with \code{V}
+#' with \code{v}
 #'
 #' @examples
 #' library(tidyr)
@@ -115,7 +115,7 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
     corr_mat <- cov_mat
   }
 
-  names(corr_mat) <- paste("V", 1:ncol(corr_mat), sep = "")
+  colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
 
   # return combined values
   ans <- cbind(rho_gamma, z, as_tibble(corr_mat))

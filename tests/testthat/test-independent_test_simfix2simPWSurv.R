@@ -7,8 +7,8 @@ fail_rate <- tibble::tibble(stratum=c(rep("Low",3),rep("High",3)),
                             dropout_rate=.01
 )
 
-failRatesPWSurv<-simfix2simPWSurv(fail_rate)$fail_rate
-dropoutRatesPWSurv<-simfix2simPWSurv(fail_rate)$dropout_rate
+failRatesPWSurv<-simfix2simpwsurv(fail_rate)$fail_rate
+dropoutRatesPWSurv<-simfix2simpwsurv(fail_rate)$dropout_rate
 
 testthat::test_that("stratgum values must be the same and stratum length must be doubled after converting",{
   stratum1 <- names(table(fail_rate$stratum))

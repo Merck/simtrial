@@ -110,12 +110,11 @@ counting_process <- function(x, arm){
       arrange(stratum, tte) %>%
       group_by(stratum) %>%
       mutate( # left continuous Kaplan-Meier Estimator
-             S = lag(cumprod(s), default = 1),
+             s = lag(cumprod(s), default = 1),
              # observed events minus Expected events in treatment group
              o_minus_e = n_event_tol - n_risk_trt / n_risk_tol * events,
              # variance of o_minus_e
-             var_o_minus_e = (n_risk_tol - n_risk_trt) * n_risk_trt * events * (n_risk_tol - events) / n_risk_tol^2 / (n_risk_tol - 1)) %>%
-      select(-s)
+             var_o_minus_e = (n_risk_tol - n_risk_trt) * n_risk_trt * events * (n_risk_tol - events) / n_risk_tol^2 / (n_risk_tol - 1))
 
     return(ans)
 }

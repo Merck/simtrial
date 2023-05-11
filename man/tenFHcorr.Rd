@@ -22,7 +22,7 @@ to zero, to specify one Fleming-Harrington weighted logrank test per row}
 \value{
 a \code{tibble} with \code{rho_gamma} as input, the FH test statistics specified
 for the data in \code{z}, and the correlation or covariance matrix for these tests in variables starting
-with \code{V}
+with \code{v}
 }
 \description{
 Correlations can be used with \code{mvtnorm::pmvnorm} to compute

@@ -94,8 +94,8 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
     stop("wlr: x in `wlr()` must be a data frame!")
   }
 
-  if(!("S" %in% names(x))){
-    stop("wlr: x column names in `wlr()` must contain S!")
+  if(!("s" %in% names(x))){
+    stop("wlr: x column names in `wlr()` must contain s!")
   }
 
   if(!("o_minus_e" %in% names(x))){
@@ -109,7 +109,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
   # get minimal columns from counting_process item
   xx <- x %>%
     ungroup() %>%
-    select(S, o_minus_e, var_o_minus_e)
+    select(s, o_minus_e, var_o_minus_e)
 
   rho_gamma$z <- rep(0, nrow(rho_gamma))
 
@@ -119,7 +119,7 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
 
   for(i in 1:nrow(rho_gamma)){
     y <- xx %>%
-      mutate(weight = S^rho_gamma$rho[i] * (1 - S)^rho_gamma$gamma[i],
+      mutate(weight = s^rho_gamma$rho[i] * (1 - s)^rho_gamma$gamma[i],
              weighted_o_minus_e = weight * o_minus_e,
              weighted_var = weight^2 * var_o_minus_e) %>%
       summarize(weighted_var = sum(weighted_var),
