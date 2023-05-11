@@ -30,7 +30,7 @@ Type I error is controlled as the specified level."><!-- mathjax --><script src=
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@ Type I error is controlled as the specified level."><!-- mathjax --><script src=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Magirr and Burman Modestly Weighted Logrank Tests</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/R/wMB.R" class="external-link"><code>R/wMB.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/R/mb_weight.R" class="external-link"><code>R/mb_weight.R</code></a></small>
       <div class="d-none name"><code>mb_weight.Rd</code></div>
     </div>
 
@@ -156,7 +156,7 @@ $$w(t)=\min(w_max, S(\min(t,t^*))^{-1}).$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.007901075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.03993639</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Now compute with maximum weight of 2 as recommended in Magirr, 2021</span></span></span>
@@ -168,7 +168,7 @@ $$w(t)=\min(w_max, S(\min(t,t^*))^{-1}).$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB2</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01705209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04178955</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
