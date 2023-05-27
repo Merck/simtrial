@@ -29,18 +29,25 @@ NULL
 #' # Use default enrollment and calendar cut date for 50 events in Positive stratum
 #' x <- sim_pw_surv(
 #'   n = 200,
-#'   stratum = tibble(stratum = c("Positive", "Negative"),
-#'                   p = c(.5, .5)),
-#'   fail_rate = tibble(stratum = rep(c("Positive","Negative"), 2),
-#'                      period = rep(1, 4),
-#'                      treatment = c(rep("control", 2), rep("experimental", 2)),
-#'                      duration = rep(1, 4),
-#'                      rate = log(2) / c(6, 9, 9, 12)),
-#'   dropout_rate = tibble(stratum = rep(c("Positive", "Negative"),2),
-#'                         period = rep(1, 4),
-#'                         treatment = c(rep("control", 2), rep("experimental", 2)),
-#'                         duration = rep(1, 4),
-#'                         rate = rep(.001, 4)))
+#'   stratum = tibble(
+#'     stratum = c("Positive", "Negative"),
+#'     p = c(.5, .5)
+#'   ),
+#'   fail_rate = tibble(
+#'     stratum = rep(c("Positive", "Negative"), 2),
+#'     period = rep(1, 4),
+#'     treatment = c(rep("control", 2), rep("experimental", 2)),
+#'     duration = rep(1, 4),
+#'     rate = log(2) / c(6, 9, 9, 12)
+#'   ),
+#'   dropout_rate = tibble(
+#'     stratum = rep(c("Positive", "Negative"), 2),
+#'     period = rep(1, 4),
+#'     treatment = c(rep("control", 2), rep("experimental", 2)),
+#'     duration = rep(1, 4),
+#'     rate = rep(.001, 4)
+#'   )
+#' )
 #'
 #' d <- get_cut_date_by_event(x %>% filter(stratum == "Positive"), event = 50)
 #'
@@ -52,7 +59,7 @@ NULL
 #'
 #' @export
 
-get_cut_date_by_event <- function(x, event){
+get_cut_date_by_event <- function(x, event) {
   y <- x %>%
     ungroup() %>%
     select(cte, fail) %>%

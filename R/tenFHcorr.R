@@ -45,53 +45,65 @@ NULL
 #'   counting_process(arm = "experimental")
 #'
 #' # compute logrank (FH(0,0)) and FH(0,1)
-#' x <- x %>% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-#'                                  gamma = c(0, 1)))
+#' x <- x %>% tenFHcorr(rho_gamma = tibble(
+#'   rho = c(0, 0),
+#'   gamma = c(0, 1)
+#' ))
 #'
 #' # compute p-value for MaxCombo
 #' library(mvtnorm)
-#' 1 - pmvnorm(lower = rep(min(x$z), nrow(x)),
-#'             corr = data.matrix(select(x, -c(rho, gamma, z))),
-#'             algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
+#' 1 - pmvnorm(
+#'   lower = rep(min(x$z), nrow(x)),
+#'   corr = data.matrix(select(x, -c(rho, gamma, z))),
+#'   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
+#' )[1]
 #'
 #' # check that covariance is as expected
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental")
 #'
-#' x %>% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-#'                             gamma = c(0, 1)),
-#'                 corr = FALSE)
+#' x %>% tenFHcorr(
+#'   rho_gamma = tibble(
+#'     rho = c(0, 0),
+#'     gamma = c(0, 1)
+#'   ),
+#'   corr = FALSE
+#' )
 #'
 #' # Off-diagonal element should be variance in following
-#' x %>% tenFHcorr(rho_gamma = tibble(rho = 0,
-#'                             gamma =.5),
-#'                 corr = FALSE)
+#' x %>% tenFHcorr(
+#'   rho_gamma = tibble(
+#'     rho = 0,
+#'     gamma = .5
+#'   ),
+#'   corr = FALSE
+#' )
 #'
 #' # compare off diagonal result with wlr()
-#' x %>% wlr(rho_gamma = tibble(rho = 0, gamma =.5))
+#' x %>% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
 #'
 #' @export
 #' @rdname tenFHcorr
 tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
-                            cut_data_by_event(100) %>%
-                            counting_process(arm = "experimental"),
-                      rho_gamma = tibble(rho = c(0, 0, 1, 1),
-                                  gamma = c(0, 1, 0, 1)),
-                      corr = TRUE
-){
-
+                        cut_data_by_event(100) %>%
+                        counting_process(arm = "experimental"),
+                      rho_gamma = tibble(
+                        rho = c(0, 0, 1, 1),
+                        gamma = c(0, 1, 0, 1)
+                      ),
+                      corr = TRUE) {
   n_weight <- nrow(rho_gamma)
 
   # Get average rho and gamma for FH covariance matrix
   # We want ave_rho[i,j] = (rho[i] + rho[j])/2
   # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
   ave_rho <- (matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
-                matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
-              )/2
+    matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+  ) / 2
   ave_gamma <- (matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight) +
-                  matrix(rho_gamma$gamma,nrow = n_weight,ncol = n_weight, byrow = TRUE)
-               )/2
+    matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+  ) / 2
 
   # Convert back to tibble
   rg_new <- tibble(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
@@ -101,7 +113,8 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
   # compute FH statistic for unique values
   # and merge back to full set of pairs
   rg_fh <- rg_new %>% left_join(wlr(x, rg_unique, return_variance = TRUE),
-                                by = c("rho" = "rho","gamma" = "gamma"))
+    by = c("rho" = "rho", "gamma" = "gamma")
+  )
 
   # get z statistics for input rho, gamma combinations
   z <- rg_fh$z[(0:(n_weight - 1)) * n_weight + 1:n_weight]
@@ -109,9 +122,9 @@ tenFHcorr <- function(x = sim_pw_surv(n = 200) %>%
   # get correlation matrix
   cov_mat <- matrix(rg_fh$Var, nrow = n_weight, byrow = TRUE)
 
-  if (corr){
+  if (corr) {
     corr_mat <- stats::cov2cor(cov_mat)
-  } else{
+  } else {
     corr_mat <- cov_mat
   }
 

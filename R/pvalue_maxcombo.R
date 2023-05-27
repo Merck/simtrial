@@ -41,37 +41,51 @@ NULL
 #' library(dplyr)
 #'
 #' # example 1
-#' x <- sim_fixed_n(n_sim = 1,
-#'             timing_type = 5,
-#'             rho_gamma = tibble(rho = c(0, 0, 1),
-#'                         gamma = c(0, 1, 1)))
+#' x <- sim_fixed_n(
+#'   n_sim = 1,
+#'   timing_type = 5,
+#'   rho_gamma = tibble(
+#'     rho = c(0, 0, 1),
+#'     gamma = c(0, 1, 1)
+#'   )
+#' )
 #' head(x)
 #' pvalue_maxcombo(x)
 #'
 #' # example 2
 #' # Only use cuts for events, events + min follow-up
-#' xx <- sim_fixed_n(n_sim = 100,
-#'              timing_type = 5,
-#'              rho_gamma = tibble(rho = c(0, 0, 1),
-#'                          gamma = c(0, 1, 1)))
+#' xx <- sim_fixed_n(
+#'   n_sim = 100,
+#'   timing_type = 5,
+#'   rho_gamma = tibble(
+#'     rho = c(0, 0, 1),
+#'     gamma = c(0, 1, 1)
+#'   )
+#' )
 #' head(xx)
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx %>% group_by(sim) %>% group_map(pvalue_maxcombo) %>% unlist()
+#' p <- xx %>%
+#'   group_by(sim) %>%
+#'   group_map(pvalue_maxcombo) %>%
+#'   unlist()
 #' mean(p < .025)
 #'
 #' @export
 #'
-pvalue_maxcombo<- function(z,
-                           dummy_var,
-                           algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)){
-
-  ans <- (1 - mvtnorm::pmvnorm(lower = rep(z$z %>% min() %>% as.numeric(),
-                                           nrow(z)),
-                               corr = z %>%
-                                        select(starts_with("V")) %>%
-                                        data.matrix(),
-                               algorithm = algorithm)[1]
-          ) %>% as.numeric()
+pvalue_maxcombo <- function(z,
+                            dummy_var,
+                            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)) {
+  ans <- (1 - mvtnorm::pmvnorm(
+    lower = rep(
+      z$z %>% min() %>% as.numeric(),
+      nrow(z)
+    ),
+    corr = z %>%
+      select(starts_with("V")) %>%
+      data.matrix(),
+    algorithm = algorithm
+  )[1]
+  ) %>% as.numeric()
 
   return(ans)
 }

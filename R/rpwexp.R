@@ -43,11 +43,14 @@ NULL
 #'
 #' # example 1
 #' # exponential failure times
-#' x <- rpwexp(n = 10000,
-#'             fail_rate = tibble(rate = 5, duration = 1))
-#' plot(sort(x),(10000:1)/10001,
-#'      log = "y", main = "Exponential simulated survival curve",
-#'      xlab = "Time",ylab = "P{Survival}")
+#' x <- rpwexp(
+#'   n = 10000,
+#'   fail_rate = tibble(rate = 5, duration = 1)
+#' )
+#' plot(sort(x), (10000:1) / 10001,
+#'   log = "y", main = "Exponential simulated survival curve",
+#'   xlab = "Time", ylab = "P{Survival}"
+#' )
 #'
 #' # example 2
 #'
@@ -55,29 +58,29 @@ NULL
 #' # failure rates are 1 for time 0-.5, 3 for time .5 - 1 and 10 for >1.
 #' # intervals specifies duration of each failure rate interval
 #' # with the final interval running to infinity
-#' x <- rpwexp(n = 1e4,
-#'             fail_rate = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1)))
-#' plot(sort(x), (1e4:1)/10001,
-#'      log = "y", main = "PW Exponential simulated survival curve",
-#'      xlab = "Time", ylab = "P{Survival}")
+#' x <- rpwexp(
+#'   n = 1e4,
+#'   fail_rate = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1))
+#' )
+#' plot(sort(x), (1e4:1) / 10001,
+#'   log = "y", main = "PW Exponential simulated survival curve",
+#'   xlab = "Time", ylab = "P{Survival}"
+#' )
 #'
 #' @export
 rpwexp <- function(n = 100,
-                   fail_rate = tibble(duration = c(1, 1), rate = c(10, 20))){
-
+                   fail_rate = tibble(duration = c(1, 1), rate = c(10, 20))) {
   n_rate <- nrow(fail_rate)
 
-  if (n_rate == 1){
-
+  if (n_rate == 1) {
     # set failure time to Inf if 0 failure rate
-    if(fail_rate$rate == 0){
+    if (fail_rate$rate == 0) {
       ans <- rep(Inf, n)
-    }else{
+    } else {
       # generate exponential failure time if non-0 failure rate
       ans <- stats::rexp(n, fail_rate$rate)
     }
-
-  }else{
+  } else {
     # start of first failure rate interval
     start_time <- 0
     # ends of failure rate interval
@@ -87,30 +90,29 @@ rpwexp <- function(n = 100,
     # index for event times not yet reached
     indx <- rep(TRUE, n)
 
-    for(i in 1:n_rate){
+    for (i in 1:n_rate) {
       # number of event times left to generate
       n_event_left <- sum(indx)
 
       # stop if event is arrived
-      if (n_event_left == 0){
+      if (n_event_left == 0) {
         break
       }
 
       # set failure time to Inf for interval i if 0 fail rate
-      if (fail_rate$rate[i] == 0){
-        ans[indx] = start_time + rep(Inf, n_event_left)
-      } else{
+      if (fail_rate$rate[i] == 0) {
+        ans[indx] <- start_time + rep(Inf, n_event_left)
+      } else {
         # generate exponential failure time for interval i if non-0 failure rate
         ans[indx] <- start_time + stats::rexp(n_event_left, fail_rate$rate[i])
       }
 
       # skip this for last interval as all remaining times are generated there
-      if (i < n_rate){
+      if (i < n_rate) {
         start_time <- end_time[i]
         # update index of event times not yet reached
         indx <- (ans > end_time[i])
       }
-
     }
   }
 

@@ -78,9 +78,11 @@ NULL
 #' # compute Magirr-Burman weights with `delay = 6`
 #' ZMB <- x %>%
 #'   mb_weight(delay = 6, w_max = Inf) %>%
-#'   summarize(S = sum(o_minus_e * mb_weight),
-#'             V = sum(var_o_minus_e * mb_weight^2),
-#'             z = S / sqrt(V))
+#'   summarize(
+#'     S = sum(o_minus_e * mb_weight),
+#'     V = sum(var_o_minus_e * mb_weight^2),
+#'     z = S / sqrt(V)
+#'   )
 #'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB$z)
@@ -89,47 +91,48 @@ NULL
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 #' ZMB2 <- x %>%
 #'   mb_weight(delay = Inf, w_max = 2) %>%
-#'   summarize(S = sum(o_minus_e * mb_weight),
-#'             V = sum(var_o_minus_e * mb_weight^2),
-#'             z = S / sqrt(V))
+#'   summarize(
+#'     S = sum(o_minus_e * mb_weight),
+#'     V = sum(var_o_minus_e * mb_weight^2),
+#'     z = S / sqrt(V)
+#'   )
 #'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB2$z)
 #'
 #' @export
-mb_weight <- function(x, delay = 4, w_max = Inf)
-{
+mb_weight <- function(x, delay = 4, w_max = Inf) {
   # check input failure rate assumptions
-  if(!is.data.frame(x)){
+  if (!is.data.frame(x)) {
     stop("x in `mb_weight()` must be a data frame")
   }
 
   # check input delay
-  if(!is.numeric(delay)){
+  if (!is.numeric(delay)) {
     stop("delay in `mb_weight()` must be a non-negative number")
   }
 
-  if(!delay >= 0){
+  if (!delay >= 0) {
     stop("delay in `mb_weight()` must be a non-negative number")
   }
 
-  if(!is.numeric(w_max)){
+  if (!is.numeric(w_max)) {
     stop("w_max (maximum weight) in `mb_weight()` must be a positive number")
   }
 
-  if(!delay > 0){
+  if (!delay > 0) {
     stop("w_max (maximum weight) in `mb_weight()` must be a positive number")
   }
 
-  if(max(names(x)=="stratum") != 1){
+  if (max(names(x) == "stratum") != 1) {
     stop("x column names in `mb_weight()` must contain stratum")
   }
 
-  if(max(names(x)=="tte") != 1){
+  if (max(names(x) == "tte") != 1) {
     stop("x column names in `mb_weight()` must contain tte")
   }
 
-  if(max(names(x)=="s") != 1){
+  if (max(names(x) == "s") != 1) {
     stop("x column names in `mb_weight()` must contain s")
   }
 
@@ -142,7 +145,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf)
     # look only up to delay time
     filter(tte <= delay) %>%
     # weight before delay specified as 1/S
-    summarize(max_weight = max(1/s)) %>%
+    summarize(max_weight = max(1 / s)) %>%
     # get back stratum with no records before delay ends
     right_join(tbl_all_stratum, by = "stratum") %>%
     # max_weight is 1 when there are no records before delay ends
@@ -152,7 +155,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf)
     # Now merge max_weight back to stratified dataset
     full_join(x2, by = "stratum") %>%
     # Weight is min of max_weight and 1/S which will increase up to delay
-    mutate(mb_weight = pmin(max_weight, 1/s)) %>%
+    mutate(mb_weight = pmin(max_weight, 1 / s)) %>%
     select(-max_weight)
 
   return(ans)

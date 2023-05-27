@@ -41,8 +41,7 @@
 #'   mutate(Treatment = randomize_by_fixed_block())
 #'
 #' @export
-randomize_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)){
-
+randomize_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)) {
   length_block <- length(block)
   n_block <- ceiling(n / length_block)
   n_total <- n_block * length_block

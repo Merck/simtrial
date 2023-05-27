@@ -59,10 +59,12 @@ NULL
 #' library(tibble)
 #'
 #' # example 1
-#' x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
-#'             treatment = rep(c(1, 1, 0, 0), 4),
-#'             tte = 1:16,
-#'             event= rep(c(0, 1), 8))
+#' x <- tibble(
+#'   stratum = c(rep(1, 10), rep(2, 6)),
+#'   treatment = rep(c(1, 1, 0, 0), 4),
+#'   tte = 1:16,
+#'   event = rep(c(0, 1), 8)
+#' )
 #' counting_process(x, arm = 1)
 #'
 #' # example 2
@@ -73,48 +75,52 @@ NULL
 #' c(z, pnorm(z))
 #'
 #' @export
-counting_process <- function(x, arm){
+counting_process <- function(x, arm) {
+  unique_treatment <- unique(x$treatment)
 
-    unique_treatment <- unique(x$treatment)
+  if (length(unique_treatment) > 2) {
+    stop("counting_process: expected two groups!")
+  }
 
-    if(length(unique_treatment) > 2){
-      stop("counting_process: expected two groups!")
-    }
+  if (!arm %in% unique_treatment) {
+    stop("counting_process: arm is not a valid treatment group value!")
+  }
 
-    if(! arm %in% unique_treatment){
-      stop("counting_process: arm is not a valid treatment group value!")
-    }
+  if (!all(unique(x$event) %in% c(0, 1))) {
+    stop("counting_process: event indicator must be 0 (censoring) or 1 (event)!")
+  }
 
-    if(! all(unique(x$event) %in% c(0, 1) ) ){
-      stop("counting_process: event indicator must be 0 (censoring) or 1 (event)!")
-    }
+  ans <- x %>%
+    group_by(stratum) %>%
+    arrange(desc(tte)) %>%
+    mutate(
+      one = 1,
+      n_risk_tol = cumsum(one),
+      n_risk_trt = cumsum(treatment == arm)
+    ) %>%
+    # Handling ties using Breslow's method
+    group_by(stratum, mtte = desc(tte)) %>%
+    dplyr::summarise(
+      events = sum(event),
+      n_event_tol = sum((treatment == arm) * event),
+      tte = first(tte),
+      n_risk_tol = max(n_risk_tol),
+      n_risk_trt = max(n_risk_trt)
+    ) %>%
+    # Keep calculation for observed time with at least one event, at least one subject is
+    # at risk in both treatment group and control group.
+    filter(events > 0, n_risk_tol - n_risk_trt > 0, n_risk_trt > 0) %>%
+    select(-mtte) %>%
+    mutate(s = 1 - events / n_risk_tol) %>%
+    arrange(stratum, tte) %>%
+    group_by(stratum) %>%
+    mutate( # left continuous Kaplan-Meier Estimator
+      s = lag(cumprod(s), default = 1),
+      # observed events minus Expected events in treatment group
+      o_minus_e = n_event_tol - n_risk_trt / n_risk_tol * events,
+      # variance of o_minus_e
+      var_o_minus_e = (n_risk_tol - n_risk_trt) * n_risk_trt * events * (n_risk_tol - events) / n_risk_tol^2 / (n_risk_tol - 1)
+    )
 
-    ans <- x %>%
-      group_by(stratum) %>%
-      arrange(desc(tte)) %>%
-      mutate(one = 1,
-             n_risk_tol = cumsum(one),
-             n_risk_trt = cumsum(treatment == arm)) %>%
-      # Handling ties using Breslow's method
-      group_by(stratum, mtte = desc(tte)) %>%
-      dplyr::summarise(events = sum(event),
-                       n_event_tol = sum((treatment == arm) * event),
-                       tte = first(tte),
-                       n_risk_tol = max(n_risk_tol),
-                       n_risk_trt = max(n_risk_trt)) %>%
-      # Keep calculation for observed time with at least one event, at least one subject is
-      # at risk in both treatment group and control group.
-      filter(events > 0, n_risk_tol - n_risk_trt > 0, n_risk_trt > 0) %>%
-      select(-mtte) %>%
-      mutate(s = 1 - events / n_risk_tol) %>%
-      arrange(stratum, tte) %>%
-      group_by(stratum) %>%
-      mutate( # left continuous Kaplan-Meier Estimator
-             s = lag(cumprod(s), default = 1),
-             # observed events minus Expected events in treatment group
-             o_minus_e = n_event_tol - n_risk_trt / n_risk_tol * events,
-             # variance of o_minus_e
-             var_o_minus_e = (n_risk_tol - n_risk_trt) * n_risk_trt * events * (n_risk_tol - events) / n_risk_tol^2 / (n_risk_tol - 1))
-
-    return(ans)
+  return(ans)
 }

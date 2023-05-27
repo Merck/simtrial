@@ -75,7 +75,7 @@ NULL
 #' # Use default enrollment and event rates at cut at 100 events
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
-#'   counting_process(arm ="experimental")
+#'   counting_process(arm = "experimental")
 #' # compute logrank (FH(0,0)) and FH(0,1)
 #' wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
 #'
@@ -83,26 +83,27 @@ NULL
 #' @rdname wlr
 #'
 wlr <- function(x = sim_pw_surv(n = 200) %>%
-                        cut_data_by_event(150) %>%
-                        counting_process(arm = "experimental"),
-                  rho_gamma = tibble(rho = c(0, 0, 1, 1),
-                              gamma = c(0, 1, 0, 1)),
-                  return_variance = FALSE){
-
+                  cut_data_by_event(150) %>%
+                  counting_process(arm = "experimental"),
+                rho_gamma = tibble(
+                  rho = c(0, 0, 1, 1),
+                  gamma = c(0, 1, 0, 1)
+                ),
+                return_variance = FALSE) {
   # check input failure rate assumptions
-  if(!is.data.frame(x)){
+  if (!is.data.frame(x)) {
     stop("wlr: x in `wlr()` must be a data frame!")
   }
 
-  if(!("s" %in% names(x))){
+  if (!("s" %in% names(x))) {
     stop("wlr: x column names in `wlr()` must contain s!")
   }
 
-  if(!("o_minus_e" %in% names(x))){
+  if (!("o_minus_e" %in% names(x))) {
     stop("wlr: x column names in `wlr()` must contain o_minus_e!")
   }
 
-  if(!("var_o_minus_e" %in% names(x))){
+  if (!("var_o_minus_e" %in% names(x))) {
     stop("wlr: x column names in `wlr()` must contain var_o_minus_e!")
   }
 
@@ -113,21 +114,25 @@ wlr <- function(x = sim_pw_surv(n = 200) %>%
 
   rho_gamma$z <- rep(0, nrow(rho_gamma))
 
-  if (return_variance){
+  if (return_variance) {
     rho_gamma$Var <- rep(0, nrow(rho_gamma))
   }
 
-  for(i in 1:nrow(rho_gamma)){
+  for (i in 1:nrow(rho_gamma)) {
     y <- xx %>%
-      mutate(weight = s^rho_gamma$rho[i] * (1 - s)^rho_gamma$gamma[i],
-             weighted_o_minus_e = weight * o_minus_e,
-             weighted_var = weight^2 * var_o_minus_e) %>%
-      summarize(weighted_var = sum(weighted_var),
-                weighted_o_minus_e = sum(weighted_o_minus_e))
+      mutate(
+        weight = s^rho_gamma$rho[i] * (1 - s)^rho_gamma$gamma[i],
+        weighted_o_minus_e = weight * o_minus_e,
+        weighted_var = weight^2 * var_o_minus_e
+      ) %>%
+      summarize(
+        weighted_var = sum(weighted_var),
+        weighted_o_minus_e = sum(weighted_o_minus_e)
+      )
 
     rho_gamma$z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
 
-    if (return_variance){
+    if (return_variance) {
       rho_gamma$Var[i] <- y$weighted_var
     }
   }

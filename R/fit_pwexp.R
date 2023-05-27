@@ -49,12 +49,13 @@ NULL
 #'
 #' rate1
 #' rate0
-#' rate1$rate/rate0$rate
+#' rate1$rate / rate0$rate
 #'
 #' # chi-square test for (any) treatment effect (8 - 4 parameters = 4 df)
 #' pchisq(sum(rateall$m2ll) - sum(rate1$m2ll + rate0$m2ll),
-#'        df = 4,
-#'        lower.tail = FALSE)
+#'   df = 4,
+#'   lower.tail = FALSE
+#' )
 #'
 #' # compare with logrank
 #' survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
@@ -64,40 +65,38 @@ NULL
 #' # different for each treatment after months
 #' rate1a <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd), 3))
 #' rate0a <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd), 3))
-#' rate1a$rate/rate0a$rate
+#' rate1a$rate / rate0a$rate
 #'
 #' m2ll0 <- rateall$m2ll[1] + rate1a$m2ll[2] + rate0a$m2ll[2]
 #' m2ll1 <- sum(rate0$m2ll) + sum(rate1$m2ll)
 #'
 #' # as a measure of strength, chi-square examines improvement in likelihood
-#' pchisq(m2ll0-m2ll1, df = 5, lower.tail=FALSE)
+#' pchisq(m2ll0 - m2ll1, df = 5, lower.tail = FALSE)
 #'
 #' @export
 #'
 fit_pwexp <- function(
     srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
-               intervals = array(3, 3)){
-
-  if (!is.Surv(srv)){
+    intervals = array(3, 3)) {
+  if (!is.Surv(srv)) {
     stop("fit_pwexp: srv must be a survival object!")
   }
 
   # only allow status 0,1
-  xx <- data.frame(time = srv[ , "time"], status = srv[ , "status"])
-  if (nrow(subset(xx, status != 0 & status != 1))){
+  xx <- data.frame(time = srv[, "time"], status = srv[, "status"])
+  if (nrow(subset(xx, status != 0 & status != 1))) {
     stop("fit_pwexp: srv may only have status values of 0 or 1!")
   }
 
   # check for late observation after sum(intervals)
-  if (nrow(subset(xx, time > sum(intervals) & status > 0)) > 0){
+  if (nrow(subset(xx, time > sum(intervals) & status > 0)) > 0) {
     intervals <- c(intervals, Inf)
   }
 
   times <- c(0, cumsum(intervals))
 
   ans <- NULL
-  for(i in 1:length(intervals)){
-
+  for (i in 1:length(intervals)) {
     dat <- subset(xx, time > times[i])
     dat$status[dat$time > times[i + 1]] <- 0
     dat$time[dat$time > times[i + 1]] <- times[i + 1]
@@ -107,13 +106,14 @@ fit_pwexp <- function(
     ttot <- sum(dat$time)
     rate <- event / ttot
 
-    if (ttot > 0){
-      ans_new <- data.frame(intervals = intervals[i],
-                            ttot = ttot,
-                            event = event,
-                            rate = rate,
-                            m2ll = 2 * (rate * ttot - event * log(rate))
-                            )
+    if (ttot > 0) {
+      ans_new <- data.frame(
+        intervals = intervals[i],
+        ttot = ttot,
+        event = event,
+        rate = rate,
+        m2ll = 2 * (rate * ttot - event * log(rate))
+      )
       ans <- rbind(ans, ans_new)
     }
   }
