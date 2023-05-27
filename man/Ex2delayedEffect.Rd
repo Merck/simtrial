@@ -27,11 +27,11 @@ non-proportional hazards may be anticipated for outcome data.
 \examples{
 library(survival)
 data(Ex2delayedEffect)
-km1 <- with(Ex2delayedEffect,survfit(Surv(month,evntd)~trt))
+km1 <- with(Ex2delayedEffect, survfit(Surv(month, evntd) ~ trt))
 km1
 plot(km1)
-with(subset(Ex2delayedEffect,trt==1),survfit(Surv(month,evntd)~trt))
-with(subset(Ex2delayedEffect,trt==0),survfit(Surv(month,evntd)~trt))
+with(subset(Ex2delayedEffect, trt == 1), survfit(Surv(month, evntd) ~ trt))
+with(subset(Ex2delayedEffect, trt == 0), survfit(Surv(month, evntd) ~ trt))
 }
 \references{
 TBD

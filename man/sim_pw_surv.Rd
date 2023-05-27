@@ -66,43 +66,57 @@ sim_pw_surv(n = 20)
 
 # example 2
 # 3:1 randomization
-sim_pw_surv(n = 20,
-          block = c(rep("experimental",3), "control"))
+sim_pw_surv(
+  n = 20,
+  block = c(rep("experimental", 3), "control")
+)
 
 # example 3
 # Simulate 2 stratum; will use defaults for blocking and enrollRates
-sim_pw_surv(n = 20,
-          # 2 stratum,30\% and 70\% prevalence
-          stratum = tibble(stratum = c("Low","High"), p = c(.3, .7)),
-          fail_rate = tibble(stratum = c(rep("Low", 4), rep("High", 4)),
-                             period = rep(1:2, 4),
-                             treatment= rep(c(rep("control", 2),
-                                         rep("experimental", 2)), 2),
-                             duration = rep(c(3,1), 4),
-                             rate = c(.03, .05, .03, .03, .05, .08, .07, .04)),
-          dropout_rate = tibble(stratum = c(rep("Low", 2), rep("High", 2)),
-                                period = rep(1, 4),
-                                treatment = rep(c("control", "experimental"), 2),
-                                duration = rep(1, 4),
-                                rate = rep(.001, 4)))
+sim_pw_surv(
+  n = 20,
+  # 2 stratum,30\% and 70\% prevalence
+  stratum = tibble(stratum = c("Low", "High"), p = c(.3, .7)),
+  fail_rate = tibble(
+    stratum = c(rep("Low", 4), rep("High", 4)),
+    period = rep(1:2, 4),
+    treatment = rep(c(
+      rep("control", 2),
+      rep("experimental", 2)
+    ), 2),
+    duration = rep(c(3, 1), 4),
+    rate = c(.03, .05, .03, .03, .05, .08, .07, .04)
+  ),
+  dropout_rate = tibble(
+    stratum = c(rep("Low", 2), rep("High", 2)),
+    period = rep(1, 4),
+    treatment = rep(c("control", "experimental"), 2),
+    duration = rep(1, 4),
+    rate = rep(.001, 4)
+  )
+)
 # example 4
 # If you want a more rectangular entry for a tibble
 fail_rate <- bind_rows(
-  tibble(stratum = "Low" , period = 1, treatment = "control"     , duration = 3, rate = .03),
-  tibble(stratum = "Low" , period = 1, treatment = "experimental", duration = 3, rate = .03),
-  tibble(stratum = "Low" , period = 2, treatment = "experimental", duration = 3, rate = .02),
-  tibble(stratum = "High", period = 1, treatment = "control"     , duration = 3, rate = .05),
+  tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
+  tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
+  tibble(stratum = "Low", period = 2, treatment = "experimental", duration = 3, rate = .02),
+  tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
   tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
-  tibble(stratum = "High", period = 2, treatment = "experimental", duration = 3, rate = .03))
+  tibble(stratum = "High", period = 2, treatment = "experimental", duration = 3, rate = .03)
+)
 
 dropout_rate <- bind_rows(
-  tibble(stratum = "Low" , period=1, treatment = "control"     , duration = 3, rate = .001),
-  tibble(stratum = "Low" , period=1, treatment = "experimental", duration = 3, rate = .001),
-  tibble(stratum = "High", period=1, treatment = "control"     , duration = 3, rate = .001),
-  tibble(stratum = "High", period=1, treatment = "experimental", duration = 3, rate = .001))
+  tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .001),
+  tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .001),
+  tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .001),
+  tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .001)
+)
 
-sim_pw_surv(n = 12,
-         stratum = tibble(stratum = c("Low","High"), p = c(.3, .7)),
-         fail_rate = fail_rate,
-         dropout_rate = dropout_rate)
+sim_pw_surv(
+  n = 12,
+  stratum = tibble(stratum = c("Low", "High"), p = c(.3, .7)),
+  fail_rate = fail_rate,
+  dropout_rate = dropout_rate
+)
 }

@@ -28,14 +28,16 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Nan Xiao \email{nan.xiao1@merck.com} [contributor]
-  \item Jianxiao Yang \email{yangjx@ucla.edu} [contributor]
-  \item Amin Shirazi \email{ashirazist@gmail.com} [contributor]
-  \item Ruixue Wang \email{ruixue.wang@merck.com} [contributor]
-  \item Yi Cui \email{yi.cui@merck.com} [contributor]
-  \item Ping Yang \email{ping.yang1@merck.com} [contributor]
-  \item Yalin Zhu \email{yalin.zhu@merck.com} [contributor]
-  \item Heng Zhou \email{heng.zhou@merck.com} [contributor]
+  \item Nan Xiao [contributor]
+  \item Jianxiao Yang [contributor]
+  \item Lili Ling [contributor]
+  \item Xintong Li [contributor]
+  \item Ruixue Wang [contributor]
+  \item Yi Cui [contributor]
+  \item Ping Yang [contributor]
+  \item Yalin Zhu [contributor]
+  \item Heng Zhou [contributor]
+  \item Amin Shirazi [contributor]
   \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates [copyright holder]
 }
 

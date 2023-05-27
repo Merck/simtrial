@@ -37,27 +37,35 @@ library(tibble)
 simfix2simpwsurv()
 
 # Stratified example
-fail_rate <- tibble(stratum = c(rep("Low", 3),rep("High", 3)),
-                    duration = rep(c(4, 10, 100), 2),
-                    fail_rate = c(.04, .1, .06,
-                                 .08,.16,.12),
-                    hr = c(1.5, .5, 2/3,
-                           2, 10/16, 10/12),
-                    dropout_rate =.01)
+fail_rate <- tibble(
+  stratum = c(rep("Low", 3), rep("High", 3)),
+  duration = rep(c(4, 10, 100), 2),
+  fail_rate = c(
+    .04, .1, .06,
+    .08, .16, .12
+  ),
+  hr = c(
+    1.5, .5, 2 / 3,
+    2, 10 / 16, 10 / 12
+  ),
+  dropout_rate = .01
+)
 
 x <- simfix2simpwsurv(fail_rate)
 
 # Do a single simulation with the above rates
 # Enroll 300 patients in ~12 months at constant rate
-sim <- sim_pw_surv(n = 300,
-                 stratum = tibble(stratum = c("Low","High"), p = c(.6, .4)),
-                 enroll_rate = tibble(duration = 12, rate = 300 / 12),
-                 fail_rate = x$fail_rate,
-                 dropout_rate = x$dropout_rate)
+sim <- sim_pw_surv(
+  n = 300,
+  stratum = tibble(stratum = c("Low", "High"), p = c(.6, .4)),
+  enroll_rate = tibble(duration = 12, rate = 300 / 12),
+  fail_rate = x$fail_rate,
+  dropout_rate = x$dropout_rate
+)
 
 # Cut after 200 events and do a stratified logrank test
 dat <- sim \%>\%
-  cut_data_by_event(200) \%>\%              # cut data
-  counting_process(arm = "experimental") \%>\%  # convert format for tenFH
-   wlr(rho_gamma = tibble(rho=0,gamma=0))    # stratified logrank
+  cut_data_by_event(200) \%>\% # cut data
+  counting_process(arm = "experimental") \%>\% # convert format for tenFH
+  wlr(rho_gamma = tibble(rho = 0, gamma = 0)) # stratified logrank
 }

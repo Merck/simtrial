@@ -53,10 +53,12 @@ library(dplyr)
 library(tibble)
 
 # example 1
-x <- tibble(stratum = c(rep(1, 10),rep(2, 6)),
-            treatment = rep(c(1, 1, 0, 0), 4),
-            tte = 1:16,
-            event= rep(c(0, 1), 8))
+x <- tibble(
+  stratum = c(rep(1, 10), rep(2, 6)),
+  treatment = rep(c(1, 1, 0, 0), 4),
+  tte = 1:16,
+  event = rep(c(0, 1), 8)
+)
 counting_process(x, arm = 1)
 
 # example 2

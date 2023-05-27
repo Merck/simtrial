@@ -29,21 +29,29 @@ library(tibble)
 # Example 1
 # piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 # enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-x <- rpw_enroll(n = 1e5,
-               enroll_rate = tibble(rate = c(5, 15, 30),
-                                    duration = c(100, 200, 100)))
+x <- rpw_enroll(
+  n = 1e5,
+  enroll_rate = tibble(
+    rate = c(5, 15, 30),
+    duration = c(100, 200, 100)
+  )
+)
 plot(x, 1:1e5,
-     main = "Piecewise uniform enrollment simulation",
-     xlab = "Time",
-     ylab = "Enrollment")
+  main = "Piecewise uniform enrollment simulation",
+  xlab = "Time",
+  ylab = "Enrollment"
+)
 
 # Example 2
 # exponential enrollment
-x <- rpw_enroll(n = 1e5,
-               enroll_rate = tibble(rate = .03, duration = 1))
+x <- rpw_enroll(
+  n = 1e5,
+  enroll_rate = tibble(rate = .03, duration = 1)
+)
 plot(x, 1:1e5,
-     main = "Simulated exponential inter-arrival times",
-     xlab = "Time",
-     ylab = "Enrollment")
+  main = "Simulated exponential inter-arrival times",
+  xlab = "Time",
+  ylab = "Enrollment"
+)
 
 }

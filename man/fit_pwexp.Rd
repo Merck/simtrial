@@ -42,12 +42,13 @@ rate0 <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd)))
 
 rate1
 rate0
-rate1$rate/rate0$rate
+rate1$rate / rate0$rate
 
 # chi-square test for (any) treatment effect (8 - 4 parameters = 4 df)
 pchisq(sum(rateall$m2ll) - sum(rate1$m2ll + rate0$m2ll),
-       df = 4,
-       lower.tail = FALSE)
+  df = 4,
+  lower.tail = FALSE
+)
 
 # compare with logrank
 survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
@@ -57,12 +58,12 @@ survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
 # different for each treatment after months
 rate1a <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd), 3))
 rate0a <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd), 3))
-rate1a$rate/rate0a$rate
+rate1a$rate / rate0a$rate
 
 m2ll0 <- rateall$m2ll[1] + rate1a$m2ll[2] + rate0a$m2ll[2]
 m2ll1 <- sum(rate0$m2ll) + sum(rate1$m2ll)
 
 # as a measure of strength, chi-square examines improvement in likelihood
-pchisq(m2ll0-m2ll1, df = 5, lower.tail=FALSE)
+pchisq(m2ll0 - m2ll1, df = 5, lower.tail = FALSE)
 
 }

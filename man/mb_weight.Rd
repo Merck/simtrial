@@ -59,9 +59,11 @@ x <- sim_pw_surv(n = 200) \%>\%
 # compute Magirr-Burman weights with `delay = 6`
 ZMB <- x \%>\%
   mb_weight(delay = 6, w_max = Inf) \%>\%
-  summarize(S = sum(o_minus_e * mb_weight),
-            V = sum(var_o_minus_e * mb_weight^2),
-            z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * mb_weight),
+    V = sum(var_o_minus_e * mb_weight^2),
+    z = S / sqrt(V)
+  )
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
@@ -70,9 +72,11 @@ pnorm(ZMB$z)
 # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 ZMB2 <- x \%>\%
   mb_weight(delay = Inf, w_max = 2) \%>\%
-  summarize(S = sum(o_minus_e * mb_weight),
-            V = sum(var_o_minus_e * mb_weight^2),
-            z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * mb_weight),
+    V = sum(var_o_minus_e * mb_weight^2),
+    z = S / sqrt(V)
+  )
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB2$z)

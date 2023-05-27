@@ -27,7 +27,7 @@ non-proportional hazards may be anticipated for outcome data.
 \examples{
 library(survival)
 data(Ex6crossing)
-km1 <- with(Ex6crossing,survfit(Surv(month,evntd)~trt))
+km1 <- with(Ex6crossing, survfit(Surv(month, evntd) ~ trt))
 km1
 plot(km1)
 }

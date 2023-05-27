@@ -79,14 +79,16 @@ sim_fixed_n(n_sim = 3)
 
 # example 2
 # Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(n_sim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+sim_fixed_n(n_sim = 1, rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 
 # example 3
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- sim_fixed_n(n_sim = 100,
-             timing_type = c(2, 5),
-             rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+xx <- sim_fixed_n(
+  n_sim = 100,
+  timing_type = c(2, 5),
+  rho_gamma = tibble(rho = 0, gamma = c(0, 1))
+)
 # Get power approximation for FH, data cutoff combination
 xx \%>\%
   group_by(cut, rho, gamma) \%>\%

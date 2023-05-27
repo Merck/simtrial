@@ -39,30 +39,42 @@ x <- sim_pw_surv(n = 200) \%>\%
   counting_process(arm = "experimental")
 
 # compute logrank (FH(0,0)) and FH(0,1)
-x <- x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-                                 gamma = c(0, 1)))
+x <- x \%>\% tenFHcorr(rho_gamma = tibble(
+  rho = c(0, 0),
+  gamma = c(0, 1)
+))
 
 # compute p-value for MaxCombo
 library(mvtnorm)
-1 - pmvnorm(lower = rep(min(x$z), nrow(x)),
-            corr = data.matrix(select(x, -c(rho, gamma, z))),
-            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
+1 - pmvnorm(
+  lower = rep(min(x$z), nrow(x)),
+  corr = data.matrix(select(x, -c(rho, gamma, z))),
+  algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
+)[1]
 
 # check that covariance is as expected
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
 
-x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-                            gamma = c(0, 1)),
-                corr = FALSE)
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = c(0, 0),
+    gamma = c(0, 1)
+  ),
+  corr = FALSE
+)
 
 # Off-diagonal element should be variance in following
-x \%>\% tenFHcorr(rho_gamma = tibble(rho = 0,
-                            gamma =.5),
-                corr = FALSE)
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = 0,
+    gamma = .5
+  ),
+  corr = FALSE
+)
 
 # compare off diagonal result with wlr()
-x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma =.5))
+x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
 
 }
