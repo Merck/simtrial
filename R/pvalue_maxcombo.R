@@ -32,13 +32,12 @@
 #'
 #' @return A numeric p-value.
 #'
-#' @import dplyr
 #' @importFrom mvtnorm pmvnorm GenzBretz
+#' @importFrom dplyr select starts_with
 #'
 #' @export
 #'
 #' @examples
-#' library(tidyr)
 #' library(tibble)
 #' library(dplyr)
 #'

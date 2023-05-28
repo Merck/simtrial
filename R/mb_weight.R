@@ -65,12 +65,13 @@
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
 #'
-#' @import dplyr
+#' @importFrom dplyr group_by summarize filter right_join
+#'   mutate full_join select
+#' @importFrom tidyr replace_na
 #'
 #' @export
 #'
 #' @examples
-#' library(tidyr)
 #' library(dplyr)
 #'
 #' # Use default enrollment and event rates at cut at 100 events
@@ -152,7 +153,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
     # Get back stratum with no records before delay ends
     right_join(tbl_all_stratum, by = "stratum") %>%
     # `max_weight` is 1 when there are no records before delay ends
-    mutate(max_weight = tidyr::replace_na(max_weight, 1)) %>%
+    mutate(max_weight = replace_na(max_weight, 1)) %>%
     # Cut off weights at w_max
     mutate(max_weight = pmin(w_max, max_weight)) %>%
     # Now merge max_weight back to stratified dataset

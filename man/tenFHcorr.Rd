@@ -32,7 +32,7 @@ p-value for MaxCombo, the maximum of the specified
 Fleming-Harrington tests.
 }
 \examples{
-library(tidyr)
+library(tibble)
 library(dplyr)
 
 # Use default enrollment and event rates at cut of 100 events

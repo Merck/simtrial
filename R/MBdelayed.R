@@ -37,10 +37,8 @@
 #' _Statistics in Medicine_ 38 (20): 3782--3790.
 #'
 #' @examples
-#' library(tidyr)
-#' library(dplyr)
 #' library(survival)
-#' library(mvtnorm)
+#' library(dplyr)
 #'
 #' fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelayed)
 #'
@@ -65,7 +63,7 @@
 #'
 #' # Now compute test based on these weights
 #' ten %>%
-#'   summarise(
+#'   summarize(
 #'     S = sum(o_minus_e * mb_weight),
 #'     V = sum(var_o_minus_e * mb_weight^2),
 #'     Z = S / sqrt(V)
@@ -75,7 +73,7 @@
 #' # Create 0 weights for first 6 months
 #' ten <- ten %>% mutate(w6 = 1 * (tte >= 6))
 #' ten %>%
-#'   summarise(
+#'   summarize(
 #'     S = sum(o_minus_e * w6),
 #'     V = sum(var_o_minus_e * w6^2),
 #'     Z = S / sqrt(V)

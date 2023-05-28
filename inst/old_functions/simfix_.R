@@ -63,7 +63,7 @@ NULL
 #' # Only use cuts for events, events + min follow-up
 #' xx <- simtrial:::simfix_(nsim=100,timingType=c(2,5),rg=tibble::tibble(rho=0,gamma=c(0,1)))
 #' # Get power approximation for FH, data cutoff combination
-#' xx %>% group_by(cut,rho,gamma) %>% summarise(mean(Z<=qnorm(.025)))
+#' xx %>% group_by(cut,rho,gamma) %>% summarize(mean(Z<=qnorm(.025)))
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 #' p <- xx %>%  filter(cut != "Targeted events") %>% group_by(Sim) %>% group_map(pMaxCombo)
 #' p <- unlist(p)

@@ -50,7 +50,6 @@ The weight at time \eqn{t} is then defined as
 \deqn{w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).}
 }
 \examples{
-library(tidyr)
 library(dplyr)
 
 # Use default enrollment and event rates at cut at 100 events

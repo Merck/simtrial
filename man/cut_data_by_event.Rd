@@ -20,8 +20,6 @@ Takes a time-to-event data set and cuts the data at which an
 event count is reached.
 }
 \examples{
-library(dplyr)
-
 # Use default enrollment and event rates at cut at 100 events
 x <- sim_pw_surv(n = 200) \%>\% cut_data_by_event(100)
 table(x$event, x$treatment)

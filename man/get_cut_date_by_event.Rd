@@ -20,8 +20,8 @@ is never reached, the final \code{cte} at which an event occurs.
 Get date at which an event count is reached
 }
 \examples{
-library(dplyr)
 library(tibble)
+library(dplyr)
 
 # Use default enrollment and calendar cut date
 # for 50 events in the "Positive" stratum

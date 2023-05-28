@@ -30,7 +30,6 @@ However, it can also be used to analyze clinical trial data such as
 that provided in the ADaM ADTTE format.
 }
 \examples{
-library(tidyr)
 library(tibble)
 library(dplyr)
 

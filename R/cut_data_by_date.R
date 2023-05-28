@@ -29,8 +29,6 @@
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # Use default enrollment and event rates and
 #' # cut at calendar time 5 after start of randomization
 #' sim_pw_surv(n = 20) %>% cut_data_by_date(5)

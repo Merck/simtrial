@@ -53,7 +53,6 @@ The function only considered two group situation.
 The tie is handled by the Breslow's Method.
 }
 \examples{
-library(dplyr)
 library(tibble)
 
 # Example 1

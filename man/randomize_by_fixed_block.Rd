@@ -23,6 +23,7 @@ The final block will be a partial block if \code{n} is not an exact multiple
 of the block length.
 }
 \examples{
+library(tibble)
 library(dplyr)
 
 # Example 1

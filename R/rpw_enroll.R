@@ -36,7 +36,7 @@
 #' @return A vector of random enrollment times.
 #'
 #' @importFrom tibble tibble
-#' @importFrom dplyr select mutate filter group_by arrange
+#' @importFrom dplyr mutate row_number group_by
 #' @importFrom tidyr expand
 #'
 #' @export
@@ -90,14 +90,14 @@ rpw_enroll <- function(
 
   # Build `y` summarizes the start/end time, period order, etc.
   y <- enroll_rate %>%
-    dplyr::mutate(
+    mutate(
       period = row_number(),
       finish = cumsum(duration),
       lambda = duration * rate,
       origin = dplyr::lag(finish, default = 0)
     ) %>%
-    dplyr::group_by(period) %>%
-    dplyr::mutate(N = stats::rpois(n = 1, lambda = lambda))
+    group_by(period) %>%
+    mutate(N = stats::rpois(n = 1, lambda = lambda))
 
   # Deal with extreme cases where none randomized in fixed intervals
   if (sum(y$N) == 0) {
@@ -117,7 +117,7 @@ rpw_enroll <- function(
   }
 
   # Generate sorted uniform observations for Poisson count for each interval
-  z <- tidyr::expand(y, enroll_time = sort(stats::runif(n = N, min = origin, max = finish)))
+  z <- expand(y, enroll_time = sort(stats::runif(n = N, min = origin, max = finish)))
 
   # If n not specified, return generated times
   if (is.null(n)) {

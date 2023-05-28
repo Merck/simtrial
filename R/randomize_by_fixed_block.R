@@ -33,6 +33,7 @@
 #' @export
 #'
 #' @examples
+#' library(tibble)
 #' library(dplyr)
 #'
 #' # Example 1

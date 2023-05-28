@@ -14,7 +14,7 @@ surv_to_count <- function(time, status, trt, strats) {
   }
   km <- db %>%
     group_by(strats) %>%
-    do(tidy_survfit(Surv(time, status) ~ 1, data = .))
+    dplyr::do(tidy_survfit(Surv(time, status) ~ 1, data = .))
 
   # KM estimator by stratum and treatment Group Predicted at Specified Time
   pred_survfit <- function(pred_time, ...) {
@@ -27,17 +27,17 @@ surv_to_count <- function(time, status, trt, strats) {
     # Number of Event
     .x2 <- data.frame(time = .survfit$time, n.event = .survfit$n.event) %>% subset(n.event > 0)
 
-    merge(.x1, .x2, all = TRUE) %>% mutate(n.event = if_else(is.na(n.event), 0, n.event))
+    merge(.x1, .x2, all = TRUE) %>% mutate(n.event = dplyr::if_else(is.na(n.event), 0, n.event))
   }
 
   km_by_trt <- db %>%
     group_by(strats, trt) %>%
-    do(pred_time = pred_survfit(km[km$strats == .$strats[1], ]$time,
+    dplyr::do(pred_time = pred_survfit(km[km$strats == .$strats[1], ]$time,
       Surv(time, status) ~ 1,
       data = .
     )) %>%
     tidyr::unnest(cols = pred_time) %>%
-    rename(tn.risk = n.risk, tn.event = n.event)
+    dplyr::rename(tn.risk = n.risk, tn.event = n.event)
 
 
   # Log Rank Expectation Difference and Variance

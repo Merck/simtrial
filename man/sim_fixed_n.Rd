@@ -85,10 +85,9 @@ for data cutoff:
 }
 }
 \examples{
-library(tidyr)
+library(tibble)
 library(dplyr)
 library(doParallel)
-library(tibble)
 
 # Example 1
 # Show output structure
@@ -109,7 +108,7 @@ xx <- sim_fixed_n(
 # Get power approximation for FH, data cutoff combination
 xx \%>\%
   group_by(cut, rho, gamma) \%>\%
-  summarise(mean(z <= qnorm(.025)))
+  summarize(mean(z <= qnorm(.025)))
 
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 p <- xx \%>\%

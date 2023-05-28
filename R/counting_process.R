@@ -57,13 +57,12 @@
 #'   hypothesis)
 #' - `var_o_minus_e`: Variance of `o_minus_e` under the same assumption.
 #'
-#' @importFrom dplyr select mutate filter arrange group_by
-#' @importFrom tibble tibble
+#' @importFrom dplyr group_by arrange desc mutate
+#'   summarize first filter select lag
 #'
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #' library(tibble)
 #'
 #' # Example 1
@@ -106,7 +105,7 @@ counting_process <- function(x, arm) {
     ) %>%
     # Handling ties using Breslow's method
     group_by(stratum, mtte = desc(tte)) %>%
-    dplyr::summarise(
+    summarize(
       events = sum(event),
       n_event_tol = sum((treatment == arm) * event),
       tte = first(tte),
@@ -122,7 +121,7 @@ counting_process <- function(x, arm) {
     group_by(stratum) %>%
     mutate(
       # Left continuous Kaplan-Meier Estimator
-      s = lag(cumprod(s), default = 1),
+      s = dplyr::lag(cumprod(s), default = 1),
       # Observed events minus Expected events in treatment group
       o_minus_e = n_event_tol - n_risk_trt / n_risk_tol * events,
       # Variance of o_minus_e

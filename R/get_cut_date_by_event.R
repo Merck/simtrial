@@ -25,13 +25,13 @@
 #'   at which the targeted event count is reached, or if the final event count
 #'   is never reached, the final `cte` at which an event occurs.
 #'
-#' @importFrom dplyr ungroup select mutate filter arrange last
+#' @importFrom dplyr ungroup select filter arrange mutate row_number last
 #'
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #' library(tibble)
+#' library(dplyr)
 #'
 #' # Use default enrollment and calendar cut date
 #' # for 50 events in the "Positive" stratum

@@ -4,7 +4,7 @@ block <- c(rep("control", 2), rep("experimental", 2))
 
 enroll_rate <- tibble::tibble(duration = c(5, 195), rate = c(100, 3000))
 
-fail_rate <- bind_rows(
+fail_rate <- dplyr::bind_rows(
   tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
   tibble::tibble(stratum = "Low", period = 2, treatment = "control", duration = 297, rate = .03),
   tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
@@ -14,7 +14,7 @@ fail_rate <- bind_rows(
   tibble::tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
   tibble::tibble(stratum = "High", period = 2, treatment = "experimental", duration = 297, rate = .03)
 )
-dropout_rate <- bind_rows(
+dropout_rate <- dplyr::bind_rows(
   tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 300, rate = .001),
   tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 300, rate = .001),
   tibble::tibble(stratum = "High", period = 1, treatment = "control", duration = 300, rate = .001),
@@ -56,7 +56,7 @@ rate01 <- with(subset(y, treatment == "control" | stratum == "High"), fit_pwexp(
 rate10 <- with(subset(y, treatment == "experimental" | stratum == "Low"), fit_pwexp(Surv(tte, event), intervals))
 rate11 <- with(subset(y, treatment == "experimental" | stratum == "High"), fit_pwexp(Surv(tte, event), intervals))
 ratetest <- c(rate00$rate, rate10$rate, rate01$rate, rate11$rate)
-xevent <- bind_rows(rate00, rate01, rate10, rate11)
+xevent <- dplyr::bind_rows(rate00, rate01, rate10, rate11)
 
 testthat::test_that("stratum percentage calculated from simulated dataset must be within
                     the tolerance=0.002 of stratum in setup (0.4,0.6)", {
@@ -122,7 +122,7 @@ rate00 <- with(subset(y1, treatment == "control" | stratum == "Low"), fit_pwexp(
 rate01 <- with(subset(y1, treatment == "control" | stratum == "High"), fit_pwexp(Surv(tte, event), intervals))
 rate10 <- with(subset(y1, treatment == "experimental" | stratum == "Low"), fit_pwexp(Surv(tte, event), intervals))
 rate11 <- with(subset(y1, treatment == "experimental" | stratum == "High"), fit_pwexp(Surv(tte, event), intervals))
-zevent <- bind_rows(rate00, rate01, rate10, rate11)
+zevent <- dplyr::bind_rows(rate00, rate01, rate10, rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size", {
   expect_false(unique(xevent$event == zevent$event))

@@ -34,12 +34,12 @@
 #'   covariance matrix for these tests in variables starting with `v`.
 #'
 #' @importFrom tibble tibble as_tibble
-#' @import dplyr
+#' @importFrom dplyr left_join
 #'
 #' @export
 #'
 #' @examples
-#' library(tidyr)
+#' library(tibble)
 #' library(dplyr)
 #'
 #' # Use default enrollment and event rates at cut of 100 events

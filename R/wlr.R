@@ -76,7 +76,6 @@
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
 #' @importFrom tibble tibble
-#' @import dplyr
 #'
 #' @export
 #'

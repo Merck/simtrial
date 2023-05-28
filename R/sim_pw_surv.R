@@ -62,8 +62,8 @@
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #' library(tibble)
+#' library(dplyr)
 #'
 #' # Example 1
 #' sim_pw_surv(n = 20)

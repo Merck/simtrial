@@ -65,8 +65,8 @@ Default arguments are set up to allow very simple implementation of
 a non-proportional hazards assumption for an unstratified design.
 }
 \examples{
-library(dplyr)
 library(tibble)
+library(dplyr)
 
 # Example 1
 sim_pw_surv(n = 20)

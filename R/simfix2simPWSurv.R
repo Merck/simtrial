@@ -36,8 +36,8 @@
 #' @return A list of two `tibble` components formatted for
 #'   [sim_pw_surv()]: `fail_rate` and `dropout_rate`.
 #'
-#' @import dplyr
 #' @importFrom tibble tibble
+#' @importFrom dplyr group_by mutate n ungroup select
 #'
 #' @export
 #'
