@@ -24,7 +24,7 @@
 #'
 #' @return A dataset ready for survival analysis.
 #'
-#' @importFrom dplyr filter mutate select %>%
+#' @importFrom dplyr filter mutate select
 #'
 #' @export
 #'

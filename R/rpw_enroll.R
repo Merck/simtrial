@@ -36,7 +36,7 @@
 #' @return A vector of random enrollment times.
 #'
 #' @importFrom tibble tibble
-#' @importFrom dplyr select mutate filter %>% group_by arrange
+#' @importFrom dplyr select mutate filter group_by arrange
 #' @importFrom tidyr expand
 #'
 #' @export

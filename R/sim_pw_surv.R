@@ -56,7 +56,7 @@
 #' - `fail`: Indicator that `cte` was set using failure time;
 #'   i.e., 1 is a failure, 0 is a dropout.
 #'
-#' @importFrom dplyr group_by mutate %>%
+#' @importFrom dplyr group_by mutate
 #' @importFrom tibble tibble
 #'
 #' @export

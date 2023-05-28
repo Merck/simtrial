@@ -57,7 +57,7 @@
 #'   hypothesis)
 #' - `var_o_minus_e`: Variance of `o_minus_e` under the same assumption.
 #'
-#' @importFrom dplyr select mutate filter %>% arrange group_by
+#' @importFrom dplyr select mutate filter arrange group_by
 #' @importFrom tibble tibble
 #'
 #' @export
