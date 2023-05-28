@@ -2,7 +2,7 @@
 % Please edit documentation in R/wlr.R
 \name{wlr}
 \alias{wlr}
-\title{Fleming-Harrington Weighted Logrank Tests}
+\title{Fleming-Harrington weighted logrank tests}
 \usage{
 wlr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(150) \%>\% counting_process(arm =
@@ -12,67 +12,77 @@ wlr(
 )
 }
 \arguments{
-\item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
+\item{x}{A \code{\link[=counting_process]{counting_process()}}-class \code{tibble} with a counting process dataset.}
 
-\item{rho_gamma}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
-to zero, to specify one Fleming-Harrington weighted logrank test per row;
-Default: tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}
+\item{rho_gamma}{A \code{tibble} with variables \code{rho} and \code{gamma}, both greater
+than equal to zero, to specify one Fleming-Harrington weighted logrank test
+per row; Default: \code{tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}.}
 
-\item{return_variance}{a logical flag that, if true, adds columns
-estimated variance for weighted sum of observed minus expected; see details; Default: FALSE}
+\item{return_variance}{A logical flag that, if \code{TRUE}, adds columns
+estimated variance for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
 }
 \value{
-a \code{tibble} with \code{rho_gamma} as input and the FH test statistic
-for the data in \code{x}
-(\code{z}, a directional square root of the usual weighted logrank test);
-if variance calculations are specified (e.g., to be used for covariances in a combination test),
-the this will be returned in the column \code{Var}
+A \code{tibble} with \code{rho_gamma} as input and the FH test statistic
+for the data in \code{x}. (\code{z}, a directional square root of the usual
+weighted logrank test); if variance calculations are specified
+(for example, to be used for covariances in a combination test),
+then this will be returned in the column \code{Var}.
 }
 \description{
-With output from the function \code{counting_process}
+With output from the function \code{\link[=counting_process]{counting_process()}}.
 }
 \details{
-The input value \code{x} produced by \code{counting_process()} produces a counting process dataset
-grouped by stratum and sorted within stratum by increasing times where events occur.
+The input value \code{x} produced by \code{\link[=counting_process]{counting_process()}} produces a
+counting process dataset grouped by stratum and sorted within stratum
+by increasing times where events occur.
 \itemize{
-\item \eqn{z} - standardized normal Fleming-Harrington weighted logrank test
-\item \eqn{i}  - stratum index
-\item \eqn{d_i} - number of distinct times at which events occurred in stratum \eqn{i}
-\item \eqn{t_{ij}} - ordered times at which events in stratum \eqn{i}, \eqn{j=1,2,\ldots d_i} were observed;
-for each observation, \eqn{t_{ij}} represents the time post study entry
-\item \eqn{O_{ij.}} - total number of events in stratum \eqn{i} that occurred at time \eqn{t_{ij}}
-\item \eqn{O_{ije}} - total number of events in stratum \eqn{i} in the experimental treatment group that occurred
-at time \eqn{t_{ij}}
-\item \eqn{N_{ij.}} - total number of study subjects in stratum \eqn{i} who were followed for at least duration
-\item \eqn{E_{ije}} - expected observations in experimental treatment group given random selection of \eqn{O_{ij.}}
-from those in stratum \eqn{i} at risk at time \eqn{t_{ij}}
-\item \eqn{V_{ije}} - hypergeometric variance for \eqn{E_{ije}} as produced in \code{Var}
-from the \code{counting_process()} routine
-\item \eqn{N_{ije}} - total number of study subjects in stratum \eqn{i} in the experimental treatment group
-who were followed for at least duration \eqn{t_{ij}}
-\item \eqn{E_{ije}} - expected observations in experimental group in stratum \eqn{i} at time \eqn{t_{ij}}
-conditioning on the overall number of events and at risk populations at that time and sampling at risk
+\item \eqn{z} - Standardized normal Fleming-Harrington weighted logrank test.
+\item \eqn{i} - Stratum index.
+\item \eqn{d_i} - Number of distinct times at which events occurred in
+stratum \eqn{i}.
+\item \eqn{t_{ij}} - Ordered times at which events in stratum
+\eqn{i}, \eqn{j = 1, 2, \ldots, d_i} were observed;
+for each observation, \eqn{t_{ij}} represents the time post study entry.
+\item \eqn{O_{ij.}} - Total number of events in stratum \eqn{i} that occurred
+at time \eqn{t_{ij}}.
+\item \eqn{O_{ije}} - Total number of events in stratum \eqn{i} in the
+experimental treatment group that occurred at time \eqn{t_{ij}}.
+\item \eqn{N_{ij.}} - Total number of study subjects in stratum \eqn{i}
+who were followed for at least duration.
+\item \eqn{E_{ije}} - Expected observations in experimental treatment group
+given random selection of \eqn{O_{ij.}} from those in
+stratum \eqn{i} at risk at time \eqn{t_{ij}}.
+\item \eqn{V_{ije}} - Hypergeometric variance for \eqn{E_{ije}} as
+produced in \code{Var} from \code{\link[=counting_process]{counting_process()}}.
+\item \eqn{N_{ije}} - Total number of study subjects in
+stratum \eqn{i} in the experimental treatment group
+who were followed for at least duration \eqn{t_{ij}}.
+\item \eqn{E_{ije}} - Expected observations in experimental group in
+stratum \eqn{i} at time \eqn{t_{ij}} conditioning on the overall number
+of events and at risk populations at that time and sampling at risk
 observations without replacement:
 \deqn{E_{ije} = O_{ij.} N_{ije}/N_{ij.}}
-\item \eqn{S_{ij}} - Kaplan-Meier estimate of survival in combined treatment groups immediately prior
-to time \eqn{t_{ij}}
-\item \eqn{\rho, \gamma} - real parameters for Fleming-Harrington test
+\item \eqn{S_{ij}} - Kaplan-Meier estimate of survival in combined
+treatment groups immediately prior to time \eqn{t_{ij}}.
+\item \eqn{\rho, \gamma} - Real parameters for Fleming-Harrington test.
 \item \eqn{X_i} - Numerator for signed logrank test in stratum \eqn{i}
 \deqn{X_i = \sum_{j=1}^{d_{i}} S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})}
-\item \eqn{V_{ij}} - variance used in denominator for Fleming-Harrington weighted logrank tests
+\item \eqn{V_{ij}} - Variance used in denominator for Fleming-Harrington
+weighted logrank tests
 \deqn{V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})}
-
 The stratified Fleming-Harrington weighted logrank test is then computed as:
-\deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}}
+\deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 }
 }
 \examples{
 library(tidyr)
+
 # Use default enrollment and event rates at cut at 100 events
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
-# compute logrank (FH(0,0)) and FH(0,1)
-wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
 
+# Compute logrank (FH(0,0)) and FH(0,1)
+wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
 }

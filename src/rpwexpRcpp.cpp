@@ -2,10 +2,11 @@
 #include <random>
 using namespace Rcpp;
 
-//' The Piecewise Exponential Distribution in C++
+//' The piecewise exponential distribution in C++
 //'
 //' @param n Number of observations to be generated.
-//' @param fail_rate A dataframe containing \code{duration} and \code{rate} variables.
+//' @param fail_rate A data frame containing `duration` and `rate` variables.
+//'
 //' @export
 // [[Rcpp::export]]
 NumericVector rpwexpRcpp(int n,

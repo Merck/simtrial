@@ -2,7 +2,8 @@
 % Please edit documentation in R/simfix2simPWSurv.R
 \name{simfix2simpwsurv}
 \alias{simfix2simpwsurv}
-\title{Conversion of enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format}
+\title{Conversion of enrollment and failure rates from \code{sim_fixed_n()} to
+\code{sim_pw_surv()} format}
 \usage{
 simfix2simpwsurv(
   fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
@@ -10,29 +11,31 @@ simfix2simpwsurv(
 )
 }
 \arguments{
-\item{fail_rate}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
+\item{fail_rate}{Piecewise constant control group failure rates,
+hazard ratio for experimental vs. control,
 and dropout rates by stratum and time period.}
 }
 \value{
-A \code{list} of two \code{tibble} components formatted for \code{simtrial::sim_pw_surv()}:
-\code{fail_rate} and \code{dropout_rate}.
+A list of two \code{tibble} components formatted for
+\code{\link[=sim_pw_surv]{sim_pw_surv()}}: \code{fail_rate} and \code{dropout_rate}.
 }
 \description{
-\code{simfix2simpwsurv()} converts failure rates and dropout rates entered in the simpler
-format for \code{sim_fixed_n()} to that used for \code{simtrial::sim_pw_surv()}.
-The \code{fail_rate} argument for \code{sim_fixed_n()} requires enrollment rates, failure rates
-hazard ratios and dropout rates by stratum for a 2-arm trial, \code{simtrial::sim_pw_surv()}
-is in a more flexible but less obvious but more flexible format.
-Since \code{sim_fixed_n()} automatically analyzes data and \code{simtrial::sim_pw_surv()} just produces
-a simulation dataset, the latter provides additional options to analyze or otherwise evaluate
-individual simulations in ways that \code{sim_fixed_n()} does not.
+\code{simfix2simpwsurv()} converts failure rates and dropout rates entered in
+the simpler format for \code{\link[=sim_fixed_n]{sim_fixed_n()}} to that used for \code{\link[=sim_pw_surv]{sim_pw_surv()}}.
+The \code{fail_rate} argument for \code{\link[=sim_fixed_n]{sim_fixed_n()}} requires enrollment rates,
+failure rates hazard ratios and dropout rates by stratum for a 2-arm trial,
+\code{\link[=sim_pw_surv]{sim_pw_surv()}} is in a more flexible but less obvious but more flexible
+format. Since \code{\link[=sim_fixed_n]{sim_fixed_n()}} automatically analyzes data and \code{\link[=sim_pw_surv]{sim_pw_surv()}}
+just produces a simulation dataset, the latter provides additional options
+to analyze or otherwise evaluate individual simulations in ways that
+\code{\link[=sim_fixed_n]{sim_fixed_n()}} does not.
 }
 \examples{
 library(tidyr)
 library(dplyr)
 library(tibble)
 
-# example 1
+# Example 1
 # Convert standard input
 simfix2simpwsurv()
 

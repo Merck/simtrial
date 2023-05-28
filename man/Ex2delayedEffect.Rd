@@ -6,11 +6,11 @@
 \title{Time-to-event data example 2 for non-proportional hazards working group}
 \format{
 Data frame with 4 variables:
-\describe{
-\item{id}{sequential numbering of unique identifiers}
-\item{month}{time-to-event}
-\item{event}{1 for event, 0 for censored}
-\item{trt}{1 for experimental, 0 for control}
+\itemize{
+\item \code{id}: Sequential numbering of unique identifiers.
+\item \code{month}: Time-to-event.
+\item \code{event}: 1 for event, 0 for censored.
+\item \code{trt}: 1 for experimental, 0 for control.
 }
 }
 \usage{
@@ -26,6 +26,7 @@ non-proportional hazards may be anticipated for outcome data.
 }
 \examples{
 library(survival)
+
 data(Ex2delayedEffect)
 km1 <- with(Ex2delayedEffect, survfit(Surv(month, evntd) ~ trt))
 km1
@@ -37,7 +38,10 @@ with(subset(Ex2delayedEffect, trt == 0), survfit(Surv(month, evntd) ~ trt))
 TBD
 }
 \seealso{
-\code{\link{Ex1delayedEffect}}, \code{\link{Ex3curewithph}}, \code{\link{Ex4belly}},
-\code{\link{Ex5widening}}, \code{\link{Ex6crossing}}
+\link{Ex1delayedEffect},
+\link{Ex3curewithph},
+\link{Ex4belly},
+\link{Ex5widening},
+\link{Ex6crossing}
 }
 \keyword{datasets}

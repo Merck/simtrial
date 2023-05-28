@@ -2,20 +2,22 @@
 % Please edit documentation in R/counting_process.R
 \name{counting_process}
 \alias{counting_process}
-\title{Process Survival Data into Counting Process Format}
+\title{Process survival data into counting process format}
 \usage{
 counting_process(x, arm)
 }
 \arguments{
-\item{x}{a tibble with no missing values and contain variables
+\item{x}{A tibble with no missing values and contain variables:
 \itemize{
-\item \code{stratum}: stratum
-\item \code{treatment}: treatment group
-\item \code{tte}: Observed time
-\item \code{event}: Binary event indicator, \code{1} represents event, \code{0} represents censoring
+\item \code{stratum}: Stratum.
+\item \code{treatment}: Treatment group.
+\item \code{tte}: Observed time.
+\item \code{event}: Binary event indicator, \code{1} represents event,
+\code{0} represents censoring.
 }}
 
-\item{arm}{value in the input \code{treatment} column that indicates treatment group value.}
+\item{arm}{Value in the input \code{treatment} column that indicates
+treatment group value.}
 }
 \value{
 A \code{tibble} grouped by \code{stratum} and sorted within stratum by \code{tte}.
@@ -33,14 +35,16 @@ each time at which one or more events are observed:
 number of events. The expected number of events is estimated by assuming
 no treatment effect with hypergeometric distribution with parameters total
 number of events, total number of events at treatment group and number of
-events at a time. (Same assumption of log-rank test under the null hypothesis)
-\item \code{var_o_minus_e}: variance of \code{o_minus_e} under the same assumption.
+events at a time. (Same assumption of log-rank test under the null
+hypothesis)
+\item \code{var_o_minus_e}: Variance of \code{o_minus_e} under the same assumption.
 }
 }
 \description{
 Produces a tibble that is sorted by stratum and time.
 Included in this is only the times at which one or more event occurs.
-The output dataset contains stratum, tte (time-to-event), at risk count and count of events at the specified tte
+The output dataset contains stratum, tte (time-to-event),
+at risk count and count of events at the specified tte
 sorted by stratum and tte.
 }
 \details{
@@ -52,7 +56,7 @@ The tie is handled by the Breslow's Method.
 library(dplyr)
 library(tibble)
 
-# example 1
+# Example 1
 x <- tibble(
   stratum = c(rep(1, 10), rep(2, 6)),
   treatment = rep(c(1, 1, 0, 0), 4),
@@ -61,11 +65,10 @@ x <- tibble(
 )
 counting_process(x, arm = 1)
 
-# example 2
+# Example 2
 x <- sim_pw_surv(n = 400)
 y <- cut_data_by_event(x, 150) \%>\% counting_process(arm = "experimental")
-# weighted logrank test (Z-value and 1-sided p-value)
+# Weighted logrank test (Z-value and 1-sided p-value)
 z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 c(z, pnorm(z))
-
 }

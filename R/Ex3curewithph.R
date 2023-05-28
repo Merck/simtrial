@@ -1,5 +1,20 @@
-#' @import survival
-NULL
+#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  All rights reserved.
+#
+#  This file is part of the simtrial program.
+#
+#  simtrial is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Time-to-event data example 3 for non-proportional hazards working group
 #'
@@ -14,23 +29,29 @@ NULL
 #'
 #' @usage data(Ex3curewithph)
 #'
-#' @format Data frame with 4 variables:
-#' \describe{
-#' \item{id}{sequential numbering of unique identifiers}
-#' \item{month}{time-to-event}
-#' \item{event}{1 for event, 0 for censored}
-#' \item{trt}{1 for experimental, 0 for control}
-#' }
+#' @format
+#' Data frame with 4 variables:
+#' - `id`: Sequential numbering of unique identifiers.
+#' - `month`: Time-to-event.
+#' - `event`: 1 for event, 0 for censored.
+#' - `trt`: 1 for experimental, 0 for control.
 #'
 #' @keywords datasets
 #'
 #' @references TBD
 #'
-#' @seealso \code{\link{Ex1delayedEffect}}, \code{\link{Ex2delayedEffect}}, \code{\link{Ex4belly}},
-#' \code{\link{Ex5widening}}, \code{\link{Ex6crossing}}
+#' @seealso
+#' [Ex1delayedEffect],
+#' [Ex2delayedEffect],
+#' [Ex4belly],
+#' [Ex5widening],
+#' [Ex6crossing]
+#'
+#' @import survival
 #'
 #' @examples
 #' library(survival)
+#'
 #' data(Ex3curewithph)
 #' km1 <- with(Ex3curewithph, survfit(Surv(month, evntd) ~ trt))
 #' km1

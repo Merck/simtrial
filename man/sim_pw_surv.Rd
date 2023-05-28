@@ -20,58 +20,65 @@ sim_pw_surv(
 \item{n}{Number of observations.
 If length(n) > 1, the length is taken to be the number required.}
 
-\item{stratum}{A tibble with stratum specified in \code{stratum}, probability (incidence) of each stratum
-in \code{p}}
+\item{stratum}{A tibble with stratum specified in \code{stratum},
+probability (incidence) of each stratum in \code{p}.}
 
-\item{block}{Vector of treatments to be included in each  block}
+\item{block}{Vector of treatments to be included in each block.}
 
-\item{enroll_rate}{Enrollment rates; see details and examples}
+\item{enroll_rate}{Enrollment rates; see details and examples.}
 
-\item{fail_rate}{Failure rates; see details and examples; note that treatments need
-to be the same as input in block}
+\item{fail_rate}{Failure rates; see details and examples;
+note that treatments need to be the same as input in block.}
 
-\item{dropout_rate}{Dropout rates; see details and examples; note that treatments need
-to be the same as input in block}
+\item{dropout_rate}{Dropout rates; see details and examples;
+note that treatments need to be the same as input in block.}
 }
 \value{
-a \code{tibble} with the following variables for each observation
-\code{stratum},
-\code{enroll_time} (enrollment time for the observation),
-\code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
-\code{fail_time} (failure time generated using \code{rpwexp()}),
-\code{dropout_time} (dropout time generated using \code{rpwexp()}),
-\code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
-\code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
+A \code{tibble} with the following variables for each observation:
+\itemize{
+\item \code{stratum}.
+\item \code{enroll_time}: Enrollment time for the observation.
+\item \code{Treatment}: Treatment group; this will be one of the values
+in the input \code{block}.
+\item \code{fail_time}: Failure time generated using \code{\link[=rpwexp]{rpwexp()}}.
+\item \code{dropout_time}: Dropout time generated using \code{\link[=rpwexp]{rpwexp()}}.
+\item \code{cte}: Calendar time of enrollment plot the minimum of
+failure time and dropout time.
+\item \code{fail}: Indicator that \code{cte} was set using failure time;
+i.e., 1 is a failure, 0 is a dropout.
+}
 }
 \description{
-\code{sim_pw_surv} enables simulation of a clinical trial with essentially arbitrary
-patterns of enrollment, failure rates and censoring.
-The piecewise exponential distribution allows a simple method to specify a distribtuion
-and enrollment pattern
-where the enrollment, failure and dropout rate changes over time.
-While the main purpose may be to generate a trial that can be analyzed at a single point in time or
-using group sequential methods, the routine can also be used to simulate an adaptive trial design.
-Enrollment, failure and dropout rates are specified by treatment group, stratum and time period.
-Fixed block randomization is used; blocks must include treatments provided in failure and dropout
-specification.
-Default arguments are set up to allow very simple implementation of a non-proportional hazards assumption
-for an unstratified design.
+\code{sim_pw_surv()} enables simulation of a clinical trial with
+essentially arbitrary patterns of enrollment, failure rates and censoring.
+The piecewise exponential distribution allows a simple method to specify
+a distribution and enrollment pattern where the enrollment, failure,
+and dropout rate changes over time.
+While the main purpose may be to generate a trial that can be analyzed
+at a single point in time or using group sequential methods,
+the routine can also be used to simulate an adaptive trial design.
+Enrollment, failure, and dropout rates are specified by treatment group,
+stratum and time period.
+Fixed block randomization is used; blocks must include treatments provided
+in failure and dropout specification.
+Default arguments are set up to allow very simple implementation of
+a non-proportional hazards assumption for an unstratified design.
 }
 \examples{
 library(dplyr)
 library(tibble)
 
-# example 1
+# Example 1
 sim_pw_surv(n = 20)
 
-# example 2
+# Example 2
 # 3:1 randomization
 sim_pw_surv(
   n = 20,
   block = c(rep("experimental", 3), "control")
 )
 
-# example 3
+# Example 3
 # Simulate 2 stratum; will use defaults for blocking and enrollRates
 sim_pw_surv(
   n = 20,
@@ -95,7 +102,7 @@ sim_pw_surv(
     rate = rep(.001, 4)
   )
 )
-# example 4
+# Example 4
 # If you want a more rectangular entry for a tibble
 fail_rate <- bind_rows(
   tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),

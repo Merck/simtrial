@@ -1,4 +1,5 @@
-#  Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  All rights reserved.
 #
 #  This file is part of the simtrial program.
 #
@@ -15,67 +16,72 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @import tibble
-#' @import dplyr
-NULL
-
-#' Magirr and Burman Modestly Weighted Logrank Tests
+#' Magirr and Burman modestly weighted logrank tests
 #'
-#' Magirr and Burman (2019) have proposed a weighted logrank test to have better power than
-#' the logrank test when the treatment effect is delayed, but to still maintain good power under
-#' a proportional hazards assumption.
-#' In Magirr (2021), (the equivalent of) a maximum weight was proposed as opposed to a fixed
-#' time duration over which weights would increase.
-#' The weights for some early interval specified by the user are the inverse of the combined treatment group
-#' empirical survival distribution; see details.
-#' After this initial period, weights are constant at the maximum of the previous weights.
-#' Another advantage of the test is that under strong null hypothesis that the underlying survival in the control group
-#' is greater than or equal to underlying survival in the experimental group,
+#' Magirr and Burman (2019) proposed a weighted logrank test to have better
+#' power than the logrank test when the treatment effect is delayed,
+#' but to still maintain good power under a proportional hazards assumption.
+#' In Magirr (2021), (the equivalent of) a maximum weight was proposed
+#' as opposed to a fixed time duration over which weights would increase.
+#' The weights for some early interval specified by the user are the inverse
+#' of the combined treatment group empirical survival distribution; see details.
+#' After this initial period, weights are constant at the maximum of the
+#' previous weights. Another advantage of the test is that under strong
+#' null hypothesis that the underlying survival in the control group is
+#' greater than or equal to underlying survival in the experimental group,
 #' Type I error is controlled as the specified level.
 #'
-#' This function computes Magirr-Burman weights and adds them to a dataset created by the \code{counting_process()} function.
-#' These weights can then be used to compute a z-statistic for the modestly weighted logrank test proposed.
+#' Computes Magirr-Burman weights and adds them to a dataset created by
+#' [counting_process()].
+#' These weights can then be used to compute a z-statistic for the
+#' modestly weighted logrank test proposed.
 #'
-#' @param x a \code{counting_process}-class \code{tibble} with a counting process dataset
+#' @param x A [counting_process()]-class `tibble` with a counting process dataset.
 #' @param delay The initial delay period where weights increase;
-#' after this, weights are constant at the final weight in the delay period
+#'   after this, weights are constant at the final weight in the delay period.
 #' @param w_max Maximum weight to be returned.
-#' set \code{delay = Inf, w_max = 2} to be consistent with recommendation of
-#' Magirr (2021).
+#'   Set `delay = Inf`, `w_max = 2` to be consistent with recommendation of
+#'   Magirr (2021).
 #'
-#' @return a vector with weights for the Magirr-Burman weighted logrank test
-#' for the data in \code{x}
+#' @return A vector with weights for the Magirr-Burman weighted logrank test
+#'   for the data in `x`.
 #'
 #' @details
-#' We define \eqn{t^*} to be the input variable \code{delay}.
+#' We define \eqn{t^*} to be the input variable `delay`.
 #' This specifies an initial period during which weights increase.
-#' We also set a maximum weight \eqn{w_max}.
-#' To define specific weights, we let \eqn{S(t)} denote the Kaplan-Meier survival estimate at time \eqn{t}
-#' for the combined data (control plus experimental treatment groups).
+#' We also set a maximum weight \eqn{w_{\max}}.
+#' To define specific weights, we let \eqn{S(t)} denote the Kaplan-Meier
+#' survival estimate at time \eqn{t} for the combined data
+#' (control plus experimental treatment groups).
 #' The weight at time \eqn{t} is then defined as
-#' \deqn{w(t)=\min(w_max, S(\min(t,t^*))^{-1}).}
+#' \deqn{w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).}
 #'
 #' @references
-#' Magirr, Dominic, and Carl‐Fredrik Burman.
+#' Magirr, Dominic, and Carl‐Fredrik Burman. 2019.
 #' "Modestly weighted logrank tests."
-#' \emph{Statistics in Medicine} 38.20 (2019): 3782--3790.
+#' _Statistics in Medicine_ 38 (20): 3782--3790.
 #'
-#' Magirr, Dominic.
+#' Magirr, Dominic. 2021.
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
-#' \emph{Pharmaceutical Statistics} 20.3 (2021): 512--527.
+#' _Pharmaceutical Statistics_ 20 (3): 512--527.
+#'
+#' @import tibble
+#' @import dplyr
+#'
+#' @export
 #'
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
 #'
 #' # Use default enrollment and event rates at cut at 100 events
-#' # For transparency, may be good to set either `delay` or `w_max` to Inf`
+#' # For transparency, may be good to set either `delay` or `w_max` to `Inf`
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(125) %>%
 #'   counting_process(arm = "experimental")
 #'
-#' # example 1
-#' # compute Magirr-Burman weights with `delay = 6`
+#' # Example 1
+#' # Compute Magirr-Burman weights with `delay = 6`
 #' ZMB <- x %>%
 #'   mb_weight(delay = 6, w_max = Inf) %>%
 #'   summarize(
@@ -87,7 +93,7 @@ NULL
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB$z)
 #'
-#' # example 2
+#' # Example 2
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
 #' ZMB2 <- x %>%
 #'   mb_weight(delay = Inf, w_max = 2) %>%
@@ -99,8 +105,6 @@ NULL
 #'
 #' # Compute p-value of modestly weighted logrank of Magirr-Burman
 #' pnorm(ZMB2$z)
-#'
-#' @export
 mb_weight <- function(x, delay = 4, w_max = Inf) {
   # check input failure rate assumptions
   if (!is.data.frame(x)) {
@@ -142,13 +146,13 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
   tbl_all_stratum <- x2 %>% summarize()
 
   ans <- x2 %>%
-    # look only up to delay time
+    # Look only up to delay time
     filter(tte <= delay) %>%
-    # weight before delay specified as 1/S
+    # Weight before delay specified as 1/S
     summarize(max_weight = max(1 / s)) %>%
-    # get back stratum with no records before delay ends
+    # Get back stratum with no records before delay ends
     right_join(tbl_all_stratum, by = "stratum") %>%
-    # max_weight is 1 when there are no records before delay ends
+    # `max_weight` is 1 when there are no records before delay ends
     mutate(max_weight = tidyr::replace_na(max_weight, 1)) %>%
     # Cut off weights at w_max
     mutate(max_weight = pmin(w_max, max_weight)) %>%
@@ -158,5 +162,5 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
     mutate(mb_weight = pmin(max_weight, 1 / s)) %>%
     select(-max_weight)
 
-  return(ans)
+  ans
 }

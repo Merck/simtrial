@@ -1,4 +1,5 @@
-#  Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  All rights reserved.
 #
 #  This file is part of the simtrial program.
 #
@@ -15,60 +16,66 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @importFrom dplyr group_by mutate %>%
-#' @importFrom tibble tibble
-NULL
-
 #' Simulate a stratified time-to-event outcome randomized trial
 #'
-#' \code{sim_pw_surv} enables simulation of a clinical trial with essentially arbitrary
-#' patterns of enrollment, failure rates and censoring.
-#' The piecewise exponential distribution allows a simple method to specify a distribtuion
-#' and enrollment pattern
-#' where the enrollment, failure and dropout rate changes over time.
-#' While the main purpose may be to generate a trial that can be analyzed at a single point in time or
-#' using group sequential methods, the routine can also be used to simulate an adaptive trial design.
-#' Enrollment, failure and dropout rates are specified by treatment group, stratum and time period.
-#' Fixed block randomization is used; blocks must include treatments provided in failure and dropout
-#' specification.
-#' Default arguments are set up to allow very simple implementation of a non-proportional hazards assumption
-#' for an unstratified design.
+#' `sim_pw_surv()` enables simulation of a clinical trial with
+#' essentially arbitrary patterns of enrollment, failure rates and censoring.
+#' The piecewise exponential distribution allows a simple method to specify
+#' a distribution and enrollment pattern where the enrollment, failure,
+#' and dropout rate changes over time.
+#' While the main purpose may be to generate a trial that can be analyzed
+#' at a single point in time or using group sequential methods,
+#' the routine can also be used to simulate an adaptive trial design.
+#' Enrollment, failure, and dropout rates are specified by treatment group,
+#' stratum and time period.
+#' Fixed block randomization is used; blocks must include treatments provided
+#' in failure and dropout specification.
+#' Default arguments are set up to allow very simple implementation of
+#' a non-proportional hazards assumption for an unstratified design.
 #'
 #' @param n Number of observations.
-#' If length(n) > 1, the length is taken to be the number required.
-#' @param stratum A tibble with stratum specified in `stratum`, probability (incidence) of each stratum
-#' in `p`
-#' @param block Vector of treatments to be included in each  block
-#' @param enroll_rate Enrollment rates; see details and examples
-#' @param fail_rate Failure rates; see details and examples; note that treatments need
-#' to be the same as input in block
-#' @param dropout_rate Dropout rates; see details and examples; note that treatments need
-#' to be the same as input in block
+#'   If length(n) > 1, the length is taken to be the number required.
+#' @param stratum A tibble with stratum specified in `stratum`,
+#'   probability (incidence) of each stratum in `p`.
+#' @param block Vector of treatments to be included in each block.
+#' @param enroll_rate Enrollment rates; see details and examples.
+#' @param fail_rate Failure rates; see details and examples;
+#'   note that treatments need to be the same as input in block.
+#' @param dropout_rate Dropout rates; see details and examples;
+#'   note that treatments need to be the same as input in block.
 #'
-#' @return a \code{tibble} with the following variables for each observation
-#' \code{stratum},
-#' \code{enroll_time} (enrollment time for the observation),
-#' \code{Treatment} (treatment group; this will be one of the values in the input \code{block}),
-#' \code{fail_time} (failure time generated using \code{rpwexp()}),
-#' \code{dropout_time} (dropout time generated using \code{rpwexp()}),
-#' \code{cte} (calendar time of enrollment plot the minimum of failure time and dropout time),
-#' \code{fail} (indicator that \code{cte} was set using failure time; i.e., 1 is a failure, 0 is a dropout).
+#' @return A `tibble` with the following variables for each observation:
+#' - `stratum`.
+#' - `enroll_time`: Enrollment time for the observation.
+#' - `Treatment`: Treatment group; this will be one of the values
+#'   in the input `block`.
+#' - `fail_time`: Failure time generated using [rpwexp()].
+#' - `dropout_time`: Dropout time generated using [rpwexp()].
+#' - `cte`: Calendar time of enrollment plot the minimum of
+#'   failure time and dropout time.
+#' - `fail`: Indicator that `cte` was set using failure time;
+#'   i.e., 1 is a failure, 0 is a dropout.
+#'
+#' @importFrom dplyr group_by mutate %>%
+#' @importFrom tibble tibble
+#'
+#' @export
 #'
 #' @examples
 #' library(dplyr)
 #' library(tibble)
 #'
-#' # example 1
+#' # Example 1
 #' sim_pw_surv(n = 20)
 #'
-#' # example 2
+#' # Example 2
 #' # 3:1 randomization
 #' sim_pw_surv(
 #'   n = 20,
 #'   block = c(rep("experimental", 3), "control")
 #' )
 #'
-#' # example 3
+#' # Example 3
 #' # Simulate 2 stratum; will use defaults for blocking and enrollRates
 #' sim_pw_surv(
 #'   n = 20,
@@ -92,7 +99,7 @@ NULL
 #'     rate = rep(.001, 4)
 #'   )
 #' )
-#' # example 4
+#' # Example 4
 #' # If you want a more rectangular entry for a tibble
 #' fail_rate <- bind_rows(
 #'   tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
@@ -116,7 +123,6 @@ NULL
 #'   fail_rate = fail_rate,
 #'   dropout_rate = dropout_rate
 #' )
-#' @export
 sim_pw_surv <- function(
     n = 100,
     stratum = tibble(stratum = "All", p = 1),
@@ -136,8 +142,7 @@ sim_pw_surv <- function(
       duration = rep(100, 2),
       rate = rep(.001, 2)
     )) {
-  # start tibble by generating stratum and enrollment times
-
+  # Start tibble by generating stratum and enrollment times
   x <- tibble(stratum = sample(
     x = stratum$stratum,
     size = n,
@@ -146,9 +151,9 @@ sim_pw_surv <- function(
   )) %>%
     mutate(enroll_time = rpw_enroll(n, enroll_rate)) %>%
     group_by(stratum) %>%
-    # assign treatment
+    # Assign treatment
     mutate(treatment = randomize_by_fixed_block(n = n(), block = block)) %>%
-    # generate time to failure and time to dropout
+    # Generate time to failure and time to dropout
     group_by(stratum, treatment)
 
   unique_stratum <- unique(x$stratum)
@@ -170,11 +175,12 @@ sim_pw_surv <- function(
     }
   }
 
-  # set calendar time-to-event and failure indicator
+  # Set calendar time-to-event and failure indicator
   ans <- x %>%
     mutate(
       cte = pmin(dropout_time, fail_time) + enroll_time,
       fail = (fail_time <= dropout_time) * 1
     )
-  return(ans)
+
+  ans
 }

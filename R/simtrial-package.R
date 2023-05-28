@@ -1,4 +1,5 @@
-#  Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  All rights reserved.
 #
 #  This file is part of the pkglite program.
 #
@@ -14,8 +15,12 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#' @import Rcpp
-#' @useDynLib simtrial, .registration = TRUE
-#'
+
 #' @keywords internal
 "_PACKAGE"
+
+#' @useDynLib simtrial, .registration = TRUE
+NULL
+
+#' @importFrom Rcpp sourceCpp
+NULL

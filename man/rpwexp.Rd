@@ -2,7 +2,7 @@
 % Please edit documentation in R/rpwexp.R
 \name{rpwexp}
 \alias{rpwexp}
-\title{The Piecewise Exponential Distribution}
+\title{The piecewise exponential distribution}
 \usage{
 rpwexp(n = 100, fail_rate = tibble(duration = c(1, 1), rate = c(10, 20)))
 }
@@ -15,24 +15,27 @@ specified in \code{duration}. The final interval is extended to be infinite
 to ensure all observations are generated.}
 }
 \description{
-The piecewise exponential distribution allows a simple method to specify a distribtuion
-where the hazard rate changes over time. It is likely to be useful for conditions where
-failure rates change, but also for simulations where there may be a delayed treatment
-effect or a treatment effect that that is otherwise changing (e.g., decreasing) over time.
-\code{rpwexp()} is to support simulation of both the Lachin and Foulkes (1986) sample size
-method for (fixed trial duration) as well as the Kim and Tsiatis(1990) method
-(fixed enrollment rates and either fixed enrollment duration or fixed minimum follow-up);
-see \code{\link[gsDesign:nSurv]{gsDesign}}.
+The piecewise exponential distribution allows a simple method to specify
+a distribution where the hazard rate changes over time.
+It is likely to be useful for conditions where failure rates change,
+but also for simulations where there may be a delayed treatment effect
+or a treatment effect that that is otherwise changing
+(for example, decreasing) over time.
+\code{rpwexp()} is to support simulation of both the Lachin and Foulkes (1986)
+sample size method for (fixed trial duration) as well as the
+Kim and Tsiatis(1990) method (fixed enrollment rates and either
+fixed enrollment duration or fixed minimum follow-up);
+see \code{\link[gsDesign:nSurv]{gsDesign::nSurv()}}.
 }
 \details{
-Using the \code{cumulative=TRUE} option, enrollment times that piecewise constant over
-time can be generated.
+Using the \code{cumulative = TRUE} option, enrollment times that piecewise
+constant over time can be generated.
 }
 \examples{
 library(tibble)
 
-# example 1
-# exponential failure times
+# Example 1
+# Exponential failure times
 x <- rpwexp(
   n = 10000,
   fail_rate = tibble(rate = 5, duration = 1)
@@ -42,12 +45,12 @@ plot(sort(x), (10000:1) / 10001,
   xlab = "Time", ylab = "P{Survival}"
 )
 
-# example 2
+# Example 2
 
-# get 10k piecewise exponential failure times
-# failure rates are 1 for time 0-.5, 3 for time .5 - 1 and 10 for >1.
-# intervals specifies duration of each failure rate interval
-# with the final interval running to infinity
+# Get 10k piecewise exponential failure times.
+# Failure rates are 1 for time 0 to 0.5, 3 for time 0.5 to 1, and 10 for > 1.
+# Intervals specifies duration of each failure rate interval
+# with the final interval running to infinity.
 x <- rpwexp(
   n = 1e4,
   fail_rate = tibble(rate = c(1, 3, 10), duration = c(.5, .5, 1))
@@ -56,5 +59,4 @@ plot(sort(x), (1e4:1) / 10001,
   log = "y", main = "PW Exponential simulated survival curve",
   xlab = "Time", ylab = "P{Survival}"
 )
-
 }

@@ -1,4 +1,5 @@
-#  Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  All rights reserved.
 #
 #  This file is part of the simtrial program.
 #
@@ -17,30 +18,32 @@
 
 #' Permuted fixed block randomization
 #'
-#' Fixed block randomization. The `block` input should repeat each treatment code the number of
-#' times it is to be included within each block. The final block will be a partial block if `n` is not an
-#' exact multiple of the block length.
+#' Fixed block randomization. The `block` input should repeat each
+#' treatment code the number of times it is to be included within each block.
+#' The final block will be a partial block if `n` is not an exact multiple
+#' of the block length.
 #'
-#' @param n sample size to be randomized
-#' @param block Vector of treatments to be included in each block
+#' @param n Sample size to be randomized.
+#' @param block Vector of treatments to be included in each block.
 #'
-#' @return A treatment group sequence (vector) of length `n` with treatments from `block` permuted within
-#' each block having block size equal to the length of `block`
+#' @return A treatment group sequence (vector) of length `n` with
+#'   treatments from `block` permuted within each block having
+#'   block size equal to the length of `block`.
+#'
+#' @export
 #'
 #' @examples
 #' library(dplyr)
 #'
-#' # example 1
+#' # Example 1
 #' # 2:1 randomization with block size 3, treatments "A" and "B"
 #' tibble(x = 1:10) %>% mutate(Treatment = randomize_by_fixed_block(block = c("A", "B", "B")))
 #'
-#' # example 2
+#' # Example 2
 #' # Stratified randomization
 #' tibble(stratum = c(rep("A", 10), rep("B", 10))) %>%
 #'   group_by(stratum) %>%
 #'   mutate(Treatment = randomize_by_fixed_block())
-#'
-#' @export
 randomize_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)) {
   length_block <- length(block)
   n_block <- ceiling(n / length_block)
@@ -50,5 +53,5 @@ randomize_by_fixed_block <- function(n = 10, block = c(0, 0, 1, 1)) {
   sample_order <- rep(1:n_block, length_block)
   sample_order <- sample_order + stats::runif(n_total)
 
-  return((block_to_sample[order(sample_order)])[1:n])
+  (block_to_sample[order(sample_order)])[1:n]
 }

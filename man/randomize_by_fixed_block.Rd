@@ -7,30 +7,31 @@
 randomize_by_fixed_block(n = 10, block = c(0, 0, 1, 1))
 }
 \arguments{
-\item{n}{sample size to be randomized}
+\item{n}{Sample size to be randomized.}
 
-\item{block}{Vector of treatments to be included in each block}
+\item{block}{Vector of treatments to be included in each block.}
 }
 \value{
-A treatment group sequence (vector) of length \code{n} with treatments from \code{block} permuted within
-each block having block size equal to the length of \code{block}
+A treatment group sequence (vector) of length \code{n} with
+treatments from \code{block} permuted within each block having
+block size equal to the length of \code{block}.
 }
 \description{
-Fixed block randomization. The \code{block} input should repeat each treatment code the number of
-times it is to be included within each block. The final block will be a partial block if \code{n} is not an
-exact multiple of the block length.
+Fixed block randomization. The \code{block} input should repeat each
+treatment code the number of times it is to be included within each block.
+The final block will be a partial block if \code{n} is not an exact multiple
+of the block length.
 }
 \examples{
 library(dplyr)
 
-# example 1
+# Example 1
 # 2:1 randomization with block size 3, treatments "A" and "B"
 tibble(x = 1:10) \%>\% mutate(Treatment = randomize_by_fixed_block(block = c("A", "B", "B")))
 
-# example 2
+# Example 2
 # Stratified randomization
 tibble(stratum = c(rep("A", 10), rep("B", 10))) \%>\%
   group_by(stratum) \%>\%
   mutate(Treatment = randomize_by_fixed_block())
-
 }
