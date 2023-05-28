@@ -38,6 +38,7 @@ Imports:
     doParallel,
     dplyr,
     foreach,
+    magrittr,
     mvtnorm,
     survival,
     tibble,
