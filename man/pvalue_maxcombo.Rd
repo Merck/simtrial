@@ -7,7 +7,7 @@
 pvalue_maxcombo(
   z,
   dummy_var,
-  algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05)
+  algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 1e-05)
 )
 }
 \arguments{

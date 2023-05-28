@@ -47,8 +47,6 @@
 #' [Ex5widening],
 #' [Ex6crossing]
 #'
-#' @import survival
-#'
 #' @examples
 #' library(survival)
 #'

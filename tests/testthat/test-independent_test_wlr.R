@@ -9,7 +9,7 @@ testthat::test_that("the z values match with the correspondings in wlr", {
   max <- TRUE
   alpha <- 0.025
   data.anal <- data.frame(cbind(y$tte, y$event, y$treatment))
-  fit <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
   survMisc::comp(fit, p = sapply(wt, function(x) {

@@ -9,7 +9,7 @@ testthat::test_that("tenFHCorr calculated correct correlation value", {
   max <- TRUE
   alpha <- 0.025
   data.anal <- data.frame(cbind(y$tte, y$event, y$treatment))
-  fit <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
   survMisc::comp(fit, p = sapply(wt, function(x) {
@@ -47,7 +47,7 @@ testthat::test_that("tenFHCorr calculated correct correlation value", {
   d1 <- data.frame(do.call(rbind, wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind, wt3))
-  fit2 <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit2 <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing (for calculating the covariances)
   survMisc::comp(fit2, p = sapply(wt3, function(x) {
@@ -69,10 +69,10 @@ testthat::test_that("tenFHCorr calculated correct correlation value", {
   cov.tst.1 <- matrix(Matrix::nearPD(cov.tst)$mat, length(Z.tst.rslt1), length(Z.tst.rslt1))
   z.max <- max(abs(tst.rslt1$Z))
   cor.tst <- cov2cor(cov.tst.1)
-  pval2 <- 1 - max(min(pmvnorm(
+  pval2 <- 1 - max(min(mvtnorm::pmvnorm(
     lower = rep(-z.max, length(Z.tst.rslt1)),
     upper = rep(z.max, length(Z.tst.rslt1)),
-    corr = cor.tst, algorithm = Miwa()
+    corr = cor.tst, algorithm = mvtnorm::Miwa()
   )[1], 0.9999), 0.0001)
   max.tst <- which(abs(Z.tst.rslt1) == max(abs(Z.tst.rslt1)), arr.ind = TRUE)
   if (Z.tst.rslt1[max.tst] >= 0) {

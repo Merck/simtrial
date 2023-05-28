@@ -69,8 +69,6 @@
 #'
 #' @import dplyr
 #' @importFrom tibble tibble
-#' @import survival
-#' @import foreach
 #'
 #' @export
 #'

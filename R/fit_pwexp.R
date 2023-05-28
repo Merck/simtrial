@@ -32,7 +32,7 @@
 #' @return A matrix with rows containing interval length, estimated rate,
 #'   -2 * log-likelihood for each interval.
 #'
-#' @import survival
+#' @importFrom survival Surv is.Surv
 #'
 #' @export
 #'

@@ -47,8 +47,6 @@
 #' [Ex4belly],
 #' [Ex6crossing]
 #'
-#' @import survival
-#'
 #' @examples
 #' library(survival)
 #'

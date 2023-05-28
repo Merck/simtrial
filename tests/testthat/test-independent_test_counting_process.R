@@ -3,7 +3,7 @@ surv_to_count <- function(time, status, trt, strats) {
 
   # KM estimator by stratum
   tidy_survfit <- function(...) {
-    .survfit <- summary(survfit(...))
+    .survfit <- summary(survival::survfit(...))
     n <- length(.survfit$time)
     data.frame(
       time = .survfit$time,
@@ -18,7 +18,7 @@ surv_to_count <- function(time, status, trt, strats) {
 
   # KM estimator by stratum and treatment Group Predicted at Specified Time
   pred_survfit <- function(pred_time, ...) {
-    .survfit <- survfit(...)
+    .survfit <- survival::survfit(...)
 
     # At risk subjects at pred_time
     n.risk <- stepfun(.survfit$time, c(.survfit$n.risk, 0), right = TRUE)(pred_time)

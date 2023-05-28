@@ -65,7 +65,6 @@
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
 #'
-#' @import tibble
 #' @import dplyr
 #'
 #' @export

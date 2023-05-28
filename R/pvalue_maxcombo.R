@@ -33,8 +33,7 @@
 #' @return A numeric p-value.
 #'
 #' @import dplyr
-#' @import tibble
-#' @import mvtnorm
+#' @importFrom mvtnorm pmvnorm GenzBretz
 #'
 #' @export
 #'
@@ -76,7 +75,7 @@
 pvalue_maxcombo <- function(
     z,
     dummy_var,
-    algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)) {
+    algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 0.00001)) {
   ans <- (1 - mvtnorm::pmvnorm(
     lower = rep(
       z$z %>% min() %>% as.numeric(),

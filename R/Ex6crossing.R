@@ -47,8 +47,6 @@
 #' [Ex4belly],
 #' [Ex5widening]
 #'
-#' @import survival
-#'
 #' @examples
 #' library(survival)
 #'

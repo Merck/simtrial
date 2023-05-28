@@ -188,8 +188,8 @@ corr3 <- sqrt(139^2 / (344 * 190))
 rho <- matrix(c(1, corr1, corr2, corr1, 1, corr3, corr2, corr3, 1), 3, 3)
 upper <- c(-1, -1, -1)
 ptvnorm(upper, c(corr1, corr2, corr3))[1]
-mvtnorm::pmvnorm(-Inf, upper, c(0, 0, 0), rho, algorithm = Miwa())[1]
-mvtnorm::pmvnorm(-Inf, upper, c(0, 0, 0), rho, algorithm = GenzBretz(
+mvtnorm::pmvnorm(-Inf, upper, c(0, 0, 0), rho, algorithm = mvtnorm::Miwa())[1]
+mvtnorm::pmvnorm(-Inf, upper, c(0, 0, 0), rho, algorithm = mvtnorm::GenzBretz(
   maxpts = 50000,
   abseps = 1e-07
 ))[1]
