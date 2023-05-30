@@ -2,15 +2,15 @@
 % Please edit documentation in R/RcppExports.R
 \name{rpwexpinvRcpp}
 \alias{rpwexpinvRcpp}
-\title{The Piecewise Exponential Distribution using inverse CDF method in C++}
+\title{The piecewise exponential distribution using inverse CDF method in C++}
 \usage{
 rpwexpinvRcpp(n, fail_rate)
 }
 \arguments{
 \item{n}{Number of observations to be generated.}
 
-\item{fail_rate}{A dataframe containing \code{duration} and \code{rate} variables.}
+\item{fail_rate}{A data frame containing \code{duration} and \code{rate} variables.}
 }
 \description{
-The Piecewise Exponential Distribution using inverse CDF method in C++
+The piecewise exponential distribution using inverse CDF method in C++
 }

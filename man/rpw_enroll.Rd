@@ -2,7 +2,7 @@
 % Please edit documentation in R/rpw_enroll.R
 \name{rpw_enroll}
 \alias{rpw_enroll}
-\title{Generate Piecewise Exponential Enrollment}
+\title{Generate piecewise exponential enrollment}
 \usage{
 rpw_enroll(n = NULL, enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5)))
 }
@@ -10,40 +10,51 @@ rpw_enroll(n = NULL, enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5)))
 \item{n}{Number of observations.
 Default of \code{NULL} yields random enrollment size.}
 
-\item{enroll_rate}{A tibble containing period duration (\code{duration}) and enrollment rate (\code{rate})
-for specified enrollment periods.
-If necessary, last period will be extended to ensure enrollment of specified \code{n}.}
+\item{enroll_rate}{A tibble containing period duration (\code{duration})
+and enrollment rate (\code{rate}). for specified enrollment periods.
+If necessary, last period will be extended to ensure enrollment
+of specified \code{n}.}
 }
 \value{
 A vector of random enrollment times.
 }
 \description{
-With piecewise exponential enrollment rate generation any enrollment rate distribution can be easily approximated.
-\code{rpw_enroll()} is to support simulation of both the Lachin and Foulkes (1986) sample size
-method for (fixed trial duration) as well as the Kim and Tsiatis(1990) method
-(fixed enrollment rates and either fixed enrollment duration or fixed minimum follow-up);
-see \code{\link[gsDesign:nSurv]{gsDesign}}.
+With piecewise exponential enrollment rate generation any enrollment rate
+distribution can be easily approximated.
+\code{rpw_enroll()} is to support simulation of both the Lachin and Foulkes (1986)
+sample size method for (fixed trial duration) as well as the
+Kim and Tsiatis(1990) method (fixed enrollment rates and either
+fixed enrollment duration or fixed minimum follow-up);
+see \code{\link[gsDesign:nSurv]{gsDesign::nSurv()}}.
 }
 \examples{
 library(tibble)
+
 # Example 1
-# piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
-# enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
-x <- rpw_enroll(n = 1e5,
-               enroll_rate = tibble(rate = c(5, 15, 30),
-                                    duration = c(100, 200, 100)))
+# Piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
+# Enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
+x <- rpw_enroll(
+  n = 1e5,
+  enroll_rate = tibble(
+    rate = c(5, 15, 30),
+    duration = c(100, 200, 100)
+  )
+)
 plot(x, 1:1e5,
-     main = "Piecewise uniform enrollment simulation",
-     xlab = "Time",
-     ylab = "Enrollment")
+  main = "Piecewise uniform enrollment simulation",
+  xlab = "Time",
+  ylab = "Enrollment"
+)
 
 # Example 2
-# exponential enrollment
-x <- rpw_enroll(n = 1e5,
-               enroll_rate = tibble(rate = .03, duration = 1))
+# Exponential enrollment
+x <- rpw_enroll(
+  n = 1e5,
+  enroll_rate = tibble(rate = .03, duration = 1)
+)
 plot(x, 1:1e5,
-     main = "Simulated exponential inter-arrival times",
-     xlab = "Time",
-     ylab = "Enrollment")
-
+  main = "Simulated exponential inter-arrival times",
+  xlab = "Time",
+  ylab = "Enrollment"
+)
 }

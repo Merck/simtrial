@@ -46,7 +46,7 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 36
 sample_size <- 300
- enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
+enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
 fail_rate <- tibble::tribble(
   ~stratum, ~duration, ~fail_rate, ~hr, ~dropout_rate,
   "All", 6, log(2) / 15, 1, 0,
@@ -64,7 +64,7 @@ MBdelay <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),
   block = c(rep("control", 2), rep("experimental", 2)),
-   enroll_rate =  enroll_rate,
+  enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
 ) %>%
@@ -134,7 +134,7 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 studyDuration <- 5
 sample_size <- 2000
 enrollDuration <- .0001
- enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sample_size / enrollDuration)
+enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sample_size / enrollDuration)
 fail_rate <- tibble::tibble(
   stratum = "All",
   fail_rate = 0.25,
@@ -154,11 +154,11 @@ FHwn <- sim_pw_surv(
   n = sample_size,
   stratum = tibble::tibble(stratum = "All", p = 1),
   block = c(rep("control", 2), rep("experimental", 2)),
-   enroll_rate =  enroll_rate,
+  enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
 ) %>%
-cut_data_by_date(studyDuration)
+  cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
@@ -168,7 +168,6 @@ We perform a logrank and weighted logrank tests as suggested for more limited do
 
 ```{r}
 xx <- FHwn %>%
-
   counting_process(arm = "experimental") %>%
   tenFHcorr(rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1))) %>%
   mutate(p = pnorm(z))

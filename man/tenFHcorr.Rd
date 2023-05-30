@@ -2,7 +2,7 @@
 % Please edit documentation in R/tenFHcorr.R
 \name{tenFHcorr}
 \alias{tenFHcorr}
-\title{Fleming-Harrington Weighted Logrank Tests plus Correlations}
+\title{Fleming-Harrington weighted logrank tests plus correlations}
 \usage{
 tenFHcorr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(100) \%>\% counting_process(arm =
@@ -12,25 +12,27 @@ tenFHcorr(
 )
 }
 \arguments{
-\item{x}{a \code{counting_process}-class \code{tibble} with a counting process dataset}
+\item{x}{A \code{\link[=counting_process]{counting_process()}}-class \code{tibble} with a counting process dataset.}
 
-\item{rho_gamma}{a \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
-to zero, to specify one Fleming-Harrington weighted logrank test per row}
+\item{rho_gamma}{A \code{tibble} with variables \code{rho} and \code{gamma}, both greater
+than equal to zero, to specify one Fleming-Harrington weighted logrank test
+per row.}
 
-\item{corr}{a logical; if TRUE (default), return correlation matrix; otherwise, return covariance matrix}
+\item{corr}{Logical; if \code{TRUE} (default), return correlation matrix;
+otherwise, return covariance matrix.}
 }
 \value{
-a \code{tibble} with \code{rho_gamma} as input, the FH test statistics specified
-for the data in \code{z}, and the correlation or covariance matrix for these tests in variables starting
-with \code{v}
+A \code{tibble} with \code{rho_gamma} as input, the FH test statistics
+specified for the data in \code{z}, and the correlation or
+covariance matrix for these tests in variables starting with \code{v}.
 }
 \description{
-Correlations can be used with \code{mvtnorm::pmvnorm} to compute
-p-value for MaxCombo, the maximum of the specifed
-Fleming-Harrington tests
+Correlations can be used with \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}} to compute
+p-value for MaxCombo, the maximum of the specified
+Fleming-Harrington tests.
 }
 \examples{
-library(tidyr)
+library(tibble)
 library(dplyr)
 
 # Use default enrollment and event rates at cut of 100 events
@@ -38,31 +40,42 @@ x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
 
-# compute logrank (FH(0,0)) and FH(0,1)
-x <- x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-                                 gamma = c(0, 1)))
+# Compute logrank (FH(0,0)) and FH(0,1)
+x <- x \%>\% tenFHcorr(rho_gamma = tibble(
+  rho = c(0, 0),
+  gamma = c(0, 1)
+))
 
-# compute p-value for MaxCombo
+# Compute p-value for MaxCombo
 library(mvtnorm)
-1 - pmvnorm(lower = rep(min(x$z), nrow(x)),
-            corr = data.matrix(select(x, -c(rho, gamma, z))),
-            algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001))[1]
+1 - pmvnorm(
+  lower = rep(min(x$z), nrow(x)),
+  corr = data.matrix(select(x, -c(rho, gamma, z))),
+  algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
+)[1]
 
-# check that covariance is as expected
+# Check that covariance is as expected
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
 
-x \%>\% tenFHcorr(rho_gamma = tibble(rho = c(0, 0),
-                            gamma = c(0, 1)),
-                corr = FALSE)
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = c(0, 0),
+    gamma = c(0, 1)
+  ),
+  corr = FALSE
+)
 
 # Off-diagonal element should be variance in following
-x \%>\% tenFHcorr(rho_gamma = tibble(rho = 0,
-                            gamma =.5),
-                corr = FALSE)
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = 0,
+    gamma = .5
+  ),
+  corr = FALSE
+)
 
-# compare off diagonal result with wlr()
-x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma =.5))
-
+# Compare off diagonal result with wlr()
+x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
 }

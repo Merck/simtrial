@@ -26,71 +26,89 @@ sim_fixed_n(
 
 \item{target_event}{Targeted event count for analysis.}
 
-\item{stratum}{A tibble with stratum specified in \code{stratum}, probability (incidence) of each stratum in \code{p}.}
+\item{stratum}{A tibble with stratum specified in \code{stratum},
+probability (incidence) of each stratum in \code{p}.}
 
 \item{enroll_rate}{Piecewise constant enrollment rates by time period.
-Note that these are overall population enrollment rates and the \code{stratum} argument controls the
-random distribution between stratum.}
+Note that these are overall population enrollment rates and the \code{stratum}
+argument controls the random distribution between stratum.}
 
-\item{fail_rate}{Piecewise constant control group failure rates, hazard ratio for experimental vs control,
-and dropout rates by stratum and time period.}
+\item{fail_rate}{Piecewise constant control group failure rates, hazard ratio
+for experimental vs. control, and dropout rates by stratum and time period.}
 
 \item{total_duration}{Total follow-up from start of enrollment to data cutoff.}
 
-\item{block}{As in \code{simtrial::sim_pw_surv()}. Vector of treatments to be included in each block.}
+\item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
+in each block.}
 
-\item{timing_type}{A numeric vector determining data cutoffs used; see details.
-Default is to include all available cutoff methods.}
+\item{timing_type}{A numeric vector determining data cutoffs used;
+see details. Default is to include all available cutoff methods.}
 
-\item{rho_gamma}{As in \code{simtrial::tenFHCorr()}.
-A \code{tibble} with variables \code{rho} and \code{gamma}, both greater than equal
-to zero, to specify one Fleming-Harrington weighted logrank test per row.}
+\item{rho_gamma}{As in \code{\link[=tenFHcorr]{tenFHcorr()}}. A \code{tibble} with variables
+\code{rho} and \code{gamma}, both greater than equal to zero,
+to specify one Fleming-Harrington weighted logrank test per row.}
 
-\item{seed}{Optional. Initial seed for simulations}
+\item{seed}{Optional. Initial seed for simulations.}
 }
 \value{
-A \code{tibble} including columns \code{event} (event count), \code{ln_hr} (log-hazard ratio),
-\code{z} (normal test statistic; < 0 favors experimental) cut (text describing cutoff used),
-\code{duration} (duration of trial at cutoff for analysis) and \code{sim} (sequential simulation id).
-One row per simulated dataset per cutoff specified in \code{timing_type}, per test statistic specified.
-If multiple Fleming-Harrington tests are specified in \code{rho_gamma}, then columns {rho,gamma}
-are also included.
+A \code{tibble} including columns:
+\itemize{
+\item \code{event}: Event count.
+\item \code{ln_hr}: Log-hazard ratio.
+\item \code{z}: Normal test statistic; < 0 favors experimental.
+\item \code{cut}: Text describing cutoff used.
+\item \code{duration}: Duration of trial at cutoff for analysis.
+\item \code{sim}: Sequential simulation ID.
+}
+
+One row per simulated dataset per cutoff specified in \code{timing_type},
+per test statistic specified.
+If multiple Fleming-Harrington tests are specified in \code{rho_gamma},
+then columns \code{rho} and \code{gamma} are also included.
 }
 \description{
-\code{sim_fixed_n()} provide simulations of a single endpoint two-arm trial
-where the enrollment, hazard ratio, and failure and dropout rates change over time.
+\code{sim_fixed_n()} provides simulations of a single endpoint two-arm trial
+where the enrollment, hazard ratio, and failure and dropout rates change
+over time.
 }
 \details{
-\code{timing_type} has up to 5 elements indicating different options for data cutoff.
-1 uses the planned study duration, 2 the time the targeted event count is achieved,
-3 the planned minimum follow-up after enrollment is complete,
-4 the maximum of planned study duration and targeted event count cuts (1 and 2),
-5 the maximum of targeted event count and minimum follow-up cuts (2 and 3).
+\code{timing_type} has up to 5 elements indicating different options
+for data cutoff:
+\itemize{
+\item \code{1}: Uses the planned study duration.
+\item \code{2}: The time the targeted event count is achieved.
+\item \code{3}: The planned minimum follow-up after enrollment is complete.
+\item \code{4}: The maximum of planned study duration and targeted event count cuts
+(1 and 2).
+\item \code{5}: The maximum of targeted event count and minimum follow-up cuts
+(2 and 3).
+}
 }
 \examples{
-library(tidyr)
+library(tibble)
 library(dplyr)
 library(doParallel)
-library(tibble)
 
-# example 1
+# Example 1
 # Show output structure
 sim_fixed_n(n_sim = 3)
 
-# example 2
+# Example 2
 # Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(n_sim = 1,rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+sim_fixed_n(n_sim = 1, rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 
-# example 3
+# Example 3
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- sim_fixed_n(n_sim = 100,
-             timing_type = c(2, 5),
-             rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+xx <- sim_fixed_n(
+  n_sim = 100,
+  timing_type = c(2, 5),
+  rho_gamma = tibble(rho = 0, gamma = c(0, 1))
+)
 # Get power approximation for FH, data cutoff combination
 xx \%>\%
   group_by(cut, rho, gamma) \%>\%
-  summarise(mean(z <= qnorm(.025)))
+  summarize(mean(z <= qnorm(.025)))
 
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 p <- xx \%>\%
@@ -110,11 +128,10 @@ p <- xx \%>\%
 
 mean(p < .025)
 
-# example 3
+# Example 3
 # Use two cores
 registerDoParallel(2)
 sim_fixed_n(n_sim = 10, seed = 2022)
 stopImplicitCluster()
 registerDoSEQ()
-
 }

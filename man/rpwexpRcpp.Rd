@@ -2,15 +2,15 @@
 % Please edit documentation in R/RcppExports.R
 \name{rpwexpRcpp}
 \alias{rpwexpRcpp}
-\title{The Piecewise Exponential Distribution in C++}
+\title{The piecewise exponential distribution in C++}
 \usage{
 rpwexpRcpp(n, fail_rate)
 }
 \arguments{
 \item{n}{Number of observations to be generated.}
 
-\item{fail_rate}{A dataframe containing \code{duration} and \code{rate} variables.}
+\item{fail_rate}{A data frame containing \code{duration} and \code{rate} variables.}
 }
 \description{
-The Piecewise Exponential Distribution in C++
+The piecewise exponential distribution in C++
 }

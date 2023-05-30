@@ -7,50 +7,60 @@
 pvalue_maxcombo(
   z,
   dummy_var,
-  algorithm = GenzBretz(maxpts = 50000, abseps = 1e-05)
+  algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 1e-05)
 )
 }
 \arguments{
-\item{z}{a dataset output from \code{tenFHcorr()}; see examples.}
+\item{z}{A dataset output from \code{\link[=tenFHcorr]{tenFHcorr()}}; see examples.}
 
-\item{dummy_var}{a dummy input that allows \code{group_map()} to be used to
+\item{dummy_var}{A dummy input that allows \code{\link[dplyr:group_map]{dplyr::group_map()}} to be used to
 compute p-values for multiple simulations.}
 
-\item{algorithm}{This is passed directly to the \code{algorithm} argument in the \code{mvtnorm::pmvnorm()}}
+\item{algorithm}{This is passed directly to the \code{algorithm} argument
+in \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}}.}
 }
 \value{
-A numeric p-value
+A numeric p-value.
 }
 \description{
-\code{pvalue_maxcombo()} computes p-values for the MaxCombo test
-based on output from \code{simtrial::tenFHcorr()}.
+Computes p-values for the MaxCombo test based on output from \code{\link[=tenFHcorr]{tenFHcorr()}}.
 This is still in an experimental stage and is intended for use with
-the \code{simtrial::sim_fixed_n()} trial simulation routine.
-However, it can also be used to analyze clinical trial data such as that provided in the
-ADaM ADTTE format.
+the \code{\link[=sim_fixed_n]{sim_fixed_n()}} trial simulation routine.
+However, it can also be used to analyze clinical trial data such as
+that provided in the ADaM ADTTE format.
 }
 \examples{
-library(tidyr)
 library(tibble)
 library(dplyr)
 
-# example 1
-x <- sim_fixed_n(n_sim = 1,
-            timing_type = 5,
-            rho_gamma = tibble(rho = c(0, 0, 1),
-                        gamma = c(0, 1, 1)))
+# Example 1
+x <- sim_fixed_n(
+  n_sim = 1,
+  timing_type = 5,
+  rho_gamma = tibble(
+    rho = c(0, 0, 1),
+    gamma = c(0, 1, 1)
+  )
+)
 head(x)
 pvalue_maxcombo(x)
 
-# example 2
+# Example 2
 # Only use cuts for events, events + min follow-up
-xx <- sim_fixed_n(n_sim = 100,
-             timing_type = 5,
-             rho_gamma = tibble(rho = c(0, 0, 1),
-                         gamma = c(0, 1, 1)))
+xx <- sim_fixed_n(
+  n_sim = 100,
+  timing_type = 5,
+  rho_gamma = tibble(
+    rho = c(0, 0, 1),
+    gamma = c(0, 1, 1)
+  )
+)
 head(xx)
-# MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx \%>\% group_by(sim) \%>\% group_map(pvalue_maxcombo) \%>\% unlist()
-mean(p < .025)
 
+# MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
+p <- xx \%>\%
+  group_by(sim) \%>\%
+  group_map(pvalue_maxcombo) \%>\%
+  unlist()
+mean(p < .025)
 }

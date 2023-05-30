@@ -3,10 +3,11 @@
 #include <algorithm>
 using namespace Rcpp;
 
-//' The Piecewise Exponential Distribution using inverse CDF method in C++
+//' The piecewise exponential distribution using inverse CDF method in C++
 //'
 //' @param n Number of observations to be generated.
-//' @param fail_rate A dataframe containing \code{duration} and \code{rate} variables.
+//' @param fail_rate A data frame containing `duration` and `rate` variables.
+//'
 //' @export
 // [[Rcpp::export]]
 NumericVector rpwexpinvRcpp(int n,
