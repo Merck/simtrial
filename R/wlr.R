@@ -78,7 +78,8 @@
 #'   The stratified Fleming-Harrington weighted logrank test is then computed as:
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
-#' @importFrom tibble tibble
+#' @importFrom tibble tibble as_tibble
+#' @importFrom dplyr left_join
 #'
 #' @export
 #'
