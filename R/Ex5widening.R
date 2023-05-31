@@ -38,7 +38,15 @@
 #'
 #' @keywords datasets
 #'
-#' @references TBD
+#' @references
+#' Lin, Ray S., Ji Lin, Satrajit Roychoudhury, Keaven M. Anderson, Tianle Hu,
+#' Bo Huang, Larry F Leon, Jason J.Z. Liao, Rong Liu, Xiaodong Luo,
+#' Pralay Mukhopadhyay, Rui Qin, Kay Tatsuoka, Xuejing Wang,
+#' Yang Wang, Jian Zhu, Tai-Tsang Chen, Renee Iacona &
+#' Cross-Pharma Non-proportional Hazards Working Group. 2020.
+#' Alternative analysis methods for time to event endpoints under
+#' nonproportional hazards: A comparative analysis.
+#' _Statistics in Biopharmaceutical Research_ 12(2): 187--198.
 #'
 #' @seealso
 #' [Ex1delayedEffect],
