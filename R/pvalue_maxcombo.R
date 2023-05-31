@@ -24,7 +24,7 @@
 #' However, it can also be used to analyze clinical trial data such as
 #' that provided in the ADaM ADTTE format.
 #'
-#' @param z A dataset output from [tenFHcorr()]; see examples.
+#' @param z A dataset output from [wlr()]; see examples.
 #' @param dummy_var A dummy input that allows [dplyr::group_map()] to be used to
 #'   compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the `algorithm` argument

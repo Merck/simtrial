@@ -11,7 +11,7 @@ pvalue_maxcombo(
 )
 }
 \arguments{
-\item{z}{A dataset output from \code{\link[=tenFHcorr]{tenFHcorr()}}; see examples.}
+\item{z}{A dataset output from \code{\link[=wlr]{wlr()}}; see examples.}
 
 \item{dummy_var}{A dummy input that allows \code{\link[dplyr:group_map]{dplyr::group_map()}} to be used to
 compute p-values for multiple simulations.}
