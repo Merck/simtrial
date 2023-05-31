@@ -105,6 +105,7 @@
 #' #     Example 2            #
 #' # ------------------------ #
 #' #' # Use default enrollment and event rates at cut of 100 events
+#' set.seed(123)
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental") %>%
@@ -123,21 +124,21 @@
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental")
 #'
-#' x %>% tenFHcorr(
+#' x %>% wlr(
 #'   rho_gamma = tibble(
 #'     rho = c(0, 0),
 #'     gamma = c(0, 1)
 #'   ),
-#'   corr = FALSE
+#'   return_variance = TRUE
 #' )
 #'
 #' # Off-diagonal element should be variance in following
-#' x %>% tenFHcorr(
+#' x %>% wlr(
 #'   rho_gamma = tibble(
 #'     rho = 0,
 #'     gamma = .5
 #'   ),
-#'   corr = FALSE
+#'   return_variance = TRUE
 #' )
 #'
 #' # Compare off diagonal result with wlr()
@@ -170,10 +171,6 @@ wlr <- function(
 
   if (!("var_o_minus_e" %in% names(x))) {
     stop("wlr: x column names in `wlr()` must contain var_o_minus_e.")
-  }
-
-  if (return_variance + return_variance == 2) {
-    stop("wlr: can't report both covariance and correlation for max combo test.")
   }
 
   if (return_variance + return_corr == 2) {
