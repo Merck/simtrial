@@ -1,9 +1,9 @@
 ---
-title: Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test
+title: Computing p-values for Fleming-Harrington weighted logrank tests and the MaxCombo test
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
-  %\VignetteIndexEntry{Computing p-values for Fleming-Harring weighted logrank tests and the MaxCombo test}
+  %\VignetteIndexEntry{Computing p-values for Fleming-Harrington weighted logrank tests and the MaxCombo test}
   %\VignetteEngine{knitr::rmarkdown} 
 ---
 
