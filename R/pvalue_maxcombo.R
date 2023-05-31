@@ -81,7 +81,7 @@ pvalue_maxcombo <- function(
       nrow(z)
     ),
     corr = z %>%
-      select(starts_with("V")) %>%
+      select(starts_with("v")) %>%
       data.matrix(),
     algorithm = algorithm
   )[1]

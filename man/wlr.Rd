@@ -8,7 +8,8 @@ wlr(
   x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(150) \%>\% counting_process(arm =
     "experimental"),
   rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
-  return_variance = FALSE
+  return_variance = FALSE,
+  return_corr = FALSE
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ per row; Default: \code{tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}.}
 
 \item{return_variance}{A logical flag that, if \code{TRUE}, adds columns
 estimated variance for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
+
+\item{return_corr}{A logical flag that, if \code{TRUE}, adds columns
+estimated correlation for weighted sum of observed minus expected;
 see details; Default: \code{FALSE}.}
 }
 \value{
@@ -77,12 +82,62 @@ The stratified Fleming-Harrington weighted logrank test is then computed as:
 }
 \examples{
 library(tidyr)
-
+# ------------------------ #
+#     Example 1            #
+# ------------------------ #
 # Use default enrollment and event rates at cut at 100 events
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
   counting_process(arm = "experimental")
 
-# Compute logrank (FH(0,0)) and FH(0,1)
-wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
+# Compute logrank FH(0, 1)
+wlr(x, rho_gamma = tibble(rho = 0, gamma = 1))
+wlr(x, rho_gamma = tibble(rho = 0, gamma = 1), return_variance = TRUE)
+
+# Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
+wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
+wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
+wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
+
+# ------------------------ #
+#     Example 2            #
+# ------------------------ #
+#' # Use default enrollment and event rates at cut of 100 events
+x <- sim_pw_surv(n = 200) \%>\%
+  cut_data_by_event(100) \%>\%
+  counting_process(arm = "experimental") \%>\%
+  wlr(rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+
+# Compute p-value for MaxCombo
+library(mvtnorm)
+1 - pmvnorm(
+  lower = rep(min(x$z), nrow(x)),
+  corr = data.matrix(select(x, -c(rho, gamma, z))),
+  algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
+)[1]
+
+# Check that covariance is as expected
+x <- sim_pw_surv(n = 200) \%>\%
+  cut_data_by_event(100) \%>\%
+  counting_process(arm = "experimental")
+
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = c(0, 0),
+    gamma = c(0, 1)
+  ),
+  corr = FALSE
+)
+
+# Off-diagonal element should be variance in following
+x \%>\% tenFHcorr(
+  rho_gamma = tibble(
+    rho = 0,
+    gamma = .5
+  ),
+  corr = FALSE
+)
+
+# Compare off diagonal result with wlr()
+x \%>\% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
 }
