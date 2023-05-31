@@ -18,7 +18,7 @@
 
 #' MaxCombo p-value
 #'
-#' Computes p-values for the MaxCombo test based on output from [tenFHcorr()].
+#' Computes p-values for the MaxCombo test based on output from [wlr()].
 #' This is still in an experimental stage and is intended for use with
 #' the [sim_fixed_n()] trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as

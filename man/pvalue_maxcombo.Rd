@@ -23,7 +23,7 @@ in \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}}.}
 A numeric p-value.
 }
 \description{
-Computes p-values for the MaxCombo test based on output from \code{\link[=tenFHcorr]{tenFHcorr()}}.
+Computes p-values for the MaxCombo test based on output from \code{\link[=wlr]{wlr()}}.
 This is still in an experimental stage and is intended for use with
 the \code{\link[=sim_fixed_n]{sim_fixed_n()}} trial simulation routine.
 However, it can also be used to analyze clinical trial data such as
