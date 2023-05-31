@@ -79,7 +79,7 @@
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
 #' @importFrom tibble tibble as_tibble
-#' @importFrom dplyr left_join
+#' @importFrom dplyr left_join select
 #'
 #' @export
 #'
@@ -116,7 +116,7 @@
 #' library(mvtnorm)
 #' 1 - pmvnorm(
 #'   lower = rep(min(x$z), nrow(x)),
-#'   corr = data.matrix(select(x, -c(rho, gamma, z))),
+#'   corr = data.matrix(dplyr::select(x, -c(rho, gamma, z))),
 #'   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
 #' )[1]
 #'

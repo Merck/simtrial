@@ -113,7 +113,7 @@ x <- sim_pw_surv(n = 200) \%>\%
 library(mvtnorm)
 1 - pmvnorm(
   lower = rep(min(x$z), nrow(x)),
-  corr = data.matrix(select(x, -c(rho, gamma, z))),
+  corr = data.matrix(dplyr::select(x, -c(rho, gamma, z))),
   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
 )[1]
 
