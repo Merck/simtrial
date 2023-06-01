@@ -25,8 +25,6 @@ testthat::test_that("the z values match with the correspondings in wlr", {
   expect_equal(c(z1[1], z1[7:9]), z2, tolerance = 0.00001)
 })
 
-
-
 testthat::test_that("wlr calculated correct correlation value when input a sequence of rho and gamma", {
   set.seed(123)
   y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)

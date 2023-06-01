@@ -84,10 +84,9 @@
 #' @export
 #'
 #' @examples
-#' library(tidyr)
-#' # ------------------------ #
-#' #     Example 1            #
-#' # ------------------------ #
+#' library(dplyr)
+#'
+#' # Example 1
 #' # Use default enrollment and event rates at cut at 100 events
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
@@ -102,10 +101,8 @@
 #' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
 #' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
 #'
-#' # ------------------------ #
-#' #     Example 2            #
-#' # ------------------------ #
-#' #' # Use default enrollment and event rates at cut of 100 events
+#' # Example 2
+#' # Use default enrollment and event rates at cut of 100 events
 #' set.seed(123)
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
@@ -116,7 +113,7 @@
 #' library(mvtnorm)
 #' 1 - pmvnorm(
 #'   lower = rep(min(x$z), nrow(x)),
-#'   corr = data.matrix(dplyr::select(x, -c(rho, gamma, z))),
+#'   corr = data.matrix(select(x, -c(rho, gamma, z))),
 #'   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
 #' )[1]
 #'
@@ -173,14 +170,15 @@ wlr <- function(
     stop("wlr: x column names in `wlr()` must contain var_o_minus_e.")
   }
 
-  if (return_variance + return_corr == 2) {
+  if (return_variance && return_corr) {
     stop("wlr: can't report both covariance and correlation for MaxCombo test.")
   }
 
-  if (return_corr == 1 & n_weight == 1) {
+  if (return_corr && n_weight == 1) {
     stop("wlr: can't report the correlation for a single WLR test.")
   }
-  # build an internal function to compute the Z statistics
+
+  # Build an internal function to compute the Z statistics
   # under a sequence of rho and gamma of WLR.
   foo <- function(x, rho_gamma, return_variance) {
     ans <- rho_gamma
@@ -213,7 +211,8 @@ wlr <- function(
         ans$var[i] <- y$weighted_var
       }
     }
-    return(ans)
+
+    ans
   }
 
   if (n_weight == 1) {
@@ -261,5 +260,5 @@ wlr <- function(
     }
   }
 
-  return(ans)
+  ans
 }

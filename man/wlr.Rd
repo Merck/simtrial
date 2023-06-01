@@ -81,10 +81,9 @@ The stratified Fleming-Harrington weighted logrank test is then computed as:
 }
 }
 \examples{
-library(tidyr)
-# ------------------------ #
-#     Example 1            #
-# ------------------------ #
+library(dplyr)
+
+# Example 1
 # Use default enrollment and event rates at cut at 100 events
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
@@ -99,10 +98,8 @@ wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
 wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
 wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
 
-# ------------------------ #
-#     Example 2            #
-# ------------------------ #
-#' # Use default enrollment and event rates at cut of 100 events
+# Example 2
+# Use default enrollment and event rates at cut of 100 events
 set.seed(123)
 x <- sim_pw_surv(n = 200) \%>\%
   cut_data_by_event(100) \%>\%
@@ -113,7 +110,7 @@ x <- sim_pw_surv(n = 200) \%>\%
 library(mvtnorm)
 1 - pmvnorm(
   lower = rep(min(x$z), nrow(x)),
-  corr = data.matrix(dplyr::select(x, -c(rho, gamma, z))),
+  corr = data.matrix(select(x, -c(rho, gamma, z))),
   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
 )[1]
 
