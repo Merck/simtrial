@@ -91,7 +91,7 @@ digraph boxes_and_diamonds {
   node [shape = box, style = filled, fillcolor = '#d9ead3', label = 'Scenario'] scenario
   node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Generate enrollment\n times'] enrollment
   node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Generate strata'] strata
-  node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Randomize patients'] randomize 
+  node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Randomize patients'] randomize
   node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Generate outcomes'] outcomes
   node [shape = box, style = filled, fillcolor = '#cfe2f3', label = 'Generate next\n trial'] next
 

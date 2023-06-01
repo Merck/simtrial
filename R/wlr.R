@@ -154,7 +154,6 @@ wlr <- function(
     ),
     return_variance = FALSE,
     return_corr = FALSE) {
-
   n_weight <- nrow(rho_gamma)
 
   # Check input failure rate assumptions
@@ -183,7 +182,7 @@ wlr <- function(
   }
   # build an internal function to compute the Z statistics
   # under a sequence of rho and gamma of WLR.
-  foo <- function(x, rho_gamma, return_variance){
+  foo <- function(x, rho_gamma, return_variance) {
     ans <- rho_gamma
 
     xx <- x %>%
@@ -217,17 +216,17 @@ wlr <- function(
     return(ans)
   }
 
-  if(n_weight == 1){
+  if (n_weight == 1) {
     ans <- foo(x, rho_gamma = rho_gamma, return_variance = return_variance)
   } else {
     # Get average rho and gamma for FH covariance matrix
     # We want ave_rho[i,j]   = (rho[i] + rho[j])/2
     # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
     ave_rho <- (matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
-                  matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+      matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
     ) / 2
     ave_gamma <- (matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight) +
-                    matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+      matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
     ) / 2
 
     # Convert back to tibble
@@ -256,7 +255,7 @@ wlr <- function(
       corr_mat <- cov_mat
       colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
       ans <- cbind(rho_gamma, z, as_tibble(corr_mat))
-    } else if (return_corr + return_corr == 0){
+    } else if (return_corr + return_corr == 0) {
       corr_mat <- NULL
       ans <- cbind(rho_gamma, z)
     }
