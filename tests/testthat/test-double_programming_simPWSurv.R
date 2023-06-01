@@ -85,7 +85,7 @@ testthat::test_that("dropout_rate calculated from simulated dataset must be with
   duration <- 300
   drtest <- 0
   for (i in 1:duration) {
-    drtest[i] <- sum(x$dropoutTime <= i & x$dropoutTime > (i - 1)) / 400000
+    drtest[i] <- sum(x$dropout_time <= i & x$dropout_time > (i - 1)) / 400000
   }
   expect_equal(object = drtest, expected = rep(0.001, 300), tolerance = 0.001)
 })

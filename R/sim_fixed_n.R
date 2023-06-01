@@ -37,7 +37,7 @@
 #'   in each block.
 #' @param timing_type A numeric vector determining data cutoffs used;
 #'   see details. Default is to include all available cutoff methods.
-#' @param rho_gamma As in [tenFHcorr()]. A `tibble` with variables
+#' @param rho_gamma As in [wlr()]. A `tibble` with variables
 #'   `rho` and `gamma`, both greater than equal to zero,
 #'   to specify one Fleming-Harrington weighted logrank test per row.
 #' @param seed Optional. Initial seed for simulations.
@@ -255,7 +255,7 @@ sim_fixed_n <- function(
     } else {
       z <- d %>%
         counting_process(arm = "experimental") %>%
-        tenFHcorr(rho_gamma = rho_gamma, corr = TRUE)
+        wlr(rho_gamma = rho_gamma, return_corr = TRUE)
     }
 
     ans <- tibble(

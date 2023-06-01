@@ -27,6 +27,9 @@
 #' @param return_variance A logical flag that, if `TRUE`, adds columns
 #'   estimated variance for weighted sum of observed minus expected;
 #'   see details; Default: `FALSE`.
+#' @param return_corr A logical flag that, if `TRUE`, adds columns
+#'   estimated correlation for weighted sum of observed minus expected;
+#'   see details; Default: `FALSE`.
 #'
 #' @return A `tibble` with `rho_gamma` as input and the FH test statistic
 #'   for the data in `x`. (`z`, a directional square root of the usual
@@ -75,20 +78,69 @@
 #'   The stratified Fleming-Harrington weighted logrank test is then computed as:
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
-#' @importFrom tibble tibble
+#' @importFrom tibble tibble as_tibble
+#' @importFrom dplyr left_join select
 #'
 #' @export
 #'
 #' @examples
-#' library(tidyr)
+#' library(dplyr)
 #'
+#' # Example 1
 #' # Use default enrollment and event rates at cut at 100 events
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental")
 #'
-#' # Compute logrank (FH(0,0)) and FH(0,1)
-#' wlr(x, rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)))
+#' # Compute logrank FH(0, 1)
+#' wlr(x, rho_gamma = tibble(rho = 0, gamma = 1))
+#' wlr(x, rho_gamma = tibble(rho = 0, gamma = 1), return_variance = TRUE)
+#'
+#' # Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
+#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
+#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
+#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
+#'
+#' # Example 2
+#' # Use default enrollment and event rates at cut of 100 events
+#' set.seed(123)
+#' x <- sim_pw_surv(n = 200) %>%
+#'   cut_data_by_event(100) %>%
+#'   counting_process(arm = "experimental") %>%
+#'   wlr(rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+#'
+#' # Compute p-value for MaxCombo
+#' library(mvtnorm)
+#' 1 - pmvnorm(
+#'   lower = rep(min(x$z), nrow(x)),
+#'   corr = data.matrix(select(x, -c(rho, gamma, z))),
+#'   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
+#' )[1]
+#'
+#' # Check that covariance is as expected
+#' x <- sim_pw_surv(n = 200) %>%
+#'   cut_data_by_event(100) %>%
+#'   counting_process(arm = "experimental")
+#'
+#' x %>% wlr(
+#'   rho_gamma = tibble(
+#'     rho = c(0, 0),
+#'     gamma = c(0, 1)
+#'   ),
+#'   return_variance = TRUE
+#' )
+#'
+#' # Off-diagonal element should be variance in following
+#' x %>% wlr(
+#'   rho_gamma = tibble(
+#'     rho = 0,
+#'     gamma = .5
+#'   ),
+#'   return_variance = TRUE
+#' )
+#'
+#' # Compare off diagonal result with wlr()
+#' x %>% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
 wlr <- function(
     x = sim_pw_surv(n = 200) %>%
       cut_data_by_event(150) %>%
@@ -97,7 +149,10 @@ wlr <- function(
       rho = c(0, 0, 1, 1),
       gamma = c(0, 1, 0, 1)
     ),
-    return_variance = FALSE) {
+    return_variance = FALSE,
+    return_corr = FALSE) {
+  n_weight <- nrow(rho_gamma)
+
   # Check input failure rate assumptions
   if (!is.data.frame(x)) {
     stop("wlr: x in `wlr()` must be a data frame.")
@@ -115,35 +170,95 @@ wlr <- function(
     stop("wlr: x column names in `wlr()` must contain var_o_minus_e.")
   }
 
-  # Get minimal columns from counting_process item
-  xx <- x %>%
-    ungroup() %>%
-    select(s, o_minus_e, var_o_minus_e)
-
-  rho_gamma$z <- rep(0, nrow(rho_gamma))
-
-  if (return_variance) {
-    rho_gamma$Var <- rep(0, nrow(rho_gamma))
+  if (return_variance && return_corr) {
+    stop("wlr: can't report both covariance and correlation for MaxCombo test.")
   }
 
-  for (i in 1:nrow(rho_gamma)) {
-    y <- xx %>%
-      mutate(
-        weight = s^rho_gamma$rho[i] * (1 - s)^rho_gamma$gamma[i],
-        weighted_o_minus_e = weight * o_minus_e,
-        weighted_var = weight^2 * var_o_minus_e
-      ) %>%
-      summarize(
-        weighted_var = sum(weighted_var),
-        weighted_o_minus_e = sum(weighted_o_minus_e)
-      )
+  if (return_corr && n_weight == 1) {
+    stop("wlr: can't report the correlation for a single WLR test.")
+  }
 
-    rho_gamma$z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
+  # Build an internal function to compute the Z statistics
+  # under a sequence of rho and gamma of WLR.
+  foo <- function(x, rho_gamma, return_variance) {
+    ans <- rho_gamma
+
+    xx <- x %>%
+      ungroup() %>%
+      select(s, o_minus_e, var_o_minus_e)
+
+    ans$z <- rep(0, nrow(rho_gamma))
 
     if (return_variance) {
-      rho_gamma$Var[i] <- y$weighted_var
+      ans$var <- rep(0, nrow(rho_gamma))
+    }
+
+    for (i in 1:nrow(rho_gamma)) {
+      y <- xx %>%
+        mutate(
+          weight = s^rho_gamma$rho[i] * (1 - s)^rho_gamma$gamma[i],
+          weighted_o_minus_e = weight * o_minus_e,
+          weighted_var = weight^2 * var_o_minus_e
+        ) %>%
+        summarize(
+          weighted_var = sum(weighted_var),
+          weighted_o_minus_e = sum(weighted_o_minus_e)
+        )
+
+      ans$z[i] <- y$weighted_o_minus_e / sqrt(y$weighted_var)
+
+      if (return_variance) {
+        ans$var[i] <- y$weighted_var
+      }
+    }
+
+    ans
+  }
+
+  if (n_weight == 1) {
+    ans <- foo(x, rho_gamma = rho_gamma, return_variance = return_variance)
+  } else {
+    # Get average rho and gamma for FH covariance matrix
+    # We want ave_rho[i,j]   = (rho[i] + rho[j])/2
+    # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
+    ave_rho <- (matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
+      matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+    ) / 2
+    ave_gamma <- (matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight) +
+      matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+    ) / 2
+
+    # Convert back to tibble
+    rg_new <- tibble(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
+    # Get unique values of rho, gamma
+    rg_unique <- rg_new %>% unique()
+
+    # Compute FH statistic for unique values
+    # and merge back to full set of pairs
+    rg_fh <- rg_new %>% left_join(
+      foo(x, rho_gamma = rg_unique, return_variance = TRUE),
+      by = c("rho" = "rho", "gamma" = "gamma")
+    )
+
+    # Get z statistics for input rho, gamma combinations
+    z <- rg_fh$z[(0:(n_weight - 1)) * n_weight + 1:n_weight]
+
+    # Get correlation matrix
+    cov_mat <- matrix(rg_fh$var, nrow = n_weight, byrow = TRUE)
+
+    if (return_corr) {
+      corr_mat <- stats::cov2cor(cov_mat)
+      colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
+      ans <- cbind(rho_gamma, z, as_tibble(corr_mat))
+    } else if (return_variance) {
+      corr_mat <- cov_mat
+      colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
+      ans <- cbind(rho_gamma, z, as_tibble(corr_mat))
+    } else if (return_corr + return_corr == 0) {
+      corr_mat <- NULL
+      ans <- cbind(rho_gamma, z)
     }
   }
 
-  rho_gamma
+  ans
 }

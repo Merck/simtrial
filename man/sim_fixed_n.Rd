@@ -44,7 +44,7 @@ in each block.}
 \item{timing_type}{A numeric vector determining data cutoffs used;
 see details. Default is to include all available cutoff methods.}
 
-\item{rho_gamma}{As in \code{\link[=tenFHcorr]{tenFHcorr()}}. A \code{tibble} with variables
+\item{rho_gamma}{As in \code{\link[=wlr]{wlr()}}. A \code{tibble} with variables
 \code{rho} and \code{gamma}, both greater than equal to zero,
 to specify one Fleming-Harrington weighted logrank test per row.}
 

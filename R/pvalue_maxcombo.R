@@ -18,13 +18,13 @@
 
 #' MaxCombo p-value
 #'
-#' Computes p-values for the MaxCombo test based on output from [tenFHcorr()].
+#' Computes p-values for the MaxCombo test based on output from [wlr()].
 #' This is still in an experimental stage and is intended for use with
 #' the [sim_fixed_n()] trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as
 #' that provided in the ADaM ADTTE format.
 #'
-#' @param z A dataset output from [tenFHcorr()]; see examples.
+#' @param z A dataset output from [wlr()]; see examples.
 #' @param dummy_var A dummy input that allows [dplyr::group_map()] to be used to
 #'   compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the `algorithm` argument
@@ -81,7 +81,7 @@ pvalue_maxcombo <- function(
       nrow(z)
     ),
     corr = z %>%
-      select(starts_with("V")) %>%
+      select(starts_with("v")) %>%
       data.matrix(),
     algorithm = algorithm
   )[1]
