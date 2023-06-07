@@ -180,7 +180,7 @@ wlr <- function(
 
   # Build an internal function to compute the Z statistics
   # under a sequence of rho and gamma of WLR.
-  foo <- function(x, rho_gamma, return_variance) {
+  wlr_z_stat <- function(x, rho_gamma, return_variance) {
     ans <- rho_gamma
 
     xx <- x %>%
@@ -216,7 +216,7 @@ wlr <- function(
   }
 
   if (n_weight == 1) {
-    ans <- foo(x, rho_gamma = rho_gamma, return_variance = return_variance)
+    ans <- wlr_z_stat(x, rho_gamma = rho_gamma, return_variance = return_variance)
   } else {
     # Get average rho and gamma for FH covariance matrix
     # We want ave_rho[i,j]   = (rho[i] + rho[j])/2
@@ -236,7 +236,7 @@ wlr <- function(
     # Compute FH statistic for unique values
     # and merge back to full set of pairs
     rg_fh <- rg_new %>% left_join(
-      foo(x, rho_gamma = rg_unique, return_variance = TRUE),
+      wlr_z_stat(x, rho_gamma = rg_unique, return_variance = TRUE),
       by = c("rho" = "rho", "gamma" = "gamma")
     )
 
