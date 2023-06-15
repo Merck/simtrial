@@ -169,48 +169,48 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-in"><span><span class="co"># Example 1</span></span></span>
 <span class="r-in"><span><span class="co"># Show output structure</span></span></span>
 <span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span>n_sim <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    event      ln_hr          z                              cut duration sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    104 -0.5788252 -2.9204780                 Planned duration 30.00000   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    350 -0.4387413 -4.0820277                  Targeted events 66.62191   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    375 -0.4406427 -4.2470329                Minimum follow-up 72.19401   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    350 -0.4387413 -4.0820277 Max(planned duration, event cut) 66.62191   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    375 -0.4406427 -4.2470329    Max(min follow-up, event cut) 72.19401   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    106 -0.2680078 -1.3757929                 Planned duration 30.00000   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    350 -0.3708402 -3.4551743                  Targeted events 68.02986   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    367 -0.3627574 -3.4581769                Minimum follow-up 71.29102   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    350 -0.3708402 -3.4551743 Max(planned duration, event cut) 68.02986   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   367 -0.3627574 -3.4581769    Max(min follow-up, event cut) 71.29102   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    87  0.1261886  0.5876387                 Planned duration 30.00000   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   350 -0.2903981 -2.7045996                  Targeted events 72.29771   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   358 -0.3169261 -2.9834934                Minimum follow-up 74.44897   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   350 -0.2903981 -2.7045996 Max(planned duration, event cut) 72.29771   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   358 -0.3169261 -2.9834934    Max(min follow-up, event cut) 74.44897   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    event       ln_hr          z                              cut duration sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    103 -0.06118155 -0.3101271                 Planned duration 30.00000   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    350 -0.32260931 -3.0090096                  Targeted events 68.49723   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    344 -0.31957461 -2.9547652                Minimum follow-up 67.40938   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    350 -0.32260931 -3.0090096 Max(planned duration, event cut) 68.49723   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    350 -0.32260931 -3.0090096    Max(min follow-up, event cut) 68.49723   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     95 -0.08368019 -0.4071387                 Planned duration 30.00000   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    350 -0.28813322 -2.6871291                  Targeted events 73.16240   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    352 -0.30190097 -2.8228615                Minimum follow-up 74.41489   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    350 -0.28813322 -2.6871291 Max(planned duration, event cut) 73.16240   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   352 -0.30190097 -2.8228615    Max(min follow-up, event cut) 74.41489   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   112 -0.47111925 -2.4750743                 Planned duration 30.00000   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   350 -0.31226092 -2.9104192                  Targeted events 69.13527   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   366 -0.30058024 -2.8636735                Minimum follow-up 74.49648   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   350 -0.31226092 -2.9104192 Max(planned duration, event cut) 69.13527   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   366 -0.30058024 -2.8636735    Max(min follow-up, event cut) 74.49648   3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Example with 2 tests: logrank and FH(0,1)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span>n_sim <span class="op">=</span> <span class="fl">1</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    event      ln_hr rho gamma         z        v1        v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    122 -0.3341032   0     0 -1.834259 1.0000000 0.8398507</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    122 -0.3341032   0     1 -2.052778 0.8398507 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    350 -0.3300514   0     0 -3.070485 1.0000000 0.8540881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    350 -0.3300514   0     1 -3.539696 0.8540881 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    362 -0.3249840   0     0 -3.073301 1.0000000 0.8557963</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    362 -0.3249840   0     1 -3.488670 0.8557963 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    350 -0.3300514   0     0 -3.070485 1.0000000 0.8540881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    350 -0.3300514   0     1 -3.539696 0.8540881 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    362 -0.3249840   0     0 -3.073301 1.0000000 0.8557963</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   362 -0.3249840   0     1 -3.488670 0.8557963 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    event      ln_hr rho gamma          z        v1        v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     85 -0.1393744   0     0 -0.6417388 1.0000000 0.8368133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     85 -0.1393744   0     1 -1.1199764 0.8368133 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    350 -0.3393739   0     0 -3.1553317 1.0000000 0.8537828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    350 -0.3393739   0     1 -3.4556782 0.8537828 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    347 -0.3451492   0     0 -3.1947955 1.0000000 0.8533175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    347 -0.3451492   0     1 -3.5367105 0.8533175 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    350 -0.3393739   0     0 -3.1553317 1.0000000 0.8537828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    350 -0.3393739   0     1 -3.4556782 0.8537828 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    350 -0.3393739   0     0 -3.1553317 1.0000000 0.8537828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   350 -0.3393739   0     1 -3.4556782 0.8537828 1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 cut duration sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                  Planned duration 30.00000   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                  Planned duration 30.00000   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   Targeted events 68.48284   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   Targeted events 68.48284   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 Minimum follow-up 71.05942   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Minimum follow-up 71.05942   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Max(planned duration, event cut) 68.48284   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Max(planned duration, event cut) 68.48284   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Max(min follow-up, event cut) 71.05942   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    Max(min follow-up, event cut) 71.05942   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   Targeted events 79.25752   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   Targeted events 79.25752   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 Minimum follow-up 78.66573   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Minimum follow-up 78.66573   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Max(planned duration, event cut) 79.25752   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Max(planned duration, event cut) 79.25752   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Max(min follow-up, event cut) 79.25752   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    Max(min follow-up, event cut) 79.25752   1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 3</span></span></span>
 <span class="r-in"><span><span class="co"># Power by test</span></span></span>
@@ -230,10 +230,10 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   cut, rho [2]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut                             rho gamma `mean(z &lt;= qnorm(0.025))`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Max(min follow-up, event cut)     0     0                      0.93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Max(min follow-up, event cut)     0     1                      0.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Targeted events                   0     0                      0.93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Targeted events                   0     1                      0.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Max(min follow-up, event cut)     0     0                      0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Max(min follow-up, event cut)     0     1                      0.97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Targeted events                   0     0                      0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Targeted events                   0     1                      0.97</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -243,7 +243,7 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.98</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># MaxCombo estimate for targeted events cutoff</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -253,7 +253,7 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">.025</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.97</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 3</span></span></span>
 <span class="r-in"><span><span class="co"># Use two cores</span></span></span>
