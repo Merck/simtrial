@@ -51,11 +51,12 @@ Suggests:
     gsDesign,
     knitr,
     markdown,
-    modestWLRT,
     rmarkdown,
     stringr,
     survMisc,
     testthat
+Remotes:
+    modestWLRT
 LinkingTo:
     Rcpp
 Remotes:
