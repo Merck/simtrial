@@ -55,8 +55,6 @@ Suggests:
     stringr,
     survMisc,
     testthat
-Remotes:
-    modestWLRT
 LinkingTo:
     Rcpp
 Remotes:
