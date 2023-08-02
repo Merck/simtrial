@@ -40,7 +40,6 @@
 #' @param rho_gamma As in [wlr()]. A `tibble` with variables
 #'   `rho` and `gamma`, both greater than equal to zero,
 #'   to specify one Fleming-Harrington weighted logrank test per row.
-#' @param seed Optional. Initial seed for simulations.
 #'
 #' @details
 #' `timing_type` has up to 5 elements indicating different options
@@ -68,13 +67,15 @@
 #' then columns `rho` and `gamma` are also included.
 #'
 #' @importFrom tibble tibble
+#' @importFrom doFuture "%dofuture%"
+#' @importFrom future plan
 #'
 #' @export
 #'
 #' @examples
 #' library(tibble)
 #' library(dplyr)
-#' library(doParallel)
+#' library(future)
 #'
 #' # Example 1
 #' # Show output structure
@@ -117,10 +118,10 @@
 #'
 #' # Example 3
 #' # Use two cores
-#' registerDoParallel(2)
-#' sim_fixed_n(n_sim = 10, seed = 2022)
-#' stopImplicitCluster()
-#' registerDoSEQ()
+#' set.seed(2023)
+#' plan("multisession", workers=2)
+#' sim_fixed_n(n_sim = 10)
+#' plan("sequential")
 sim_fixed_n <- function(
     n_sim = 1000,
     sample_size = 500, # Sample size
@@ -145,8 +146,7 @@ sim_fixed_n <- function(
     timing_type = 1:5,
     # Default is to to logrank testing, but one or more Fleming-Harrington tests
     # can be specified
-    rho_gamma = tibble(rho = 0, gamma = 0),
-    seed = NULL) {
+    rho_gamma = tibble(rho = 0, gamma = 0)) {
   # Check input values
   # Check input enrollment rate assumptions
   if (!("duration" %in% names(enroll_rate))) {
@@ -236,16 +236,6 @@ sim_fixed_n <- function(
     stop("sim_fixed_n: sample_size in `sim_fixed_n()` must be positive.")
   }
 
-  # Check seed
-  if (is.null(seed)) {
-    setSeed <- FALSE
-  } else {
-    if (!is.numeric(seed)) {
-      stop("sim_fixed_n: seed in `sim_fixed_n()` must be a number.")
-    }
-    setSeed <- TRUE
-  }
-
   n_stratum <- nrow(stratum)
 
   # Build a function to calculate z and log-hr
@@ -261,8 +251,8 @@ sim_fixed_n <- function(
     ans <- tibble(
       event = sum(d$event),
       ln_hr = ifelse(n_stratum > 1,
-        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
-        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
+                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
       ) %>% as.numeric()
     )
 
@@ -279,17 +269,24 @@ sim_fixed_n <- function(
   dr <- temp$dropout_rate
   results <- NULL
 
-  # Parallel
-  `%op%` <- get_operator()
+  # message for backends
+  if (!is(plan(), "sequential")){
+    # future backend
+    message("Using ", nbrOfWorkers(), " cores with backend ", attr(plan("list")[[1]], "class")[2])
+  } else if (foreach::getDoParWorkers() > 1) {
+    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
+    message("Warning: ")
+    message("doFuture may exhibit suboptimal performance when using a doParallel backend.")
+  } else {
+    message("Backend uses sequential processing.")
+  }
+
   results <- foreach::foreach(
     i = seq_len(n_sim),
     .combine = "rbind",
-    .errorhandling = "pass"
-  ) %op% {
-    # Set random seed
-    if (setSeed) {
-      set.seed(seed + i - 1)
-    }
+    .errorhandling = "pass",
+    .options.future = list(seed=TRUE)
+  ) %dofuture% {
 
     # Generate piecewise data
     sim <- sim_pw_surv(
@@ -443,14 +440,3 @@ sim_fixed_n <- function(
   return(results)
 }
 
-# Get operator (parallel or serial)
-get_operator <- function() {
-  is_par <- foreach::getDoParWorkers() > 1
-  if (is_par) {
-    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
-    res <- foreach::`%dopar%`
-  } else {
-    res <- foreach::`%do%`
-  }
-  res
-}
