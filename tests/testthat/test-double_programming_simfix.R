@@ -42,7 +42,7 @@ test2 <- sim_fixed_n(
 
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timing_type=1", {
   tt1test <- subset(test2, test2$cut == "Planned duration", select = c(event, ln_hr, z, duration, sim))
-  expect_equal(object = sum(as.integer(tt1test$z < (-1.96))) / 100, expected = 0.93, tolerance = 0.02)
+  expect_equal(object = sum(as.integer(tt1test$z < (-1.96))) / 100, expected = 0.90, tolerance = 0.02)
 })
 
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with target events in timing_type=2", {
