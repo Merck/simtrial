@@ -15,8 +15,7 @@ sim_fixed_n(
   total_duration = 30,
   block = rep(c("experimental", "control"), 2),
   timing_type = 1:5,
-  rho_gamma = tibble(rho = 0, gamma = 0),
-  seed = NULL
+  rho_gamma = tibble(rho = 0, gamma = 0)
 )
 }
 \arguments{
@@ -47,8 +46,6 @@ see details. Default is to include all available cutoff methods.}
 \item{rho_gamma}{As in \code{\link[=wlr]{wlr()}}. A \code{tibble} with variables
 \code{rho} and \code{gamma}, both greater than equal to zero,
 to specify one Fleming-Harrington weighted logrank test per row.}
-
-\item{seed}{Optional. Initial seed for simulations.}
 }
 \value{
 A \code{tibble} including columns:
@@ -87,7 +84,7 @@ for data cutoff:
 \examples{
 library(tibble)
 library(dplyr)
-library(doParallel)
+library(future)
 
 # Example 1
 # Show output structure
@@ -130,8 +127,8 @@ mean(p < .025)
 
 # Example 3
 # Use two cores
-registerDoParallel(2)
-sim_fixed_n(n_sim = 10, seed = 2022)
-stopImplicitCluster()
-registerDoSEQ()
+set.seed(2023)
+plan("multisession", workers=2)
+sim_fixed_n(n_sim = 10)
+plan("sequential")
 }

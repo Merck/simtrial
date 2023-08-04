@@ -38,6 +38,7 @@ Other contributors:
   \item Yalin Zhu [contributor]
   \item Heng Zhou [contributor]
   \item Amin Shirazi [contributor]
+  \item Cole Manschot [contributor]
   \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates [copyright holder]
 }
 

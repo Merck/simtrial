@@ -30,6 +30,7 @@ test_that("Validation passed for the situation of single stratum", {
 # Test 2: for the situation of multiple stratum ####
 
 test_that("Validation passed for the situation of multiple stratum", {
+  set.seed(1)
   x <- sim_pw_surv(
     n = 200,
     # 2 stratum,30% and 70% prevalence
