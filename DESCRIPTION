@@ -41,6 +41,7 @@ Imports:
     foreach,
     future,
     magrittr,
+    methods,
     mvtnorm,
     survival,
     tibble,
