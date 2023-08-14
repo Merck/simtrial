@@ -69,6 +69,7 @@
 #' @importFrom tibble tibble
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future plan
+#' @importFrom methods is
 #'
 #' @export
 #'
