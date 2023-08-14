@@ -120,7 +120,7 @@
 #' # Example 3
 #' # Use two cores
 #' set.seed(2023)
-#' plan("multisession", workers=2)
+#' plan("multisession", workers = 2)
 #' sim_fixed_n(n_sim = 10)
 #' plan("sequential")
 sim_fixed_n <- function(
@@ -252,8 +252,8 @@ sim_fixed_n <- function(
     ans <- tibble(
       event = sum(d$event),
       ln_hr = ifelse(n_stratum > 1,
-                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
-                     survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
+        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
       ) %>% as.numeric()
     )
 
@@ -271,7 +271,7 @@ sim_fixed_n <- function(
   results <- NULL
 
   # message for backends
-  if (!is(plan(), "sequential")){
+  if (!is(plan(), "sequential")) {
     # future backend
     message("Using ", nbrOfWorkers(), " cores with backend ", attr(plan("list")[[1]], "class")[2])
   } else if (foreach::getDoParWorkers() > 1) {
@@ -286,9 +286,8 @@ sim_fixed_n <- function(
     i = seq_len(n_sim),
     .combine = "rbind",
     .errorhandling = "pass",
-    .options.future = list(seed=TRUE)
+    .options.future = list(seed = TRUE)
   ) %dofuture% {
-
     # Generate piecewise data
     sim <- sim_pw_surv(
       n = sample_size,
@@ -440,4 +439,3 @@ sim_fixed_n <- function(
 
   return(results)
 }
-
