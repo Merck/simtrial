@@ -53,7 +53,7 @@
 #'   (2 and 3).
 #'
 #' @return
-#' A `tibble` including columns:
+#' A data frame including columns:
 #' - `event`: Event count.
 #' - `ln_hr`: Log-hazard ratio.
 #' - `z`: Normal test statistic; < 0 favors experimental.
@@ -67,6 +67,7 @@
 #' then columns `rho` and `gamma` are also included.
 #'
 #' @importFrom tibble tibble
+#' @importFrom data.table ":=" rbindlist setDF
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future plan
 #' @importFrom methods is
@@ -239,28 +240,6 @@ sim_fixed_n <- function(
 
   n_stratum <- nrow(stratum)
 
-  # Build a function to calculate z and log-hr
-  doAnalysis <- function(d, rho_gamma, n_stratum) {
-    if (nrow(rho_gamma) == 1) {
-      z <- tibble(z = (d %>% counting_process(arm = "experimental") %>% wlr(rho_gamma = rho_gamma))$z)
-    } else {
-      z <- d %>%
-        counting_process(arm = "experimental") %>%
-        wlr(rho_gamma = rho_gamma, return_corr = TRUE)
-    }
-
-    ans <- tibble(
-      event = sum(d$event),
-      ln_hr = ifelse(n_stratum > 1,
-        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients,
-        survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
-      ) %>% as.numeric()
-    )
-
-    ans <- cbind(ans, z)
-    return(ans)
-  }
-
   # Compute minimum planned follow-up time
   minFollow <- max(0, total_duration - sum(enroll_rate$duration))
 
@@ -299,7 +278,7 @@ sim_fixed_n <- function(
     )
 
     # Study date that targeted event rate achieved
-    tedate <- sim %>% get_cut_date_by_event(target_event)
+    tedate <- get_cut_date_by_event(sim, target_event)
 
     # Study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enroll_time) + minFollow
@@ -342,100 +321,91 @@ sim_fixed_n <- function(
 
     # Total duration cutoff
     if (tests[1]) {
-      d <- sim %>% cut_data_by_date(total_duration)
-      r1 <- d %>% doAnalysis(rho_gamma, n_stratum)
+      d <- cut_data_by_date(sim, total_duration)
+      r1 <- doAnalysis(d, rho_gamma, n_stratum)
     }
 
     # Targeted events cutoff
     if (tests[2]) {
-      d <- sim %>% cut_data_by_date(tedate)
-      r2 <- d %>% doAnalysis(rho_gamma, n_stratum)
+      d <- cut_data_by_date(sim, tedate)
+      r2 <- doAnalysis(d, rho_gamma, n_stratum)
     }
 
     # Minimum follow-up cutoff
     if (tests[3]) {
-      d <- sim %>% cut_data_by_date(tmfdate)
-      r3 <- d %>% doAnalysis(rho_gamma, n_stratum)
+      d <- cut_data_by_date(sim, tmfdate)
+      r3 <- doAnalysis(d, rho_gamma, n_stratum)
     }
 
-    addit <- NULL
+    addit <- list()
     # Planned duration cutoff
     if (1 %in% timing_type) {
-      addit <- rbind(
-        addit,
-        r1 %>% mutate(
-          cut = "Planned duration",
-          duration = total_duration
-        )
-      )
+      rtemp <- cbind(r1, cut = "Planned duration", duration = total_duration)
+      addit <- c(addit, list(rtemp))
     }
 
     # Targeted events cutoff
     if (2 %in% timing_type) {
-      addit <- rbind(
-        addit,
-        r2 %>% mutate(
-          cut = "Targeted events",
-          duration = tedate
-        )
-      )
+      rtemp <- cbind(r2, cut = "Targeted events", duration = tedate)
+      addit <- c(addit, list(rtemp))
     }
 
     # Minimum follow-up duration target
     if (3 %in% timing_type) {
-      addit <- rbind(
-        addit,
-        r3 %>% mutate(
-          cut = "Minimum follow-up",
-          duration = tmfdate
-        )
-      )
+      rtemp <- cbind(r3, cut = "Minimum follow-up", duration = tmfdate)
+      addit <- c(addit, list(rtemp))
     }
 
     # Max of planned duration, targeted events
     if (4 %in% timing_type) {
       if (tedate > total_duration) {
-        addit <- rbind(
-          addit,
-          r2 %>% mutate(
-            cut = "Max(planned duration, event cut)",
-            duration = tedate
-          )
-        )
+        rtemp <- cbind(r2, cut = "Max(planned duration, event cut)", duration = tedate)
+        addit <- c(addit, list(rtemp))
       } else {
-        addit <- rbind(
-          addit,
-          r1 %>% mutate(
-            cut = "Max(planned duration, event cut)",
-            duration = total_duration
-          )
-        )
+        rtemp <- cbind(r1, cut = "Max(planned duration, event cut)", duration = total_duration)
+        addit <- c(addit, list(rtemp))
       }
     }
 
     # Max of minimum follow-up, targeted events
     if (5 %in% timing_type) {
       if (tedate > tmfdate) {
-        addit <- rbind(
-          addit,
-          r2 %>% mutate(
-            cut = "Max(min follow-up, event cut)",
-            duration = tedate
-          )
-        )
+        rtemp <- cbind(r2, cut = "Max(min follow-up, event cut)", duration = tedate)
+        addit <- c(addit, list(rtemp))
       } else {
-        addit <- rbind(
-          addit,
-          r3 %>% mutate(
-            cut = "Max(min follow-up, event cut)",
-            duration = tmfdate
-          )
-        )
+        rtemp <- cbind(r3, cut = "Max(min follow-up, event cut)", duration = tmfdate)
+        addit <- c(addit, list(rtemp))
       }
     }
 
-    addit %>% mutate(sim = i)
+    results_sim <- rbindlist(addit)
+    results_sim[, sim := i]
+    setDF(results_sim)
+    return(results_sim)
   }
 
   return(results)
+}
+
+# Build a function to calculate z and log-hr
+doAnalysis <- function(d, rho_gamma, n_stratum) {
+  if (nrow(rho_gamma) == 1) {
+    tmp <- counting_process(d, arm = "experimental")
+    tmp <- wlr(tmp, rho_gamma = rho_gamma)
+    z <- data.frame(z = tmp$z)
+  } else {
+    tmp <- counting_process(d, arm = "experimental")
+    z <- wlr(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
+  }
+
+  event <- sum(d$event)
+  if (n_stratum > 1) {
+    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients
+  } else {
+    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+  }
+  ln_hr <- as.numeric(ln_hr)
+
+  ans <- cbind(event, ln_hr, z)
+  return(ans)
 }

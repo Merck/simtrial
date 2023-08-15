@@ -35,9 +35,7 @@
 #'
 #' @return A vector of random enrollment times.
 #'
-#' @importFrom tibble tibble
-#' @importFrom dplyr mutate row_number group_by
-#' @importFrom tidyr expand
+#' @importFrom data.table ":=" .N as.data.table last
 #'
 #' @export
 #'
@@ -89,15 +87,12 @@ rpw_enroll <- function(
   }
 
   # Build `y` summarizes the start/end time, period order, etc.
-  y <- enroll_rate %>%
-    mutate(
-      period = row_number(),
-      finish = cumsum(duration),
-      lambda = duration * rate,
-      origin = dplyr::lag(finish, default = 0)
-    ) %>%
-    group_by(period) %>%
-    mutate(N = stats::rpois(n = 1, lambda = lambda))
+  y <- as.data.table(enroll_rate)
+  y[, period := seq_len(.N)]
+  y[, finish := cumsum(duration)]
+  y[, lambda := duration * rate]
+  y[, origin := c(0, finish[-length(finish)])]
+  y[, N := stats::rpois(n = .N, lambda = lambda)]
 
   # Deal with extreme cases where none randomized in fixed intervals
   if (sum(y$N) == 0) {
@@ -106,18 +101,18 @@ rpw_enroll <- function(
       return(ans)
     }
 
-    if (dplyr::last(enroll_rate$rate) <= 0) {
+    if (last(enroll_rate$rate) <= 0) {
       # Stop with error message if enrollment has not finished but enrollment rate for last period is less or equal with 0
       stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
     } else {
       # Otherwise, return inter-arrival exponential times
-      ans <- cumsum(stats::rexp(n = n, rate = dplyr::last(enroll_rate$rate))) + dplyr::last(y$finish)
+      ans <- cumsum(stats::rexp(n = n, rate = last(enroll_rate$rate))) + last(y$finish)
       return(ans)
     }
   }
 
   # Generate sorted uniform observations for Poisson count for each interval
-  z <- expand(y, enroll_time = sort(stats::runif(n = N, min = origin, max = finish)))
+  z <- y[, .(enroll_time = sort(stats::runif(n = N, min = origin, max = finish))), by = "period"]
 
   # If n not specified, return generated times
   if (is.null(n)) {
@@ -136,14 +131,14 @@ rpw_enroll <- function(
   n_add <- n - nrow(z)
   # Stop with error message if enrollment has not finished but
   # enrollment rate for last period is less or equal with 0
-  if (dplyr::last(enroll_rate$rate) <= 0) {
+  if (last(enroll_rate$rate) <= 0) {
     stop("rpw_enroll: please specify > 0 enrollment rate for the last period; otherwise enrollment cannot finish.")
   }
   # Otherwise, return inter-arrival exponential times
   else {
     ans <- c(
       z$enroll_time,
-      cumsum(stats::rexp(n_add, rate = dplyr::last(enroll_rate$rate))) + dplyr::last(y$finish)
+      cumsum(stats::rexp(n_add, rate = last(enroll_rate$rate))) + last(y$finish)
     )
     return(ans)
   }

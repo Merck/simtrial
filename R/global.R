@@ -21,43 +21,46 @@
 
 utils::globalVariables(
   c(
-    "atrisk",
-    "Count",
+    ".",
+    "Ex1delayedEffect",
+    "N",
     "cte",
-    "dropoutRate",
-    "dropoutTime",
-    "enrollTime",
+    "dropout_rate",
+    "dropout_time",
+    "duration",
+    "enroll_time",
+    "event",
     "eventCount",
     "events",
-    "Ex1delayedEffect",
     "fail",
-    "fail_rate",
     "fail_time",
-    "hr",
-    "duration",
-    "enrollTime",
-    "event",
     "finish",
+    "hr",
+    "i",
     "lambda",
+    "max_weight",
     "mtte",
-    "N",
-    "OminusE",
+    "n_event_tol",
+    "n_risk_tol",
+    "n_risk_trt",
+    "nbrOfWorkers",
+    "o_minus_e",
     "one",
     "origin",
     "period",
     "rate",
     "s",
-    "S",
     "status",
     "stratum",
     "time",
     "treatment",
     "tte",
-    "txevents",
-    "Var",
-    "w",
-    "wOminusE",
-    "wVar",
-    "txatrisk"
+    "var_o_minus_e"
   )
 )
+
+# Workaround to remove `R CMD check` NOTE "All declared Imports should be used."
+# https://r-pkgs.org/dependencies-in-practice.html#how-to-not-use-a-package-in-imports
+ignore_unused_imports <- function() {
+  utils::globalVariables
+}

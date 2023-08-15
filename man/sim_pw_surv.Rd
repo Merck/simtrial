@@ -34,7 +34,7 @@ note that treatments need to be the same as input in block.}
 note that treatments need to be the same as input in block.}
 }
 \value{
-A \code{tibble} with the following variables for each observation:
+A data frame with the following variables for each observation:
 \itemize{
 \item \code{stratum}.
 \item \code{enroll_time}: Enrollment time for the observation.

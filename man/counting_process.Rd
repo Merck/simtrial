@@ -20,7 +20,7 @@ counting_process(x, arm)
 treatment group value.}
 }
 \value{
-A \code{tibble} grouped by \code{stratum} and sorted within stratum by \code{tte}.
+A data frame grouped by \code{stratum} and sorted within stratum by \code{tte}.
 Remain rows with at least one event in the population, at least one subject
 is at risk in both treatment group and control group.
 Other variables in this represent the following within each stratum at
