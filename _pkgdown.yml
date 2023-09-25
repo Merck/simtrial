@@ -65,6 +65,7 @@ articles:
   contents:
   - arbitraryhazard
   - modestWLRTVignette
+  - parallel
   - pvalue_maxcomboVignette
   - simtrialroutines
   - workflow
