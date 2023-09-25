@@ -2,7 +2,9 @@
 title: "Simulating time-to-event trials in parallel"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
-vignette: "%\\VignetteIndexEntry{Simulating time-to-event trials in parallel} %\\VignetteEngine{knitr::rmarkdown}\n"
+vignette: >
+  %\VignetteIndexEntry{Simulating time-to-event trials in parallel}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, include=FALSE}
