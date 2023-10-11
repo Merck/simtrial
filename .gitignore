@@ -7,3 +7,4 @@ inst/doc
 .Rhistory
 .RData
 .Ruserdata
+tests/testthat/fixtures/backwards-compatibility

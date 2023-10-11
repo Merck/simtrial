@@ -48,7 +48,7 @@ see details. Default is to include all available cutoff methods.}
 to specify one Fleming-Harrington weighted logrank test per row.}
 }
 \value{
-A \code{tibble} including columns:
+A data frame including columns:
 \itemize{
 \item \code{event}: Event count.
 \item \code{ln_hr}: Log-hazard ratio.
@@ -128,7 +128,7 @@ mean(p < .025)
 # Example 3
 # Use two cores
 set.seed(2023)
-plan("multisession", workers=2)
+plan("multisession", workers = 2)
 sim_fixed_n(n_sim = 10)
 plan("sequential")
 }

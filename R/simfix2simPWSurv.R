@@ -33,11 +33,11 @@
 #'   hazard ratio for experimental vs. control,
 #'   and dropout rates by stratum and time period.
 #'
-#' @return A list of two `tibble` components formatted for
+#' @return A list of two data frame components formatted for
 #'   [sim_pw_surv()]: `fail_rate` and `dropout_rate`.
 #'
 #' @importFrom tibble tibble
-#' @importFrom dplyr group_by mutate n ungroup select
+#' @importFrom data.table ":=" .N as.data.table setDF
 #'
 #' @export
 #'
@@ -92,40 +92,36 @@ simfix2simpwsurv <- function(
       dropout_rate = rep(.001, 2)
     )) {
   # Put failure rates into sim_pw_surv format
-  fr <- rbind(
-    fail_rate %>%
-      group_by(stratum) %>%
-      mutate(
-        treatment = "control",
-        rate = fail_rate, period = 1:n()
-      ) %>%
-      ungroup(),
-    fail_rate %>%
-      group_by(stratum) %>%
-      mutate(
-        treatment = "experimental",
-        rate = fail_rate * hr,
-        period = 1:n()
-      ) %>%
-      ungroup()
-  ) %>%
-    select("stratum", "period", "treatment", "duration", "rate")
+  fr_control <- as.data.table(fail_rate)
+  fr_control[, `:=`(
+    treatment = "control",
+    rate = fail_rate,
+    period = seq_len(.N)
+  ), by = "stratum"]
+
+  fr_experimental <- as.data.table(fail_rate)
+  fr_experimental[, `:=`(
+    treatment = "experimental",
+    rate = fail_rate * hr,
+    period = seq_len(.N)
+  ), by = "stratum"]
+
+  fr <- rbind(fr_control, fr_experimental)
+  fr <- fr[, c("stratum", "period", "treatment", "duration", "rate")]
 
   # Put dropout rates into sim_pw_surv format
-  dr <- fail_rate %>%
-    group_by(stratum) %>%
-    mutate(
-      treatment = "control",
-      rate = dropout_rate,
-      period = 1:n()
-    ) %>%
-    select("stratum", "period", "treatment", "duration", "rate") %>%
-    ungroup()
+  dr_control <- as.data.table(fail_rate)
+  dr_control[, `:=`(
+    treatment = "control",
+    rate = dropout_rate,
+    period = seq_len(.N)
+  ), by = "stratum"]
 
-  dr <- rbind(
-    dr,
-    dr %>% mutate(treatment = "experimental")
-  )
+  dr_experimental <- dr_control
+  dr_experimental$treatment <- "experimental"
 
-  list(fail_rate = fr, dropout_rate = dr)
+  dr <- rbind(dr_control, dr_experimental)
+  dr <- dr[, c("stratum", "period", "treatment", "duration", "rate")]
+
+  list(fail_rate = setDF(fr), dropout_rate = setDF(dr))
 }

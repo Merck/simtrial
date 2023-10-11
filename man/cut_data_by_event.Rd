@@ -12,7 +12,7 @@ cut_data_by_event(x, event)
 \item{event}{Event count at which data cutoff is to be made.}
 }
 \value{
-A tibble ready for survival analysis, including columns
+A data frame ready for survival analysis, including columns
 time to event (\code{tte}), \code{event}, the \code{stratum}, and the \code{treatment}.
 }
 \description{

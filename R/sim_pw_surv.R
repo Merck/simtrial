@@ -44,7 +44,7 @@
 #' @param dropout_rate Dropout rates; see details and examples;
 #'   note that treatments need to be the same as input in block.
 #'
-#' @return A `tibble` with the following variables for each observation:
+#' @return A data frame with the following variables for each observation:
 #' - `stratum`.
 #' - `enroll_time`: Enrollment time for the observation.
 #' - `Treatment`: Treatment group; this will be one of the values
@@ -56,6 +56,7 @@
 #' - `fail`: Indicator that `cte` was set using failure time;
 #'   i.e., 1 is a failure, 0 is a dropout.
 #'
+#' @importFrom data.table ":=" .N data.table setDF setDT setorderv
 #' @importFrom dplyr group_by mutate
 #' @importFrom tibble tibble
 #'
@@ -142,24 +143,29 @@ sim_pw_surv <- function(
       duration = rep(100, 2),
       rate = rep(.001, 2)
     )) {
-  # Start tibble by generating stratum and enrollment times
-  x <- tibble(stratum = sample(
+  # Start table by generating stratum and enrollment times
+  x <- data.table(stratum = sample(
     x = stratum$stratum,
     size = n,
     replace = TRUE,
     prob = stratum$p
-  )) %>%
-    mutate(enroll_time = rpw_enroll(n, enroll_rate)) %>%
-    group_by(stratum) %>%
-    # Assign treatment
-    mutate(treatment = randomize_by_fixed_block(n = n(), block = block)) %>%
-    # Generate time to failure and time to dropout
-    group_by(stratum, treatment)
+  ))
+  x[, enroll_time := rpw_enroll(n, enroll_rate)]
+  # The awkward back and forth ordering is to maintain 1:1 parity with
+  # dplyr::group_by() for backwards compatibility. group_by() sorts by the
+  # grouping variable and then returns the rows to their original positions.
+  # This is mainly for testing for backwards compatibility. Since the
+  # treatments are assigned randomly by group, it would still be statistically
+  # valid without this ordering
+  setorderv(x, "stratum")
+  x[, treatment := randomize_by_fixed_block(n = .N, block = block), by = "stratum"]
+  setorderv(x, "enroll_time")
 
+  # Generate time to failure and time to dropout
   unique_stratum <- unique(x$stratum)
   unique_treatment <- unique(x$treatment)
-  x$fail_time <- 0
-  x$dropout_time <- 0
+  x[, fail_time := 0]
+  x[, dropout_time := 0]
 
   for (sr in unique_stratum) {
     for (tr in unique_treatment) {
@@ -176,11 +182,9 @@ sim_pw_surv <- function(
   }
 
   # Set calendar time-to-event and failure indicator
-  ans <- x %>%
-    mutate(
-      cte = pmin(dropout_time, fail_time) + enroll_time,
-      fail = (fail_time <= dropout_time) * 1
-    )
+  ans <- setDT(x)
+  ans[, cte := pmin(dropout_time, fail_time) + enroll_time]
+  ans[, fail := (fail_time <= dropout_time) * 1]
 
-  ans
+  return(setDF(ans))
 }

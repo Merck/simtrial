@@ -16,7 +16,7 @@ hazard ratio for experimental vs. control,
 and dropout rates by stratum and time period.}
 }
 \value{
-A list of two \code{tibble} components formatted for
+A list of two data frame components formatted for
 \code{\link[=sim_pw_surv]{sim_pw_surv()}}: \code{fail_rate} and \code{dropout_rate}.
 }
 \description{

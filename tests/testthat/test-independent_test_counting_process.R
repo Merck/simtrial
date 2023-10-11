@@ -42,7 +42,7 @@ surv_to_count <- function(time, status, trt, strats) {
 
   # Log Rank Expectation Difference and Variance
   res <- merge(km, km_by_trt, all = TRUE) %>%
-    arrange(trt, strats, time) %>%
+    dplyr::arrange(trt, strats, time) %>%
     mutate(
       OminusE = tn.event - tn.risk / n.risk * n.event,
       Var = (n.risk - tn.risk) * tn.risk * n.event * (n.risk - n.event) / n.risk^2 / (n.risk - 1)
@@ -61,7 +61,7 @@ testthat::test_that("Counting Process Format without ties", {
   res_counting_process <- simtrial::counting_process(x, arm)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$stratum)
 
-  res_test <- as_tibble(subset(res_test, trt == 1)) %>%
+  res_test <- tibble::as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event > 0 & n.risk - tn.risk > 0 & tn.risk > 0)
 
   testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE)
@@ -80,7 +80,7 @@ testthat::test_that("Counting Process Format with ties", {
   res_counting_process <- counting_process(x, arm)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$stratum)
 
-  res_test <- as_tibble(subset(res_test, trt == 1)) %>%
+  res_test <- tibble::as_tibble(subset(res_test, trt == 1)) %>%
     subset(n.event > 0 & n.risk - tn.risk > 0 & tn.risk > 0)
 
   testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE)

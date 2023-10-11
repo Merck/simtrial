@@ -39,6 +39,7 @@ Other contributors:
   \item Heng Zhou [contributor]
   \item Amin Shirazi [contributor]
   \item Cole Manschot [contributor]
+  \item John Blischak [contributor]
   \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates [copyright holder]
 }
 

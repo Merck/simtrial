@@ -28,7 +28,7 @@ estimated correlation for weighted sum of observed minus expected;
 see details; Default: \code{FALSE}.}
 }
 \value{
-A \code{tibble} with \code{rho_gamma} as input and the FH test statistic
+A data frame with \code{rho_gamma} as input and the FH test statistic
 for the data in \code{x}. (\code{z}, a directional square root of the usual
 weighted logrank test); if variance calculations are specified
 (for example, to be used for covariances in a combination test),
