@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,16 +123,13 @@ year.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/cut_data_by_date.html">cut_data_by_date</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   stratum, treatment [1]</span></span></span>
-<span><span class="co">#&gt;     tte event stratum treatment   </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0.590     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.603     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1.09      1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0.742     1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2.22      1 All     Log-logistic</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0.508     1 All     Log-logistic</span></span></code></pre></div>
+<span><span class="co">#&gt;         tte event stratum    treatment</span></span>
+<span><span class="co">#&gt; 1 0.5901582     1     All Log-logistic</span></span>
+<span><span class="co">#&gt; 2 0.6031899     1     All Log-logistic</span></span>
+<span><span class="co">#&gt; 3 1.0917184     1     All Log-logistic</span></span>
+<span><span class="co">#&gt; 4 0.7423789     1     All Log-logistic</span></span>
+<span><span class="co">#&gt; 5 2.2160148     1     All Log-logistic</span></span>
+<span><span class="co">#&gt; 6 0.5081774     1     All Log-logistic</span></span></code></pre></div>
 <p>Now we estimate a Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">tte</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>

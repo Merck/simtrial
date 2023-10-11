@@ -24,7 +24,7 @@ under the above scenario."><!-- mathjax --><script src="https://cdnjs.cloudflare
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,23 +113,26 @@ under the above scenario.</p>
 <span class="r-in"><span><span class="co"># with arbitrary weights</span></span></span>
 <span class="r-in"><span><span class="va">ten</span> <span class="op">&lt;-</span> <span class="va">MBdelayed</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ten</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   stratum [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum events n_event_tol    tte n_risk_tol n_risk_trt     s o_minus_e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> All          1           1 0.091<span style="text-decoration: underline;">7</span>        200        100 1         0.5  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> All          1           1 0.181         199         99 0.995     0.503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> All          1           1 0.322         198         98 0.99      0.505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> All          1           0 0.330         197         97 0.985    -<span style="color: #BB0000;">0.492</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> All          1           0 0.597         196         97 0.98     -<span style="color: #BB0000;">0.495</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> All          1           0 0.755         195         97 0.975    -<span style="color: #BB0000;">0.497</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: var_o_minus_e &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum events n_event_tol        tte n_risk_tol n_risk_trt     s  o_minus_e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1           1 0.09170771        200        100 1.000  0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      1           1 0.18055834        199         99 0.995  0.5025126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1           1 0.32233782        198         98 0.990  0.5050505</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      1           0 0.32957593        197         97 0.985 -0.4923858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     All      1           0 0.59725301        196         97 0.980 -0.4948980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     All      1           0 0.75514745        195         97 0.975 -0.4974359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   var_o_minus_e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.2500000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.2499937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.2499745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     0.2499420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.2499740</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     0.2499934</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># MaxCombo with logrank, FH(0,1), FH(1,1)</span></span></span>
 <span class="r-in"><span><span class="va">ten</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="wlr.html">wlr</a></span><span class="op">(</span>rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0009433543</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001027719</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Magirr-Burman modestly down-weighted rank test with 6 month delay</span></span></span>
 <span class="r-in"><span><span class="co"># First, add weights</span></span></span>

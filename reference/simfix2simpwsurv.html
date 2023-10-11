@@ -28,7 +28,7 @@ sim_fixed_n() does not."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ and dropout rates by stratum and time period.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list of two <code>tibble</code> components formatted for
+<p>A list of two data frame components formatted for
 <code><a href="sim_pw_surv.html">sim_pw_surv()</a></code>: <code>fail_rate</code> and <code>dropout_rate</code>.</p>
     </div>
 
@@ -113,22 +113,18 @@ and dropout rates by stratum and time period.</p></dd>
 <span class="r-in"><span><span class="co"># Convert standard input</span></span></span>
 <span class="r-in"><span><span class="fu">simfix2simpwsurv</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fail_rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum period treatment    duration   rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> All          1 control             3 0.077<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> All          2 control           100 0.038<span style="text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> All          1 experimental        3 0.069<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> All          2 experimental      100 0.023<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum period    treatment duration       rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1      control        3 0.07701635</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      2      control      100 0.03850818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1 experimental        3 0.06931472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      2 experimental      100 0.02310491</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dropout_rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum period treatment    duration  rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> All          1 control             3 0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> All          2 control           100 0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> All          1 experimental        3 0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> All          2 experimental      100 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum period    treatment duration  rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1      control        3 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      2      control      100 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1 experimental        3 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      2 experimental      100 0.001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Stratified example</span></span></span>

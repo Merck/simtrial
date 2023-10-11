@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@ see details; Default: <code>FALSE</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A <code>tibble</code> with <code>rho_gamma</code> as input and the FH test statistic
+<p>A data frame with <code>rho_gamma</code> as input and the FH test statistic
 for the data in <code>x</code>. (<code>z</code>, a directional square root of the usual
 weighted logrank test); if variance calculations are specified
 (for example, to be used for covariances in a combination test),
@@ -151,32 +151,12 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute logrank FH(0, 1)</span></span></span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma     z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     1 -<span style="color: #BB0000;">1.58</span></span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma     z   var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0     1 -<span style="color: #BB0000;">1.58</span>  2.79</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)</span></span></span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma          z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -1.2187222</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -1.5838956</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -0.9250926</span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma          z        v1       v2        v3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -1.2187222 24.887424 6.953038 17.934386</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -1.5838956  6.953038 2.792091  4.160948</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -0.9250926 17.934386 4.160948 13.773438</span>
 <span class="r-in"><span><span class="fu">wlr</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma          z        v1        v2        v3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -1.2187222 1.0000000 0.8341034 0.9686689</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -1.5838956 0.8341034 1.0000000 0.6709749</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -0.9250926 0.9686689 0.6709749 1.0000000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Use default enrollment and event rates at cut of 100 events</span></span></span>
@@ -207,9 +187,6 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  return_variance <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma          z        v1       v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -0.2790263 24.554559 6.644167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -1.1511132  6.644167 2.552420</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Off-diagonal element should be variance in following</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">wlr</span><span class="op">(</span></span></span>
@@ -219,17 +196,9 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  return_variance <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma      z   var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0   0.5 -<span style="color: #BB0000;">0.949</span>  6.64</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compare off diagonal result with wlr()</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">wlr</span><span class="op">(</span>rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rho gamma      z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0   0.5 -<span style="color: #BB0000;">0.949</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
