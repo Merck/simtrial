@@ -5,7 +5,7 @@
 \alias{MBdelayed}
 \title{Simulated survival dataset with delayed treatment effect}
 \format{
-A tibble with 200 rows and xx columns:
+A tibble with 200 rows and 4 columns:
 \itemize{
 \item \code{tte}: Time to event.
 }

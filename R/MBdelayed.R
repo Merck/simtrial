@@ -28,7 +28,7 @@
 #' under the above scenario.
 #'
 #' @format
-#' A tibble with 200 rows and xx columns:
+#' A tibble with 200 rows and 4 columns:
 #' - `tte`: Time to event.
 #'
 #' @references
