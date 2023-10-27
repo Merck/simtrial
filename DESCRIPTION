@@ -48,7 +48,6 @@ Imports:
     stats,
     survival,
     tibble,
-    tidyr,
     utils
 Suggests:
     Matrix,
@@ -62,7 +61,8 @@ Suggests:
     rmarkdown,
     stringr,
     survMisc,
-    testthat
+    testthat,
+    tidyr
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
