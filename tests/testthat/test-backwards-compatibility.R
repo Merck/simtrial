@@ -279,3 +279,37 @@ test_that("sim_fixed_n()", {
   expected <- readRDS("fixtures/backwards-compatibility/sim_fixed_n_ex3.rds")
   expect_equal(observed, expected)
 })
+
+test_that("mb_weight()", {
+  # Use default enrollment and event rates at cut at 100 events
+  # For transparency, may be good to set either `delay` or `w_max` to `Inf`
+  set.seed(12345)
+  x <- sim_pw_surv(n = 200)
+  x <- cut_data_by_event(x, 125)
+  x <- counting_process(x, arm = "experimental")
+
+  # Example 1
+  # Compute Magirr-Burman weights with `delay = 6`
+  ZMB <- mb_weight(x, delay = 6, w_max = Inf)
+  S <- with(ZMB, sum(o_minus_e * mb_weight))
+  V <- with(ZMB, sum(var_o_minus_e * mb_weight^2))
+  z <- S / sqrt(V)
+
+  # Compute p-value of modestly weighted logrank of Magirr-Burman
+  observed <- pnorm(z)
+  expected <- readRDS("fixtures/backwards-compatibility/mb_weight_ex1.rds")
+  expect_equal(observed, expected)
+
+  # Example 2
+  # Now compute with maximum weight of 2 as recommended in Magirr, 2021
+  ZMB2 <- mb_weight(x, delay = Inf, w_max = 2)
+  S <- with(ZMB2, sum(o_minus_e * mb_weight))
+  V <- with(ZMB2, sum(var_o_minus_e * mb_weight^2))
+  z <- S / sqrt(V)
+
+  # Compute p-value of modestly weighted logrank of Magirr-Burman
+  observed <- pnorm(z)
+  expected <- readRDS("fixtures/backwards-compatibility/mb_weight_ex2.rds")
+  expect_equal(observed, expected)
+})
+

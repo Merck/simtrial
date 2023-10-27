@@ -14,7 +14,7 @@ test_that("x is a time-to-event data set", {
 cut_date <- 10
 xcut <- cut_data_by_date(x, cut_date)
 test_that("only paitients recorded by cut_data_by_date are included", {
-  Npts <- dim(filter(x, enroll_time <= cut_date))[1]
+  Npts <- dim(dplyr::filter(x, enroll_time <= cut_date))[1]
   Nptscut <- length(xcut$tte)
   testthat::expect_equal(Npts, Nptscut)
 })
@@ -25,6 +25,6 @@ test_that("Time to event (tte) is cut off at the cut_date", {
 
 test_that("the event variable is calculated correctly", {
   Nevent <- sum(x$fail * (x$cte <= cut_date))
-  Neventcut <- dim(filter(xcut, event == 1))[1]
+  Neventcut <- dim(dplyr::filter(xcut, event == 1))[1]
   testthat::expect_equal(Nevent, Neventcut)
 })
