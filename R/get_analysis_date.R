@@ -130,7 +130,7 @@ get_analysis_date <- function(
     # Option 3: max time extension to reach targeted events
     max_extension_for_target_event = NULL,
     # Option 4: planned minimum time after the previous analysis
-    previous_analysis_date = NULL,
+    previous_analysis_date = 0,
     min_time_after_previous_analysis = NULL,
     # Option 5: minimal follow-up time after specified enrollment fraction
     enroll_rate = NULL,
@@ -138,6 +138,44 @@ get_analysis_date <- function(
     min_n_per_stratum = NULL,
     min_followup = NULL
 ){
+  # input checking
+  input_check_scale <- function(x = NULL, label = "x"){
+    if(!is.null(x)){
+      if(is.numeric(x) & x < 0){
+        stop(paste0(label, " must be a positive number!"))
+      } else{
+        stop(paste0(label, " must be a numerical value!"))
+      }
+    }
+  }
+  input_check_scale(planned_calendar_time, label = "planned_calendar_time")
+  input_check_scale(target_event_overall, label = "target_event_overall")
+  input_check_scale(max_extension_for_target_event, label = "max_extension_for_target_event")
+  input_check_scale(min_time_after_previous_analysis, label = "min_time_after_previous_analysis")
+  input_check_scale(min_n_overall, label = "min_n_overall")
+  input_check_scale(min_followup, label = "min_followup")
+
+  input_check_vector <- function(x = NULL, label = "x"){
+    if (!(all(is.na(x) | (is.numeric(x) & x > 0)))) {
+      stop(paste0(label, " must be a positive number with either NA or positive numbers!"))
+    }
+  }
+  input_check_vector(target_event_per_stratum)
+  input_check_vector(min_n_per_stratum)
+
+  if(!is.null(enroll_rate) & (is.null(min_n_overall) | !all(is.na(min_n_per_stratum)))){
+    n_max <- sum(enroll_rate$rate * enroll_rate$duration)
+    if(!is.null(min_followup) & min_n_overall > n_max){
+      stop("min_n_overall should be a positive number smaller than the total sample size!")
+    }
+    if(!all(is.na(min_n_per_stratum)) & sum(min_n_per_stratum,na.rm = TRUE) > n_max){
+      stop("min_n_per_stratum should be a sum of positive numbers smaller than the total sample size!")
+    }
+  }
+
+
+
+
   # cutting option 1: planned calendar time for the analysis
   cut_date1 <- planned_calendar_time
 
