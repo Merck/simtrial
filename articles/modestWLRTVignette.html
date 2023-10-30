@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,7 +149,7 @@ as follows:</p>
 <p><span class="math display">\[w(t, \tau, w_{\max}) =
 \min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).\]</span></p>
 <p>This requires generating weights and then computing the test. We
-begin with the default of <code>w_max=\Inf</code> which corresponds to
+begin with the default of <code>w_max=Inf</code> which corresponds to
 the original <span class="citation">Magirr and Burman (2019)</span> test
 and set the time until maximum weight <span class="math inline">\(\tau\)</span> with <code>delay = 6</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -193,7 +193,7 @@ test with</p>
 uniformly worse for the experimental group until the very end of the
 study. This was presented by <span class="citation">Freidlin and Korn
 (2019)</span>. For this case, we have a hazard ratio of 16 for 1/10 of 1
-year (1.2 months), followed by a hazard ratio of</p>
+year (1.2 months), followed by a hazard ratio of 0.76 thereafter.</p>
 <p>First, we specify study duration, sample size and enrollment rates.
 The enrollment rate is assumed constant during the enrollment period
 until the targeted sample size is reached. For failure rates, we
@@ -216,8 +216,8 @@ assume a hazard ratio of 0.5 after 6 months.</p>
 <span>  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">4.9</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now we generate a single dataset with the above characteristics and
-cut data for analysis at 36 months post start of enrollment. Then we
-plot Kaplan-Meier curves for the resulting dataset (red curve for
+cut data for analysis at 5 years post start of enrollment. Then we plot
+Kaplan-Meier curves for the resulting dataset (red curve for
 experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span></span>
