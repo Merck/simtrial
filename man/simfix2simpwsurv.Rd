@@ -31,7 +31,6 @@ to analyze or otherwise evaluate individual simulations in ways that
 \code{\link[=sim_fixed_n]{sim_fixed_n()}} does not.
 }
 \examples{
-library(tidyr)
 library(dplyr)
 library(tibble)
 

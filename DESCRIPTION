@@ -1,7 +1,7 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.3.0.1
+Version: 0.3.0.2
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
@@ -48,7 +48,6 @@ Imports:
     stats,
     survival,
     tibble,
-    tidyr,
     utils
 Suggests:
     Matrix,
@@ -62,7 +61,8 @@ Suggests:
     rmarkdown,
     stringr,
     survMisc,
-    testthat
+    testthat,
+    tidyr
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)

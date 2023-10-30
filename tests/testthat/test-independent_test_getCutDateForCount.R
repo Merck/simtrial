@@ -5,7 +5,7 @@ test_that("get_cut_date_by_event returns the correct cut date", {
 
   x <- y %>%
     dplyr::ungroup() %>%
-    filter(fail == 1) %>%
+    dplyr::filter(fail == 1) %>%
     dplyr::arrange(cte) %>%
     dplyr::slice(event)
   expect_equal(x$cte, ycutdate)

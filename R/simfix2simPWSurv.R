@@ -42,7 +42,6 @@
 #' @export
 #'
 #' @examples
-#' library(tidyr)
 #' library(dplyr)
 #' library(tibble)
 #'

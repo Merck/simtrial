@@ -43,8 +43,8 @@
 #'   Set `delay = Inf`, `w_max = 2` to be consistent with recommendation of
 #'   Magirr (2021).
 #'
-#' @return A vector with weights for the Magirr-Burman weighted logrank test
-#'   for the data in `x`.
+#' @return A data frame. The column `mb_weight` contains the weights for the
+#'   Magirr-Burman weighted logrank test for the data in `x`.
 #'
 #' @details
 #' We define \eqn{t^*} to be the input variable `delay`.
@@ -64,10 +64,6 @@
 #' Magirr, Dominic. 2021.
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
-#'
-#' @importFrom dplyr group_by summarize filter right_join
-#'   mutate full_join select
-#' @importFrom tidyr replace_na
 #'
 #' @export
 #'
@@ -141,26 +137,25 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
   }
 
   # Compute max weight by stratum
-  x2 <- x %>% group_by(stratum)
+  x2 <- as.data.table(x)
   # Make sure you don't lose any stratum!
-  tbl_all_stratum <- x2 %>% summarize()
+  tbl_all_stratum <- data.table(stratum = unique(x2$stratum))
 
-  ans <- x2 %>%
-    # Look only up to delay time
-    filter(tte <= delay) %>%
-    # Weight before delay specified as 1/S
-    summarize(max_weight = max(1 / s)) %>%
-    # Get back stratum with no records before delay ends
-    right_join(tbl_all_stratum, by = "stratum") %>%
-    # `max_weight` is 1 when there are no records before delay ends
-    mutate(max_weight = replace_na(max_weight, 1)) %>%
-    # Cut off weights at w_max
-    mutate(max_weight = pmin(w_max, max_weight)) %>%
-    # Now merge max_weight back to stratified dataset
-    full_join(x2, by = "stratum") %>%
-    # Weight is min of max_weight and 1/S which will increase up to delay
-    mutate(mb_weight = pmin(max_weight, 1 / s)) %>%
-    select(-max_weight)
+  # Look only up to delay time
+  ans <- x2[tte <= delay, ]
+  # Weight before delay specified as 1/S
+  ans <- ans[, .(max_weight = max(1 / s)), by = "stratum"]
+  # Get back stratum with no records before delay ends
+  ans <- ans[tbl_all_stratum, on = "stratum"]
+  # `max_weight` is 1 when there are no records before delay ends
+  ans[, max_weight := ifelse(is.na(max_weight), 1, max_weight)]
+  # Cut off weights at w_max
+  ans[, max_weight := pmin(w_max, max_weight)]
+  # Now merge max_weight back to stratified dataset
+  ans <- merge.data.table(ans, x2, by = "stratum", all = TRUE)
+  # Weight is min of max_weight and 1/S which will increase up to delay
+  ans[, mb_weight := pmin(max_weight, 1 / s)]
+  ans[, max_weight := NULL]
 
-  ans
+  setDF(ans)
 }
