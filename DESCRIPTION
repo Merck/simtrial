@@ -1,7 +1,7 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.3.0.2
+Version: 0.3.0.3
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
@@ -39,7 +39,6 @@ Imports:
     Rcpp,
     data.table,
     doFuture,
-    dplyr,
     foreach,
     future,
     magrittr,
@@ -53,6 +52,7 @@ Suggests:
     Matrix,
     bshazard,
     covr,
+    dplyr,
     ggplot2,
     gsDesign,
     knitr,

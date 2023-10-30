@@ -313,3 +313,35 @@ test_that("mb_weight()", {
   expect_equal(observed, expected)
 })
 
+test_that("pvalue_maxcombo()", {
+  # Example 1
+  set.seed(12345)
+  x <- sim_fixed_n(
+    n_sim = 1,
+    timing_type = 5,
+    rho_gamma = data.frame(
+      rho = c(0, 0, 1),
+      gamma = c(0, 1, 1)
+    )
+  )
+  observed <- pvalue_maxcombo(x)
+  expected <- readRDS("fixtures/backwards-compatibility/pvalue_maxcombo_ex1.rds")
+  expect_equal(observed, expected)
+
+  # Example 2
+  # Only use cuts for events, events + min follow-up
+  set.seed(12345)
+  xx <- sim_fixed_n(
+    n_sim = 100,
+    timing_type = 5,
+    rho_gamma = data.frame(
+      rho = c(0, 0, 1),
+      gamma = c(0, 1, 1)
+    )
+  )
+
+  # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
+  observed <- as.numeric(by(xx, xx$sim, pvalue_maxcombo))
+  expected <- readRDS("fixtures/backwards-compatibility/pvalue_maxcombo_ex2.rds")
+  expect_equal(observed, expected)
+})

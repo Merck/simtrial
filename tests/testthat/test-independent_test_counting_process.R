@@ -13,7 +13,7 @@ surv_to_count <- function(time, status, trt, strats) {
     ) # ensure left continuous
   }
   km <- db %>%
-    group_by(strats) %>%
+    dplyr::group_by(strats) %>%
     dplyr::do(tidy_survfit(Surv(time, status) ~ 1, data = .))
 
   # KM estimator by stratum and treatment Group Predicted at Specified Time
@@ -27,11 +27,11 @@ surv_to_count <- function(time, status, trt, strats) {
     # Number of Event
     .x2 <- data.frame(time = .survfit$time, n.event = .survfit$n.event) %>% subset(n.event > 0)
 
-    merge(.x1, .x2, all = TRUE) %>% mutate(n.event = dplyr::if_else(is.na(n.event), 0, n.event))
+    merge(.x1, .x2, all = TRUE) %>% dplyr::mutate(n.event = dplyr::if_else(is.na(n.event), 0, n.event))
   }
 
   km_by_trt <- db %>%
-    group_by(strats, trt) %>%
+    dplyr::group_by(strats, trt) %>%
     dplyr::do(pred_time = pred_survfit(km[km$strats == .$strats[1], ]$time,
       Surv(time, status) ~ 1,
       data = .
@@ -43,7 +43,7 @@ surv_to_count <- function(time, status, trt, strats) {
   # Log Rank Expectation Difference and Variance
   res <- merge(km, km_by_trt, all = TRUE) %>%
     dplyr::arrange(trt, strats, time) %>%
-    mutate(
+    dplyr::mutate(
       OminusE = tn.event - tn.risk / n.risk * n.event,
       Var = (n.risk - tn.risk) * tn.risk * n.event * (n.risk - n.event) / n.risk^2 / (n.risk - 1)
     )
