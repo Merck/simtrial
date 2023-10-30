@@ -50,7 +50,7 @@ enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
 fail_rate <- tibble::tribble(
   ~stratum, ~duration, ~fail_rate, ~hr, ~dropout_rate,
   "All", 6, log(2) / 15, 1, 0,
-  "All", 36, log(2) / 15, .6, 0
+  "All", 36, log(2) / 15, .7, 0
 )
 ```
 
@@ -121,14 +121,11 @@ pnorm(Z_modified_FH$z)
 
 ### Freidlin and Korn strong null hypothesis example
 
-The underlying survival is worse for the experimental group is uniformly worse for the experimental group until the very end of the study.
+For the next example, underlying survival is uniformly worse in the experimental group compared to control throughout the planned follow-up.
 This was presented by @FKNPH2019. For this case, we have a hazard ratio of 16 for 1/10 of 1 year (1.2 months), followed by a hazard ratio of 0.76 thereafter.
 
 First, we specify study duration, sample size and enrollment rates. The enrollment rate is assumed constant during the enrollment period until the targeted sample size is reached.
 For failure rates, we consider the delayed treatment effect example of @MagirrBurman.
-The control group has an exponential failure rate with a median of 15 months.
-For the initial 6 months, the underlying hazard ratio is one followed by a hazard ratio of 0.7 thereafter.
-This differs from the @MagirrBurman delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 5
@@ -211,6 +208,6 @@ xx %>% pvalue_maxcombo()
 ```
 
 Thus, with less down-weighting the MaxCombo test appears less problematic.
-This is addressed at greater length elsewhere.
+This is addressed at greater length in @Mukhopadhyay2022.
 
 ## References
