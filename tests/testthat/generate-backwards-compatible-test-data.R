@@ -300,4 +300,35 @@ generate_test_data <- function(
   # Compute p-value of modestly weighted logrank of Magirr-Burman
   ex2 <- pnorm(z)
   saveRDS(ex2, file.path(outdir, "mb_weight_ex2.rds"))
+
+  # pvalue_maxcombo() ------------------------------------------------------------
+
+  # Example 1
+  set.seed(12345)
+  x <- sim_fixed_n(
+    n_sim = 1,
+    timing_type = 5,
+    rho_gamma = data.frame(
+      rho = c(0, 0, 1),
+      gamma = c(0, 1, 1)
+    )
+  )
+  ex1 <- pvalue_maxcombo(x)
+  saveRDS(ex1, file.path(outdir, "pvalue_maxcombo_ex1.rds"))
+
+  # Example 2
+  # Only use cuts for events, events + min follow-up
+  set.seed(12345)
+  xx <- sim_fixed_n(
+    n_sim = 100,
+    timing_type = 5,
+    rho_gamma = data.frame(
+      rho = c(0, 0, 1),
+      gamma = c(0, 1, 1)
+    )
+  )
+
+  # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
+  ex2 <- as.numeric(by(xx, xx$sim, pvalue_maxcombo))
+  saveRDS(ex2, file.path(outdir, "pvalue_maxcombo_ex2.rds"))
 }
