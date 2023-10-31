@@ -117,7 +117,7 @@ assume a hazard ratio of 0.5 after 6 months.</p>
 <span><span class="va">fail_rate</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">stratum</span>, <span class="op">~</span><span class="va">duration</span>, <span class="op">~</span><span class="va">fail_rate</span>, <span class="op">~</span><span class="va">hr</span>, <span class="op">~</span><span class="va">dropout_rate</span>,</span>
 <span>  <span class="st">"All"</span>, <span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">1</span>, <span class="fl">0</span>,</span>
-<span>  <span class="st">"All"</span>, <span class="fl">36</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">.6</span>, <span class="fl">0</span></span>
+<span>  <span class="st">"All"</span>, <span class="fl">36</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">15</span>, <span class="fl">.7</span>, <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now we generate a single dataset with the above characteristics and
 cut data for analysis at 36 months post start of enrollment. Then we
@@ -159,7 +159,7 @@ and set the time until maximum weight <span class="math inline">\(\tau\)</span> 
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.04812254</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1395378</span></span></code></pre></div>
 <p>Now we set the maximum weight to be 2 as in <span class="citation">Magirr (2021)</span> and set the <code>delay=Inf</code>
 so that the maximum weight begins at the observed median of the observed
 combined treatment Kaplan-Meier curve.</p>
@@ -170,7 +170,7 @@ combined treatment Kaplan-Meier curve.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.04503586</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1387672</span></span></code></pre></div>
 <p>Another way this can be done is with a generalized Fleming-Harrington
 test with</p>
 <p><span class="math display">\[w(t; \rho, \gamma, w_{\max})=
@@ -185,24 +185,19 @@ test with</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">w</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">w</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z_modified_FH</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.04503586</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1387672</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="freidlin-and-korn-strong-null-hypothesis-example">Freidlin and Korn strong null hypothesis example<a class="anchor" aria-label="anchor" href="#freidlin-and-korn-strong-null-hypothesis-example"></a>
 </h3>
-<p>The underlying survival is worse for the experimental group is
-uniformly worse for the experimental group until the very end of the
-study. This was presented by <span class="citation">Freidlin and Korn
+<p>For the next example, underlying survival is uniformly worse in the
+experimental group compared to control throughout the planned follow-up.
+This was presented by <span class="citation">Freidlin and Korn
 (2019)</span>. For this case, we have a hazard ratio of 16 for 1/10 of 1
 year (1.2 months), followed by a hazard ratio of 0.76 thereafter.</p>
 <p>First, we specify study duration, sample size and enrollment rates.
 The enrollment rate is assumed constant during the enrollment period
 until the targeted sample size is reached. For failure rates, we
-consider the delayed treatment effect example of <span class="citation">Magirr and Burman (2019)</span>. The control group has
-an exponential failure rate with a median of 15 months. For the initial
-6 months, the underlying hazard ratio is one followed by a hazard ratio
-of 0.7 thereafter. This differs from the <span class="citation">Magirr
-and Burman (2019)</span> delayed effect assumptions only in that they
-assume a hazard ratio of 0.5 after 6 months.</p>
+consider the delayed treatment effect example of <span class="citation">Magirr and Burman (2019)</span>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">studyDuration</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span>
@@ -292,7 +287,7 @@ p-value of</p>
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.2915952</span></span></code></pre></div>
 <p>Thus, with less down-weighting the MaxCombo test appears less
-problematic. This is addressed at greater length elsewhere.</p>
+problematic. This is addressed at greater length in <span class="citation">Mukhopadhyay et al. (2022)</span>.</p>
 </div>
 </div>
 <div class="section level2 unnumbered">
@@ -313,6 +308,14 @@ Immuno-Oncology: Is an Old Perspective Needed?”</span>
 <div id="ref-MagirrBurman" class="csl-entry">
 Magirr, Dominic, and Carl-Fredrik Burman. 2019. <span>“Modestly Weighted
 Logrank Tests.”</span> <em>Statistics in Medicine</em> 38 (20): 3782–90.
+</div>
+<div id="ref-Mukhopadhyay2022" class="csl-entry">
+Mukhopadhyay, Pralay, Jiabu Ye, Keaven M Anderson, Satrajit
+Roychoudhury, Eric H Rubin, Susan Halabi, and Richard J Chappell. 2022.
+<span>“Log-Rank Test Vs MaxCombo and Difference in Restricted Mean
+Survival Time Tests for Comparing Survival Under Nonproportional Hazards
+in Immuno-Oncology Trials: A Systematic Review and
+Meta-Analysis.”</span> <em>JAMA Oncology</em>.
 </div>
 </div>
 </div>
