@@ -239,8 +239,8 @@ get_analysis_date <- function(
   # cutting option 5: minimal follow-up time after specified enrollment fraction
   get_min_date <- function(enroll_rate, min_n = 400) {
     if(!is.na(min_n)){
-      res <- stats::uniroot(f = function(x){expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
-                            interval = c(0, sum(enroll_rate$duration)))
+      res <- stats::uniroot(f = function(x){gsDesign2::expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
+                            interval = c(0, sum(enroll_rate$duration) + 1))
       ans <- res$root
     } else {
       ans <- NA
@@ -257,7 +257,7 @@ get_analysis_date <- function(
   if(!all(is.na(min_n_per_stratum))){
     cut_date5b <- lapply(seq_along(min_n_per_stratum),
                          function(x){
-                           get_min_date(enroll_rate %>% filter(stratum == stratum[x]), min_n = min_n_per_stratum[x])
+                           get_min_date(enroll_rate %>% dplyr::filter(stratum == stratum[x]), min_n = min_n_per_stratum[x])
                          }) %>% unlist() %>% max(na.rm = TRUE) + min_followup
   } else{
     cut_date5b <- NA
