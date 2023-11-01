@@ -34,6 +34,9 @@
 #' @export
 #'
 #' @examples
+#' library(gsDesign2)
+#' library(simtrial)
+#'
 #' alpha <- 0.025
 #' ratio <- 3
 #' n <- 500
@@ -88,22 +91,26 @@
 #' # example 3: cut for analysis at the 24-th month, and there are 300 events in the overall population,
 #' # which arrives later.
 #' get_analysis_date(
-#' simu_data,
-#' planned_calendar_time = 24,
-#' target_event_overall = 300)
+#'   simu_data,
+#'   planned_calendar_time = 24,
+#'   target_event_overall = 300)
 #'
 #' # example 4: cut for analysis when there are at least 100 events in the biomarker-positive population,
 #' # and at least 200 events in the biomarker-negative population, which arrives later.
 #' get_analysis_date(
 #'   simu_data,
-#'   target_event_per_strata = c(100, 200))
+#'   target_event_per_stratum = c(100, 200))
+#' get_analysis_date(
+#'   simu_data,
+#'   target_event_overall = 150,
+#'   target_event_per_stratum = c(100, NA))
 #'
 #' # example 5: cut for analysis when there are at least 100 events in the biomarker positive population,
 #' # and at least 200 events in the biomarker negative population, which arrives later.
 #' # But will stop at the 30-th months if events less than 100/200.
 #' get_analysis_date(
 #'   simu_data,
-#'   target_event_per_strata = c(100, 200),
+#'   target_event_per_stratum = c(100, 200),
 #'   max_extension_for_target_event = 30)
 #'
 #' # example 6: cut for analysis after 12 months followup when 80% of the patients are enrolled in the overall population.
@@ -120,30 +127,35 @@
 #'   enroll_rate = enroll_rate,
 #'   min_n_per_stratum = c(200, 160),
 #'   min_followup = 12)
+#' get_analysis_date(
+#'   simu_data,
+#'   enroll_rate = enroll_rate,
+#'   min_n_per_stratum = c(200, NA),
+#'   min_followup = 12)
 get_analysis_date <- function(
     simu_data,
     # Option 1: planned calendar time for the analysis
-    planned_calendar_time = NULL,
+    planned_calendar_time = NA,
     # Option 2: reach targeted events
-    target_event_overall = NULL,
-    target_event_per_stratum = NULL,
+    target_event_overall = NA,
+    target_event_per_stratum = NA,
     # Option 3: max time extension to reach targeted events
-    max_extension_for_target_event = NULL,
+    max_extension_for_target_event = NA,
     # Option 4: planned minimum time after the previous analysis
     previous_analysis_date = 0,
-    min_time_after_previous_analysis = NULL,
+    min_time_after_previous_analysis = NA,
     # Option 5: minimal follow-up time after specified enrollment fraction
-    enroll_rate = NULL,
-    min_n_overall = NULL,
-    min_n_per_stratum = NULL,
-    min_followup = NULL
+    enroll_rate = NA,
+    min_n_overall = NA,
+    min_n_per_stratum = NA,
+    min_followup = NA
 ){
   # input checking
-  input_check_scale <- function(x = NULL, label = "x"){
-    if(!is.null(x)){
+  input_check_scale <- function(x = NA, label = "x"){
+    if(!is.na(x)){
       if(is.numeric(x) & x < 0){
         stop(paste0(label, " must be a positive number!"))
-      } else{
+      } else if(!is.numeric(x)){
         stop(paste0(label, " must be a numerical value!"))
       }
     }
@@ -155,7 +167,7 @@ get_analysis_date <- function(
   input_check_scale(min_n_overall, label = "min_n_overall")
   input_check_scale(min_followup, label = "min_followup")
 
-  input_check_vector <- function(x = NULL, label = "x"){
+  input_check_vector <- function(x = NA, label = "x"){
     if (!(all(is.na(x) | (is.numeric(x) & x > 0)))) {
       stop(paste0(label, " must be a positive number with either NA or positive numbers!"))
     }
@@ -163,35 +175,49 @@ get_analysis_date <- function(
   input_check_vector(target_event_per_stratum)
   input_check_vector(min_n_per_stratum)
 
-  if(!is.null(enroll_rate) & (is.null(min_n_overall) | !all(is.na(min_n_per_stratum)))){
+  cond1 <- inherits(enroll_rate, c("tbl_df", "data.frame")) # check if enrollment is input by user
+  cond2 <- !is.na(min_n_overall)                            # check if min_n_overall is input by user
+  cond3 <- !all(is.na(min_n_overall))                       # check if min_n_per_stratum is input by user
+  if(cond1){
     n_max <- sum(enroll_rate$rate * enroll_rate$duration)
-    if(!is.null(min_followup) & min_n_overall > n_max){
-      stop("min_n_overall should be a positive number smaller than the total sample size!")
+
+    if(is.na(min_followup)){
+      stop("min_followup must be provided!")
     }
-    if(!all(is.na(min_n_per_stratum)) & sum(min_n_per_stratum,na.rm = TRUE) > n_max){
-      stop("min_n_per_stratum should be a sum of positive numbers smaller than the total sample size!")
+
+    if(cond2){
+      if(min_n_overall > n_max){
+        stop("min_n_overall should be a positive number smaller than the total sample size!")
+      }
+    }
+
+    if(cond3){
+      if(sum(min_n_per_stratum, na.rm = TRUE) > n_max){
+        stop("min_n_per_stratum should be a sum of positive numbers smaller than the total sample size!")
+      }
     }
   }
-
-
-
 
   # cutting option 1: planned calendar time for the analysis
   cut_date1 <- planned_calendar_time
 
   # cutting option 2:  reach targeted events
   # 2a: reach targeted events of the overall population
-  if(!is.null(target_event_overall)){
+  if(!is.na(target_event_overall)){
     cut_date2a <- get_cut_date_by_event(simu_data, event = target_event_overall)
+  } else {
+    cut_date2a <- NA
   }
   # 2b: reach targeted events per sub-population
-  stratum <- unique(enroll_rate$stratum)
-  if(!is.null(target_event_per_stratum)){
+  if(!all(is.na(target_event_per_stratum))){
+    stratum <- unique(simu_data$stratum)
     cut_date2b <- lapply(seq_along(target_event_per_stratum),
                          function(x){
                            get_cut_date_by_event(simu_data %>% filter(stratum == stratum[x]),
                                                  event = target_event_per_stratum[x])
                          }) %>% unlist() %>% max()
+  } else {
+    cut_date2b <- NA
   }
   cut_date2 <- pmax(cut_date2a, cut_date2b, na.rm = TRUE)
 
@@ -203,24 +229,33 @@ get_analysis_date <- function(
 
   # cutting option 5: minimal follow-up time after specified enrollment fraction
   get_min_date <- function(enroll_rate, min_n = 400) {
-    ans <- uniroot(f = function(x){expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
-                   interval = c(0, sum(enroll_rate$duration)))
-    return(ans$root)
+    if(!is.na(min_n)){
+      res <- uniroot(f = function(x){expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
+                     interval = c(0, sum(enroll_rate$duration)))
+      ans <- res$root
+    } else {
+      ans <- NA
+    }
+    return(ans)
   }
   # 5a: at least 10 months after the 80% of the patients are enrolled
-  if(!is.null(min_n_overall)){
+  if(!all(is.na(min_n_overall))){
     cut_date5a <- get_min_date(enroll_rate, min_n = min_n_overall) + min_followup
+  } else {
+    cut_date5a <- NA
   }
   # 5b: at least 10 months after the 80% biomarker positive patients are enrolled and 70% biomarker negative patients are enrolled
-  if(!is.null(min_n_per_stratum)){
+  if(!all(is.na(min_n_per_stratum))){
     cut_date5b <- lapply(seq_along(min_n_per_stratum),
                          function(x){
                            get_min_date(enroll_rate %>% filter(stratum == stratum[x]), min_n = min_n_per_stratum[x])
-                         }) %>% unlist() %>% max() + min_followup
+                         }) %>% unlist() %>% max(na.rm = TRUE) + min_followup
+  } else{
+    cut_date5b <- NA
   }
   cut_date5 <- pmax(cut_date5a, cut_date5b, na.rm = TRUE)
 
   # combining all 5 cutting options
-  cut_date <- min(max(cut_date1, cut_date2, cut_date4, cut_date5), cut_date3)
+  cut_date <- pmin(pmax(cut_date1, cut_date2, cut_date4, cut_date5, na.rm = TRUE), cut_date3, na.rm = TRUE)
   return(cut_date)
 }
