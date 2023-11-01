@@ -72,7 +72,8 @@
 #' set.seed(2023)
 #' simu_data <- sim_pw_surv(
 #'   n = n,                                                            # sample size
-#'   stratum = tibble(stratum = stratum, p = prevelance_ratio),        # stratified design with prevalence ratio of 6:4
+#'   stratum = tibble(stratum = stratum, p = prevelance_ratio),        # stratified design
+#'                                                                     # with prevalence ratio of 6:4
 #'   block =  c("control", "control", "experimental", "experimental"), # randomization ratio
 #'   enroll_rate = enroll_rate,                                        # enrollment rate
 #'   fail_rate = temp$fail_rate,                                       # failure rate
@@ -83,20 +84,24 @@
 #'   simu_data,
 #'   planned_calendar_time = 24)
 #'
-#' # example 2: cut for analysis when there are 300 events in the overall population.
+#' # example 2: cut for analysis when there are 300 events
+#' # in the overall population.
 #' get_analysis_date(
 #'   simu_data,
 #'   target_event_overall = 300)
 #'
-#' # example 3: cut for analysis at the 24-th month, and there are 300 events in the overall population,
+#' # example 3: cut for analysis at the 24-th month,
+#' # and there are 300 events in the overall population,
 #' # which arrives later.
 #' get_analysis_date(
 #'   simu_data,
 #'   planned_calendar_time = 24,
 #'   target_event_overall = 300)
 #'
-#' # example 4: cut for analysis when there are at least 100 events in the biomarker-positive population,
-#' # and at least 200 events in the biomarker-negative population, which arrives later.
+#' # example 4: cut for analysis when there are at least 100
+#' # events in the biomarker-positive population,
+#' # and at least 200 events in the biomarker-negative population,
+#' # which arrives later.
 #' get_analysis_date(
 #'   simu_data,
 #'   target_event_per_stratum = c(100, 200))
@@ -105,7 +110,8 @@
 #'   target_event_overall = 150,
 #'   target_event_per_stratum = c(100, NA))
 #'
-#' # example 5: cut for analysis when there are at least 100 events in the biomarker positive population,
+#' # example 5: cut for analysis when there are at least 100 events
+#' # in the biomarker positive population,
 #' # and at least 200 events in the biomarker negative population, which arrives later.
 #' # But will stop at the 30-th months if events less than 100/200.
 #' get_analysis_date(
@@ -113,14 +119,16 @@
 #'   target_event_per_stratum = c(100, 200),
 #'   max_extension_for_target_event = 30)
 #'
-#' # example 6: cut for analysis after 12 months followup when 80% of the patients are enrolled in the overall population.
+#' # example 6: cut for analysis after 12 months followup when 80%
+#' # of the patients are enrolled in the overall population.
 #' get_analysis_date(
 #'   simu_data,
 #'   enroll_rate = enroll_rate,
 #'   min_n_overall = n * 0.8,
 #'   min_followup = 12)
 #'
-#' # example 7: cut for analysis when 12 months after at least 200/160 patients are enrolled at the
+#' # example 7: cut for analysis when 12 months after at least
+#' # 200/160 patients are enrolled at the
 #' # biomarker positive/negative population.
 #' get_analysis_date(
 #'   simu_data,
@@ -213,7 +221,7 @@ get_analysis_date <- function(
     stratum <- unique(simu_data$stratum)
     cut_date2b <- lapply(seq_along(target_event_per_stratum),
                          function(x){
-                           get_cut_date_by_event(simu_data %>% filter(stratum == stratum[x]),
+                           get_cut_date_by_event(simu_data %>% dplyr::filter(stratum == stratum[x]),
                                                  event = target_event_per_stratum[x])
                          }) %>% unlist() %>% max()
   } else {
@@ -230,8 +238,8 @@ get_analysis_date <- function(
   # cutting option 5: minimal follow-up time after specified enrollment fraction
   get_min_date <- function(enroll_rate, min_n = 400) {
     if(!is.na(min_n)){
-      res <- uniroot(f = function(x){expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
-                     interval = c(0, sum(enroll_rate$duration)))
+      res <- stats::uniroot(f = function(x){expected_accrual(time = x, enroll_rate = enroll_rate) -  min_n},
+                            interval = c(0, sum(enroll_rate$duration)))
       ans <- res$root
     } else {
       ans <- NA
