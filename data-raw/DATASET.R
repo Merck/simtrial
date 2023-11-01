@@ -1,5 +1,5 @@
 ## code to prepare `DATASET` dataset goes here
-library(tidyr)
+library(tibble)
 set.seed(6671)
 ds <- simPWSurv(
   n = 200,

@@ -17,8 +17,8 @@ Set \code{delay = Inf}, \code{w_max = 2} to be consistent with recommendation of
 Magirr (2021).}
 }
 \value{
-A vector with weights for the Magirr-Burman weighted logrank test
-for the data in \code{x}.
+A data frame. The column \code{mb_weight} contains the weights for the
+Magirr-Burman weighted logrank test for the data in \code{x}.
 }
 \description{
 Magirr and Burman (2019) proposed a weighted logrank test to have better
