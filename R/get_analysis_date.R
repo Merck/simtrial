@@ -36,6 +36,7 @@
 #' @examples
 #' library(gsDesign2)
 #' library(simtrial)
+#' library(tibble)
 #'
 #' alpha <- 0.025
 #' ratio <- 3
