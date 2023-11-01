@@ -25,15 +25,12 @@
 #' that provided in the ADaM ADTTE format.
 #'
 #' @param z A dataset output from [wlr()]; see examples.
-#' @param dummy_var A dummy input that allows [dplyr::group_map()] to be used to
-#'   compute p-values for multiple simulations.
 #' @param algorithm This is passed directly to the `algorithm` argument
 #'   in [mvtnorm::pmvnorm()].
 #'
 #' @return A numeric p-value.
 #'
 #' @importFrom mvtnorm pmvnorm GenzBretz
-#' @importFrom dplyr select starts_with
 #'
 #' @export
 #'
@@ -68,24 +65,25 @@
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 #' p <- xx %>%
 #'   group_by(sim) %>%
-#'   group_map(pvalue_maxcombo) %>%
+#'   group_map(~ pvalue_maxcombo(.x)) %>%
 #'   unlist()
 #' mean(p < .025)
 pvalue_maxcombo <- function(
     z,
-    dummy_var,
     algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 0.00001)) {
-  ans <- (1 - mvtnorm::pmvnorm(
-    lower = rep(
-      z$z %>% min() %>% as.numeric(),
-      nrow(z)
-    ),
-    corr = z %>%
-      select(starts_with("v")) %>%
-      data.matrix(),
-    algorithm = algorithm
-  )[1]
-  ) %>% as.numeric()
+  zmin <- as.numeric(min(z$z))
+  lower_limits <- rep.int(zmin, times = nrow(z))
 
-  ans
+  correlation_matrix <- z[, grep("^v", colnames(z))]
+  correlation_matrix <- data.matrix(correlation_matrix)
+
+  distribution <- mvtnorm::pmvnorm(
+    lower = lower_limits,
+    corr = correlation_matrix,
+    algorithm = algorithm
+  )
+
+  ans <- 1 - distribution[1]
+
+  as.numeric(ans)
 }

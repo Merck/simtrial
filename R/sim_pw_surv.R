@@ -57,7 +57,6 @@
 #'   i.e., 1 is a failure, 0 is a dropout.
 #'
 #' @importFrom data.table ":=" .N data.table setDF setDT setorderv
-#' @importFrom dplyr group_by mutate
 #' @importFrom tibble tibble
 #'
 #' @export

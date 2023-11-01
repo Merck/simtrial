@@ -6,15 +6,11 @@
 \usage{
 pvalue_maxcombo(
   z,
-  dummy_var,
   algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 1e-05)
 )
 }
 \arguments{
 \item{z}{A dataset output from \code{\link[=wlr]{wlr()}}; see examples.}
-
-\item{dummy_var}{A dummy input that allows \code{\link[dplyr:group_map]{dplyr::group_map()}} to be used to
-compute p-values for multiple simulations.}
 
 \item{algorithm}{This is passed directly to the \code{algorithm} argument
 in \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}}.}
@@ -60,7 +56,7 @@ head(xx)
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 p <- xx \%>\%
   group_by(sim) \%>\%
-  group_map(pvalue_maxcombo) \%>\%
+  group_map(~ pvalue_maxcombo(.x)) \%>\%
   unlist()
 mean(p < .025)
 }
