@@ -56,6 +56,7 @@ Suggests:
     covr,
     ggplot2,
     gsDesign,
+    gsDesign2,
     knitr,
     markdown,
     remotes,
