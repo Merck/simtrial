@@ -181,8 +181,8 @@ get_analysis_date <- function(
       stop(paste0(label, " must be a positive number with either NA or positive numbers!"))
     }
   }
-  input_check_vector(target_event_per_stratum)
-  input_check_vector(min_n_per_stratum)
+  input_check_vector(target_event_per_stratum, label = "target_event_per_stratum")
+  input_check_vector(min_n_per_stratum, label = "min_n_per_stratum")
 
   cond1 <- inherits(enroll_rate, c("tbl_df", "data.frame")) # check if enrollment is input by user
   cond2 <- !is.na(min_n_overall)                            # check if min_n_overall is input by user
