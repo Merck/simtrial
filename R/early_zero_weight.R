@@ -72,6 +72,10 @@
 #' library(gsDesign2)
 #'
 #' # Example 1: unstratified
+#' x <- sim_pw_surv(n = 200) %>%
+#'   cut_data_by_event(125) %>%
+#'   counting_process(arm = "experimental") %>%
+#'   early_zero_weight(early_period = 2, late_weight = 1)
 #'
 #' # Example 2: stratified
 #' n <- 500
@@ -112,29 +116,18 @@
 #'   ) %>%
 #'   cut_data_by_event(125) %>%
 #'   counting_process(arm = "experimental")
-early_zero_weight <- function(x, delay = 4, w_max = Inf) {
+#'
+#' x %>% early_zero_weight(early_period = 2, late_weight = 1)
+early_zero_weight <- function(x, early_period = 4, late_weight = 1) {
 
   # Compute max weight by stratum
   x2 <- x %>% group_by(stratum)
   # Make sure you don't lose any stratum!
   tbl_all_stratum <- x2 %>% summarize()
 
-  x2 %>%
-    # Look only up to delay time
-    filter(tte <= 6) %>%
-    # Weight before delay specified as 1/S
-    summarize(max_weight = max(1 / s)) %>%
-    # Get back stratum with no records before delay ends
-    right_join(tbl_all_stratum, by = "stratum") %>%
-    # `max_weight` is 1 when there are no records before delay ends
-    mutate(max_weight = replace_na(max_weight, 1)) %>%
-    # Cut off weights at w_max
-    mutate(max_weight = pmin(Inf, max_weight)) %>%
-    # Now merge max_weight back to stratified dataset
-    full_join(x2, by = "stratum") %>%
-    # Weight is min of max_weight and 1/S which will increase up to delay
-    mutate(mb_weight = pmin(max_weight, 1 / s)) %>%
-    select(-max_weight)
+  ans <- x2 %>%
+    mutate(weight = case_when(tte < early_period ~ 0,
+                              tte >= early_period ~ late_weight))
 
-
+  return(ans)
 }
