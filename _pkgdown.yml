@@ -49,6 +49,7 @@ reference:
     - cut_data_by_date
     - cut_data_by_event
     - get_cut_date_by_event
+    - get_analysis_date
 
 - title: "Compute p-values/test statistics"
   contents:
