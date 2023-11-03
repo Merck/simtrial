@@ -142,6 +142,13 @@ sim_pw_surv <- function(
       duration = rep(100, 2),
       rate = rep(.001, 2)
     )) {
+  # Enforce consistent treatment names
+  treatments <- unique(c(block, fail_rate$treatment, dropout_rate$treatment))
+  stopifnot(
+    treatments %in% block,
+    treatments %in% fail_rate$treatment,
+    treatments %in% dropout_rate$treatment
+  )
   # Start table by generating stratum and enrollment times
   x <- data.table(stratum = sample(
     x = stratum$stratum,

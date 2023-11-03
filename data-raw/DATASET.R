@@ -1,22 +1,24 @@
-## code to prepare `DATASET` dataset goes here
+## code to prepare `MBdelayed` dataset goes here
+library(simtrial)
 library(tibble)
 set.seed(6671)
-ds <- simPWSurv(
+ds <- sim_pw_surv(
   n = 200,
-  enrollRates = tibble(rate = 200 / 12, duration = 12),
-  failRates = tribble(
-    ~Stratum, ~Period, ~Treatment, ~duration, ~rate,
-    "All", 1, "Control", 42, log(2) / 15,
-    "All", 1, "Experimental", 6, log(2) / 15,
-    "All", 2, "Experimental", 36, log(2) / 15 * 0.6
+  block = c(rep("control", 2), rep("experimental", 2)),
+  enroll_rate = tibble(rate = 200 / 12, duration = 12),
+  fail_rate = tribble(
+    ~stratum, ~period, ~treatment, ~duration, ~rate,
+    "All", 1, "control", 42, log(2) / 15,
+    "All", 1, "experimental", 6, log(2) / 15,
+    "All", 2, "experimental", 36, log(2) / 15 * 0.6
   ),
-  dropoutRates = tribble(
-    ~Stratum, ~Period, ~Treatment, ~duration, ~rate,
-    "All", 1, "Control", 42, 0,
-    "All", 1, "Experimental", 42, 0
+  dropout_rate = tribble(
+    ~stratum, ~period, ~treatment, ~duration, ~rate,
+    "All", 1, "control", 42, 0,
+    "All", 1, "experimental", 42, 0
   )
 )
 # cut data at 24 months after final enrollment
-MBdelayed <- ds %>% cutData(max(ds$enrollTime) + 24)
+MBdelayed <- ds %>% cut_data_by_date(max(ds$enroll_time) + 24)
 
-usethis::use_data("MBdelayed")
+usethis::use_data(MBdelayed, overwrite = TRUE)
