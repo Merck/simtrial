@@ -67,6 +67,9 @@
     <loc>https://merck.github.io/simtrial/reference/cut_data_by_event.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/fh_weight.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/fit_pwexp.html</loc>
   </url>
   <url>
@@ -113,8 +116,5 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/simtrial-package.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/wlr.html</loc>
   </url>
 </urlset>

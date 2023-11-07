@@ -200,8 +200,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  15.370   0.064   9.523</span></span></code></pre></div>
-<p>We can see that the CPU time is 15.37 and the elapsed time is 9.52
+<span><span class="co">#&gt;  12.083   0.085  12.169</span></span></code></pre></div>
+<p>We can see that the CPU time is 12.08 and the elapsed time is 12.17
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -244,7 +244,7 @@ simulations across the available cores.</p>
 <span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate1</span>,</span>
 <span>  timing_type <span class="op">=</span> <span class="fl">2</span> <span class="co"># Time until targeted event count achieved</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Using 4 cores with backend multisession</span></span>
+<span><span class="co">#&gt; Using 2 cores with backend multisession</span></span>
 <span></span>
 <span><span class="va">seq_result2m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="va">n_sim</span>,</span>
@@ -253,14 +253,14 @@ simulations across the available cores.</p>
 <span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate2</span>,</span>
 <span>  timing_type <span class="op">=</span> <span class="fl">2</span> <span class="co"># Time until targeted event count achieved</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Using 4 cores with backend multisession</span></span>
+<span><span class="co">#&gt; Using 2 cores with backend multisession</span></span>
 <span></span>
 <span><span class="va">duration_sequential</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">start_sequential</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.741   0.005  15.028</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.74 and the elapsed time is 15.03
+<span><span class="co">#&gt;   0.562   0.001  10.250</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.56 and the elapsed time is 10.25
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we

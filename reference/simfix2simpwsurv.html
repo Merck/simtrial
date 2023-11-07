@@ -63,7 +63,7 @@ sim_fixed_n() does not."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Conversion of enrollment and failure rates from <code>sim_fixed_n()</code> to
 <code>sim_pw_surv()</code> format</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/R/simfix2simPWSurv.R" class="external-link"><code>R/simfix2simPWSurv.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/R/simfix2simpwsurv.R" class="external-link"><code>R/simfix2simpwsurv.R</code></a></small>
       <div class="d-none name"><code>simfix2simpwsurv.Rd</code></div>
     </div>
 
@@ -157,7 +157,7 @@ and dropout rates by stratum and time period.</p></dd>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">sim</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="co"># cut data</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="co"># convert format for tenFH</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="wlr.html">wlr</a></span><span class="op">(</span>rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co"># stratified logrank</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="fh_weight.html">fh_weight</a></span><span class="op">(</span>rho_gamma <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co"># stratified logrank</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
