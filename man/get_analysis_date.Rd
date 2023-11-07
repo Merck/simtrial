@@ -12,7 +12,6 @@ get_analysis_date(
   max_extension_for_target_event = NA,
   previous_analysis_date = 0,
   min_time_after_previous_analysis = NA,
-  enroll_rate = NA,
   min_n_overall = NA,
   min_n_per_stratum = NA,
   min_followup = NA
@@ -39,8 +38,6 @@ previous analysis date.}
 \item{min_time_after_previous_analysis}{A numerical value specifying the
 planned minimum time after the previous analysis.}
 
-\item{enroll_rate}{Enrollment rates, see details and examples.}
-
 \item{min_n_overall}{A numerical value specifying the
 minimal overall sample size enrolled to kick off the analysis.}
 
@@ -50,6 +47,8 @@ minimal sample size enrolled per stratum to kick off the analysis.}
 \item{min_followup}{A numerical value specifying the
 minimal follow-up time after specified enrollment fraction in
 \code{min_n_overall} or \code{min_n_per_stratum}.}
+
+\item{enroll_rate}{Enrollment rates, see details and examples.}
 }
 \value{
 A numerical value of the analysis date.
@@ -155,7 +154,6 @@ get_analysis_date(
 # of the patients are enrolled in the overall population.
 get_analysis_date(
   simulated_data,
-  enroll_rate = enroll_rate,
   min_n_overall = n * 0.8,
   min_followup = 12
 )
@@ -164,13 +162,17 @@ get_analysis_date(
 # are enrolled in the biomarker positive/negative population.
 get_analysis_date(
   simulated_data,
-  enroll_rate = enroll_rate,
   min_n_per_stratum = c(200, 160),
   min_followup = 12
 )
 get_analysis_date(
   simulated_data,
-  enroll_rate = enroll_rate,
+  min_n_per_stratum = c(200, NA),
+  min_followup = 12
+)
+get_analysis_date(
+  simulated_data,
+  min_n_overall = n * 0.8,
   min_n_per_stratum = c(200, NA),
   min_followup = 12
 )
