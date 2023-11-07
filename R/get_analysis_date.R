@@ -31,7 +31,6 @@
 #'   previous analysis date.
 #' @param min_time_after_previous_analysis A numerical value specifying the
 #'   planned minimum time after the previous analysis.
-#' @param enroll_rate Enrollment rates, see details and examples.
 #' @param min_n_overall A numerical value specifying the
 #'   minimal overall sample size enrolled to kick off the analysis.
 #' @param min_n_per_stratum A numerical value specifying the

@@ -47,8 +47,6 @@ minimal sample size enrolled per stratum to kick off the analysis.}
 \item{min_followup}{A numerical value specifying the
 minimal follow-up time after specified enrollment fraction in
 \code{min_n_overall} or \code{min_n_per_stratum}.}
-
-\item{enroll_rate}{Enrollment rates, see details and examples.}
 }
 \value{
 A numerical value of the analysis date.
