@@ -57,7 +57,7 @@
 #'   hypothesis)
 #' - `var_o_minus_e`: Variance of `o_minus_e` under the same assumption.
 #'
-#' @importFrom data.table ":=" as.data.table setDF
+#' @importFrom data.table ":=" as.data.table setDF uniqueN
 #'
 #' @export
 #'
@@ -103,19 +103,31 @@ counting_process <- function(x, arm) {
   ), by = "stratum"]
 
   # Handling ties using Breslow's method
-  ans[, mtte := -tte]
-  ans <- ans[, .(
-    events = sum(event),
-    n_event_tol = sum((treatment == arm) * event),
-    tte = tte[1],
-    n_risk_tol = max(n_risk_tol),
-    n_risk_trt = max(n_risk_trt)
-  ), by = c("stratum", "mtte")]
+  if (uniqueN(ans[, .(stratum, tte)]) < nrow(ans)) { # ties
+    ans[, mtte := -tte]
+    ans <- ans[, .(
+      events = sum(event),
+      n_event_tol = sum((treatment == arm) * event),
+      tte = tte[1],
+      n_risk_tol = max(n_risk_tol),
+      n_risk_trt = max(n_risk_trt)
+    ), by = c("stratum", "mtte")]
+    ans[, mtte := NULL]
+  } else { # no ties
+    ans <- ans[, .(
+      stratum,
+      events = event,
+      n_event_tol = (treatment == arm) * event,
+      tte,
+      n_risk_tol ,
+      n_risk_trt
+    )]
+  }
+
 
   # Keep calculation for observed time with at least one event,
   # at least one subject is at risk in both treatment group and control group.
   ans <- ans[events > 0 & n_risk_tol - n_risk_trt > 0 & n_risk_trt > 0, ]
-  ans[, mtte := NULL]
   ans[, s := 1 - events / n_risk_tol]
   ans <- ans[order(stratum, tte), ]
   # Left continuous Kaplan-Meier Estimator
