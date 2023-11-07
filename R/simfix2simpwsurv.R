@@ -80,7 +80,7 @@
 #' dat <- sim %>%
 #'   cut_data_by_event(200) %>% # cut data
 #'   counting_process(arm = "experimental") %>% # convert format for tenFH
-#'   wlr(rho_gamma = tibble(rho = 0, gamma = 0)) # stratified logrank
+#'   fh_weight(rho_gamma = tibble(rho = 0, gamma = 0)) # stratified logrank
 simfix2simpwsurv <- function(
     # Failure rates as in sim_fixed_n()
     fail_rate = tibble(

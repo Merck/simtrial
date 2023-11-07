@@ -37,7 +37,7 @@
 #'   in each block.
 #' @param timing_type A numeric vector determining data cutoffs used;
 #'   see details. Default is to include all available cutoff methods.
-#' @param rho_gamma As in [wlr()]. A `tibble` with variables
+#' @param rho_gamma As in [fh_weight()]. A `tibble` with variables
 #'   `rho` and `gamma`, both greater than equal to zero,
 #'   to specify one Fleming-Harrington weighted logrank test per row.
 #'
@@ -391,11 +391,11 @@ sim_fixed_n <- function(
 doAnalysis <- function(d, rho_gamma, n_stratum) {
   if (nrow(rho_gamma) == 1) {
     tmp <- counting_process(d, arm = "experimental")
-    tmp <- wlr(tmp, rho_gamma = rho_gamma)
+    tmp <- fh_weight(tmp, rho_gamma = rho_gamma)
     z <- data.frame(z = tmp$z)
   } else {
     tmp <- counting_process(d, arm = "experimental")
-    z <- wlr(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
+    z <- fh_weight(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
   }
 
   event <- sum(d$event)
