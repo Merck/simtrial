@@ -127,13 +127,16 @@ get_analysis_date(
   target_event_overall = 300
 )
 
-# Example 4: Cut for analysis when there are at least 100 events
+# Example 4a: Cut for analysis when there are at least 100 events
 # in the biomarker-positive population, and at least 200 events
 # in the biomarker-negative population, whichever arrives later.
 get_analysis_date(
   simulated_data,
   target_event_per_stratum = c(100, 200)
 )
+# Example 4b: Cut for analysis when there are at least 100 events
+# in the biomarker-positive population, but we don't have a requirement
+# for the biomarker-negative population.
 get_analysis_date(
   simulated_data,
   target_event_overall = 150,
@@ -158,18 +161,25 @@ get_analysis_date(
   min_followup = 12
 )
 
-# Example 7: Cut for analysis when 12 months after at least 200/160 patients
+# Example 7a: Cut for analysis when 12 months after at least 200/160 patients
 # are enrolled in the biomarker positive/negative population.
 get_analysis_date(
   simulated_data,
   min_n_per_stratum = c(200, 160),
   min_followup = 12
 )
+# Example 7b: Cut for analysis when 12 months after at least 200 patients
+# are enrolled in the biomarker positive population, but we don't have a
+# specific requirement for the biomarker negative population.
 get_analysis_date(
   simulated_data,
   min_n_per_stratum = c(200, NA),
   min_followup = 12
 )
+# Example 7c: Cut for analysis when 12 months after at least 200 patients
+# are enrolled in the biomarker-positive population, but we don't have a
+# specific requirement for the biomarker-negative population. We also want
+# there are at least 80\% of the patients enrolled in the overall population.
 get_analysis_date(
   simulated_data,
   min_n_overall = n * 0.8,

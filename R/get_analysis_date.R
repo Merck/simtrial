@@ -259,7 +259,7 @@ get_analysis_date <- function(
   if (!all(is.na(min_n_overall))) {
     cut_date5a <- (data %>%
       dplyr::arrange(enroll_time) %>%
-      dplyr::filter(row_number() <= min_n_overall) %>%
+      dplyr::filter(dplyr::row_number() <= min_n_overall) %>%
       dplyr::summarise(max_enroll_time = max(enroll_time)))$max_enroll_time + min_followup
   } else {
     cut_date5a <- NA
@@ -276,7 +276,7 @@ get_analysis_date <- function(
           (data %>%
              dplyr::filter(stratum == stratum[x]) %>%
              dplyr::arrange(enroll_time) %>%
-             dplyr::filter(row_number() <= min_n_per_stratum[x]) %>%
+             dplyr::filter(dplyr::row_number() <= min_n_per_stratum[x]) %>%
              dplyr::summarise(max_enroll_time = max(enroll_time))
           )$max_enroll_time
         }
