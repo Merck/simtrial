@@ -22,12 +22,12 @@ test2 <- sim_fixed_n(
   n_sim = 100,
   sample_size = 434,
   target_event = 227,
-  stratum = tibble::tibble(stratum = "All", p = 1),
-  enroll_rate = tibble::tibble(
+  stratum = data.frame(stratum = "All", p = 1),
+  enroll_rate = data.frame(
     duration = c(1, 1, 9),
     rate = c(5, 5, 47)
   ),
-  fail_rate = tibble::tibble(
+  fail_rate = data.frame(
     stratum = "All",
     duration = c(100),
     fail_rate = log(2) / 7,
@@ -37,7 +37,7 @@ test2 <- sim_fixed_n(
   total_duration = 18,
   block = rep(c("experimental", "control"), 2),
   timing_type = 1:5,
-  rho_gamma = tibble::tibble(rho = 0, gamma = 0)
+  rho_gamma = data.frame(rho = 0, gamma = 0)
 )
 
 testthat::test_that("test for sim_fixed_n power comparing to gsDesign results with fixed duration in timing_type=1", {

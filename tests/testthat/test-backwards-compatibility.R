@@ -224,7 +224,7 @@ test_that("sim_pw_surv()", {
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
 
   # Example 4
-  # If you want a more rectangular entry for a tibble
+  # If you want a more rectangular entry for a data frame
   fail_rate <- list(
     data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
     data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
@@ -343,5 +343,28 @@ test_that("pvalue_maxcombo()", {
   # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
   observed <- as.numeric(by(xx, xx$sim, pvalue_maxcombo))
   expected <- readRDS("fixtures/backwards-compatibility/pvalue_maxcombo_ex2.rds")
+  expect_equal(observed, expected)
+})
+
+test_that("rpwexp()", {
+  # Example 1
+  # Exponential failure times
+  observed <- rpwexp(
+    n = 10000,
+    fail_rate = data.frame(rate = 5, duration = 1)
+  )
+  expected <- readRDS("fixtures/backwards-compatibility/rpwexp_ex1.rds")
+  expect_equal(observed, expected)
+
+  # Example 2
+  # Get 10k piecewise exponential failure times.
+  # Failure rates are 1 for time 0 to 0.5, 3 for time 0.5 to 1, and 10 for > 1.
+  # Intervals specifies duration of each failure rate interval
+  # with the final interval running to infinity.
+  observed <- rpwexp(
+    n = 1e4,
+    fail_rate = data.frame(rate = c(1, 3, 10), duration = c(.5, .5, 1))
+  )
+  expected <- readRDS("fixtures/backwards-compatibility/rpwexp_ex2.rds")
   expect_equal(observed, expected)
 })

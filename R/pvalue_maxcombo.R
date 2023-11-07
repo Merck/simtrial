@@ -35,14 +35,13 @@
 #' @export
 #'
 #' @examples
-#' library(tibble)
 #' library(dplyr)
 #'
 #' # Example 1
 #' x <- sim_fixed_n(
 #'   n_sim = 1,
 #'   timing_type = 5,
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = c(0, 0, 1),
 #'     gamma = c(0, 1, 1)
 #'   )
@@ -55,7 +54,7 @@
 #' xx <- sim_fixed_n(
 #'   n_sim = 100,
 #'   timing_type = 5,
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = c(0, 0, 1),
 #'     gamma = c(0, 1, 1)
 #'   )

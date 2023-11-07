@@ -42,7 +42,6 @@ Both enrollments are piecewise, but have varying durations and rates.
 
 ```{r dependencies, message=FALSE, warning=FALSE}
 library(simtrial)
-library(tibble)
 library(future)
 library(doFuture)
 ```
@@ -55,8 +54,8 @@ plan("sequential") # Ensure that the backend is sequential
 set.seed(1)
 
 n <- 5000
-enroll_rate1 <- tibble(rate = c(5, 20, 10), duration = c(100, 150, 150))
-enroll_rate2 <- tibble(rate = c(10, 15, 30), duration = c(150, 175, 75))
+enroll_rate1 <- data.frame(rate = c(5, 20, 10), duration = c(100, 150, 150))
+enroll_rate2 <- data.frame(rate = c(10, 15, 30), duration = c(150, 175, 75))
 x1 <- rpw_enroll(n = n, enroll_rate = enroll_rate1)
 x2 <- rpw_enroll(n = n, enroll_rate = enroll_rate2)
 

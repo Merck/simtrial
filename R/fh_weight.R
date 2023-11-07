@@ -20,10 +20,11 @@
 #'
 #' With output from the function [counting_process()].
 #'
-#' @param x A [counting_process()]-class `tibble` with a counting process dataset.
-#' @param rho_gamma A `tibble` with variables `rho` and `gamma`, both greater
+#' @param x A [counting_process()]-class data frame with a counting process
+#'   dataset.
+#' @param rho_gamma A data frame with variables `rho` and `gamma`, both greater
 #'   than equal to zero, to specify one Fleming-Harrington weighted logrank test
-#'   per row; Default: `tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))`.
+#'   per row; Default: `data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))`.
 #' @param return_variance A logical flag that, if `TRUE`, adds columns
 #'   estimated variance for weighted sum of observed minus expected;
 #'   see details; Default: `FALSE`.
@@ -92,13 +93,13 @@
 #'   counting_process(arm = "experimental")
 #'
 #' # Compute logrank FH(0, 1)
-#' fh_weight(x, rho_gamma = tibble(rho = 0, gamma = 1))
-#' fh_weight(x, rho_gamma = tibble(rho = 0, gamma = 1), return_variance = TRUE)
+#' fh_weight(x, rho_gamma = data.frame(rho = 0, gamma = 1))
+#' fh_weight(x, rho_gamma = data.frame(rho = 0, gamma = 1), return_variance = TRUE)
 #'
 #' # Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
-#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
-#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
-#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
+#' fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
+#' fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
+#' fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
 #'
 #' # Example 2
 #' # Use default enrollment and event rates at cut of 100 events
@@ -106,7 +107,7 @@
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental") %>%
-#'   fh_weight(rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+#'   fh_weight(rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
 #'
 #' # Compute p-value for MaxCombo
 #' library(mvtnorm)
@@ -122,7 +123,7 @@
 #'   counting_process(arm = "experimental")
 #'
 #' x %>% fh_weight(
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = c(0, 0),
 #'     gamma = c(0, 1)
 #'   ),
@@ -131,7 +132,7 @@
 #'
 #' # Off-diagonal element should be variance in following
 #' x %>% fh_weight(
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = 0,
 #'     gamma = .5
 #'   ),
@@ -139,12 +140,12 @@
 #' )
 #'
 #' # Compare off diagonal result with fh_weight()
-#' x %>% fh_weight(rho_gamma = tibble(rho = 0, gamma = .5))
+#' x %>% fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
 fh_weight <- function(
     x = sim_pw_surv(n = 200) %>%
       cut_data_by_event(150) %>%
       counting_process(arm = "experimental"),
-    rho_gamma = tibble(
+    rho_gamma = data.frame(
       rho = c(0, 0, 1, 1),
       gamma = c(0, 1, 0, 1)
     ),

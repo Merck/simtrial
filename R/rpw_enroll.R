@@ -28,7 +28,7 @@
 #'
 #' @param n Number of observations.
 #'   Default of `NULL` yields random enrollment size.
-#' @param enroll_rate A tibble containing period duration (`duration`)
+#' @param enroll_rate A data frame containing period duration (`duration`)
 #'   and enrollment rate (`rate`). for specified enrollment periods.
 #'   If necessary, last period will be extended to ensure enrollment
 #'   of specified `n`.
@@ -40,14 +40,12 @@
 #' @export
 #'
 #' @examples
-#' library(tibble)
-#'
 #' # Example 1
 #' # Piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 #' # Enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
 #' x <- rpw_enroll(
 #'   n = 1e5,
-#'   enroll_rate = tibble(
+#'   enroll_rate = data.frame(
 #'     rate = c(5, 15, 30),
 #'     duration = c(100, 200, 100)
 #'   )
@@ -62,7 +60,7 @@
 #' # Exponential enrollment
 #' x <- rpw_enroll(
 #'   n = 1e5,
-#'   enroll_rate = tibble(rate = .03, duration = 1)
+#'   enroll_rate = data.frame(rate = .03, duration = 1)
 #' )
 #' plot(x, 1:1e5,
 #'   main = "Simulated exponential inter-arrival times",
@@ -71,7 +69,7 @@
 #' )
 rpw_enroll <- function(
     n = NULL,
-    enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5))) {
+    enroll_rate = data.frame(duration = c(1, 2), rate = c(2, 5))) {
   # Take care of the simple case first if it is exponential enrollment
   if (nrow(enroll_rate) == 1) {
     # Stop with error message if only 1 enrollment period and the

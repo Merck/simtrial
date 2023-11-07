@@ -1,24 +1,24 @@
-stratum <- tibble::tibble(stratum = c("Low", "High"), p = c(.4, .6))
+stratum <- data.frame(stratum = c("Low", "High"), p = c(.4, .6))
 
 block <- c(rep("control", 2), rep("experimental", 2))
 
-enroll_rate <- tibble::tibble(duration = c(5, 195), rate = c(100, 3000))
+enroll_rate <- data.frame(duration = c(5, 195), rate = c(100, 3000))
 
 fail_rate <- dplyr::bind_rows(
-  tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
-  tibble::tibble(stratum = "Low", period = 2, treatment = "control", duration = 297, rate = .03),
-  tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
-  tibble::tibble(stratum = "Low", period = 2, treatment = "experimental", duration = 297, rate = .02),
-  tibble::tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
-  tibble::tibble(stratum = "High", period = 2, treatment = "control", duration = 297, rate = .05),
-  tibble::tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
-  tibble::tibble(stratum = "High", period = 2, treatment = "experimental", duration = 297, rate = .03)
+  data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
+  data.frame(stratum = "Low", period = 2, treatment = "control", duration = 297, rate = .03),
+  data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
+  data.frame(stratum = "Low", period = 2, treatment = "experimental", duration = 297, rate = .02),
+  data.frame(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
+  data.frame(stratum = "High", period = 2, treatment = "control", duration = 297, rate = .05),
+  data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
+  data.frame(stratum = "High", period = 2, treatment = "experimental", duration = 297, rate = .03)
 )
 dropout_rate <- dplyr::bind_rows(
-  tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 300, rate = .001),
-  tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 300, rate = .001),
-  tibble::tibble(stratum = "High", period = 1, treatment = "control", duration = 300, rate = .001),
-  tibble::tibble(stratum = "High", period = 1, treatment = "experimental", duration = 300, rate = .001)
+  data.frame(stratum = "Low", period = 1, treatment = "control", duration = 300, rate = .001),
+  data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 300, rate = .001),
+  data.frame(stratum = "High", period = 1, treatment = "control", duration = 300, rate = .001),
+  data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 300, rate = .001)
 )
 set.seed(1)
 x <- sim_pw_surv(

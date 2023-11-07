@@ -46,7 +46,6 @@
 #' @examples
 #' library(gsDesign2)
 #' library(simtrial)
-#' library(tibble)
 #'
 #' alpha <- 0.025
 #' ratio <- 3
@@ -86,7 +85,7 @@
 #' simulated_data <- sim_pw_surv(
 #'   n = n, # Sample size
 #'   # Stratified design with prevalence ratio of 6:4
-#'   stratum = tibble(stratum = stratum, p = prevalence_ratio),
+#'   stratum = data.frame(stratum = stratum, p = prevalence_ratio),
 #'   # Randomization ratio
 #'   block = c("control", "control", "experimental", "experimental"),
 #'   enroll_rate = enroll_rate, # Enrollment rate
@@ -205,7 +204,7 @@ get_analysis_date <- function(
 
   n_max <- nrow(data)
   # if user input either `min_n_overall` or `min_n_per_stratum`, it is required to input `min_followup`.
-  if(cond1 | cond2){
+  if (cond1 | cond2) {
     if (is.na(min_followup)) {
       stop("`min_followup` must be provided.")
     }
@@ -269,14 +268,14 @@ get_analysis_date <- function(
     cut_date5b <- lapply(
       seq_along(min_n_per_stratum),
       function(x) {
-        if(is.na(min_n_per_stratum[x])){
+        if (is.na(min_n_per_stratum[x])) {
           NA
         } else {
           (data %>%
-             dplyr::filter(stratum == stratum[x]) %>%
-             dplyr::arrange(enroll_time) %>%
-             dplyr::filter(dplyr::row_number() <= min_n_per_stratum[x]) %>%
-             dplyr::summarise(max_enroll_time = max(enroll_time))
+            dplyr::filter(stratum == stratum[x]) %>%
+            dplyr::arrange(enroll_time) %>%
+            dplyr::filter(dplyr::row_number() <= min_n_per_stratum[x]) %>%
+            dplyr::summarise(max_enroll_time = max(enroll_time))
           )$max_enroll_time
         }
       }
@@ -293,4 +292,3 @@ get_analysis_date <- function(
 
   cut_date
 }
-
