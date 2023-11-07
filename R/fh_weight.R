@@ -92,13 +92,13 @@
 #'   counting_process(arm = "experimental")
 #'
 #' # Compute logrank FH(0, 1)
-#' wlr(x, rho_gamma = tibble(rho = 0, gamma = 1))
-#' wlr(x, rho_gamma = tibble(rho = 0, gamma = 1), return_variance = TRUE)
+#' fh_weight(x, rho_gamma = tibble(rho = 0, gamma = 1))
+#' fh_weight(x, rho_gamma = tibble(rho = 0, gamma = 1), return_variance = TRUE)
 #'
 #' # Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
-#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
-#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
-#' wlr(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
+#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
+#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
+#' fh_weight(x, rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
 #'
 #' # Example 2
 #' # Use default enrollment and event rates at cut of 100 events
@@ -106,7 +106,7 @@
 #' x <- sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental") %>%
-#'   wlr(rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+#'   fh_weight(rho_gamma = tibble(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
 #'
 #' # Compute p-value for MaxCombo
 #' library(mvtnorm)
@@ -121,7 +121,7 @@
 #'   cut_data_by_event(100) %>%
 #'   counting_process(arm = "experimental")
 #'
-#' x %>% wlr(
+#' x %>% fh_weight(
 #'   rho_gamma = tibble(
 #'     rho = c(0, 0),
 #'     gamma = c(0, 1)
@@ -130,7 +130,7 @@
 #' )
 #'
 #' # Off-diagonal element should be variance in following
-#' x %>% wlr(
+#' x %>% fh_weight(
 #'   rho_gamma = tibble(
 #'     rho = 0,
 #'     gamma = .5
@@ -138,9 +138,9 @@
 #'   return_variance = TRUE
 #' )
 #'
-#' # Compare off diagonal result with wlr()
-#' x %>% wlr(rho_gamma = tibble(rho = 0, gamma = .5))
-wlr <- function(
+#' # Compare off diagonal result with fh_weight()
+#' x %>% fh_weight(rho_gamma = tibble(rho = 0, gamma = .5))
+fh_weight <- function(
     x = sim_pw_surv(n = 200) %>%
       cut_data_by_event(150) %>%
       counting_process(arm = "experimental"),
@@ -154,27 +154,27 @@ wlr <- function(
 
   # Check input failure rate assumptions
   if (!is.data.frame(x)) {
-    stop("wlr: x in `wlr()` must be a data frame.")
+    stop("fh_weight: x in `fh_weight()` must be a data frame.")
   }
 
   if (!("s" %in% names(x))) {
-    stop("wlr: x column names in `wlr()` must contain s.")
+    stop("fh_weight: x column names in `fh_weight()` must contain s.")
   }
 
   if (!("o_minus_e" %in% names(x))) {
-    stop("wlr: x column names in `wlr()` must contain o_minus_e.")
+    stop("fh_weight: x column names in `fh_weight()` must contain o_minus_e.")
   }
 
   if (!("var_o_minus_e" %in% names(x))) {
-    stop("wlr: x column names in `wlr()` must contain var_o_minus_e.")
+    stop("fh_weight: x column names in `fh_weight()` must contain var_o_minus_e.")
   }
 
   if (return_variance && return_corr) {
-    stop("wlr: can't report both covariance and correlation for MaxCombo test.")
+    stop("fh_weight: can't report both covariance and correlation for MaxCombo test.")
   }
 
   if (return_corr && n_weight == 1) {
-    stop("wlr: can't report the correlation for a single WLR test.")
+    stop("fh_weight: can't report the correlation for a single WLR test.")
   }
 
   if (n_weight == 1) {

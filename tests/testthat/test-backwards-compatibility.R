@@ -84,7 +84,7 @@ test_that("counting_process()", {
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
 })
 
-test_that("wlr()", {
+test_that("fh_weight()", {
   # Example 1
   # Use default enrollment and event rates at cut at 100 events
   set.seed(12345)
@@ -93,13 +93,13 @@ test_that("wlr()", {
   x <- counting_process(x, arm = "experimental")
 
   # Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
-  observed <- wlr(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
+  observed <- fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
   expected <- readRDS("fixtures/backwards-compatibility/wlr_ex1.rds")
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
-  observed <- wlr(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
+  observed <- fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
   expected <- readRDS("fixtures/backwards-compatibility/wlr_ex1_var.rds")
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
-  observed <- wlr(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
+  observed <- fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
   expected <- readRDS("fixtures/backwards-compatibility/wlr_ex1_cor.rds")
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
 
@@ -109,7 +109,7 @@ test_that("wlr()", {
   x <- sim_pw_surv(n = 200)
   x <- cut_data_by_event(x, 100)
   x <- counting_process(x, arm = "experimental")
-  observed <- wlr(x, rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+  observed <- fh_weight(x, rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
   expected <- readRDS("fixtures/backwards-compatibility/wlr_ex2.rds")
   expect_equivalent(as.data.frame(observed), as.data.frame(expected))
 })

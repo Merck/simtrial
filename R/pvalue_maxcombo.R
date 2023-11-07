@@ -18,13 +18,13 @@
 
 #' MaxCombo p-value
 #'
-#' Computes p-values for the MaxCombo test based on output from [wlr()].
+#' Computes p-values for the MaxCombo test based on output from [fh_weight()].
 #' This is still in an experimental stage and is intended for use with
 #' the [sim_fixed_n()] trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as
 #' that provided in the ADaM ADTTE format.
 #'
-#' @param z A dataset output from [wlr()]; see examples.
+#' @param z A dataset output from [fh_weight()]; see examples.
 #' @param algorithm This is passed directly to the `algorithm` argument
 #'   in [mvtnorm::pmvnorm()].
 #'
