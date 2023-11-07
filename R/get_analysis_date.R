@@ -31,7 +31,6 @@
 #'   previous analysis date.
 #' @param min_time_after_previous_analysis A numerical value specifying the
 #'   planned minimum time after the previous analysis.
-#' @param enroll_rate Enrollment rates, see details and examples.
 #' @param min_n_overall A numerical value specifying the
 #'   minimal overall sample size enrolled to kick off the analysis.
 #' @param min_n_per_stratum A numerical value specifying the
@@ -115,13 +114,16 @@
 #'   target_event_overall = 300
 #' )
 #'
-#' # Example 4: Cut for analysis when there are at least 100 events
+#' # Example 4a: Cut for analysis when there are at least 100 events
 #' # in the biomarker-positive population, and at least 200 events
 #' # in the biomarker-negative population, whichever arrives later.
 #' get_analysis_date(
 #'   simulated_data,
 #'   target_event_per_stratum = c(100, 200)
 #' )
+#' # Example 4b: Cut for analysis when there are at least 100 events
+#' # in the biomarker-positive population, but we don't have a requirement
+#' # for the biomarker-negative population.
 #' get_analysis_date(
 #'   simulated_data,
 #'   target_event_overall = 150,
@@ -142,22 +144,32 @@
 #' # of the patients are enrolled in the overall population.
 #' get_analysis_date(
 #'   simulated_data,
-#'   enroll_rate = enroll_rate,
 #'   min_n_overall = n * 0.8,
 #'   min_followup = 12
 #' )
 #'
-#' # Example 7: Cut for analysis when 12 months after at least 200/160 patients
+#' # Example 7a: Cut for analysis when 12 months after at least 200/160 patients
 #' # are enrolled in the biomarker positive/negative population.
 #' get_analysis_date(
 #'   simulated_data,
-#'   enroll_rate = enroll_rate,
 #'   min_n_per_stratum = c(200, 160),
 #'   min_followup = 12
 #' )
+#' # Example 7b: Cut for analysis when 12 months after at least 200 patients
+#' # are enrolled in the biomarker positive population, but we don't have a
+#' # specific requirement for the biomarker negative population.
 #' get_analysis_date(
 #'   simulated_data,
-#'   enroll_rate = enroll_rate,
+#'   min_n_per_stratum = c(200, NA),
+#'   min_followup = 12
+#' )
+#' # Example 7c: Cut for analysis when 12 months after at least 200 patients
+#' # are enrolled in the biomarker-positive population, but we don't have a
+#' # specific requirement for the biomarker-negative population. We also want
+#' # there are at least 80% of the patients enrolled in the overall population.
+#' get_analysis_date(
+#'   simulated_data,
+#'   min_n_overall = n * 0.8,
 #'   min_n_per_stratum = c(200, NA),
 #'   min_followup = 12
 #' )
@@ -174,7 +186,6 @@ get_analysis_date <- function(
     previous_analysis_date = 0,
     min_time_after_previous_analysis = NA,
     # Option 5: Minimal follow-up time after specified enrollment fraction
-    enroll_rate = NA,
     min_n_overall = NA,
     min_n_per_stratum = NA,
     min_followup = NA) {
@@ -187,31 +198,25 @@ get_analysis_date <- function(
   input_check_vector(target_event_per_stratum, label = "target_event_per_stratum")
   input_check_vector(min_n_per_stratum, label = "min_n_per_stratum")
 
-  # Check if enrollment is input by user
-  cond1 <- inherits(enroll_rate, c("tbl_df", "data.frame"))
   # Check if `min_n_overall` is input by user
-  cond2 <- !is.na(min_n_overall)
+  cond1 <- !is.na(min_n_overall)
   # Check if `min_n_per_stratum` is input by user
-  cond3 <- !all(is.na(min_n_overall))
+  cond2 <- !all(is.na(min_n_overall))
 
-  if (cond1) {
-    n_max <- sum(enroll_rate$rate * enroll_rate$duration)
-
+  n_max <- nrow(data)
+  # if user input either `min_n_overall` or `min_n_per_stratum`, it is required to input `min_followup`.
+  if(cond1 | cond2){
     if (is.na(min_followup)) {
       stop("`min_followup` must be provided.")
     }
-
-    if (cond2) {
-      if (min_n_overall > n_max) {
-        stop("`min_n_overall` must be a positive number smaller than the total sample size.")
-      }
-    }
-
-    if (cond3) {
-      if (sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
-        stop("`min_n_per_stratum` must be a sum of positive numbers smaller than the total sample size.")
-      }
-    }
+  }
+  # if user input `min_n_overall` but it > n_max, then output error message
+  if (cond1 & min_n_overall > n_max) {
+    stop("`min_n_overall` must be a positive number smaller than the total sample size.")
+  }
+  # if user input `min_n_per_stratum` but sum of it > n_max, then output error message
+  if (cond2 & sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
+    stop("`min_n_per_stratum` must be a sum of positive numbers smaller than the total sample size.")
   }
 
   # Cutting option 1: Planned calendar time for the analysis
@@ -251,7 +256,10 @@ get_analysis_date <- function(
   # Cutting option 5: Minimal follow-up time after specified enrollment fraction
   # 5a: At least 10 months after the 80% of the patients are enrolled
   if (!all(is.na(min_n_overall))) {
-    cut_date5a <- get_min_date(enroll_rate, min_n = min_n_overall) + min_followup
+    cut_date5a <- (data %>%
+      dplyr::arrange(enroll_time) %>%
+      dplyr::filter(dplyr::row_number() <= min_n_overall) %>%
+      dplyr::summarise(max_enroll_time = max(enroll_time)))$max_enroll_time + min_followup
   } else {
     cut_date5a <- NA
   }
@@ -261,7 +269,16 @@ get_analysis_date <- function(
     cut_date5b <- lapply(
       seq_along(min_n_per_stratum),
       function(x) {
-        get_min_date(enroll_rate %>% dplyr::filter(stratum == stratum[x]), min_n = min_n_per_stratum[x])
+        if(is.na(min_n_per_stratum[x])){
+          NA
+        } else {
+          (data %>%
+             dplyr::filter(stratum == stratum[x]) %>%
+             dplyr::arrange(enroll_time) %>%
+             dplyr::filter(dplyr::row_number() <= min_n_per_stratum[x]) %>%
+             dplyr::summarise(max_enroll_time = max(enroll_time))
+          )$max_enroll_time
+        }
       }
     ) %>%
       unlist() %>%
@@ -277,34 +294,3 @@ get_analysis_date <- function(
   cut_date
 }
 
-input_check_scale <- function(x = NA, label = "x") {
-  if (!is.na(x)) {
-    if (is.numeric(x) && x < 0) {
-      stop(paste0(label, " must be a positive number."))
-    } else if (!is.numeric(x)) {
-      stop(paste0(label, " must be a numerical value."))
-    }
-  }
-}
-
-input_check_vector <- function(x = NA, label = "x") {
-  if (!(all(is.na(x) | (is.numeric(x) & x > 0)))) {
-    stop(paste0(label, " must be a positive number with either `NA` or positive numbers."))
-  }
-}
-
-get_min_date <- function(enroll_rate, min_n = 400) {
-  if (!is.na(min_n)) {
-    res <- stats::uniroot(
-      f = function(x) {
-        gsDesign2::expected_accrual(time = x, enroll_rate = enroll_rate) - min_n
-      },
-      interval = c(0, sum(enroll_rate$duration) + 1)
-    )
-    ans <- res$root
-  } else {
-    ans <- NA
-  }
-
-  ans
-}
