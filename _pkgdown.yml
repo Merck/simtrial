@@ -32,6 +32,7 @@ reference:
     - Ex5widening
     - Ex6crossing
     - MBdelayed
+
 - title: "Distributions"
   contents:
     - rpwexp
@@ -39,11 +40,13 @@ reference:
     - rpwexpinvRcpp
     - rpw_enroll
     - fit_pwexp
+
 - title: "Simulate data under the piecewise model"
   contents:
     - sim_pw_surv
     - sim_fixed_n
     - simfix2simpwsurv
+
 - title: "Cut data"
   contents:
     - cut_data_by_date
@@ -53,13 +56,17 @@ reference:
 
 - title: "Compute p-values/test statistics"
   contents:
-    - wlr
     - counting_process
-    - mb_weight
     - pvalue_maxcombo
+
 - title: "Randomization algorithms"
   contents:
     - randomize_by_fixed_block
+
+- title: "Weigthing functions for WLR test"
+  contents:
+    - mb_weight
+    - fh_weight
 
 articles:
 - title: "Example simulation workflows"
