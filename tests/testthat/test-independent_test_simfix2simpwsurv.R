@@ -1,4 +1,4 @@
-fail_rate <- tibble::tibble(
+fail_rate <- data.frame(
   stratum = c(rep("Low", 3), rep("High", 3)),
   duration = rep(c(4, 10, 100), 2),
   fail_rate = c(

@@ -6,8 +6,8 @@
 \code{sim_pw_surv()} format}
 \usage{
 simfix2simpwsurv(
-  fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
-    hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2))
+  fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
+    18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2))
 )
 }
 \arguments{
@@ -31,15 +31,14 @@ to analyze or otherwise evaluate individual simulations in ways that
 \code{\link[=sim_fixed_n]{sim_fixed_n()}} does not.
 }
 \examples{
-library(dplyr)
-library(tibble)
+library(magrittr)
 
 # Example 1
 # Convert standard input
 simfix2simpwsurv()
 
 # Stratified example
-fail_rate <- tibble(
+fail_rate <- data.frame(
   stratum = c(rep("Low", 3), rep("High", 3)),
   duration = rep(c(4, 10, 100), 2),
   fail_rate = c(
@@ -59,8 +58,8 @@ x <- simfix2simpwsurv(fail_rate)
 # Enroll 300 patients in ~12 months at constant rate
 sim <- sim_pw_surv(
   n = 300,
-  stratum = tibble(stratum = c("Low", "High"), p = c(.6, .4)),
-  enroll_rate = tibble(duration = 12, rate = 300 / 12),
+  stratum = data.frame(stratum = c("Low", "High"), p = c(.6, .4)),
+  enroll_rate = data.frame(duration = 12, rate = 300 / 12),
   fail_rate = x$fail_rate,
   dropout_rate = x$dropout_rate
 )
@@ -69,5 +68,5 @@ sim <- sim_pw_surv(
 dat <- sim \%>\%
   cut_data_by_event(200) \%>\% # cut data
   counting_process(arm = "experimental") \%>\% # convert format for tenFH
-  fh_weight(rho_gamma = tibble(rho = 0, gamma = 0)) # stratified logrank
+  fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # stratified logrank
 }

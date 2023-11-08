@@ -46,11 +46,13 @@ This differs from the @MagirrBurman delayed effect assumptions only in that they
 ```{r, message=FALSE, warning=FALSE}
 studyDuration <- 36
 sample_size <- 300
-enroll_rate <- tibble::tibble(duration = 12, rate = 200 / 12)
-fail_rate <- tibble::tribble(
-  ~stratum, ~duration, ~fail_rate, ~hr, ~dropout_rate,
-  "All", 6, log(2) / 15, 1, 0,
-  "All", 36, log(2) / 15, .7, 0
+enroll_rate <- data.frame(duration = 12, rate = 200 / 12)
+fail_rate <- data.frame(
+  stratum = c("All", "All"),
+  duration = c(6, 36),
+  fail_rate = c(log(2) / 15, log(2) / 15),
+  hr = c(1, .7),
+  dropout_rate = c(0, 0)
 )
 ```
 
@@ -62,7 +64,7 @@ set.seed(7789)
 xpar <- simfix2simpwsurv(fail_rate)
 MBdelay <- sim_pw_surv(
   n = sample_size,
-  stratum = tibble::tibble(stratum = "All", p = 1),
+  stratum = data.frame(stratum = "All", p = 1),
   block = c(rep("control", 2), rep("experimental", 2)),
   enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
@@ -131,8 +133,8 @@ For failure rates, we consider the delayed treatment effect example of @MagirrBu
 studyDuration <- 5
 sample_size <- 2000
 enrollDuration <- .0001
-enroll_rate <- tibble::tibble(duration = enrollDuration, rate = sample_size / enrollDuration)
-fail_rate <- tibble::tibble(
+enroll_rate <- data.frame(duration = enrollDuration, rate = sample_size / enrollDuration)
+fail_rate <- data.frame(
   stratum = "All",
   fail_rate = 0.25,
   dropout_rate = 0,
@@ -149,7 +151,7 @@ set.seed(7783)
 xpar <- simfix2simpwsurv(fail_rate)
 FHwn <- sim_pw_surv(
   n = sample_size,
-  stratum = tibble::tibble(stratum = "All", p = 1),
+  stratum = data.frame(stratum = "All", p = 1),
   block = c(rep("control", 2), rep("experimental", 2)),
   enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
@@ -166,7 +168,7 @@ We perform a logrank and weighted logrank tests as suggested for more limited do
 ```{r}
 xx <- FHwn %>%
   counting_process(arm = "experimental") %>%
-  fh_weight(rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) %>%
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) %>%
   mutate(p = pnorm(z))
 xx
 ```
@@ -196,7 +198,7 @@ Results are quite similar to the results with greater down-weighting.
 ```{r}
 xx <- FHwn %>%
   counting_process(arm = "experimental") %>%
-  fh_weight(rho_gamma = tibble(rho = c(0, 0, .5), gamma = c(0, .5, .5)), return_corr = TRUE) %>%
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)), return_corr = TRUE) %>%
   mutate(p = pnorm(z))
 xx
 ```

@@ -4,13 +4,16 @@
 \alias{rpw_enroll}
 \title{Generate piecewise exponential enrollment}
 \usage{
-rpw_enroll(n = NULL, enroll_rate = tibble(duration = c(1, 2), rate = c(2, 5)))
+rpw_enroll(
+  n = NULL,
+  enroll_rate = data.frame(duration = c(1, 2), rate = c(2, 5))
+)
 }
 \arguments{
 \item{n}{Number of observations.
 Default of \code{NULL} yields random enrollment size.}
 
-\item{enroll_rate}{A tibble containing period duration (\code{duration})
+\item{enroll_rate}{A data frame containing period duration (\code{duration})
 and enrollment rate (\code{rate}). for specified enrollment periods.
 If necessary, last period will be extended to ensure enrollment
 of specified \code{n}.}
@@ -28,14 +31,12 @@ fixed enrollment duration or fixed minimum follow-up);
 see \code{\link[gsDesign:nSurv]{gsDesign::nSurv()}}.
 }
 \examples{
-library(tibble)
-
 # Example 1
 # Piecewise uniform (piecewise exponential inter-arrival times) for 10k patients enrollment
 # Enrollment rates of 5 for time 0-100, 15 for 100-300, and 30 thereafter
 x <- rpw_enroll(
   n = 1e5,
-  enroll_rate = tibble(
+  enroll_rate = data.frame(
     rate = c(5, 15, 30),
     duration = c(100, 200, 100)
   )
@@ -50,7 +51,7 @@ plot(x, 1:1e5,
 # Exponential enrollment
 x <- rpw_enroll(
   n = 1e5,
-  enroll_rate = tibble(rate = .03, duration = 1)
+  enroll_rate = data.frame(rate = .03, duration = 1)
 )
 plot(x, 1:1e5,
   main = "Simulated exponential inter-arrival times",

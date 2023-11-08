@@ -7,7 +7,8 @@
 mb_weight(x, delay = 4, w_max = Inf)
 }
 \arguments{
-\item{x}{A \code{\link[=counting_process]{counting_process()}}-class \code{tibble} with a counting process dataset.}
+\item{x}{A \code{\link[=counting_process]{counting_process()}}-class data frame with a counting process
+dataset.}
 
 \item{delay}{The initial delay period where weights increase;
 after this, weights are constant at the final weight in the delay period.}

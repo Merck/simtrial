@@ -36,7 +36,8 @@
 #' These weights can then be used to compute a z-statistic for the
 #' modestly weighted logrank test proposed.
 #'
-#' @param x A [counting_process()]-class `tibble` with a counting process dataset.
+#' @param x A [counting_process()]-class data frame with a counting process
+#'   dataset.
 #' @param delay The initial delay period where weights increase;
 #'   after this, weights are constant at the final weight in the delay period.
 #' @param w_max Maximum weight to be returned.

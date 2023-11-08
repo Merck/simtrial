@@ -20,25 +20,24 @@ is never reached, the final \code{cte} at which an event occurs.
 Get date at which an event count is reached
 }
 \examples{
-library(tibble)
 library(dplyr)
 
 # Use default enrollment and calendar cut date
 # for 50 events in the "Positive" stratum
 x <- sim_pw_surv(
   n = 200,
-  stratum = tibble(
+  stratum = data.frame(
     stratum = c("Positive", "Negative"),
     p = c(.5, .5)
   ),
-  fail_rate = tibble(
+  fail_rate = data.frame(
     stratum = rep(c("Positive", "Negative"), 2),
     period = rep(1, 4),
     treatment = c(rep("control", 2), rep("experimental", 2)),
     duration = rep(1, 4),
     rate = log(2) / c(6, 9, 9, 12)
   ),
-  dropout_rate = tibble(
+  dropout_rate = data.frame(
     stratum = rep(c("Positive", "Negative"), 2),
     period = rep(1, 4),
     treatment = c(rep("control", 2), rep("experimental", 2)),

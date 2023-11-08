@@ -57,7 +57,6 @@ Get the analysis date under multiple conditions
 \examples{
 library(gsDesign2)
 library(simtrial)
-library(tibble)
 
 alpha <- 0.025
 ratio <- 3
@@ -97,7 +96,7 @@ set.seed(2023)
 simulated_data <- sim_pw_surv(
   n = n, # Sample size
   # Stratified design with prevalence ratio of 6:4
-  stratum = tibble(stratum = stratum, p = prevalence_ratio),
+  stratum = data.frame(stratum = stratum, p = prevalence_ratio),
   # Randomization ratio
   block = c("control", "control", "experimental", "experimental"),
   enroll_rate = enroll_rate, # Enrollment rate

@@ -50,7 +50,7 @@ surv_to_count <- function(time, status, trt, strats) {
 }
 
 testthat::test_that("Counting Process Format without ties", {
-  x <- tibble(
+  x <- data.frame(
     stratum = c(rep(1, 10), rep(2, 6)),
     treatment = rep(c(1, 1, 0, 0), 4),
     tte = 1:16,
@@ -61,7 +61,7 @@ testthat::test_that("Counting Process Format without ties", {
   res_counting_process <- simtrial::counting_process(x, arm)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$stratum)
 
-  res_test <- tibble::as_tibble(subset(res_test, trt == 1)) %>%
+  res_test <- data.frame(subset(res_test, trt == 1)) %>%
     subset(n.event > 0 & n.risk - tn.risk > 0 & tn.risk > 0)
 
   testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE)
@@ -70,7 +70,7 @@ testthat::test_that("Counting Process Format without ties", {
 
 
 testthat::test_that("Counting Process Format with ties", {
-  x <- tibble(
+  x <- data.frame(
     stratum = c(rep(1, 10), rep(2, 6)),
     treatment = rep(c(1, 1, 0, 0), 4),
     tte = c(rep(1:4, each = 4)),
@@ -80,7 +80,7 @@ testthat::test_that("Counting Process Format with ties", {
   res_counting_process <- counting_process(x, arm)
   res_test <- surv_to_count(time = x$tte, status = x$event, trt = x$treatment, strats = x$stratum)
 
-  res_test <- tibble::as_tibble(subset(res_test, trt == 1)) %>%
+  res_test <- data.frame(subset(res_test, trt == 1)) %>%
     subset(n.event > 0 & n.risk - tn.risk > 0 & tn.risk > 0)
 
   testthat::expect_equal(res_counting_process$o_minus_e, res_test$OminusE)

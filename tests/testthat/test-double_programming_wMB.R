@@ -34,15 +34,15 @@ test_that("Validation passed for the situation of multiple stratum", {
   x <- sim_pw_surv(
     n = 200,
     # 2 stratum,30% and 70% prevalence
-    stratum = tibble::tibble(stratum = c("Low", "High"), p = c(.3, .7)),
-    fail_rate = tibble::tibble(
+    stratum = data.frame(stratum = c("Low", "High"), p = c(.3, .7)),
+    fail_rate = data.frame(
       stratum = c(rep("Low", 4), rep("High", 4)),
       period = rep(1:2, 4),
       treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
       duration = rep(c(3, 1), 4),
       rate = c(.03, .05, .03, .03, .05, .08, .07, .04)
     ),
-    dropout_rate = tibble::tibble(
+    dropout_rate = data.frame(
       stratum = c(rep("Low", 2), rep("High", 2)),
       period = rep(1, 4),
       treatment = rep(c("control", "experimental"), 2),
@@ -67,15 +67,15 @@ test_that("Validation passed for the situation of a stratum with no records", {
   x <- sim_pw_surv(
     n = 200,
     # 2 stratum,30% and 70% prevalence
-    stratum = tibble::tibble(stratum = c("Low", "High"), p = c(.3, .7)),
-    fail_rate = tibble::tibble(
+    stratum = data.frame(stratum = c("Low", "High"), p = c(.3, .7)),
+    fail_rate = data.frame(
       stratum = c(rep("Low", 4), rep("High", 4)),
       period = rep(1:2, 4),
       treatment = rep(c(rep("control", 2), rep("experimental", 2)), 2),
       duration = rep(c(3, 1), 4),
       rate = c(.03, .05, .03, .03, .05, .08, .07, .04)
     ),
-    dropout_rate = tibble::tibble(
+    dropout_rate = data.frame(
       stratum = c(rep("Low", 2), rep("High", 2)),
       period = rep(1, 4),
       treatment = rep(c("control", "experimental"), 2),

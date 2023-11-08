@@ -25,7 +25,7 @@
 #' @param n_sim Number of simulations to perform.
 #' @param sample_size Total sample size per simulation.
 #' @param target_event Targeted event count for analysis.
-#' @param stratum A tibble with stratum specified in `stratum`,
+#' @param stratum A data frame with stratum specified in `stratum`,
 #'   probability (incidence) of each stratum in `p`.
 #' @param enroll_rate Piecewise constant enrollment rates by time period.
 #'   Note that these are overall population enrollment rates and the `stratum`
@@ -37,7 +37,7 @@
 #'   in each block.
 #' @param timing_type A numeric vector determining data cutoffs used;
 #'   see details. Default is to include all available cutoff methods.
-#' @param rho_gamma As in [fh_weight()]. A `tibble` with variables
+#' @param rho_gamma As in [fh_weight()]. A data frame with variables
 #'   `rho` and `gamma`, both greater than equal to zero,
 #'   to specify one Fleming-Harrington weighted logrank test per row.
 #'
@@ -66,7 +66,6 @@
 #' If multiple Fleming-Harrington tests are specified in `rho_gamma`,
 #' then columns `rho` and `gamma` are also included.
 #'
-#' @importFrom tibble tibble
 #' @importFrom data.table ":=" rbindlist setDF
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future plan
@@ -75,7 +74,6 @@
 #' @export
 #'
 #' @examples
-#' library(tibble)
 #' library(dplyr)
 #' library(future)
 #'
@@ -85,7 +83,7 @@
 #'
 #' # Example 2
 #' # Example with 2 tests: logrank and FH(0,1)
-#' sim_fixed_n(n_sim = 1, rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+#' sim_fixed_n(n_sim = 1, rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
 #'
 #' # Example 3
 #' # Power by test
@@ -93,7 +91,7 @@
 #' xx <- sim_fixed_n(
 #'   n_sim = 100,
 #'   timing_type = c(2, 5),
-#'   rho_gamma = tibble(rho = 0, gamma = c(0, 1))
+#'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
 #' )
 #' # Get power approximation for FH, data cutoff combination
 #' xx %>%
@@ -129,11 +127,11 @@ sim_fixed_n <- function(
     sample_size = 500, # Sample size
     target_event = 350, # Targeted total event count
     # Multinomial probability distribution for stratum enrollment
-    stratum = tibble(stratum = "All", p = 1),
+    stratum = data.frame(stratum = "All", p = 1),
     # Enrollment rates as in AHR()
-    enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+    enroll_rate = data.frame(duration = c(2, 2, 10), rate = c(3, 6, 9)),
     # Failure rates as in AHR()
-    fail_rate = tibble(
+    fail_rate = data.frame(
       stratum = "All",
       duration = c(3, 100),
       fail_rate = log(2) / c(9, 18),
@@ -148,7 +146,7 @@ sim_fixed_n <- function(
     timing_type = 1:5,
     # Default is to to logrank testing, but one or more Fleming-Harrington tests
     # can be specified
-    rho_gamma = tibble(rho = 0, gamma = 0)) {
+    rho_gamma = data.frame(rho = 0, gamma = 0)) {
   # Check input values
   # Check input enrollment rate assumptions
   if (!("duration" %in% names(enroll_rate))) {
