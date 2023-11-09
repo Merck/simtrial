@@ -153,27 +153,27 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-in"><span><span class="co"># Compute logrank FH(0, 1)</span></span></span>
 <span class="r-in"><span><span class="fu">fh_weight</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     1 -3.280448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     1 -3.332801</span>
 <span class="r-in"><span><span class="fu">fh_weight</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z      var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     1 -3.280448 2.389153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     1 -3.332801 2.477853</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)</span></span></span>
 <span class="r-in"><span><span class="fu">fh_weight</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -2.636193</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.280448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -2.132872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -3.744963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.332801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -3.561863</span>
 <span class="r-in"><span><span class="fu">fh_weight</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z        v1       v2        v3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -2.636193 24.482770 6.448455 18.034316</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.280448  6.448455 2.389153  4.059302</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -2.132872 18.034316 4.059302 13.975014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -3.744963 24.195511 6.495887 17.699623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.332801  6.495887 2.477853  4.018035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -3.561863 17.699623 4.018035 13.681589</span>
 <span class="r-in"><span><span class="fu">fh_weight</span><span class="op">(</span><span class="va">x</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z        v1        v2        v3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -2.636193 1.0000000 0.8431472 0.9749745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.280448 0.8431472 1.0000000 0.7025113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -2.132872 0.9749745 0.7025113 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -3.744963 1.0000000 0.8389447 0.9728108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     1 -3.332801 0.8389447 1.0000000 0.6900931</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1     0 -3.561863 0.9728108 0.6900931 1.0000000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># Use default enrollment and event rates at cut of 100 events</span></span></span>
