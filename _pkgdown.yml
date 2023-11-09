@@ -55,6 +55,7 @@ reference:
     - wlr
     - counting_process
     - mb_weight
+    - early_zero_weight
     - pvalue_maxcombo
 - title: "Randomization algorithms"
   contents:

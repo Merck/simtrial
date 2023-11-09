@@ -16,54 +16,20 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Magirr and Burman modestly weighted logrank tests
-#'
-#' Magirr and Burman (2019) proposed a weighted logrank test to have better
-#' power than the logrank test when the treatment effect is delayed,
-#' but to still maintain good power under a proportional hazards assumption.
-#' In Magirr (2021), (the equivalent of) a maximum weight was proposed
-#' as opposed to a fixed time duration over which weights would increase.
-#' The weights for some early interval specified by the user are the inverse
-#' of the combined treatment group empirical survival distribution; see details.
-#' After this initial period, weights are constant at the maximum of the
-#' previous weights. Another advantage of the test is that under strong
-#' null hypothesis that the underlying survival in the control group is
-#' greater than or equal to underlying survival in the experimental group,
-#' Type I error is controlled as the specified level.
-#'
-#' Computes Magirr-Burman weights and adds them to a dataset created by
-#' [counting_process()].
-#' These weights can then be used to compute a z-statistic for the
-#' modestly weighted logrank test proposed.
+#' Zero early weight for weighted logrank tests
 #'
 #' @param x A [counting_process()]-class `tibble` with a counting process dataset.
-#' @param delay The initial delay period where weights increase;
+#' @param early_period The initial delay period where weights increase;
 #'   after this, weights are constant at the final weight in the delay period.
-#' @param w_max Maximum weight to be returned.
-#'   Set `delay = Inf`, `w_max = 2` to be consistent with recommendation of
-#'   Magirr (2021).
+#' @param fail_rate a data frame record the failure rate
 #'
-#' @return A data frame. The column `mb_weight` contains the weights for the
-#'   Magirr-Burman weighted logrank test for the data in `x`.
-#'
-#' @details
-#' We define \eqn{t^*} to be the input variable `delay`.
-#' This specifies an initial period during which weights increase.
-#' We also set a maximum weight \eqn{w_{\max}}.
-#' To define specific weights, we let \eqn{S(t)} denote the Kaplan-Meier
-#' survival estimate at time \eqn{t} for the combined data
-#' (control plus experimental treatment groups).
-#' The weight at time \eqn{t} is then defined as
-#' \deqn{w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).}
+#' @return A data frame. The column `weight` contains the weights for the
+#'   early zero weighted logrank test for the data in `x`.
 #'
 #' @references
-#' Magirr, Dominic, and Carl‐Fredrik Burman. 2019.
-#' "Modestly weighted logrank tests."
-#' _Statistics in Medicine_ 38 (20): 3782--3790.
-#'
-#' Magirr, Dominic. 2021.
-#' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
-#' _Pharmaceutical Statistics_ 20 (3): 512--527.
+#' Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
+#' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
+#' _Statistics in medicine_, 36(4), 592-605.
 #'
 #' @export
 #'
@@ -72,10 +38,11 @@
 #' library(gsDesign2)
 #'
 #' # Example 1: unstratified
-#' x <- sim_pw_surv(n = 200) %>%
+#' sim_pw_surv(n = 200) %>%
 #'   cut_data_by_event(125) %>%
 #'   counting_process(arm = "experimental") %>%
-#'   early_zero_weight(early_period = 2, late_weight = 1)
+#'   early_zero_weight(early_period = 2) %>%
+#'   filter(row_number() %in% seq(5, 200, 40))
 #'
 #' # Example 2: stratified
 #' n <- 500
@@ -88,7 +55,7 @@
 #'   stratum = rep(stratum, each = 2),
 #'   duration = c(2, 10, 2, 10),
 #'   rate =  c(c(1, 4) * prevelance_ratio[1], c(1, 4) * prevelance_ratio[2]))
-#'enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
+#' enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
 #'
 #' # failure rate
 #' med_pos <- 10         # median of the biomarker positive population
@@ -97,7 +64,7 @@
 #' hr_neg <- c(1, 0.8)   # hazard ratio of the biomarker negative population
 #' fail_rate <- define_fail_rate(
 #'   stratum = rep(stratum, each = 2),
-#'   duration = 1000,
+#'   duration = c(3, 1000, 4, 1000),
 #'   fail_rate = c(log(2) / c(med_pos, med_pos, med_neg, med_neg)),
 #'   hr = c(hr_pos, hr_neg),
 #'   dropout_rate = 0.01)
@@ -106,7 +73,7 @@
 #' temp <- simfix2simpwsurv(fail_rate)        # transfer the failure rate
 #' set.seed(2023)
 #'
-#' x <- sim_pw_surv(
+#' sim_pw_surv(
 #'   n = n,                                                            # sample size
 #'   stratum = tibble(stratum = stratum, p = prevelance_ratio),        # stratified design with prevalence ratio of 6:4
 #'   block =  c("control", "control", "experimental", "experimental"), # randomization ratio
@@ -115,19 +82,40 @@
 #'   dropout_rate = temp$dropout_rate                                  # dropout rate
 #'   ) %>%
 #'   cut_data_by_event(125) %>%
-#'   counting_process(arm = "experimental")
-#'
-#' x %>% early_zero_weight(early_period = 2, late_weight = 1)
-early_zero_weight <- function(x, early_period = 4, late_weight = 1) {
+#'   counting_process(arm = "experimental") %>%
+#'   early_zero_weight(early_period = 2, fail_rate = fail_rate) %>%
+#'   filter(row_number() %in% seq(5, 200, 40))
+early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
 
-  # Compute max weight by stratum
-  x2 <- x %>% group_by(stratum)
-  # Make sure you don't lose any stratum!
-  tbl_all_stratum <- x2 %>% summarize()
+  n_stratum <- length(unique((x$stratum)))
 
-  ans <- x2 %>%
-    mutate(weight = case_when(tte < early_period ~ 0,
-                              tte >= early_period ~ late_weight))
+  # if it is unstratified design
+  if(n_stratum == 1){
+    ans <- x %>%
+      mutate(weight = case_when(tte < early_period ~ 0,
+                                tte >= early_period ~ 1))
+  } else {
+    if(is.null(fail_rate)){
+      stop("For stratified design to enable `early_zero_weight`, users must input the `fail_rate`.")
+    }
+    if(!all((fail_rate %>% group_by(stratum) %>% summarise(x = n() == 2))$x)){
+      stop("`early_zero_weight` only allow delayed treatment effect, i.e., 2 piece failure rate with HR = 1 at the first period.")
+    }
+
+    late_hr <- fail_rate %>%
+      filter(hr != 1) %>%
+      select(stratum, hr)
+    delay_change_time <- fail_rate %>%
+      filter(hr == 1) %>%
+      select(stratum, duration)
+
+    ans <- x %>%
+      left_join(late_hr) %>%
+      left_join(delay_change_time) %>%
+      mutate(weight = case_when(tte < duration ~ 0,
+                                tte >= duration ~ hr))
+
+  }
 
   return(ans)
 }
