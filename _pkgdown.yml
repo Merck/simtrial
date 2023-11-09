@@ -63,7 +63,7 @@ reference:
   contents:
     - randomize_by_fixed_block
 
-- title: "Weigthing functions for WLR test"
+- title: "Weight functions for WLR test"
   contents:
     - mb_weight
     - fh_weight
