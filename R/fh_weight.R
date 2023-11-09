@@ -226,7 +226,8 @@ fh_weight <- function(
     }
   }
 
-  return(setDF(ans))
+  setDF(ans)
+  return(ans)
 }
 
 # Build an internal function to compute the Z statistics

@@ -39,5 +39,6 @@ cut_data_by_date <- function(x, cut_date) {
   ans[, event := fail * (cte <= cut_date)]
   ans <- ans[, c("tte", "event", "stratum", "treatment")]
 
-  return(setDF(ans))
+  setDF(ans)
+  return(ans)
 }

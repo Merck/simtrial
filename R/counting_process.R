@@ -127,5 +127,6 @@ counting_process <- function(x, arm) {
     n_risk_trt * events * (n_risk_tol - events) /
     n_risk_tol^2 / (n_risk_tol - 1)]
 
-  return(setDF(ans))
+  setDF(ans)
+  return(ans)
 }
