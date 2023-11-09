@@ -190,5 +190,6 @@ sim_pw_surv <- function(
   ans[, cte := pmin(dropout_time, fail_time) + enroll_time]
   ans[, fail := (fail_time <= dropout_time) * 1]
 
-  return(setDF(ans))
+  setDF(ans)
+  return(ans)
 }

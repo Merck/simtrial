@@ -120,5 +120,7 @@ simfix2simpwsurv <- function(
   dr <- rbind(dr_control, dr_experimental)
   dr <- dr[, c("stratum", "period", "treatment", "duration", "rate")]
 
-  list(fail_rate = setDF(fr), dropout_rate = setDF(dr))
+  setDF(fr)
+  setDF(dr)
+  return(list(fail_rate = fr, dropout_rate = dr))
 }

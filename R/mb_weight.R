@@ -66,6 +66,8 @@
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
 #'
+#' @importFrom data.table ":=" as.data.table data.table merge.data.table setDF
+#'
 #' @export
 #'
 #' @examples
@@ -159,4 +161,5 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
   ans[, max_weight := NULL]
 
   setDF(ans)
+  return(ans)
 }

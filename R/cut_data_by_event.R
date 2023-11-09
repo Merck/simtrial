@@ -27,8 +27,6 @@
 #' @return A data frame ready for survival analysis, including columns
 #'   time to event (`tte`), `event`, the `stratum`, and the `treatment`.
 #'
-#' @importFrom data.table setDF
-#'
 #' @export
 #'
 #' @examples
@@ -38,5 +36,5 @@
 cut_data_by_event <- function(x, event) {
   cut_date <- get_cut_date_by_event(x, event)
   ans <- x %>% cut_data_by_date(cut_date = cut_date)
-  return(setDF(ans))
+  return(ans)
 }
