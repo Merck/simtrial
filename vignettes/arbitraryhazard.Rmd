@@ -35,7 +35,7 @@ dloglogis <- function(x, alpha = 1, beta = 4) {
   1 / (1 + (x / alpha)^beta)
 }
 times <- (1:150) / 50
-xx <- tibble(Times = times, Survival = dloglogis(times, alpha = .5, beta = 4)) %>%
+xx <- data.frame(Times = times, Survival = dloglogis(times, alpha = .5, beta = 4)) %>%
   mutate(
     duration = Times - lag(Times, default = 0),
     H = -log(Survival),
@@ -51,8 +51,8 @@ We assume that observations are censored at an exponential rate of about 5% per 
 
 ```{r,fig.height=4,fig.width=7.5}
 tx <- "Log-logistic"
-enroll_rate <- tibble(duration = .5, rate = 500)
-dropout_rate <- tibble(treatment = tx, duration = 3, rate = .05, period = 1, stratum = "All")
+enroll_rate <- data.frame(duration = .5, rate = 500)
+dropout_rate <- data.frame(treatment = tx, duration = 3, rate = .05, period = 1, stratum = "All")
 block <- rep(tx, 2)
 x <- sim_pw_surv(
   n = 250, # sample size

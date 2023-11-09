@@ -1,4 +1,4 @@
-testthat::test_that("the z values match with the correspondings in wlr", {
+testthat::test_that("the z values match with the correspondings in fh_weight", {
   set.seed(1234)
   y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)
   adjust.methods <- "asymp"
@@ -20,12 +20,12 @@ testthat::test_that("the z values match with the correspondings in wlr", {
   tst.rslt <- attr(fit, "lrt")
   z1 <- tst.rslt$Z
   a2 <- y %>% counting_process(arm = "experimental")
-  aa <- wlr(a2, rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
+  aa <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
   z2 <- aa$z
   expect_equal(c(z1[1], z1[7:9]), z2, tolerance = 0.00001)
 })
 
-testthat::test_that("wlr calculated correct correlation value when input a sequence of rho and gamma", {
+testthat::test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
   set.seed(123)
   y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)
   adjust.methods <- "asymp"
@@ -102,7 +102,7 @@ testthat::test_that("wlr calculated correct correlation value when input a seque
   }
   corr1 <- cor.tst[2:5, 2:5]
   a2 <- y %>% counting_process(arm = "experimental")
-  corr2 <- wlr(a2, rho_gamma = tibble(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
+  corr2 <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
   corr2 <- rbind(corr2$v1, corr2$v2, corr2$v3, corr2$v4)
   expect_equal(corr1, corr2, tolerance = 0.00001)
 })

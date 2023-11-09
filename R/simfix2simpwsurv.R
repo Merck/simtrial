@@ -36,21 +36,19 @@
 #' @return A list of two data frame components formatted for
 #'   [sim_pw_surv()]: `fail_rate` and `dropout_rate`.
 #'
-#' @importFrom tibble tibble
 #' @importFrom data.table ":=" .N as.data.table setDF
 #'
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#' library(tibble)
+#' library(magrittr)
 #'
 #' # Example 1
 #' # Convert standard input
 #' simfix2simpwsurv()
 #'
 #' # Stratified example
-#' fail_rate <- tibble(
+#' fail_rate <- data.frame(
 #'   stratum = c(rep("Low", 3), rep("High", 3)),
 #'   duration = rep(c(4, 10, 100), 2),
 #'   fail_rate = c(
@@ -70,8 +68,8 @@
 #' # Enroll 300 patients in ~12 months at constant rate
 #' sim <- sim_pw_surv(
 #'   n = 300,
-#'   stratum = tibble(stratum = c("Low", "High"), p = c(.6, .4)),
-#'   enroll_rate = tibble(duration = 12, rate = 300 / 12),
+#'   stratum = data.frame(stratum = c("Low", "High"), p = c(.6, .4)),
+#'   enroll_rate = data.frame(duration = 12, rate = 300 / 12),
 #'   fail_rate = x$fail_rate,
 #'   dropout_rate = x$dropout_rate
 #' )
@@ -80,10 +78,10 @@
 #' dat <- sim %>%
 #'   cut_data_by_event(200) %>% # cut data
 #'   counting_process(arm = "experimental") %>% # convert format for tenFH
-#'   wlr(rho_gamma = tibble(rho = 0, gamma = 0)) # stratified logrank
+#'   fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # stratified logrank
 simfix2simpwsurv <- function(
     # Failure rates as in sim_fixed_n()
-    fail_rate = tibble(
+    fail_rate = data.frame(
       stratum = "All",
       duration = c(3, 100),
       fail_rate = log(2) / c(9, 18),

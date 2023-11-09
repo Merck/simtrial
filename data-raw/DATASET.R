@@ -1,22 +1,41 @@
-## code to prepare `DATASET` dataset goes here
-library(tibble)
+## code to prepare `MBdelayed` dataset goes here
+library(simtrial)
+
+# Load existing object for comparison
+load("data/MBdelayed.rda")
+existing <- MBdelayed
+
 set.seed(6671)
-ds <- simPWSurv(
+
+ds <- sim_pw_surv(
   n = 200,
-  enrollRates = tibble(rate = 200 / 12, duration = 12),
-  failRates = tribble(
-    ~Stratum, ~Period, ~Treatment, ~duration, ~rate,
-    "All", 1, "Control", 42, log(2) / 15,
-    "All", 1, "Experimental", 6, log(2) / 15,
-    "All", 2, "Experimental", 36, log(2) / 15 * 0.6
+  block = c(rep("control", 2), rep("experimental", 2)),
+  enroll_rate = data.frame(rate = 200 / 12, duration = 12),
+  fail_rate = data.frame(
+    stratum = c("All", "All", "All"),
+    period = c(1, 1, 2),
+    treatment = c("control", "experimental", "experimental"),
+    duration = c(42, 6, 36),
+    rate = c(log(2) / 15, log(2) / 15, log(2) / 15 * 0.6)
   ),
-  dropoutRates = tribble(
-    ~Stratum, ~Period, ~Treatment, ~duration, ~rate,
-    "All", 1, "Control", 42, 0,
-    "All", 1, "Experimental", 42, 0
+  dropout_rate = data.frame(
+    stratum = c("All", "All"),
+    period = c(1, 1),
+    treatment = c("control", "experimental"),
+    duration = c(42, 42),
+    rate = c(0, 0)
   )
 )
-# cut data at 24 months after final enrollment
-MBdelayed <- ds %>% cutData(max(ds$enrollTime) + 24)
 
-usethis::use_data("MBdelayed")
+# cut data at 24 months after final enrollment
+MBdelayed <- cut_data_by_date(ds, max(ds$enroll_time) + 24)
+
+if (!all.equal(existing, MBdelayed)) {
+  warning(
+    "The updated MBdelayed differs from the existing object",
+    .call = FALSE,
+    immediate. = TRUE
+  )
+}
+
+usethis::use_data(MBdelayed, overwrite = TRUE)

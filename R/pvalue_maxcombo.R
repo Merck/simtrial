@@ -18,13 +18,13 @@
 
 #' MaxCombo p-value
 #'
-#' Computes p-values for the MaxCombo test based on output from [wlr()].
+#' Computes p-values for the MaxCombo test based on output from [fh_weight()].
 #' This is still in an experimental stage and is intended for use with
 #' the [sim_fixed_n()] trial simulation routine.
 #' However, it can also be used to analyze clinical trial data such as
 #' that provided in the ADaM ADTTE format.
 #'
-#' @param z A dataset output from [wlr()]; see examples.
+#' @param z A dataset output from [fh_weight()]; see examples.
 #' @param algorithm This is passed directly to the `algorithm` argument
 #'   in [mvtnorm::pmvnorm()].
 #'
@@ -35,14 +35,13 @@
 #' @export
 #'
 #' @examples
-#' library(tibble)
 #' library(dplyr)
 #'
 #' # Example 1
 #' x <- sim_fixed_n(
 #'   n_sim = 1,
 #'   timing_type = 5,
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = c(0, 0, 1),
 #'     gamma = c(0, 1, 1)
 #'   )
@@ -55,7 +54,7 @@
 #' xx <- sim_fixed_n(
 #'   n_sim = 100,
 #'   timing_type = 5,
-#'   rho_gamma = tibble(
+#'   rho_gamma = data.frame(
 #'     rho = c(0, 0, 1),
 #'     gamma = c(0, 1, 1)
 #'   )

@@ -10,9 +10,8 @@ source code license, in order to use this software.
   Third party R packages listed by License type
 [Format: Name - URL]
 --------------------------------------------------
-  
+
   MIT License (or adaptations) (https://www.opensource.org/licenses/MIT)
-* tibble - https://tibble.tidyverse.org/LICENSE.html
 * dplyr - https://dplyr.tidyverse.org/LICENSE.html
 * tidyr - https://tidyr.tidyverse.org/LICENSE.html
 
@@ -20,3 +19,5 @@ source code license, in order to use this software.
 * survival - https://cran.r-project.org/web/packages/survival/index.html
 * mvtnorm - https://cran.r-project.org/web/packages/mvtnorm/index.html
 
+  MPL License (https://opensource.org/license/mpl-2-0/)
+* data.table - https://github.com/Rdatatable/data.table/blob/master/LICENSE

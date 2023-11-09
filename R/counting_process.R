@@ -18,7 +18,7 @@
 
 #' Process survival data into counting process format
 #'
-#' Produces a tibble that is sorted by stratum and time.
+#' Produces a data frame that is sorted by stratum and time.
 #' Included in this is only the times at which one or more event occurs.
 #' The output dataset contains stratum, tte (time-to-event),
 #' at risk count and count of events at the specified tte
@@ -28,7 +28,7 @@
 #'
 #' The tie is handled by the Breslow's Method.
 #'
-#' @param x A tibble with no missing values and contain variables:
+#' @param x A data frame with no missing values and contain variables:
 #'   - `stratum`: Stratum.
 #'   - `treatment`: Treatment group.
 #'   - `tte`: Observed time.
@@ -62,10 +62,10 @@
 #' @export
 #'
 #' @examples
-#' library(tibble)
+#' library(magrittr)
 #'
 #' # Example 1
-#' x <- tibble(
+#' x <- data.frame(
 #'   stratum = c(rep(1, 10), rep(2, 6)),
 #'   treatment = rep(c(1, 1, 0, 0), 4),
 #'   tte = 1:16,

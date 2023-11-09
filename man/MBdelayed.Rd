@@ -5,7 +5,7 @@
 \alias{MBdelayed}
 \title{Simulated survival dataset with delayed treatment effect}
 \format{
-A tibble with 200 rows and xx columns:
+A data frame with 200 rows and 4 columns:
 \itemize{
 \item \code{tte}: Time to event.
 }
@@ -40,7 +40,7 @@ head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
 ten \%>\%
-  wlr(rho_gamma = tibble(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) \%>\%
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) \%>\%
   pvalue_maxcombo()
 
 # Magirr-Burman modestly down-weighted rank test with 6 month delay
@@ -70,17 +70,20 @@ ten \%>\%
 # Generate another dataset
 ds <- sim_pw_surv(
   n = 200,
-  enroll_rate = tibble(rate = 200 / 12, duration = 12),
-  fail_rate = tribble(
-    ~stratum, ~Period, ~treatment, ~duration, ~rate,
-    "All", 1, "control", 42, log(2) / 15,
-    "All", 1, "experimental", 6, log(2) / 15,
-    "All", 2, "experimental", 36, log(2) / 15 * 0.6
+  enroll_rate = data.frame(rate = 200 / 12, duration = 12),
+  fail_rate = data.frame(
+    stratum = c("All", "All", "All"),
+    period = c(1, 1, 2),
+    treatment = c("control", "experimental", "experimental"),
+    duration = c(42, 6, 36),
+    rate = c(log(2) / 15, log(2) / 15, log(2) / 15 * 0.6)
   ),
-  dropout_rate = tribble(
-    ~stratum, ~Period, ~treatment, ~duration, ~rate,
-    "All", 1, "control", 42, 0,
-    "All", 1, "experimental", 42, 0
+  dropout_rate = data.frame(
+    stratum = c("All", "All"),
+    period = c(1, 1),
+    treatment = c("control", "experimental"),
+    duration = c(42, 42),
+    rate = c(0, 0)
   )
 )
 # Cut data at 24 months after final enrollment

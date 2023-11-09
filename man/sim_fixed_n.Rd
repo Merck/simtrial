@@ -8,14 +8,14 @@ sim_fixed_n(
   n_sim = 1000,
   sample_size = 500,
   target_event = 350,
-  stratum = tibble(stratum = "All", p = 1),
-  enroll_rate = tibble(duration = c(2, 2, 10), rate = c(3, 6, 9)),
-  fail_rate = tibble(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9, 18),
-    hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
+  stratum = data.frame(stratum = "All", p = 1),
+  enroll_rate = data.frame(duration = c(2, 2, 10), rate = c(3, 6, 9)),
+  fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
+    18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   total_duration = 30,
   block = rep(c("experimental", "control"), 2),
   timing_type = 1:5,
-  rho_gamma = tibble(rho = 0, gamma = 0)
+  rho_gamma = data.frame(rho = 0, gamma = 0)
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ sim_fixed_n(
 
 \item{target_event}{Targeted event count for analysis.}
 
-\item{stratum}{A tibble with stratum specified in \code{stratum},
+\item{stratum}{A data frame with stratum specified in \code{stratum},
 probability (incidence) of each stratum in \code{p}.}
 
 \item{enroll_rate}{Piecewise constant enrollment rates by time period.
@@ -43,7 +43,7 @@ in each block.}
 \item{timing_type}{A numeric vector determining data cutoffs used;
 see details. Default is to include all available cutoff methods.}
 
-\item{rho_gamma}{As in \code{\link[=wlr]{wlr()}}. A \code{tibble} with variables
+\item{rho_gamma}{As in \code{\link[=fh_weight]{fh_weight()}}. A data frame with variables
 \code{rho} and \code{gamma}, both greater than equal to zero,
 to specify one Fleming-Harrington weighted logrank test per row.}
 }
@@ -82,7 +82,6 @@ for data cutoff:
 }
 }
 \examples{
-library(tibble)
 library(dplyr)
 library(future)
 
@@ -92,7 +91,7 @@ sim_fixed_n(n_sim = 3)
 
 # Example 2
 # Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(n_sim = 1, rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
+sim_fixed_n(n_sim = 1, rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
 
 # Example 3
 # Power by test
@@ -100,7 +99,7 @@ sim_fixed_n(n_sim = 1, rho_gamma = tibble(rho = 0, gamma = c(0, 1)))
 xx <- sim_fixed_n(
   n_sim = 100,
   timing_type = c(2, 5),
-  rho_gamma = tibble(rho = 0, gamma = c(0, 1))
+  rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
 )
 # Get power approximation for FH, data cutoff combination
 xx \%>\%

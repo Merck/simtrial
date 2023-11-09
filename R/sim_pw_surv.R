@@ -35,7 +35,7 @@
 #'
 #' @param n Number of observations.
 #'   If length(n) > 1, the length is taken to be the number required.
-#' @param stratum A tibble with stratum specified in `stratum`,
+#' @param stratum A data frame with stratum specified in `stratum`,
 #'   probability (incidence) of each stratum in `p`.
 #' @param block Vector of treatments to be included in each block.
 #' @param enroll_rate Enrollment rates; see details and examples.
@@ -57,12 +57,10 @@
 #'   i.e., 1 is a failure, 0 is a dropout.
 #'
 #' @importFrom data.table ":=" .N data.table setDF setDT setorderv
-#' @importFrom tibble tibble
 #'
 #' @export
 #'
 #' @examples
-#' library(tibble)
 #' library(dplyr)
 #'
 #' # Example 1
@@ -80,8 +78,8 @@
 #' sim_pw_surv(
 #'   n = 20,
 #'   # 2 stratum,30% and 70% prevalence
-#'   stratum = tibble(stratum = c("Low", "High"), p = c(.3, .7)),
-#'   fail_rate = tibble(
+#'   stratum = data.frame(stratum = c("Low", "High"), p = c(.3, .7)),
+#'   fail_rate = data.frame(
 #'     stratum = c(rep("Low", 4), rep("High", 4)),
 #'     period = rep(1:2, 4),
 #'     treatment = rep(c(
@@ -91,7 +89,7 @@
 #'     duration = rep(c(3, 1), 4),
 #'     rate = c(.03, .05, .03, .03, .05, .08, .07, .04)
 #'   ),
-#'   dropout_rate = tibble(
+#'   dropout_rate = data.frame(
 #'     stratum = c(rep("Low", 2), rep("High", 2)),
 #'     period = rep(1, 4),
 #'     treatment = rep(c("control", "experimental"), 2),
@@ -100,48 +98,55 @@
 #'   )
 #' )
 #' # Example 4
-#' # If you want a more rectangular entry for a tibble
+#' # If you want a more rectangular entry for a data.frame
 #' fail_rate <- bind_rows(
-#'   tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
-#'   tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
-#'   tibble(stratum = "Low", period = 2, treatment = "experimental", duration = 3, rate = .02),
-#'   tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
-#'   tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
-#'   tibble(stratum = "High", period = 2, treatment = "experimental", duration = 3, rate = .03)
+#'   data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
+#'   data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
+#'   data.frame(stratum = "Low", period = 2, treatment = "experimental", duration = 3, rate = .02),
+#'   data.frame(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
+#'   data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
+#'   data.frame(stratum = "High", period = 2, treatment = "experimental", duration = 3, rate = .03)
 #' )
 #'
 #' dropout_rate <- bind_rows(
-#'   tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .001),
-#'   tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .001),
-#'   tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .001),
-#'   tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .001)
+#'   data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .001),
+#'   data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .001),
+#'   data.frame(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .001),
+#'   data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .001)
 #' )
 #'
 #' sim_pw_surv(
 #'   n = 12,
-#'   stratum = tibble(stratum = c("Low", "High"), p = c(.3, .7)),
+#'   stratum = data.frame(stratum = c("Low", "High"), p = c(.3, .7)),
 #'   fail_rate = fail_rate,
 #'   dropout_rate = dropout_rate
 #' )
 sim_pw_surv <- function(
     n = 100,
-    stratum = tibble(stratum = "All", p = 1),
+    stratum = data.frame(stratum = "All", p = 1),
     block = c(rep("control", 2), rep("experimental", 2)),
-    enroll_rate = tibble(rate = 9, duration = 1),
-    fail_rate = tibble(
+    enroll_rate = data.frame(rate = 9, duration = 1),
+    fail_rate = data.frame(
       stratum = rep("All", 4),
       period = rep(1:2, 2),
       treatment = c(rep("control", 2), rep("experimental", 2)),
       duration = rep(c(3, 1), 2),
       rate = log(2) / c(9, 9, 9, 18)
     ),
-    dropout_rate = tibble(
+    dropout_rate = data.frame(
       stratum = rep("All", 2),
       period = rep(1, 2),
       treatment = c("control", "experimental"),
       duration = rep(100, 2),
       rate = rep(.001, 2)
     )) {
+  # Enforce consistent treatment names
+  treatments <- unique(c(block, fail_rate$treatment, dropout_rate$treatment))
+  stopifnot(
+    treatments %in% block,
+    treatments %in% fail_rate$treatment,
+    treatments %in% dropout_rate$treatment
+  )
   # Start table by generating stratum and enrollment times
   x <- data.table(stratum = sample(
     x = stratum$stratum,

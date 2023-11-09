@@ -1,24 +1,24 @@
-stratum <- tibble::tibble(stratum = c("Low", "High"), p = c(.4, .6))
+stratum <- data.frame(stratum = c("Low", "High"), p = c(.4, .6))
 
 block <- c(rep("control", 2), rep("experimental", 2))
 
-enroll_rate <- tibble::tibble(duration = c(5, 195), rate = c(100, 3000))
+enroll_rate <- data.frame(duration = c(5, 195), rate = c(100, 3000))
 
 fail_rate <- dplyr::bind_rows(
-  tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
-  tibble::tibble(stratum = "Low", period = 2, treatment = "control", duration = 297, rate = .03),
-  tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
-  tibble::tibble(stratum = "Low", period = 2, treatment = "experimental", duration = 297, rate = .02),
-  tibble::tibble(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
-  tibble::tibble(stratum = "High", period = 2, treatment = "control", duration = 297, rate = .05),
-  tibble::tibble(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
-  tibble::tibble(stratum = "High", period = 2, treatment = "experimental", duration = 297, rate = .03)
+  data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
+  data.frame(stratum = "Low", period = 2, treatment = "control", duration = 297, rate = .03),
+  data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
+  data.frame(stratum = "Low", period = 2, treatment = "experimental", duration = 297, rate = .02),
+  data.frame(stratum = "High", period = 1, treatment = "control", duration = 3, rate = .05),
+  data.frame(stratum = "High", period = 2, treatment = "control", duration = 297, rate = .05),
+  data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 3, rate = .06),
+  data.frame(stratum = "High", period = 2, treatment = "experimental", duration = 297, rate = .03)
 )
 dropout_rate <- dplyr::bind_rows(
-  tibble::tibble(stratum = "Low", period = 1, treatment = "control", duration = 300, rate = .001),
-  tibble::tibble(stratum = "Low", period = 1, treatment = "experimental", duration = 300, rate = .001),
-  tibble::tibble(stratum = "High", period = 1, treatment = "control", duration = 300, rate = .001),
-  tibble::tibble(stratum = "High", period = 1, treatment = "experimental", duration = 300, rate = .001)
+  data.frame(stratum = "Low", period = 1, treatment = "control", duration = 300, rate = .001),
+  data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 300, rate = .001),
+  data.frame(stratum = "High", period = 1, treatment = "control", duration = 300, rate = .001),
+  data.frame(stratum = "High", period = 1, treatment = "experimental", duration = 300, rate = .001)
 )
 set.seed(1)
 x <- sim_pw_surv(
@@ -126,4 +126,31 @@ zevent <- dplyr::bind_rows(rate00, rate01, rate10, rate11)
 
 testthat::test_that("The actual number of events changes by changing total sample size", {
   expect_false(unique(xevent$event == zevent$event))
+})
+
+testthat::test_that("sim_pw_surv() fails early with mismatched treatment names", {
+  block <- c(rep("x", 2), rep("y", 2))
+  fail_rate <- data.frame(
+    stratum = rep("All", 4),
+    period = rep(1:2, 2),
+    treatment = c(rep("x", 2), rep("y", 2)),
+    duration = rep(c(3, 1), 2),
+    rate = log(2) / c(9, 9, 9, 18)
+  )
+  dropout_rate <- data.frame(
+    stratum = rep("All", 2),
+    period = rep(1, 2),
+    treatment = c("x", "y"),
+    duration = rep(100, 2),
+    rate = rep(0.001, 2)
+  )
+
+  expect_error(sim_pw_surv(block = block))
+  expect_error(sim_pw_surv(fail_rate = fail_rate))
+  expect_error(sim_pw_surv(dropout_rate = dropout_rate))
+  # works as long as treatment names are consistent
+  expect_silent(
+    xy <- sim_pw_surv(block = block, fail_rate = fail_rate, dropout_rate = dropout_rate)
+  )
+  expect_identical(sort(unique(xy$treatment)), c("x", "y"))
 })

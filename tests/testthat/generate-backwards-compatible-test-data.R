@@ -28,14 +28,23 @@ generate_test_data <- function(
   on.exit(.libPaths(old_lib_paths), add = TRUE)
   on.exit(unlink(tmplib, recursive = TRUE), add = TRUE)
 
+  if ("package:simtrial" %in% search()) {
+    detach("package:simtrial")
+  }
   remotes::install_github(
     repo = "Merck/simtrial",
     ref = reference,
     dependencies = FALSE,
     upgrade = FALSE
   )
-  library("simtrial")
-  packageVersion("simtrial")
+  library("simtrial", lib.loc = .libPaths()[1])
+  observedVersion <- packageVersion("simtrial")
+  expectedVersion <- read.dcf(file.path(tmplib, "simtrial/DESCRIPTION"),
+    fields = "Version"
+  )[1, 1]
+  if (!observedVersion == expectedVersion) {
+    stop("The previous version was not loaded to generate backwards compatibility test data sets")
+  }
   on.exit(detach("package:simtrial"), add = TRUE)
 
   message("Saving output RDS files to ", outdir)
@@ -124,7 +133,7 @@ generate_test_data <- function(
   ex3 <- counting_process(x, arm)
   saveRDS(ex3, file.path(outdir, "counting_process_ex3.rds"))
 
-  # wlr() ----------------------------------------------------------------------
+  # wlr() (renamed to fh_weight()) ---------------------------------------------
 
   # Example 1
   # Use default enrollment and event rates at cut at 100 events
@@ -244,7 +253,7 @@ generate_test_data <- function(
   saveRDS(ex3, file.path(outdir, "sim_pw_surv_ex3.rds"))
 
   # Example 4
-  # If you want a more rectangular entry for a tibble
+  # If you want a more rectangular entry for a data frame
   fail_rate <- list(
     data.frame(stratum = "Low", period = 1, treatment = "control", duration = 3, rate = .03),
     data.frame(stratum = "Low", period = 1, treatment = "experimental", duration = 3, rate = .03),
@@ -301,7 +310,7 @@ generate_test_data <- function(
   ex2 <- pnorm(z)
   saveRDS(ex2, file.path(outdir, "mb_weight_ex2.rds"))
 
-  # pvalue_maxcombo() ------------------------------------------------------------
+  # pvalue_maxcombo() ----------------------------------------------------------
 
   # Example 1
   set.seed(12345)
@@ -331,4 +340,25 @@ generate_test_data <- function(
   # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
   ex2 <- as.numeric(by(xx, xx$sim, pvalue_maxcombo))
   saveRDS(ex2, file.path(outdir, "pvalue_maxcombo_ex2.rds"))
+
+  # rpwexp() -------------------------------------------------------------------
+
+  # Example 1
+  # Exponential failure times
+  ex1 <- rpwexp(
+    n = 10000,
+    fail_rate = data.frame(rate = 5, duration = 1)
+  )
+  saveRDS(ex1, file.path(outdir, "rpwexp_ex1.rds"))
+
+  # Example 2
+  # Get 10k piecewise exponential failure times.
+  # Failure rates are 1 for time 0 to 0.5, 3 for time 0.5 to 1, and 10 for > 1.
+  # Intervals specifies duration of each failure rate interval
+  # with the final interval running to infinity.
+  ex2 <- rpwexp(
+    n = 1e4,
+    fail_rate = data.frame(rate = c(1, 3, 10), duration = c(.5, .5, 1))
+  )
+  saveRDS(ex2, file.path(outdir, "rpwexp_ex2.rds"))
 }

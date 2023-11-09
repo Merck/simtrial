@@ -10,7 +10,7 @@ pvalue_maxcombo(
 )
 }
 \arguments{
-\item{z}{A dataset output from \code{\link[=wlr]{wlr()}}; see examples.}
+\item{z}{A dataset output from \code{\link[=fh_weight]{fh_weight()}}; see examples.}
 
 \item{algorithm}{This is passed directly to the \code{algorithm} argument
 in \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}}.}
@@ -19,21 +19,20 @@ in \code{\link[mvtnorm:pmvnorm]{mvtnorm::pmvnorm()}}.}
 A numeric p-value.
 }
 \description{
-Computes p-values for the MaxCombo test based on output from \code{\link[=wlr]{wlr()}}.
+Computes p-values for the MaxCombo test based on output from \code{\link[=fh_weight]{fh_weight()}}.
 This is still in an experimental stage and is intended for use with
 the \code{\link[=sim_fixed_n]{sim_fixed_n()}} trial simulation routine.
 However, it can also be used to analyze clinical trial data such as
 that provided in the ADaM ADTTE format.
 }
 \examples{
-library(tibble)
 library(dplyr)
 
 # Example 1
 x <- sim_fixed_n(
   n_sim = 1,
   timing_type = 5,
-  rho_gamma = tibble(
+  rho_gamma = data.frame(
     rho = c(0, 0, 1),
     gamma = c(0, 1, 1)
   )
@@ -46,7 +45,7 @@ pvalue_maxcombo(x)
 xx <- sim_fixed_n(
   n_sim = 100,
   timing_type = 5,
-  rho_gamma = tibble(
+  rho_gamma = data.frame(
     rho = c(0, 0, 1),
     gamma = c(0, 1, 1)
   )
