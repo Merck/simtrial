@@ -28,7 +28,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      SIMTRIAL_TEST_BACKWARDS_COMPATIBILITY_REF: 341f77f0a598dc6d638bd5c48746952a7db88255
 
     steps:
       - uses: actions/checkout@v3
