@@ -199,8 +199,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   9.673   0.056   9.731</span></span></code></pre></div>
-<p>We can see that the CPU time is 9.67 and the elapsed time is 9.73
+<span><span class="co">#&gt;  11.735   0.116  11.854</span></span></code></pre></div>
+<p>We can see that the CPU time is 11.73 and the elapsed time is 11.85
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -220,10 +220,10 @@ parallel using the <code>multisession</code> backend available to us in
 <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code>.</p>
 <p>We can adjust the default number of cores with the function
 <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">parallelly::availableCores()</a></code>. The multisession backend will
-automatically use all available cores by default. To initialize our
-backend, we change our plan.</p>
+automatically use all available cores by default, but here we will use
+two. To initialize our backend, we change our plan.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="execution-in-parallel">Execution in parallel<a class="anchor" aria-label="anchor" href="#execution-in-parallel"></a>
@@ -258,8 +258,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.475   0.000   8.333</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.47 and the elapsed time is 8.33
+<span><span class="co">#&gt;   0.631   0.024  10.218</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.63 and the elapsed time is 10.22
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
