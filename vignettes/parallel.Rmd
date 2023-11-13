@@ -149,11 +149,11 @@ As we vary and increase the number of parameter inputs that we consider, we expe
 To help combat the growing computational burden, we can run these simulations in parallel using the `multisession` backend available to us in `plan()`.
 
 We can adjust the default number of cores with the function `parallelly::availableCores()`.
-The multisession backend will automatically use all available cores by default.
+The multisession backend will automatically use all available cores by default, but here we will use two.
 To initialize our backend, we change our plan.
 
-```{r multisession}
-plan(multisession, workers = availableCores())
+```{r multisession1}
+plan(multisession, workers = 2)
 ```
 
 ## Execution in parallel
