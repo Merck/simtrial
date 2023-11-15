@@ -78,6 +78,13 @@ test_that("functions that use data.table do not modify input data table", {
   fh_weight(x)
   expect_identical(x, x_original)
 
+  # get_analysis_date()
+  x <- sim_pw_surv(n = 5)
+  data.table::setDT(x)
+  x_original <- data.table::copy(x)
+  get_analysis_date(x, planned_calendar_time = 1)
+  expect_identical(x, x_original)
+
   # get_cut_date_by_event()
   x <- sim_pw_surv(n = 5)
   data.table::setDT(x)

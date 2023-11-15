@@ -41,6 +41,8 @@
 #'
 #' @return A numerical value of the analysis date.
 #'
+#' @importFrom data.table as.data.table .N
+#'
 #' @export
 #'
 #' @examples
@@ -204,19 +206,21 @@ get_analysis_date <- function(
 
   n_max <- nrow(data)
   # if user input either `min_n_overall` or `min_n_per_stratum`, it is required to input `min_followup`.
-  if (cond1 | cond2) {
+  if (cond1 || cond2) {
     if (is.na(min_followup)) {
       stop("`min_followup` must be provided.")
     }
   }
   # if user input `min_n_overall` but it > n_max, then output error message
-  if (cond1 & min_n_overall > n_max) {
+  if (cond1 && min_n_overall > n_max) {
     stop("`min_n_overall` must be a positive number smaller than the total sample size.")
   }
   # if user input `min_n_per_stratum` but sum of it > n_max, then output error message
-  if (cond2 & sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
+  if (cond2 && sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
     stop("`min_n_per_stratum` must be a sum of positive numbers smaller than the total sample size.")
   }
+
+  data <- as.data.table(data)
 
   # Cutting option 1: Planned calendar time for the analysis
   cut_date1 <- planned_calendar_time
@@ -231,16 +235,14 @@ get_analysis_date <- function(
   # 2b: Reach targeted events per sub-population
   if (!all(is.na(target_event_per_stratum))) {
     stratum <- unique(data$stratum)
-    cut_date2b <- lapply(
-      seq_along(target_event_per_stratum),
-      function(x) {
-        get_cut_date_by_event(data %>% dplyr::filter(stratum == stratum[x]),
-          event = target_event_per_stratum[x]
-        )
-      }
-    ) %>%
-      unlist() %>%
-      max()
+    cut_date2b <- vector(mode = "list", length = length(stratum))
+    for (i in seq_along(target_event_per_stratum)) {
+      cut_date2b[[i]] <- get_cut_date_by_event(
+        x = data[stratum == stratum[i], ],
+        event = target_event_per_stratum[i]
+      )
+    }
+    cut_date2b <- max(unlist(cut_date2b))
   } else {
     cut_date2b <- NA
   }
@@ -255,33 +257,29 @@ get_analysis_date <- function(
   # Cutting option 5: Minimal follow-up time after specified enrollment fraction
   # 5a: At least 10 months after the 80% of the patients are enrolled
   if (!all(is.na(min_n_overall))) {
-    cut_date5a <- (data %>%
-      dplyr::arrange(enroll_time) %>%
-      dplyr::filter(dplyr::row_number() <= min_n_overall) %>%
-      dplyr::summarise(max_enroll_time = max(enroll_time)))$max_enroll_time + min_followup
+    data5a <- as.data.table(data)
+    data5a <- data5a[order(enroll_time), ]
+    data5a <- data5a[seq_len(pmin(min_n_overall, .N)), ]
+    cut_date5a <- max(data5a$enroll_time) + min_followup
   } else {
     cut_date5a <- NA
   }
   # 5b: At least 10 months after the 80% biomarker positive patients are
   # enrolled and 70% biomarker negative patients are enrolled
   if (!all(is.na(min_n_per_stratum))) {
-    cut_date5b <- lapply(
-      seq_along(min_n_per_stratum),
-      function(x) {
-        if (is.na(min_n_per_stratum[x])) {
-          NA
-        } else {
-          (data %>%
-            dplyr::filter(stratum == stratum[x]) %>%
-            dplyr::arrange(enroll_time) %>%
-            dplyr::filter(dplyr::row_number() <= min_n_per_stratum[x]) %>%
-            dplyr::summarise(max_enroll_time = max(enroll_time))
-          )$max_enroll_time
-        }
+    cut_date5b <- vector(mode = "list", length = length(min_n_per_stratum))
+    for (i in seq_along(min_n_per_stratum)) {
+      if (is.na(min_n_per_stratum[i])) {
+        cut_date5b[[i]] <- NA
+        next
       }
-    ) %>%
-      unlist() %>%
-      max(na.rm = TRUE) + min_followup
+      data5b <- as.data.table(data)
+      data5b <- data5b[stratum == stratum[i], ]
+      data5b <- data5b[order(enroll_time), ]
+      data5b <- data5b[seq_len(pmin(min_n_per_stratum[i], .N)), ]
+      cut_date5b[[i]] <- max(data5b$enroll_time)
+    }
+    cut_date5b <- max(unlist(cut_date5b), na.rm = TRUE) + min_followup
   } else {
     cut_date5b <- NA
   }
