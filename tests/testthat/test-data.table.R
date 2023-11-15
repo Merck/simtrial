@@ -102,9 +102,9 @@ test_that("functions that use data.table do not modify input data table", {
   expect_identical(x, x_original)
 
   # rpw_enroll()
-  enroll_rate = data.table::data.table(
-   rate = c(5, 15, 30),
-   duration = c(100, 200, 100)
+  enroll_rate <- data.table::data.table(
+    rate = c(5, 15, 30),
+    duration = c(100, 200, 100)
   )
   data.table::setDT(enroll_rate)
   enroll_rate_original <- data.table::copy(enroll_rate)
