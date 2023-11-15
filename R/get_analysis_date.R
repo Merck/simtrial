@@ -190,19 +190,19 @@ get_analysis_date <- function(
     min_n_overall = NA,
     min_n_per_stratum = NA,
     min_followup = NA) {
-  input_check_scale(planned_calendar_time, label = "planned_calendar_time")
-  input_check_scale(target_event_overall, label = "target_event_overall")
-  input_check_scale(max_extension_for_target_event, label = "max_extension_for_target_event")
-  input_check_scale(min_time_after_previous_analysis, label = "min_time_after_previous_analysis")
-  input_check_scale(min_n_overall, label = "min_n_overall")
-  input_check_scale(min_followup, label = "min_followup")
+  input_check_scalar(planned_calendar_time, label = "planned_calendar_time")
+  input_check_scalar(target_event_overall, label = "target_event_overall")
+  input_check_scalar(max_extension_for_target_event, label = "max_extension_for_target_event")
+  input_check_scalar(min_time_after_previous_analysis, label = "min_time_after_previous_analysis")
+  input_check_scalar(min_n_overall, label = "min_n_overall")
+  input_check_scalar(min_followup, label = "min_followup")
   input_check_vector(target_event_per_stratum, label = "target_event_per_stratum")
   input_check_vector(min_n_per_stratum, label = "min_n_per_stratum")
 
   # Check if `min_n_overall` is input by user
   cond1 <- !is.na(min_n_overall)
   # Check if `min_n_per_stratum` is input by user
-  cond2 <- !all(is.na(min_n_overall))
+  cond2 <- !all(is.na(min_n_per_stratum))
 
   n_max <- nrow(data)
   # if user input either `min_n_overall` or `min_n_per_stratum`, it is required to input `min_followup`.
@@ -213,11 +213,11 @@ get_analysis_date <- function(
   }
   # if user input `min_n_overall` but it > n_max, then output error message
   if (cond1 && min_n_overall > n_max) {
-    stop("`min_n_overall` must be a positive number smaller than the total sample size.")
+    stop("`min_n_overall` must be a positive number less than or equal to the total sample size.")
   }
   # if user input `min_n_per_stratum` but sum of it > n_max, then output error message
   if (cond2 && sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
-    stop("`min_n_per_stratum` must be a sum of positive numbers smaller than the total sample size.")
+    stop("`min_n_per_stratum` must be a sum of positive numbers less than or equal to the total sample size.")
   }
 
   data <- as.data.table(data)
