@@ -119,7 +119,7 @@ counting_process <- function(x, arm) {
       events = event,
       n_event_tol = (treatment == arm) * event,
       tte,
-      n_risk_tol ,
+      n_risk_tol,
       n_risk_trt
     )]
   }
