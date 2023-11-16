@@ -83,6 +83,7 @@
 </h1></div>
 <!-- badges: start -->
 
+<p>simtrial is a fast and extensible clinical trial simulation framework for time-to-event endpoints.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -93,10 +94,10 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>simtrial</code> is a small package built initially to focus on evaluating weighted logrank tests and combination tests based on such tests. The intent is to use <code>tidyverse</code> (data wrangling) programming procedures and to have a package that is easy to qualify for use in a regulated environment.</p>
+<p>simtrial is an R package built initially to focus on evaluating weighted logrank tests and combination tests based on such tests. simtrial is designed with a core philosophy of basing most computations on efficient table transformations and to have a package that is easy to qualify for use in regulated environments. It utilizes the blazingly fast data.table for tabular data processing, enhanced by C++ implementations to ensure optimal performance.</p>
 <p>Initial areas of focus are:</p>
 <ul>
-<li>Generating time-to-event data for stratified trials using piecewise constant enrollment and piecewise exponential failure rates. Both proportional and non-proportional hazards are supported. Under proportional hazards, the assumptions are along the lines of those used by Lachin and Foulkes as implemented in the <code>gsDesign</code> for deriving group sequential designs.</li>
+<li>Generating time-to-event data for stratified trials using piecewise constant enrollment and piecewise exponential failure rates. Both proportional and non-proportional hazards are supported. Under proportional hazards, the assumptions are along the lines of those used by Lachin and Foulkes as implemented in <a href="https://keaven.github.io/gsDesign/" class="external-link">gsDesign</a> for deriving group sequential designs.</li>
 <li>Setting up data cutoffs for (interim and final) analyses.</li>
 <li>Support for weighted logrank tests with arbitrary weighting schemes, specifically supporting the Fleming-Harrington set of tests, including the logrank test.</li>
 </ul>
