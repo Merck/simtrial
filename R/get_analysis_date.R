@@ -190,14 +190,42 @@ get_analysis_date <- function(
     min_n_overall = NA,
     min_n_per_stratum = NA,
     min_followup = NA) {
-  input_check_scalar(planned_calendar_time, label = "planned_calendar_time")
-  input_check_scalar(target_event_overall, label = "target_event_overall")
-  input_check_scalar(max_extension_for_target_event, label = "max_extension_for_target_event")
-  input_check_scalar(min_time_after_previous_analysis, label = "min_time_after_previous_analysis")
-  input_check_scalar(min_n_overall, label = "min_n_overall")
-  input_check_scalar(min_followup, label = "min_followup")
-  input_check_vector(target_event_per_stratum, label = "target_event_per_stratum")
-  input_check_vector(min_n_per_stratum, label = "min_n_per_stratum")
+  input_check_scalar(
+    planned_calendar_time,
+    label = "planned_calendar_time"
+  )
+  input_check_scalar(
+    target_event_overall,
+    label = "target_event_overall",
+    require_whole_number = TRUE
+  )
+  input_check_scalar(
+    max_extension_for_target_event,
+    label = "max_extension_for_target_event"
+  )
+  input_check_scalar(
+    min_time_after_previous_analysis,
+    label = "min_time_after_previous_analysis"
+  )
+  input_check_scalar(
+    min_n_overall,
+    label = "min_n_overall",
+    require_whole_number = TRUE
+  )
+  input_check_scalar(
+    min_followup,
+    label = "min_followup"
+  )
+  input_check_vector(
+    target_event_per_stratum,
+    label = "target_event_per_stratum",
+    require_whole_number = TRUE
+  )
+  input_check_vector(
+    min_n_per_stratum,
+    label = "min_n_per_stratum",
+    require_whole_number = TRUE
+  )
 
   # Check if `min_n_overall` is input by user
   cond1 <- !is.na(min_n_overall)

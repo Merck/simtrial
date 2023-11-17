@@ -161,4 +161,33 @@ test_that("get_analysis_date() fails early with bad input", {
     ),
     "`min_n_per_stratum` must be a sum of positive numbers less than or equal to the total sample size."
   )
+  # The following arguments require whole numbers: target_event_overall,
+  # min_n_overall, target_event_per_stratum, min_n_per_stratum
+  expect_error(
+    get_analysis_date(simulated_data, target_event_overall = 300.1),
+    "target_event_overall must be a single non-negative whole number \\(or NA\\)"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_overall = n * 0.8 + 0.1,
+      min_followup = 12
+    ),
+    "min_n_overall must be a single non-negative whole number \\(or NA\\)"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      target_event_per_stratum = c(100.1, 200)
+    ),
+    "target_event_per_stratum must be a vector with only positive whole numbers and missing values"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_per_stratum = c(200.1, 160),
+      min_followup = 12
+    ),
+    "min_n_per_stratum must be a vector with only positive whole numbers and missing values"
+  )
 })

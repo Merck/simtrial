@@ -55,6 +55,22 @@ test_that("input_check_scalar() includes label in error message", {
   )
 })
 
+test_that("input_check_scalar() can check for whole numbers", {
+  whole <- 1
+  missing <- NA
+  notwhole <- 1.1
+
+  expect_silent(input_check_scalar(whole))
+  expect_silent(input_check_scalar(missing))
+  expect_silent(input_check_scalar(notwhole))
+  expect_silent(input_check_scalar(whole, require_whole_number = TRUE))
+  expect_silent(input_check_scalar(missing, require_whole_number = TRUE))
+  expect_error(
+    input_check_scalar(notwhole, require_whole_number = TRUE),
+    "x must be a single non-negative whole number \\(or NA\\)"
+  )
+})
+
 # input_check_vector() ---------------------------------------------------------
 
 test_that("input_check_vector() passes a vector of positive numbers", {
@@ -105,4 +121,26 @@ test_that("input_check_vector() includes label in error message", {
     input_check_vector(-1, label = "custom"),
     "custom must be a vector with only positive numbers and missing values"
   )
+})
+
+test_that("input_check_vector() can check for whole numbers", {
+  whole <- c(1, 2, NA, 4, 5)
+  notwhole <- c(1, 2.2, NA, 4, 5)
+
+  expect_silent(input_check_vector(whole))
+  expect_silent(input_check_vector(notwhole))
+  expect_silent(input_check_vector(whole, require_whole_number = TRUE))
+  expect_error(
+    input_check_vector(notwhole, require_whole_number = TRUE),
+    "x must be a vector with only positive whole numbers and missing values"
+  )
+})
+
+# is_whole_number() ------------------------------------------------------------
+
+test_that("is_whole_number() can distinguish between whole and decimal numbers", {
+  x <- c(1.1, -1.1, 0, 2, NA)
+  observed <- is_whole_number(x)
+  expected <- c(FALSE, FALSE, TRUE, TRUE, NA)
+  expect_equal(observed, expected)
 })
