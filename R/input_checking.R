@@ -81,13 +81,15 @@ input_check_vector <- function(x = NA, label = "x", require_whole_number = FALSE
 #' Test if numbers are whole numbers
 #'
 #' @param x a numeric vector
+#' @param tol tolerance
 #'
 #' @return TRUE, FALSE, or NA
+#' @seealso \code{\link[base]{is.integer}}
 #' @noRd
 #' @examples
 #' x <- c(1.1, -1.1, 0, 2, NA)
 #' is_whole_number(x)
 #' ## [1] FALSE FALSE  TRUE  TRUE    NA
-is_whole_number <- function(x) {
-  return(trunc(x) == x)
+is_whole_number <- function(x, tol = .Machine$double.eps^0.5) {
+  return(abs(x - round(x)) < tol)
 }

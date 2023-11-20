@@ -144,3 +144,11 @@ test_that("is_whole_number() can distinguish between whole and decimal numbers",
   expected <- c(FALSE, FALSE, TRUE, TRUE, NA)
   expect_equal(observed, expected)
 })
+
+test_that("is_whole_number() can tolerate minute computational inaccuracies from arithmetic operations", {
+  expect_false(is_whole_number(3.0000001))
+  expect_true(is_whole_number(3.00000001))
+
+  expect_false(is_whole_number(3.000000000000001, tol = 1e-16))
+  expect_true(is_whole_number(3.0000000000000001, tol = 1e-16))
+})
