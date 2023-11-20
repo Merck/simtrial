@@ -16,37 +16,80 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Check if the input `x` is a numerical scale with values > 0
+#' Check if the input `x` is a single non-negative number (or missing)
 #'
-#' @param x a scale
+#' @param x a scalar value
 #' @param label the label of `x`
+#' @param require_whole_number Must the numbers be whole numbers (default: FALSE)
 #'
 #' @return an error message or nothing
 #' @noRd
 #' @examples
-#' input_check_scale(x = 100, label = "my_x")
-input_check_scale <- function(x = NA, label = "x") {
-  if (!is.na(x)) {
-    if (is.numeric(x) && x < 0) {
-      stop(paste0(label, " must be a positive number."))
-    } else if (!is.numeric(x)) {
-      stop(paste0(label, " must be a numerical value."))
+#' input_check_scalar(x = 100, label = "my_x")
+input_check_scalar <- function(x = NA, label = "x", require_whole_number = FALSE) {
+  if (length(x) == 1 && is.na(x)) {
+    return(invisible())
+  }
+
+  passed <- length(x) == 1 && is.numeric(x) && x >= 0
+  if (!passed) {
+    stop(paste0(label, " must be a single non-negative number (or NA)"))
+  }
+
+  if (require_whole_number) {
+    if (!is_whole_number(x)) {
+      stop(paste0(label, " must be a single non-negative whole number (or NA)"))
     }
   }
+
+  return(invisible())
 }
 
-#' Check if the input `x` is a numerical vector with values > 0  or NA
+#' Check if the input `x` is a vector of positive numbers (missing values allowed)
 #'
 #' @param x a vector
 #' @param label the label of `x`
+#' @param require_whole_number Must the numbers be whole numbers (default: FALSE)
 #'
 #' @return an error message or nothing
 #' @noRd
 #' @examples
 #' input_check_vector(x = 1:3, label = "my_x")
 #' input_check_vector(x = c(1, 2, NA), label = "my_x")
-input_check_vector <- function(x = NA, label = "x") {
-  if (!(all(is.na(x) | (is.numeric(x) & x > 0)))) {
-    stop(paste0(label, " must be a positive number with either `NA` or positive numbers."))
+input_check_vector <- function(x = NA, label = "x", require_whole_number = FALSE) {
+  missing <- is.na(x)
+  positive <- is.numeric(x) & x > 0
+
+  if (require_whole_number) {
+    whole_number <- is_whole_number(x)
+    passed <- all(missing | (positive & whole_number))
+  } else {
+    passed <- all(missing | positive)
   }
+
+  if (passed) {
+    return(invisible())
+  }
+
+  if (require_whole_number) {
+    stop(paste0(label, " must be a vector with only positive whole numbers and missing values"))
+  } else {
+    stop(paste0(label, " must be a vector with only positive numbers and missing values"))
+  }
+}
+
+#' Test if numbers are whole numbers
+#'
+#' @param x a numeric vector
+#' @param tol tolerance
+#'
+#' @return TRUE, FALSE, or NA
+#' @seealso \code{\link[base]{is.integer}}
+#' @noRd
+#' @examples
+#' x <- c(1.1, -1.1, 0, 2, NA)
+#' is_whole_number(x)
+#' ## [1] FALSE FALSE  TRUE  TRUE    NA
+is_whole_number <- function(x, tol = .Machine$double.eps^0.5) {
+  return(abs(x - round(x)) < tol)
 }

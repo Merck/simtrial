@@ -122,3 +122,72 @@ test_that("min_n_overall + min_n_per_stratum + min_followup", {
   )
   expect_equal(observed, 28.8252059780061)
 })
+
+test_that("get_analysis_date() fails early with bad input", {
+  # require non-negative number
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
+  # require positive number
+  expect_error(get_analysis_date(simulated_data, target_event_per_stratum = 0))
+  expect_error(get_analysis_date(simulated_data, min_n_per_stratum = 0))
+  # `min_n_overall` and `min_n_per_stratum` require `min_followup`.
+  expect_error(
+    get_analysis_date(simulated_data, min_n_overall = 1),
+    "`min_followup` must be provided."
+  )
+  expect_error(
+    get_analysis_date(simulated_data, min_n_per_stratum = 1),
+    "`min_followup` must be provided."
+  )
+  # `min_n_overall` <= n
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_overall = n + 1,
+      min_followup = 12
+    ),
+    "`min_n_overall` must be a positive number less than or equal to the total sample size."
+  )
+  # sum(min_n_per_stratum) <= n
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_per_stratum = c(n, 1),
+      min_followup = 12
+    ),
+    "`min_n_per_stratum` must be a sum of positive numbers less than or equal to the total sample size."
+  )
+  # The following arguments require whole numbers: target_event_overall,
+  # min_n_overall, target_event_per_stratum, min_n_per_stratum
+  expect_error(
+    get_analysis_date(simulated_data, target_event_overall = 300.1),
+    "target_event_overall must be a single non-negative whole number \\(or NA\\)"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_overall = n * 0.8 + 0.1,
+      min_followup = 12
+    ),
+    "min_n_overall must be a single non-negative whole number \\(or NA\\)"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      target_event_per_stratum = c(100.1, 200)
+    ),
+    "target_event_per_stratum must be a vector with only positive whole numbers and missing values"
+  )
+  expect_error(
+    get_analysis_date(
+      simulated_data,
+      min_n_per_stratum = c(200.1, 160),
+      min_followup = 12
+    ),
+    "min_n_per_stratum must be a vector with only positive whole numbers and missing values"
+  )
+})
