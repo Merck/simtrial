@@ -14,6 +14,12 @@ test_that("functions that use data.table still return a data frame", {
   x <- sim_pw_surv(n = 20)
   expect_identical(class(cut_data_by_date(x, 5)), class_expected)
 
+  # early_zero_weight()
+  x <- sim_pw_surv(n = 200)
+  x <- cut_data_by_event(x, 125)
+  x <- counting_process(x, arm = "experimental")
+  expect_identical(class(early_zero_weight(x, early_period = 2)), class_expected)
+
   # fh_weight()
   expect_identical(class(fh_weight()), class_expected)
 
@@ -68,6 +74,62 @@ test_that("functions that use data.table do not modify input data table", {
   x_original <- data.table::copy(x)
   cut_data_by_date(x, 5)
   expect_identical(x, x_original)
+
+  # early_zero_weight()
+  x <- sim_pw_surv(n = 200)
+  x <- cut_data_by_event(x, 125)
+  x <- counting_process(x, arm = "experimental")
+  data.table::setDT(x)
+  x_original <- data.table::copy(x)
+  early_zero_weight(x, early_period = 2)
+  expect_identical(x, x_original)
+  # stratified
+  # Example 2: Stratified
+  n <- 500
+  # Two strata
+  stratum <- c("Biomarker-positive", "Biomarker-negative")
+  prevelance_ratio <- c(0.6, 0.4)
+  # Enrollment rate
+  enroll_rate <- gsDesign2::define_enroll_rate(
+    stratum = rep(stratum, each = 2),
+    duration = c(2, 10, 2, 10),
+    rate = c(c(1, 4) * prevelance_ratio[1], c(1, 4) * prevelance_ratio[2])
+  )
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
+  # Failure rate
+  med_pos <- 10 # Median of the biomarker positive population
+  med_neg <- 8 # Median of the biomarker negative population
+  hr_pos <- c(1, 0.7) # Hazard ratio of the biomarker positive population
+  hr_neg <- c(1, 0.8) # Hazard ratio of the biomarker negative population
+  fail_rate <- gsDesign2::define_fail_rate(
+    stratum = rep(stratum, each = 2),
+    duration = c(3, 1000, 4, 1000),
+    fail_rate = c(log(2) / c(med_pos, med_pos, med_neg, med_neg)),
+    hr = c(hr_pos, hr_neg),
+    dropout_rate = 0.01
+  )
+  # Simulate data
+  temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+  set.seed(2023)
+  x <- sim_pw_surv(
+    n = n, # Sample size
+    # Stratified design with prevalence ratio of 6:4
+    stratum = data.frame(stratum = stratum, p = prevelance_ratio),
+    # Randomization ratio
+    block = c("control", "control", "experimental", "experimental"),
+    enroll_rate = enroll_rate, # Enrollment rate
+    fail_rate = temp$fail_rate, # Failure rate
+    dropout_rate = temp$dropout_rate # Dropout rate
+  )
+  x <- cut_data_by_event(x, 125)
+  x <- counting_process(x, arm = "experimental")
+  data.table::setDT(x)
+  x_original <- data.table::copy(x)
+  data.table::setDT(fail_rate)
+  fail_rate_original <- data.table::copy(fail_rate)
+  early_zero_weight(x, early_period = 2, fail_rate = fail_rate)
+  expect_identical(x, x_original)
+  expect_identical(fail_rate, fail_rate_original)
 
   # fh_weight()
   x <- sim_pw_surv()
