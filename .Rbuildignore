@@ -1,12 +1,11 @@
-^\.github$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^LICENSES_THIRD_PARTY$
-^_pkgdown\.yml$
 ^\.gitattributes$
+^\.github$
+^codecov\.yml$
+^_pkgdown\.yml$
 ^pkgdown$
+^docs$
+^data-raw$
 ^LICENSE$
 ^LICENSES_THIRD_PARTY$
-^codecov\.yml$
-^doc$
-^data-raw$
