@@ -58,7 +58,6 @@ Suggests:
     markdown,
     remotes,
     rmarkdown,
-    stringr,
     survMisc,
     testthat,
     tidyr

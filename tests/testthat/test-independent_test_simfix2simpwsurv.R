@@ -27,11 +27,11 @@ testthat::test_that("stratgum values must be the same and stratum length must be
 })
 
 testthat::test_that("treatment after converting contains only control and experimental with the right length", {
-  testthat::expect_equal(length(fail_rate$stratum), sum(stringr::str_detect(failRatesPWSurv$treatment, "control")))
-  testthat::expect_equal(length(fail_rate$stratum), sum(stringr::str_detect(failRatesPWSurv$treatment, "experimental")))
+  testthat::expect_equal(length(fail_rate$stratum), sum(str_detect(failRatesPWSurv$treatment, "control")))
+  testthat::expect_equal(length(fail_rate$stratum), sum(str_detect(failRatesPWSurv$treatment, "experimental")))
   testthat::expect_equal(length(failRatesPWSurv$treatment), length(fail_rate$stratum) * 2)
-  testthat::expect_equal(length(fail_rate$stratum), sum(stringr::str_detect(dropoutRatesPWSurv$treatment, "control")))
-  testthat::expect_equal(length(fail_rate$stratum), sum(stringr::str_detect(dropoutRatesPWSurv$treatment, "experimental")))
+  testthat::expect_equal(length(fail_rate$stratum), sum(str_detect(dropoutRatesPWSurv$treatment, "control")))
+  testthat::expect_equal(length(fail_rate$stratum), sum(str_detect(dropoutRatesPWSurv$treatment, "experimental")))
   testthat::expect_equal(length(dropoutRatesPWSurv$treatment), length(fail_rate$stratum) * 2)
 })
 
