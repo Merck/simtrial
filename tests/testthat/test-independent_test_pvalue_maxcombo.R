@@ -1,7 +1,7 @@
 testthat::test_that("the p-values correspond to pvalue_maxcombo", {
   set.seed(2022)
   # this part is a double programming
-  y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)
+  y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
   wt <- list(a1 = c(0, 0), a2 = c(0, 1), a3 = c(1, 0), a4 = c(1, 1))
   ties.method <- "efron"
@@ -76,7 +76,7 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo", {
   }
   p1 <- pval
 
-  a2 <- y %>% counting_process(arm = "experimental")
+  a2 <- y |> counting_process(arm = "experimental")
   aa <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
   p2 <- pvalue_maxcombo(z = aa)
 

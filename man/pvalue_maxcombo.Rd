@@ -53,9 +53,9 @@ xx <- sim_fixed_n(
 head(xx)
 
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx \%>\%
-  group_by(sim) \%>\%
-  group_map(~ pvalue_maxcombo(.x)) \%>\%
+p <- xx |>
+  group_by(sim) |>
+  group_map(~ pvalue_maxcombo(.x)) |>
   unlist()
 mean(p < .025)
 }

@@ -134,11 +134,11 @@ over that of enrollment 1, which is
 We also see that there is a distinction between the duration of the study under the proposed enrollment strategies.
 
 ```{r sequential-display-results, eval=FALSE, echo=FALSE}
-seq_result1 %>%
-  head(5) %>%
+seq_result1 |>
+  head(5) |>
   kable(digits = 2)
-seq_result2 %>%
-  head(5) %>%
+seq_result2 |>
+  head(5) |>
   kable(digits = 2)
 ```
 

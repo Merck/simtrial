@@ -5,7 +5,7 @@
 \title{Fleming-Harrington weighted logrank tests}
 \usage{
 fh_weight(
-  x = sim_pw_surv(n = 200) \%>\% cut_data_by_event(150) \%>\% counting_process(arm =
+  x = counting_process(cut_data_by_event(sim_pw_surv(n = 200), 150), arm =
     "experimental"),
   rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
   return_variance = FALSE,
@@ -86,8 +86,8 @@ library(dplyr)
 
 # Example 1
 # Use default enrollment and event rates at cut at 100 events
-x <- sim_pw_surv(n = 200) \%>\%
-  cut_data_by_event(100) \%>\%
+x <- sim_pw_surv(n = 200) |>
+  cut_data_by_event(100) |>
   counting_process(arm = "experimental")
 
 # Compute logrank FH(0, 1)
@@ -102,9 +102,9 @@ fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), retur
 # Example 2
 # Use default enrollment and event rates at cut of 100 events
 set.seed(123)
-x <- sim_pw_surv(n = 200) \%>\%
-  cut_data_by_event(100) \%>\%
-  counting_process(arm = "experimental") \%>\%
+x <- sim_pw_surv(n = 200) |>
+  cut_data_by_event(100) |>
+  counting_process(arm = "experimental") |>
   fh_weight(rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
 
 # Compute p-value for MaxCombo
@@ -116,11 +116,11 @@ library(mvtnorm)
 )[1]
 
 # Check that covariance is as expected
-x <- sim_pw_surv(n = 200) \%>\%
-  cut_data_by_event(100) \%>\%
+x <- sim_pw_surv(n = 200) |>
+  cut_data_by_event(100) |>
   counting_process(arm = "experimental")
 
-x \%>\% fh_weight(
+x |> fh_weight(
   rho_gamma = data.frame(
     rho = c(0, 0),
     gamma = c(0, 1)
@@ -129,7 +129,7 @@ x \%>\% fh_weight(
 )
 
 # Off-diagonal element should be variance in following
-x \%>\% fh_weight(
+x |> fh_weight(
   rho_gamma = data.frame(
     rho = 0,
     gamma = .5
@@ -138,5 +138,5 @@ x \%>\% fh_weight(
 )
 
 # Compare off diagonal result with fh_weight()
-x \%>\% fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
+x |> fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
 }

@@ -31,8 +31,6 @@ to analyze or otherwise evaluate individual simulations in ways that
 \code{\link[=sim_fixed_n]{sim_fixed_n()}} does not.
 }
 \examples{
-library(magrittr)
-
 # Example 1
 # Convert standard input
 simfix2simpwsurv()
@@ -65,8 +63,8 @@ sim <- sim_pw_surv(
 )
 
 # Cut after 200 events and do a stratified logrank test
-dat <- sim \%>\%
-  cut_data_by_event(200) \%>\% # cut data
-  counting_process(arm = "experimental") \%>\% # convert format for tenFH
-  fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # stratified logrank
+dat <- sim |>
+  cut_data_by_event(200) |> # Cut data
+  counting_process(arm = "experimental") |> # Convert format for fh_weight()
+  fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # Stratified logrank
 }

@@ -46,7 +46,7 @@ x <- sim_pw_surv(
   )
 )
 
-d <- get_cut_date_by_event(x \%>\% filter(stratum == "Positive"), event = 50)
+d <- get_cut_date_by_event(x |> filter(stratum == "Positive"), event = 50)
 
 y <- cut_data_by_date(x, cut_date = d)
 table(y$stratum, y$event)

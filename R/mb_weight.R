@@ -75,14 +75,14 @@
 #'
 #' # Use default enrollment and event rates at cut at 100 events
 #' # For transparency, may be good to set either `delay` or `w_max` to `Inf`
-#' x <- sim_pw_surv(n = 200) %>%
-#'   cut_data_by_event(125) %>%
+#' x <- sim_pw_surv(n = 200) |>
+#'   cut_data_by_event(125) |>
 #'   counting_process(arm = "experimental")
 #'
 #' # Example 1
 #' # Compute Magirr-Burman weights with `delay = 6`
-#' ZMB <- x %>%
-#'   mb_weight(delay = 6, w_max = Inf) %>%
+#' ZMB <- x |>
+#'   mb_weight(delay = 6, w_max = Inf) |>
 #'   summarize(
 #'     S = sum(o_minus_e * mb_weight),
 #'     V = sum(var_o_minus_e * mb_weight^2),
@@ -94,8 +94,8 @@
 #'
 #' # Example 2
 #' # Now compute with maximum weight of 2 as recommended in Magirr, 2021
-#' ZMB2 <- x %>%
-#'   mb_weight(delay = Inf, w_max = 2) %>%
+#' ZMB2 <- x |>
+#'   mb_weight(delay = Inf, w_max = 2) |>
 #'   summarize(
 #'     S = sum(o_minus_e * mb_weight),
 #'     V = sum(var_o_minus_e * mb_weight^2),

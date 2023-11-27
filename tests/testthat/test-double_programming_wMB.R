@@ -16,8 +16,8 @@ test_mb_weight <- function(x, delay = 4) {
 # Test 1: for the situation of single stratum ####
 
 test_that("Validation passed for the situation of single stratum", {
-  x <- sim_pw_surv(n = 200) %>%
-    cut_data_by_event(125) %>%
+  x <- sim_pw_surv(n = 200) |>
+    cut_data_by_event(125) |>
     counting_process(arm = "experimental")
 
   out1 <- test_mb_weight(x, delay = 3)
@@ -49,8 +49,8 @@ test_that("Validation passed for the situation of multiple stratum", {
       duration = rep(1, 4),
       rate = rep(.001, 4)
     )
-  ) %>%
-    cut_data_by_event(125) %>%
+  ) |>
+    cut_data_by_event(125) |>
     counting_process(arm = "experimental")
 
   out1 <- test_mb_weight(x, delay = 3)
@@ -82,8 +82,8 @@ test_that("Validation passed for the situation of a stratum with no records", {
       duration = rep(1, 4),
       rate = rep(.001, 4)
     )
-  ) %>%
-    cut_data_by_event(125) %>%
+  ) |>
+    cut_data_by_event(125) |>
     counting_process(arm = "experimental")
 
   out <- mb_weight(x, delay = 1)

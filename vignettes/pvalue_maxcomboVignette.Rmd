@@ -50,7 +50,7 @@ library(dplyr)
 
 ```{r}
 x <- sim_fixed_n(n_sim = 1, timing_type = 5, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
-x %>% kable(digits = 2)
+x |> kable(digits = 2)
 ```
 
 Once you have this format, the MaxCombo p-value per @Karrison2016, @NPHWGDesign can be computed as follows (note that you will need to have the package **mvtnorm** installed):
@@ -66,25 +66,25 @@ Again, we use defaults for that routine.
 
 ```{r,message=FALSE,warning=FALSE,cache=FALSE}
 s <- sim_pw_surv(n = 100)
-head(s) %>% kable(digits = 2)
+head(s) |> kable(digits = 2)
 ```
 
 Once generated, we need to cut the data for analysis. Here we cut after 75 events.
 
 ```{r,warning=FALSE,message=FALSE}
-x <- s %>% cut_data_by_event(75)
-head(x) %>% kable(digits = 2)
+x <- s |> cut_data_by_event(75)
+head(x) |> kable(digits = 2)
 ```
 
 Now we can analyze this data. We begin with `s` to show how this can be done in a single line.
 In this case, we use the 4 test combination suggested in @NPHWGSimulation, @NPHWGDesign.
 
 ```{r,warning=FALSE,message=FALSE}
-z <- s %>%
-  cut_data_by_event(75) %>%
-  counting_process(arm = "experimental") %>%
+z <- s |>
+  cut_data_by_event(75) |>
+  counting_process(arm = "experimental") |>
   fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
-z %>% kable(digits = 2)
+z |> kable(digits = 2)
 ```
 
 Now we compute our p-value as before:
@@ -97,7 +97,7 @@ Suppose we want the p-value just based on the logrank and FH(0,1) and FH(1,0) as
 We remove the rows and columns associated with FH(0,0) and FH(1,1) and then apply `pvalue_maxcombo()`.
 
 ```{r,warning=FALSE,message=FALSE}
-pvalue_maxcombo(z %>% select(-c(v1, v4)) %>% filter((rho == 0 & gamma == 1) | (rho == 1 & gamma == 0)))
+pvalue_maxcombo(z |> select(-c(v1, v4)) |> filter((rho == 0 & gamma == 1) | (rho == 1 & gamma == 0)))
 ```
 
 ### Using survival data in another format
@@ -108,21 +108,21 @@ In this case we use the small `aml` dataset from the **survival** package.
 
 ```{r,warning=FALSE,message=FALSE}
 library(survival)
-head(aml) %>% kable()
+head(aml) |> kable()
 ```
 
 We rename variables and create a stratum variable as follows:
 
 ```{r,warning=FALSE,message=FALSE}
-x <- aml %>% transmute(tte = time, event = status, stratum = "All", treatment = as.character(x))
-head(x) %>% kable()
+x <- aml |> transmute(tte = time, event = status, stratum = "All", treatment = as.character(x))
+head(x) |> kable()
 ```
 Now we analyze the data with a MaxCombo with the logrank and FH(0,1) and compute a p-value.
 
 ```{r,warning=FALSE,message=FALSE}
-x %>%
-  counting_process(arm = "Maintained") %>%
-  fh_weight(rho_gamma = data.frame(rho = 0, gamma = c(0, 1)), return_corr = TRUE) %>%
+x |>
+  counting_process(arm = "Maintained") |>
+  fh_weight(rho_gamma = data.frame(rho = 0, gamma = c(0, 1)), return_corr = TRUE) |>
   pvalue_maxcombo()
 ```
 
@@ -134,7 +134,7 @@ We now consider the example simulation from the `pvalue_maxcombo()` help file to
 # Only use cut events + min follow-up
 xx <- sim_fixed_n(n_sim = 100, timing_type = 5, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- unlist(xx %>% group_by(sim) %>% group_map(~ pvalue_maxcombo(.x)))
+p <- unlist(xx |> group_by(sim) |> group_map(~ pvalue_maxcombo(.x)))
 mean(p < .001)
 ```
 
@@ -145,14 +145,14 @@ The latter can be done without having to re-run all simulations as follows, demo
 ```{r,cache=FALSE,warning=FALSE,message=FALSE}
 # Only use cuts for events and events + min follow-up
 xx <- sim_fixed_n(n_sim = 100, timing_type = c(2, 5), rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
-head(xx) %>% kable(digits = 2)
+head(xx) |> kable(digits = 2)
 ```
 
 Now we compute a p-value separately for each cut type, first for targeted event count.
 
 ```{r,warning=FALSE,message=FALSE}
 # Subset to targeted events cutoff tests
-p <- unlist(xx %>% filter(cut == "Targeted events") %>% group_by(sim) %>% group_map(~ pvalue_maxcombo(.x)))
+p <- unlist(xx |> filter(cut == "Targeted events") |> group_by(sim) |> group_map(~ pvalue_maxcombo(.x)))
 mean(p < .025)
 ```
 
@@ -160,7 +160,7 @@ Now we use the later of targeted events and minimum follow-up cutoffs.
 
 ```{r,warning=FALSE,message=FALSE}
 # Subset to targeted events cutoff tests
-p <- unlist(xx %>% filter(cut != "Targeted events") %>% group_by(sim) %>% group_map(~ pvalue_maxcombo(.x)))
+p <- unlist(xx |> filter(cut != "Targeted events") |> group_by(sim) |> group_map(~ pvalue_maxcombo(.x)))
 mean(p < .025)
 ```
 
