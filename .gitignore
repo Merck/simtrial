@@ -1,10 +1,6 @@
 .Rproj.user
-doc
-docs
-Meta
-inst/doc
-.Rprofile
 .Rhistory
 .RData
 .Ruserdata
-tests/testthat/fixtures/backwards-compatibility
+inst/doc
+docs
