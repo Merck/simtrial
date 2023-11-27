@@ -35,14 +35,14 @@ dloglogis <- function(x, alpha = 1, beta = 4) {
   1 / (1 + (x / alpha)^beta)
 }
 times <- (1:150) / 50
-xx <- data.frame(Times = times, Survival = dloglogis(times, alpha = .5, beta = 4)) %>%
+xx <- data.frame(Times = times, Survival = dloglogis(times, alpha = .5, beta = 4)) |>
   mutate(
     duration = Times - lag(Times, default = 0),
     H = -log(Survival),
     rate = (H - lag(H, default = 0)) / duration / 3
-  ) %>%
+  ) |>
   select(duration, rate)
-ggplot(data = xx %>% mutate(Time = lag(cumsum(duration), default = 0)), aes(x = Time, y = rate)) +
+ggplot(data = xx |> mutate(Time = lag(cumsum(duration), default = 0)), aes(x = Time, y = rate)) +
   geom_line()
 ```
 
@@ -58,7 +58,7 @@ x <- sim_pw_surv(
   n = 250, # sample size
   block = block,
   enroll_rate = enroll_rate,
-  fail_rate = xx %>% mutate(stratum = "All", treatment = tx, period = 1:n(), stratum = "All"),
+  fail_rate = xx |> mutate(stratum = "All", treatment = tx, period = 1:n(), stratum = "All"),
   dropout_rate = dropout_rate
 )
 ```
@@ -66,7 +66,7 @@ x <- sim_pw_surv(
 We assume the entire study lasts 3 years
 
 ```{r,fig.height=4,fig.width=7.5}
-y <- x %>% cut_data_by_date(3)
+y <- x |> cut_data_by_date(3)
 head(y)
 ```
 
@@ -83,5 +83,5 @@ We overlay the actual rates in red.
 ```{r,fig.height=4,fig.width=7.5}
 fit <- bshazard(Surv(tte, event) ~ 1, data = y, nk = 120)
 plot(fit, conf.int = TRUE, xlab = "Time", xlim = c(0, 3), ylim = c(0, 2.5), lwd = 2)
-lines(x = times, y = (xx %>% mutate(Time = lag(cumsum(duration), default = 0)))$rate, col = 2)
+lines(x = times, y = (xx |> mutate(Time = lag(cumsum(duration), default = 0)))$rate, col = 2)
 ```

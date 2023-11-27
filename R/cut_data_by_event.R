@@ -31,10 +31,10 @@
 #'
 #' @examples
 #' # Use default enrollment and event rates at cut at 100 events
-#' x <- sim_pw_surv(n = 200) %>% cut_data_by_event(100)
+#' x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 #' table(x$event, x$treatment)
 cut_data_by_event <- function(x, event) {
   cut_date <- get_cut_date_by_event(x, event)
-  ans <- x %>% cut_data_by_date(cut_date = cut_date)
+  ans <- x |> cut_data_by_date(cut_date = cut_date)
   return(ans)
 }

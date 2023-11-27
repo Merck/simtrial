@@ -94,24 +94,24 @@
 #'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
 #' )
 #' # Get power approximation for FH, data cutoff combination
-#' xx %>%
-#'   group_by(cut, rho, gamma) %>%
+#' xx |>
+#'   group_by(cut, rho, gamma) |>
 #'   summarize(mean(z <= qnorm(.025)))
 #'
 #' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx %>%
-#'   filter(cut != "Targeted events") %>%
-#'   group_by(sim) %>%
-#'   group_map(~ pvalue_maxcombo(.x)) %>%
+#' p <- xx |>
+#'   filter(cut != "Targeted events") |>
+#'   group_by(sim) |>
+#'   group_map(~ pvalue_maxcombo(.x)) |>
 #'   unlist()
 #'
 #' mean(p < .025)
 #'
 #' # MaxCombo estimate for targeted events cutoff
-#' p <- xx %>%
-#'   filter(cut == "Targeted events") %>%
-#'   group_by(sim) %>%
-#'   group_map(~ pvalue_maxcombo(.x)) %>%
+#' p <- xx |>
+#'   filter(cut == "Targeted events") |>
+#'   group_by(sim) |>
+#'   group_map(~ pvalue_maxcombo(.x)) |>
 #'   unlist()
 #'
 #' mean(p < .025)

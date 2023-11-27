@@ -1,6 +1,6 @@
 testthat::test_that("the z values match with the correspondings in fh_weight", {
   set.seed(1234)
-  y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)
+  y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
   wt <- list(a1 = c(0, 0), a2 = c(0, 1), a3 = c(1, 0), a4 = c(1, 1))
   ties.method <- "efron"
@@ -19,7 +19,7 @@ testthat::test_that("the z values match with the correspondings in fh_weight", {
   }))
   tst.rslt <- attr(fit, "lrt")
   z1 <- tst.rslt$Z
-  a2 <- y %>% counting_process(arm = "experimental")
+  a2 <- y |> counting_process(arm = "experimental")
   aa <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
   z2 <- aa$z
   expect_equal(c(z1[1], z1[7:9]), z2, tolerance = 0.00001)
@@ -27,7 +27,7 @@ testthat::test_that("the z values match with the correspondings in fh_weight", {
 
 testthat::test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
   set.seed(123)
-  y <- sim_pw_surv(n = 300) %>% cut_data_by_event(30)
+  y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
   wt <- list(a1 = c(0, 0), a2 = c(0, 1), a3 = c(1, 0), a4 = c(1, 1))
   ties.method <- "efron"
@@ -101,7 +101,7 @@ testthat::test_that("fh_weight calculated correct correlation value when input a
     pval <- pval2 / 2
   }
   corr1 <- cor.tst[2:5, 2:5]
-  a2 <- y %>% counting_process(arm = "experimental")
+  a2 <- y |> counting_process(arm = "experimental")
   corr2 <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
   corr2 <- rbind(corr2$v1, corr2$v2, corr2$v3, corr2$v4)
   expect_equal(corr1, corr2, tolerance = 0.00001)

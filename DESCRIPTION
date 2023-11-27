@@ -1,7 +1,7 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.3.0.6
+Version: 0.3.0.7
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
@@ -20,7 +20,7 @@ Authors@R: c(
     person("John", "Blischak", role = c("ctb")),
     person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph")
     )
-Description: simtrial provides some basic routines for simulating a
+Description: Provides some basic routines for simulating a
     clinical trial. The primary intent is to provide some tools to
     generate trial simulations for trials with time to event outcomes.
     Piecewise exponential failure rates and piecewise constant
@@ -34,14 +34,13 @@ BugReports: https://github.com/Merck/simtrial/issues
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 Imports:
     Rcpp,
     data.table,
     doFuture,
     foreach,
     future,
-    magrittr,
     methods,
     mvtnorm,
     stats,

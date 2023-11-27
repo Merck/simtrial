@@ -35,36 +35,36 @@ legend("topright", legend = c("control", "experimental"), lty = 1:2)
 
 # Set up time, event, number of event dataset for testing
 # with arbitrary weights
-ten <- MBdelayed \%>\% counting_process(arm = "experimental")
+ten <- MBdelayed |> counting_process(arm = "experimental")
 head(ten)
 
 # MaxCombo with logrank, FH(0,1), FH(1,1)
-ten \%>\%
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) \%>\%
+ten |>
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) |>
   pvalue_maxcombo()
 
 # Magirr-Burman modestly down-weighted rank test with 6 month delay
 # First, add weights
-ten <- ten \%>\% mb_weight(6)
+ten <- ten |> mb_weight(6)
 head(ten)
 
 # Now compute test based on these weights
-ten \%>\%
+ten |>
   summarize(
     S = sum(o_minus_e * mb_weight),
     V = sum(var_o_minus_e * mb_weight^2),
     Z = S / sqrt(V)
-  ) \%>\%
+  ) |>
   mutate(p = pnorm(Z))
 
 # Create 0 weights for first 6 months
-ten <- ten \%>\% mutate(w6 = 1 * (tte >= 6))
-ten \%>\%
+ten <- ten |> mutate(w6 = 1 * (tte >= 6))
+ten |>
   summarize(
     S = sum(o_minus_e * w6),
     V = sum(var_o_minus_e * w6^2),
     Z = S / sqrt(V)
-  ) \%>\%
+  ) |>
   mutate(p = pnorm(Z))
 
 # Generate another dataset
@@ -87,7 +87,7 @@ ds <- sim_pw_surv(
   )
 )
 # Cut data at 24 months after final enrollment
-MBdelayed2 <- ds \%>\% cut_data_by_date(max(ds$enroll_time) + 24)
+MBdelayed2 <- ds |> cut_data_by_date(max(ds$enroll_time) + 24)
 }
 \references{
 Magirr, Dominic, and Carl‐Fredrik Burman. 2019.

@@ -3,10 +3,10 @@ test_that("get_cut_date_by_event returns the correct cut date", {
   y <- sim_pw_surv(n = 200)
   ycutdate <- get_cut_date_by_event(y, event)
 
-  x <- y %>%
-    dplyr::ungroup() %>%
-    dplyr::filter(fail == 1) %>%
-    dplyr::arrange(cte) %>%
+  x <- y |>
+    dplyr::ungroup() |>
+    dplyr::filter(fail == 1) |>
+    dplyr::arrange(cte) |>
     dplyr::slice(event)
   expect_equal(x$cte, ycutdate)
 })

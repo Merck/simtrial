@@ -31,8 +31,8 @@ x <- sim_pw_surv(
 )
 
 # prepare to test block
-block1 <- x %>% dplyr::filter(stratum == "Low")
-block2 <- x %>% dplyr::filter(stratum == "High")
+block1 <- x |> dplyr::filter(stratum == "Low")
+block2 <- x |> dplyr::filter(stratum == "High")
 bktest1 <- c()
 j <- 1
 for (i in seq(1, floor(nrow(block1) / 4))) {

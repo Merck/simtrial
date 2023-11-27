@@ -131,7 +131,7 @@ x <- sim_pw_surv(
   fail_rate = fail_rate,
   dropout_rate = dropout_rate
 )
-head(x) %>% kable(digits = 2)
+head(x) |> kable(digits = 2)
 ```
 
 ## Cutting data for analysis
@@ -143,7 +143,7 @@ Observations enrolled after the input `cut_date` are deleted and events and cens
 ```{r}
 y <- cut_data_by_date(x, cut_date = 5)
 
-head(y) %>% kable(digits = 2)
+head(y) |> kable(digits = 2)
 ```
 
 For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `get_cut_date_by_event` function as follows:
@@ -170,7 +170,7 @@ The counting process format is further discussed in the next section where we co
 ```{r}
 ten150 <- counting_process(y150, arm = "experimental")
 
-head(ten150) %>% kable(digits = 2)
+head(ten150) |> kable(digits = 2)
 ```
 
 ## Logrank and weighted logrank testing
@@ -196,7 +196,7 @@ c(z, pnorm(z))
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-fh_weight(x = ten150, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) %>% kable(digits = 2)
+fh_weight(x = ten150, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) |> kable(digits = 2)
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `fh_weight()` to compute a correlation matrix for the above z-statistics as follows.
@@ -204,8 +204,8 @@ Note that the ordering of `rho_gamma` and `g` in the argument list is opposite o
 The correlation matrix for the `z`-values is now in `V1`-`V4`.
 
 ```{r,message=FALSE}
-x <- ten150 %>% fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
-x %>% kable(digits = 2)
+x <- ten150 |> fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
+x |> kable(digits = 2)
 ```
 
 We can compute a p-value for the MaxCombo as follows using the `pmvnorm` function from the `mvtnorm` package. Note the arguments for `GenzBretz` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
@@ -258,14 +258,14 @@ sim_fixed_n(
   block = block, # Block for treatment
   timing_type = 1:5, # Use all possible data cutoff methods
   rho_gamma = rho_gamma # FH test(s) to use; in this case, logrank
-) %>% kable(digits = 2)
+) |> kable(digits = 2)
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
 To explain, we note that generally you will want `sample_size` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
-enroll_rate %>% summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
+enroll_rate |> summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
 ```
 
 The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sample_size` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is

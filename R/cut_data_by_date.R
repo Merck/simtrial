@@ -31,7 +31,7 @@
 #' @examples
 #' # Use default enrollment and event rates and
 #' # cut at calendar time 5 after start of randomization
-#' sim_pw_surv(n = 20) %>% cut_data_by_date(5)
+#' sim_pw_surv(n = 20) |> cut_data_by_date(5)
 cut_data_by_date <- function(x, cut_date) {
   ans <- as.data.table(x)
   ans <- ans[enroll_time <= cut_date, ]

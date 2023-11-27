@@ -69,7 +69,7 @@ MBdelay <- sim_pw_surv(
   enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
-) %>%
+) |>
   cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelay)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
@@ -86,9 +86,9 @@ This requires generating weights and then computing the test.
 We begin with the default of `w_max=Inf` which corresponds to the original @MagirrBurman test and set the time until maximum weight $\tau$ with `delay = 6`.
 
 ```{r}
-ZMB <- MBdelay %>%
-  counting_process(arm = "experimental") %>%
-  mb_weight(delay = 6) %>%
+ZMB <- MBdelay |>
+  counting_process(arm = "experimental") |>
+  mb_weight(delay = 6) |>
   summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
@@ -97,9 +97,9 @@ pnorm(ZMB$z)
 Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` so that the maximum weight begins at the observed median of the observed combined treatment Kaplan-Meier curve.
 
 ```{r}
-ZMB <- MBdelay %>%
-  counting_process(arm = "experimental") %>%
-  mb_weight(delay = Inf, w_max = 2) %>%
+ZMB <- MBdelay |>
+  counting_process(arm = "experimental") |>
+  mb_weight(delay = Inf, w_max = 2) |>
   summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
@@ -113,9 +113,9 @@ and let $\gamma=0, \rho = -1/2.$
 
 ```{r}
 w_max <- 2
-Z_modified_FH <- MBdelay %>%
-  counting_process(arm = "experimental") %>%
-  mutate(w = pmin(w_max, 1 / s)) %>%
+Z_modified_FH <- MBdelay |>
+  counting_process(arm = "experimental") |>
+  mutate(w = pmin(w_max, 1 / s)) |>
   summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), z = S / sqrt(V))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(Z_modified_FH$z)
@@ -156,7 +156,7 @@ FHwn <- sim_pw_surv(
   enroll_rate = enroll_rate,
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
-) %>%
+) |>
   cut_data_by_date(studyDuration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
@@ -166,9 +166,9 @@ axis(1, xaxp = c(0, 36, 6))
 We perform a logrank and weighted logrank tests as suggested for more limited downweighting by follows:
 
 ```{r}
-xx <- FHwn %>%
-  counting_process(arm = "experimental") %>%
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) %>%
+xx <- FHwn |>
+  counting_process(arm = "experimental") |>
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) |>
   mutate(p = pnorm(z))
 xx
 ```
@@ -176,16 +176,16 @@ xx
 Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
-xx %>% pvalue_maxcombo()
+xx |> pvalue_maxcombo()
 ```
 
 Next, we consider the @MagirrBurman modestly weighted logrank test with down-weighting specified for the first 6 months but a maximum weight of 2.
 This requires generating weights and then computing the test.
 
 ```{r}
-ZMB <- FHwn %>%
-  counting_process(arm = "experimental") %>%
-  mb_weight(delay = 6, w_max = 2) %>%
+ZMB <- FHwn |>
+  counting_process(arm = "experimental") |>
+  mb_weight(delay = 6, w_max = 2) |>
   summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -196,9 +196,9 @@ Finally, we consider weighted logrank tests with less down-weighting.
 Results are quite similar to the results with greater down-weighting.
 
 ```{r}
-xx <- FHwn %>%
-  counting_process(arm = "experimental") %>%
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)), return_corr = TRUE) %>%
+xx <- FHwn |>
+  counting_process(arm = "experimental") |>
+  fh_weight(rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)), return_corr = TRUE) |>
   mutate(p = pnorm(z))
 xx
 ```
@@ -206,7 +206,7 @@ xx
 Now for a MaxCombo test with the above component tests, we have p-value of
 
 ```{r}
-xx %>% pvalue_maxcombo()
+xx |> pvalue_maxcombo()
 ```
 
 Thus, with less down-weighting the MaxCombo test appears less problematic.

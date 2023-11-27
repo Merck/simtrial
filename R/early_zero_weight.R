@@ -40,23 +40,23 @@
 #' library(gsDesign2)
 #'
 #' # Example 1: Unstratified
-#' sim_pw_surv(n = 200) %>%
-#'   cut_data_by_event(125) %>%
-#'   counting_process(arm = "experimental") %>%
-#'   early_zero_weight(early_period = 2) %>%
+#' sim_pw_surv(n = 200) |>
+#'   cut_data_by_event(125) |>
+#'   counting_process(arm = "experimental") |>
+#'   early_zero_weight(early_period = 2) |>
 #'   filter(row_number() %in% seq(5, 200, 40))
 #'
 #' # Example 2: Stratified
 #' n <- 500
 #' # Two strata
 #' stratum <- c("Biomarker-positive", "Biomarker-negative")
-#' prevelance_ratio <- c(0.6, 0.4)
+#' prevalence_ratio <- c(0.6, 0.4)
 #'
 #' # Enrollment rate
 #' enroll_rate <- define_enroll_rate(
 #'   stratum = rep(stratum, each = 2),
 #'   duration = c(2, 10, 2, 10),
-#'   rate = c(c(1, 4) * prevelance_ratio[1], c(1, 4) * prevelance_ratio[2])
+#'   rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
 #' )
 #' enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
 #'
@@ -80,16 +80,16 @@
 #' sim_pw_surv(
 #'   n = n, # Sample size
 #'   # Stratified design with prevalence ratio of 6:4
-#'   stratum = tibble(stratum = stratum, p = prevelance_ratio),
+#'   stratum = tibble(stratum = stratum, p = prevalence_ratio),
 #'   # Randomization ratio
 #'   block = c("control", "control", "experimental", "experimental"),
 #'   enroll_rate = enroll_rate, # Enrollment rate
 #'   fail_rate = temp$fail_rate, # Failure rate
 #'   dropout_rate = temp$dropout_rate # Dropout rate
-#' ) %>%
-#'   cut_data_by_event(125) %>%
-#'   counting_process(arm = "experimental") %>%
-#'   early_zero_weight(early_period = 2, fail_rate = fail_rate) %>%
+#' ) |>
+#'   cut_data_by_event(125) |>
+#'   counting_process(arm = "experimental") |>
+#'   early_zero_weight(early_period = 2, fail_rate = fail_rate) |>
 #'   filter(row_number() %in% seq(5, 200, 40))
 early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
   ans <- as.data.table(x)
