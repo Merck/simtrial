@@ -16,12 +16,12 @@ test_that("early_zero_weight() with stratified data", {
   n <- 500
   # Two strata
   stratum <- c("Biomarker-positive", "Biomarker-negative")
-  prevelance_ratio <- c(0.6, 0.4)
+  prevalence_ratio <- c(0.6, 0.4)
   # Enrollment rate
   enroll_rate <- gsDesign2::define_enroll_rate(
     stratum = rep(stratum, each = 2),
     duration = c(2, 10, 2, 10),
-    rate = c(c(1, 4) * prevelance_ratio[1], c(1, 4) * prevelance_ratio[2])
+    rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
   enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
@@ -42,7 +42,7 @@ test_that("early_zero_weight() with stratified data", {
   input <- sim_pw_surv(
     n = n, # Sample size
     # Stratified design with prevalence ratio of 6:4
-    stratum = data.frame(stratum = stratum, p = prevelance_ratio),
+    stratum = data.frame(stratum = stratum, p = prevalence_ratio),
     # Randomization ratio
     block = c("control", "control", "experimental", "experimental"),
     enroll_rate = enroll_rate, # Enrollment rate
@@ -63,12 +63,12 @@ test_that("early_zero_weight() fails with bad input", {
   n <- 500
   # Two strata
   stratum <- c("Biomarker-positive", "Biomarker-negative")
-  prevelance_ratio <- c(0.6, 0.4)
+  prevalence_ratio <- c(0.6, 0.4)
   # Enrollment rate
   enroll_rate <- gsDesign2::define_enroll_rate(
     stratum = rep(stratum, each = 2),
     duration = c(2, 10, 2, 10),
-    rate = c(c(1, 4) * prevelance_ratio[1], c(1, 4) * prevelance_ratio[2])
+    rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
   enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
@@ -89,7 +89,7 @@ test_that("early_zero_weight() fails with bad input", {
   input <- sim_pw_surv(
     n = n, # Sample size
     # Stratified design with prevalence ratio of 6:4
-    stratum = data.frame(stratum = stratum, p = prevelance_ratio),
+    stratum = data.frame(stratum = stratum, p = prevalence_ratio),
     # Randomization ratio
     block = c("control", "control", "experimental", "experimental"),
     enroll_rate = enroll_rate, # Enrollment rate
