@@ -37,13 +37,13 @@ bktest1 <- c()
 j <- 1
 for (i in seq(1, floor(nrow(block1) / 4))) {
   j <- 4 * i - 3
-  bktest1[i] <- sum(stringr::str_count(block1$treatment[j:(j + 3)], "control"))
+  bktest1[i] <- sum(str_count(block1$treatment[j:(j + 3)], "control"))
 }
 j <- 1
 bktest2 <- 0
 for (i in seq(1, floor(nrow(block2) / 4))) {
   j <- 4 * i - 3
-  bktest2[i] <- sum(stringr::str_count(block2$treatment[j:(j + 3)], "control"))
+  bktest2[i] <- sum(str_count(block2$treatment[j:(j + 3)], "control"))
 }
 
 # prepare to test fail_rate
@@ -62,8 +62,8 @@ testthat::test_that("stratum percentage calculated from simulated dataset must b
                     the tolerance=0.002 of stratum in setup (0.4,0.6)", {
   expect_equal(
     object = c(
-      sum(stringr::str_count(x$stratum, "Low")) / 400000,
-      sum(stringr::str_count(x$stratum, "High")) / 400000
+      sum(str_count(x$stratum, "Low")) / 400000,
+      sum(str_count(x$stratum, "High")) / 400000
     ),
     expected = c(0.4, 0.6), tolerance = 0.002
   )
