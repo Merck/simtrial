@@ -62,17 +62,17 @@ x2 <- rpw_enroll(n = n, enroll_rate = enroll_rate2)
 plot(
   x1, 1:n,
   type = "l",
-  col = "blue",
+  col = palette()[4],
   xlim = c(0, max(x1, x2)),
   main = "Piecewise enrollments",
   xlab = "Time",
   ylab = "Enrollment"
 )
-lines(x2, 1:n, col = "orange")
+lines(x2, 1:n, col = palette()[7])
 legend(
   250, 1500,
   legend = c("Enrollment 1", "Enrollment 2"),
-  col = c("blue", "orange"),
+  col = c(palette()[4], palette()[7]),
   lty = c(1, 1)
 )
 ```
@@ -231,7 +231,7 @@ We then implement our backend using a list that follows the hierarchy of the ava
 
 ```{r nested-topology, eval=FALSE}
 nodes <- c("n1", "n2")
-customCores <- function() {
+custom_cores <- function() {
   switch(Sys.info()[["nodename"]],
     "n1" = 3L, # Modify here for number of cores on node1
     "n2" = 3L, # Modify here for number of cores on node2
@@ -241,7 +241,7 @@ customCores <- function() {
 }
 plan(list(
   tweak(cluster, workers = nodes),
-  tweak(multisession, workers = customCores)
+  tweak(multisession, workers = custom_cores)
 ))
 ```
 

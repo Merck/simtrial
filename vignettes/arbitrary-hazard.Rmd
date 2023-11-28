@@ -1,11 +1,6 @@
 ---
 title: "Approximating an arbitrary hazard function"
-output:
-  rmarkdown::html_document:
-    toc: true
-    toc_float: true
-    toc_depth: 2
-    number_sections: true
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Approximating an arbitrary hazard function}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,7 +9,10 @@ vignette: >
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.height = 4,
+  fig.width = 7.5,
+  out.width = "100%"
 )
 ```
 
@@ -30,49 +28,66 @@ set.seed(123)
 We simulate a log-logistic distribution as an example of how to simulate a trial with an arbitrary distribution.
 We begin by showing hazard rates that can be used to approximate this distribution.
 
-```{r,fig.height=4,fig.width=7.5}
+```{r}
 dloglogis <- function(x, alpha = 1, beta = 4) {
   1 / (1 + (x / alpha)^beta)
 }
 times <- (1:150) / 50
-xx <- data.frame(Times = times, Survival = dloglogis(times, alpha = .5, beta = 4)) |>
+xx <- data.frame(
+  Times = times,
+  Survival = dloglogis(times, alpha = .5, beta = 4)
+) |>
   mutate(
     duration = Times - lag(Times, default = 0),
     H = -log(Survival),
     rate = (H - lag(H, default = 0)) / duration / 3
   ) |>
   select(duration, rate)
-ggplot(data = xx |> mutate(Time = lag(cumsum(duration), default = 0)), aes(x = Time, y = rate)) +
+ggplot(
+  data = xx |> mutate(Time = lag(cumsum(duration), default = 0)),
+  aes(x = Time, y = rate)
+) +
   geom_line()
 ```
 
 We assume the time scale above is in years and that enrollment occurs over the first half year at an even rate of 500 per year.
 We assume that observations are censored at an exponential rate of about 5% per year.
 
-```{r,fig.height=4,fig.width=7.5}
+```{r}
 tx <- "Log-logistic"
 enroll_rate <- data.frame(duration = .5, rate = 500)
-dropout_rate <- data.frame(treatment = tx, duration = 3, rate = .05, period = 1, stratum = "All")
+dropout_rate <- data.frame(
+  treatment = tx,
+  duration = 3,
+  rate = .05,
+  period = 1,
+  stratum = "All"
+)
 block <- rep(tx, 2)
 x <- sim_pw_surv(
-  n = 250, # sample size
+  n = 250, # Sample size
   block = block,
   enroll_rate = enroll_rate,
-  fail_rate = xx |> mutate(stratum = "All", treatment = tx, period = 1:n(), stratum = "All"),
+  fail_rate = xx |> mutate(
+    stratum = "All",
+    treatment = tx,
+    period = seq_len(n()),
+    stratum = "All"
+  ),
   dropout_rate = dropout_rate
 )
 ```
 
 We assume the entire study lasts 3 years
 
-```{r,fig.height=4,fig.width=7.5}
+```{r}
 y <- x |> cut_data_by_date(3)
 head(y)
 ```
 
 Now we estimate a Kaplan-Meier curve.
 
-```{r,fig.height=4,fig.width=7.5}
+```{r, fig.height=4, fig.width=7.5}
 fit <- survfit(Surv(tte, event) ~ 1, data = y)
 plot(fit, mark = "|")
 ```
@@ -80,7 +95,7 @@ plot(fit, mark = "|")
 Finally, we plot the estimated hazard rate and its confidence interval as a function of time.
 We overlay the actual rates in red.
 
-```{r,fig.height=4,fig.width=7.5}
+```{r}
 fit <- bshazard(Surv(tte, event) ~ 1, data = y, nk = 120)
 plot(fit, conf.int = TRUE, xlab = "Time", xlim = c(0, 3), ylim = c(0, 2.5), lwd = 2)
 lines(x = times, y = (xx |> mutate(Time = lag(cumsum(duration), default = 0)))$rate, col = 2)

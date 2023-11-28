@@ -1,5 +1,5 @@
 ---
-title: Using the Magirr-Burman weights for testing
+title: "Using the Magirr-Burman weights for testing"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
@@ -25,7 +25,7 @@ options(width = 58)
 > as the standard logrank test under proportional hazards.
 
 They have implemented this in the package [modestWLRT](https://github.com/dominicmagirr/modestWLRT).
-Since the implementation is relatively straightforward, we have added this functionality to the `simtrial` package and explain how to use it here with the `mb_weight()` function.
+Since the implementation is relatively straightforward, we have added this functionality to the simtrial package and explain how to use it here with the `mb_weight()` function.
 
 Packages used are as follows:
 
@@ -44,7 +44,7 @@ For the initial 6 months, the underlying hazard ratio is one followed by a hazar
 This differs from the @MagirrBurman delayed effect assumptions only in that they assume a hazard ratio of 0.5 after 6 months.
 
 ```{r, message=FALSE, warning=FALSE}
-studyDuration <- 36
+study_duration <- 36
 sample_size <- 300
 enroll_rate <- data.frame(duration = 12, rate = 200 / 12)
 fail_rate <- data.frame(
@@ -70,7 +70,7 @@ MBdelay <- sim_pw_surv(
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
 ) |>
-  cut_data_by_date(studyDuration)
+  cut_data_by_date(study_duration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelay)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
@@ -89,7 +89,11 @@ We begin with the default of `w_max=Inf` which corresponds to the original @Magi
 ZMB <- MBdelay |>
   counting_process(arm = "experimental") |>
   mb_weight(delay = 6) |>
-  summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * mb_weight),
+    V = sum(var_o_minus_e * mb_weight^2),
+    z = S / sqrt(V)
+  )
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
@@ -100,7 +104,11 @@ Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` 
 ZMB <- MBdelay |>
   counting_process(arm = "experimental") |>
   mb_weight(delay = Inf, w_max = 2) |>
-  summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * mb_weight),
+    V = sum(var_o_minus_e * mb_weight^2),
+    z = S / sqrt(V)
+  )
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
@@ -116,7 +124,11 @@ w_max <- 2
 Z_modified_FH <- MBdelay |>
   counting_process(arm = "experimental") |>
   mutate(w = pmin(w_max, 1 / s)) |>
-  summarize(S = sum(o_minus_e * w), V = sum(var_o_minus_e * w^2), z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * w),
+    V = sum(var_o_minus_e * w^2),
+    z = S / sqrt(V)
+  )
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(Z_modified_FH$z)
 ```
@@ -130,10 +142,13 @@ First, we specify study duration, sample size and enrollment rates. The enrollme
 For failure rates, we consider the delayed treatment effect example of @MagirrBurman.
 
 ```{r, message=FALSE, warning=FALSE}
-studyDuration <- 5
+study_duration <- 5
 sample_size <- 2000
-enrollDuration <- .0001
-enroll_rate <- data.frame(duration = enrollDuration, rate = sample_size / enrollDuration)
+enroll_duration <- .0001
+enroll_rate <- data.frame(
+  duration = enroll_duration,
+  rate = sample_size / enroll_duration
+)
 fail_rate <- data.frame(
   stratum = "All",
   fail_rate = 0.25,
@@ -146,7 +161,7 @@ fail_rate <- data.frame(
 Now we generate a single dataset with the above characteristics and cut data for analysis at 5 years post start of enrollment.
 Then we plot Kaplan-Meier curves for the resulting dataset (red curve for experimental treatment, black for control):
 
-```{r, message=FALSE,warning=FALSE,fig.width=7.5, fig.height=4}
+```{r, message=FALSE, warning=FALSE, fig.width=7.5, fig.height=4}
 set.seed(7783)
 xpar <- simfix2simpwsurv(fail_rate)
 FHwn <- sim_pw_surv(
@@ -157,7 +172,7 @@ FHwn <- sim_pw_surv(
   fail_rate = xpar$fail_rate,
   dropout_rate = xpar$dropout_rate
 ) |>
-  cut_data_by_date(studyDuration)
+  cut_data_by_date(study_duration)
 fit <- survfit(Surv(tte, event) ~ treatment, data = FHwn)
 plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
@@ -168,7 +183,10 @@ We perform a logrank and weighted logrank tests as suggested for more limited do
 ```{r}
 xx <- FHwn |>
   counting_process(arm = "experimental") |>
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)), return_corr = TRUE) |>
+  fh_weight(
+    rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)),
+    return_corr = TRUE
+  ) |>
   mutate(p = pnorm(z))
 xx
 ```
@@ -186,7 +204,11 @@ This requires generating weights and then computing the test.
 ZMB <- FHwn |>
   counting_process(arm = "experimental") |>
   mb_weight(delay = 6, w_max = 2) |>
-  summarize(S = sum(o_minus_e * mb_weight), V = sum(var_o_minus_e * mb_weight^2), z = S / sqrt(V))
+  summarize(
+    S = sum(o_minus_e * mb_weight),
+    V = sum(var_o_minus_e * mb_weight^2),
+    z = S / sqrt(V)
+  )
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
@@ -198,7 +220,10 @@ Results are quite similar to the results with greater down-weighting.
 ```{r}
 xx <- FHwn |>
   counting_process(arm = "experimental") |>
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)), return_corr = TRUE) |>
+  fh_weight(
+    rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)),
+    return_corr = TRUE
+  ) |>
   mutate(p = pnorm(z))
 xx
 ```
