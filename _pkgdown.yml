@@ -70,11 +70,15 @@ reference:
     - early_zero_weight
 
 articles:
+- title: "Getting started"
+  contents:
+  - workflow
+  - routines
 - title: "Example simulation workflows"
   contents:
-  - arbitraryhazard
-  - modestWLRTVignette
+  - arbitrary-hazard
+  - modest-wlrt
+  - pvalue-maxcombo
+- title: "Best practices"
+  contents:
   - parallel
-  - pvalue_maxcomboVignette
-  - simtrialroutines
-  - workflow

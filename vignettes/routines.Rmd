@@ -1,6 +1,5 @@
 ---
 title: "Basic tools for time-to-event trial simulation and testing"
-author: "Keaven Anderson"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
@@ -21,24 +20,24 @@ This vignette demonstrates the lower-level routines in the simtrial package spec
 
 The routines are as follows:
 
-* `randomize_by_fixed_block` - fixed block randomization
-* `rpw_enroll` - random inter-arrival times with piecewise constant enrollment rates
-* `rpwexp` - piecewise exponential failure rate generation
-* `cut_data_by_date` - cut data for analysis at a specified calendar time
-* `cut_data_by_event` - cut data for analysis at a specified event count, including ties on the cutoff date
-* `get_cut_date_by_event` - find date at which an event count is reached
-* `counting_process` - pre-process survival data into a counting process format
+* `randomize_by_fixed_block()` - fixed block randomization
+* `rpw_enroll()` - random inter-arrival times with piecewise constant enrollment rates
+* `rpwexp()` - piecewise exponential failure rate generation
+* `cut_data_by_date()` - cut data for analysis at a specified calendar time
+* `cut_data_by_event()` - cut data for analysis at a specified event count, including ties on the cutoff date
+* `get_cut_date_by_event()` - find date at which an event count is reached
+* `counting_process()` - pre-process survival data into a counting process format
 
 Application of the above is demonstrated using higher-level routines `sim_pw_surv()` and `sim_fixed_n()` to generate simulations and weighted logrank analysis for a stratified design.
 
-The intent has been to write these routines in the spirit of the tidyverse approach (alternately referred to as data wrangling, tidy data, R for Data Science, or split-apply-combine). 
+The intent has been to write these routines in the spirit of the tidyverse approach (alternately referred to as data wrangling, tidy data, R for Data Science, or split-apply-combine).
 The other objectives are to have an easily documentable and validated package that is easy to use and efficient as a broadly-useful tool for simulation of time-to-event clinical trials.
 
 The package could be extended in many ways in the future, including:
 
 * Other analyses not supported in the survival package or other acceptably validated package
-    + Weighted logrank and weighted Kaplan-Meier analyses
-    + One-step, hazard ratio estimator (first-order approximation of PH)
+  + Weighted logrank and weighted Kaplan-Meier analyses
+  + One-step, hazard ratio estimator (first-order approximation of PH)
 * Randomization schemes other than stratified, fixed-block
 * Poisson mixture or other survival distribution generation
 
@@ -66,24 +65,30 @@ randomize_by_fixed_block(n = 20)
 Piecewise constant enrollment can be randomly generated as follows. Note that duration is specifies interval durations for constant rates; the final rate is extended as long as needed to generate the specified number of observations.
 
 ```{r}
-rpw_enroll(n = 20, enroll_rate = data.frame(
-  duration = c(1, 2),
-  rate = c(2, 5)
-))
+rpw_enroll(
+  n = 20,
+  enroll_rate = data.frame(
+    duration = c(1, 2),
+    rate = c(2, 5)
+  )
+)
 ```
 
 ## Time-to-event and time-to-dropout
 
-Time-to-event and time-to-dropout random number generation for observations is generated with piecewise exponential failure times. For a large number of observations, a log-plot of the time-to-failure 
+Time-to-event and time-to-dropout random number generation for observations is generated with piecewise exponential failure times. For a large number of observations, a log-plot of the time-to-failure
 
 ```{r,fig.width=6}
-x <- rpwexp(10000,
+x <- rpwexp(
+  10000,
   fail_rate = data.frame(
     rate = c(1, 3, 10),
     duration = c(.5, .5, 1)
   )
 )
-plot(sort(x), (10000:1) / 10001,
+plot(
+  sort(x),
+  (10000:1) / 10001,
   log = "y",
   main = "PW Exponential simulated survival curve",
   xlab = "Time", ylab = "P{Survival}"
@@ -95,7 +100,7 @@ plot(sort(x), (10000:1) / 10001,
 Ideally, this might be done with a routine where generation of randomization, and time-to-event data could be done in a modular fashion plugged into a general trial generation routine.
 For now, stratified randomization, piecewise constant enrollment, fixed block randomization and piecewise exponential failure rates support a flexible set of trial generation options for time-to-event endpoint trials.
 At present, follow this format very carefully as little checking of input has been developed to-date.
-The methods used here have all be demonstrated above, but here they are combined in a single routine to generate a trial. Note that in the generated output dataset, `cte` is the calendar time of an event or dropout, whichever comes first, and `fail` is an indicator that `cte` represents an event time.  
+The methods used here have all be demonstrated above, but here they are combined in a single routine to generate a trial. Note that in the generated output dataset, `cte` is the calendar time of an event or dropout, whichever comes first, and `fail` is an indicator that `cte` represents an event time.
 
 First we set up input variables to make the later call to `sim_pw_surv()` more straightforward to read.
 
@@ -136,9 +141,9 @@ head(x) |> kable(digits = 2)
 
 ## Cutting data for analysis
 
-There two ways to cut off data in the generated dataset `x` from above. 
+There two ways to cut off data in the generated dataset `x` from above.
 The first uses a calendar cutoff date. The output only includes the time from randomization to event or dropout (`tte`), and indicator that this represents and event (`event`), the stratum in which the observation was generated (`stratum`) and the treatment group assigned (`treatment`).
-Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`. 
+Observations enrolled after the input `cut_date` are deleted and events and censoring from `x` that are after the `cut_date` are censored at the specified `cut_date`.
 
 ```{r}
 y <- cut_data_by_date(x, cut_date = 5)
@@ -196,21 +201,28 @@ c(z, pnorm(z))
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-fh_weight(x = ten150, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))) |> kable(digits = 2)
+fh_weight(
+  x = ten150,
+  rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
+) |> kable(digits = 2)
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `fh_weight()` to compute a correlation matrix for the above z-statistics as follows.
 Note that the ordering of `rho_gamma` and `g` in the argument list is opposite of the above.
 The correlation matrix for the `z`-values is now in `V1`-`V4`.
 
-```{r,message=FALSE}
-x <- ten150 |> fh_weight(rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
+```{r, message=FALSE}
+x <- ten150 |>
+  fh_weight(
+    rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
+    return_corr = TRUE
+  )
 x |> kable(digits = 2)
 ```
 
-We can compute a p-value for the MaxCombo as follows using the `pmvnorm` function from the `mvtnorm` package. Note the arguments for `GenzBretz` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
+We can compute a p-value for the MaxCombo as follows using `mvtnorm::pmvnorm()`. Note the arguments for `GenzBretz()` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
 
-```{r,message=FALSE}
+```{r, message=FALSE}
 # Compute p-value for MaxCombo
 pvalue_maxcombo(x)
 ```
@@ -219,7 +231,6 @@ pvalue_maxcombo(x)
 
 The `sim_fixed_n()` routine combines much of the above to go straight to generating tests for individual trials so that cutting data and analyzing do not need to be done separately.
 Here the argument structure is meant to be simpler than for `sim_pw_surv()`.
-
 
 ```{r}
 stratum <- data.frame(stratum = "All", p = 1)
@@ -238,13 +249,13 @@ block <- rep(c("experimental", "control"), 2)
 rho_gamma <- data.frame(rho = 0, gamma = 0)
 ```
 
-Now we simulate a trial 2 times and cut data for analysis based on `timing_type = 1:5` which translates to: 
+Now we simulate a trial 2 times and cut data for analysis based on `timing_type = 1:5` which translates to:
 
-1) the planned study duration, 
-2) targeted event count is achieved, 
-3) planned minimum follow-up after enrollment is complete,
-4) the maximum of 1 and 2, 
-5) the maximum of 2 and 3.
+1. the planned study duration,
+2. targeted event count is achieved,
+3. planned minimum follow-up after enrollment is complete,
+4. the maximum of 1 and 2,
+5. the maximum of 2 and 3.
 
 ```{r}
 sim_fixed_n(
@@ -265,15 +276,17 @@ If you look carefully, you should be asking why the cutoff with the planned numb
 To explain, we note that generally you will want `sample_size` above to match the enrollment specified in `enroll_rate`:
 
 ```{r}
-enroll_rate |> summarize("Targeted enrollment based on input enrollment rates" = sum(duration * rate))
+enroll_rate |> summarize(
+  "Targeted enrollment based on input enrollment rates" = sum(duration * rate)
+)
 ```
 
-The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sample_size` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `totalDuration`. The targeted minimum follow-up is
+The targeted enrollment takes, on average, 30 months longer than the sum of the enrollment durations in `enroll_rate`  (14 months) at the input enrollment rates. To achieve the input `sample_size` of 500, the final enrollment rate is assumed to be steady state and extends in each simulation until the targeted enrollment is achieved. The planned duration of the trial is taken as 30 months as specified in `total_duration`. The targeted minimum follow-up is
 
 ```{r}
-totalDuration <- 30 # From above
-totalDuration - sum(enroll_rate$duration)
+total_duration <- 30 # From above
+total_duration - sum(enroll_rate$duration)
 ```
 
 It is thus, implicit that the last subject was enrolled 16 months prior to the duration given for the cutoff with "Minimum follow-up" cutoff in the simulations above.
-The planned duration cutoff is given in the `totalDuration` argument which results in a much earlier cutoff.
+The planned duration cutoff is given in the `total_duration` argument which results in a much earlier cutoff.
