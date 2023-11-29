@@ -12,46 +12,46 @@ test_that("input_check_scalar() passes a single missing value", {
 })
 
 test_that("input_check_scalar() fails multiple values", {
+  two_na_var <- c(NA, NA)
   expect_error(
-    input_check_scalar(c(NA, NA)),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(two_na_var),
+    "two_na_var must be a single non-negative number \\(or NA\\)"
   )
+  two_num_var <- c(1, 2)
   expect_error(
-    input_check_scalar(c(1, 2)),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(two_num_var),
+    "two_num_var must be a single non-negative number \\(or NA\\)"
   )
+  na_num_var <- c(NA, 2)
   expect_error(
-    input_check_scalar(c(NA, 2)),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(na_num_var),
+    "na_num_var must be a single non-negative number \\(or NA\\)"
   )
 })
 
 test_that("input_check_scalar() fails non-numeric input", {
+  logical_var <- TRUE
   expect_error(
-    input_check_scalar(TRUE),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(logical_var),
+    "logical_var must be a single non-negative number \\(or NA\\)"
   )
+  string_var <- "string"
   expect_error(
-    input_check_scalar("string"),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(string_var),
+    "string_var must be a single non-negative number \\(or NA\\)"
   )
 })
 
 test_that("input_check_scalar() fails negative numbers", {
+  neg_num_var <- -1
   expect_error(
-    input_check_scalar(-1),
-    "x must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(neg_num_var),
+    "neg_num_var must be a single non-negative number \\(or NA\\)"
   )
+  neg_num_vec_var <- c(-1, -2)
   expect_error(
-    input_check_scalar(c(-1, -2)),
-    "x must be a single non-negative number \\(or NA\\)"
-  )
-})
-
-test_that("input_check_scalar() includes label in error message", {
-  expect_error(
-    input_check_scalar(-1, label = "custom"),
-    "custom must be a single non-negative number \\(or NA\\)"
+    input_check_scalar(neg_num_vec_var),
+    "neg_num_vec_var must be a single non-negative number \\(or NA\\)"
   )
 })
 
@@ -67,7 +67,7 @@ test_that("input_check_scalar() can check for whole numbers", {
   expect_silent(input_check_scalar(missing, require_whole_number = TRUE))
   expect_error(
     input_check_scalar(notwhole, require_whole_number = TRUE),
-    "x must be a single non-negative whole number \\(or NA\\)"
+    "notwhole must be a single non-negative whole number \\(or NA\\)"
   )
 })
 
@@ -92,34 +92,31 @@ test_that("input_check_vector() passes a vector of missing values", {
 })
 
 test_that("input_check_vector() fails with zero", {
+  with_zero_var <- 0:3
   expect_error(
-    input_check_vector(0:3),
-    "x must be a vector with only positive numbers and missing values"
+    input_check_vector(with_zero_var),
+    "with_zero_var must be a vector with only positive numbers and missing values"
   )
 })
 
 test_that("input_check_vector() fails with negative numbers", {
+  negative_var <- -3:3
   expect_error(
-    input_check_vector(-3:3),
-    "x must be a vector with only positive numbers and missing values"
+    input_check_vector(negative_var),
+    "negative_var must be a vector with only positive numbers and missing values"
   )
 })
 
 test_that("input_check_vector() fails with non-numeric vectors", {
+  logical_var <- TRUE
   expect_error(
-    input_check_vector(TRUE),
-    "x must be a vector with only positive numbers and missing values"
+    input_check_vector(logical_var),
+    "logical_var must be a vector with only positive numbers and missing values"
   )
+  string_var <- "string"
   expect_error(
-    input_check_vector("string"),
-    "x must be a vector with only positive numbers and missing values"
-  )
-})
-
-test_that("input_check_vector() includes label in error message", {
-  expect_error(
-    input_check_vector(-1, label = "custom"),
-    "custom must be a vector with only positive numbers and missing values"
+    input_check_vector(string_var),
+    "string_var must be a vector with only positive numbers and missing values"
   )
 })
 
@@ -132,7 +129,7 @@ test_that("input_check_vector() can check for whole numbers", {
   expect_silent(input_check_vector(whole, require_whole_number = TRUE))
   expect_error(
     input_check_vector(notwhole, require_whole_number = TRUE),
-    "x must be a vector with only positive whole numbers and missing values"
+    "notwhole must be a vector with only positive whole numbers and missing values"
   )
 })
 
