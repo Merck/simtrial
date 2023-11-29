@@ -6,6 +6,8 @@
 \alias{simtrial-package}
 \title{simtrial: Clinical Trial Simulation}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Provides some basic routines for simulating a clinical trial. The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used to simulate a broad range of scenarios. However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
 }
 \seealso{
