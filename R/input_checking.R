@@ -19,14 +19,15 @@
 #' Check if the input `x` is a single non-negative number (or missing)
 #'
 #' @param x a scalar value
-#' @param label the label of `x`
 #' @param require_whole_number Must the numbers be whole numbers (default: FALSE)
 #'
 #' @return an error message or nothing
 #' @noRd
 #' @examples
-#' input_check_scalar(x = 100, label = "my_x")
-input_check_scalar <- function(x = NA, label = "x", require_whole_number = FALSE) {
+#' a <- 100
+#' input_check_scalar(a)
+input_check_scalar <- function(x = NA, require_whole_number = FALSE) {
+  label <- deparse(substitute(x))
   if (length(x) == 1 && is.na(x)) {
     return(invisible())
   }
@@ -48,15 +49,17 @@ input_check_scalar <- function(x = NA, label = "x", require_whole_number = FALSE
 #' Check if the input `x` is a vector of positive numbers (missing values allowed)
 #'
 #' @param x a vector
-#' @param label the label of `x`
 #' @param require_whole_number Must the numbers be whole numbers (default: FALSE)
 #'
 #' @return an error message or nothing
 #' @noRd
 #' @examples
-#' input_check_vector(x = 1:3, label = "my_x")
-#' input_check_vector(x = c(1, 2, NA), label = "my_x")
-input_check_vector <- function(x = NA, label = "x", require_whole_number = FALSE) {
+#' a <- 1:3
+#' input_check_vector(a)
+#' b <- c(1, 2, NA)
+#' input_check_vector(b)
+input_check_vector <- function(x = NA, require_whole_number = FALSE) {
+  label <- deparse(substitute(x))
   missing <- is.na(x)
   positive <- is.numeric(x) & x > 0
 
