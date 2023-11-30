@@ -37,7 +37,7 @@
 #' @export
 #'
 #' @examples
-#' # Use default arguments for delayed effect example dataset (Ex1delayedEffect)
+#' # Use default arguments for delayed effect example dataset (ex1_delayed_effect)
 #' library(survival)
 #'
 #' # Example 1
@@ -46,8 +46,8 @@
 #'
 #' # Example 2
 #' # Estimate by treatment effect
-#' rate1 <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd)))
-#' rate0 <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd)))
+#' rate1 <- with(subset(ex1_delayed_effect, trt == 1), fit_pwexp(Surv(month, evntd)))
+#' rate0 <- with(subset(ex1_delayed_effect, trt == 0), fit_pwexp(Surv(month, evntd)))
 #'
 #' rate1
 #' rate0
@@ -60,13 +60,13 @@
 #' )
 #'
 #' # Compare with logrank
-#' survdiff(formula = Surv(month, evntd) ~ trt, data = Ex1delayedEffect)
+#' survdiff(formula = Surv(month, evntd) ~ trt, data = ex1_delayed_effect)
 #'
 #' # Example 3
 #' # Simple model with 3 rates same for each for 3 months,
 #' # different for each treatment after months
-#' rate1a <- with(subset(Ex1delayedEffect, trt == 1), fit_pwexp(Surv(month, evntd), 3))
-#' rate0a <- with(subset(Ex1delayedEffect, trt == 0), fit_pwexp(Surv(month, evntd), 3))
+#' rate1a <- with(subset(ex1_delayed_effect, trt == 1), fit_pwexp(Surv(month, evntd), 3))
+#' rate0a <- with(subset(ex1_delayed_effect, trt == 0), fit_pwexp(Surv(month, evntd), 3))
 #' rate1a$rate / rate0a$rate
 #'
 #' m2ll0 <- rateall$m2ll[1] + rate1a$m2ll[2] + rate0a$m2ll[2]
@@ -75,7 +75,7 @@
 #' # As a measure of strength, chi-square examines improvement in likelihood
 #' pchisq(m2ll0 - m2ll1, df = 5, lower.tail = FALSE)
 fit_pwexp <- function(
-    srv = Surv(time = Ex1delayedEffect$month, event = Ex1delayedEffect$evntd),
+    srv = Surv(time = ex1_delayed_effect$month, event = ex1_delayed_effect$evntd),
     intervals = array(3, 3)) {
   if (!is.Surv(srv)) {
     stop("fit_pwexp: srv must be a survival object.")

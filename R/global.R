@@ -22,7 +22,7 @@
 utils::globalVariables(
   c(
     ".",
-    "Ex1delayedEffect",
+    "ex1_delayed_effect",
     "N",
     "cte",
     "dropout_rate",

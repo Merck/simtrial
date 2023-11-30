@@ -27,7 +27,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(Ex6crossing)
+#' @usage data(ex6_crossing)
 #'
 #' @format
 #' Data frame with 4 variables:
@@ -49,17 +49,17 @@
 #' _Statistics in Biopharmaceutical Research_ 12(2): 187--198.
 #'
 #' @seealso
-#' [Ex1delayedEffect],
-#' [Ex2delayedEffect],
-#' [Ex3curewithph],
-#' [Ex4belly],
-#' [Ex5widening]
+#' [ex1_delayed_effect],
+#' [ex2_delayed_effect],
+#' [ex3_cure_with_ph],
+#' [ex4_belly],
+#' [ex5_widening]
 #'
 #' @examples
 #' library(survival)
 #'
-#' data(Ex6crossing)
-#' km1 <- with(Ex6crossing, survfit(Surv(month, evntd) ~ trt))
+#' data(ex6_crossing)
+#' km1 <- with(ex6_crossing, survfit(Surv(month, evntd) ~ trt))
 #' km1
 #' plot(km1)
-"Ex6crossing"
+"ex6_crossing"

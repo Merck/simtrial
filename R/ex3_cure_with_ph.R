@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Time-to-event data example 5 for non-proportional hazards working group
+#' Time-to-event data example 3 for non-proportional hazards working group
 #'
 #' Survival objects reverse-engineered datasets from published Kaplan-Meier
 #' curves.
@@ -27,7 +27,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(Ex5widening)
+#' @usage data(ex3_cure_with_ph)
 #'
 #' @format
 #' Data frame with 4 variables:
@@ -49,17 +49,17 @@
 #' _Statistics in Biopharmaceutical Research_ 12(2): 187--198.
 #'
 #' @seealso
-#' [Ex1delayedEffect],
-#' [Ex2delayedEffect],
-#' [Ex3curewithph],
-#' [Ex4belly],
-#' [Ex6crossing]
+#' [ex1_delayed_effect],
+#' [ex2_delayed_effect],
+#' [ex4_belly],
+#' [ex5_widening],
+#' [ex6_crossing]
 #'
 #' @examples
 #' library(survival)
 #'
-#' data(Ex5widening)
-#' km1 <- with(Ex5widening, survfit(Surv(month, evntd) ~ trt))
+#' data(ex3_cure_with_ph)
+#' km1 <- with(ex3_cure_with_ph, survfit(Surv(month, evntd) ~ trt))
 #' km1
 #' plot(km1)
-"Ex5widening"
+"ex3_cure_with_ph"
