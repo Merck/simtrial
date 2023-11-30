@@ -37,27 +37,6 @@
     <loc>https://merck.github.io/simtrial/news/index.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex1delayedEffect.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex2delayedEffect.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex3curewithph.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex4belly.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex5widening.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/Ex6crossing.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/MBdelayed.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/simtrial/reference/counting_process.html</loc>
   </url>
   <url>
@@ -68,6 +47,24 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/early_zero_weight.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex1_delayed_effect.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex2_delayed_effect.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex3_cure_with_ph.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex4_belly.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex5_widening.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/ex6_crossing.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/fh_weight.html</loc>
@@ -83,6 +80,9 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/mb_delayed_effect.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/mb_weight.html</loc>
