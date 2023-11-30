@@ -26,13 +26,13 @@ footer:
 reference:
 - title: "Example datasets"
   contents:
-    - Ex1delayedEffect
-    - Ex2delayedEffect
-    - Ex3curewithph
-    - Ex4belly
-    - Ex5widening
-    - Ex6crossing
-    - MBdelayed
+    - ex1_delayed_effect
+    - ex2_delayed_effect
+    - ex3_cure_with_ph
+    - ex4_belly
+    - ex5_widening
+    - ex6_crossing
+    - mb_delayed_effect
 
 - title: "Distributions"
   contents:

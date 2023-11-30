@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Time-to-event data example 4 for non-proportional hazards working group
+#' Time-to-event data example 2 for non-proportional hazards working group
 #'
 #' Survival objects reverse-engineered datasets from published Kaplan-Meier
 #' curves.
@@ -27,7 +27,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(Ex4belly)
+#' @usage data(ex2_delayed_effect)
 #'
 #' @format
 #' Data frame with 4 variables:
@@ -49,17 +49,19 @@
 #' _Statistics in Biopharmaceutical Research_ 12(2): 187--198.
 #'
 #' @seealso
-#' [Ex1delayedEffect],
-#' [Ex2delayedEffect],
-#' [Ex3curewithph],
-#' [Ex5widening],
-#' [Ex6crossing]
+#' [ex1_delayed_effect],
+#' [ex3_cure_with_ph],
+#' [ex4_belly],
+#' [ex5_widening],
+#' [ex6_crossing]
 #'
 #' @examples
 #' library(survival)
 #'
-#' data(Ex4belly)
-#' km1 <- with(Ex4belly, survfit(Surv(month, evntd) ~ trt))
+#' data(ex2_delayed_effect)
+#' km1 <- with(ex2_delayed_effect, survfit(Surv(month, evntd) ~ trt))
 #' km1
 #' plot(km1)
-"Ex4belly"
+#' with(subset(ex2_delayed_effect, trt == 1), survfit(Surv(month, evntd) ~ trt))
+#' with(subset(ex2_delayed_effect, trt == 0), survfit(Surv(month, evntd) ~ trt))
+"ex2_delayed_effect"

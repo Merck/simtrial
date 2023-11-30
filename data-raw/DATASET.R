@@ -1,9 +1,9 @@
-## code to prepare `MBdelayed` dataset goes here
+# Prepare `mb_delayed_effect` dataset
 library(simtrial)
 
 # Load existing object for comparison
-load("data/MBdelayed.rda")
-existing <- MBdelayed
+load("data/mb_delayed_effect.rda")
+existing <- mb_delayed_effect
 
 set.seed(6671)
 
@@ -27,15 +27,15 @@ ds <- sim_pw_surv(
   )
 )
 
-# cut data at 24 months after final enrollment
-MBdelayed <- cut_data_by_date(ds, max(ds$enroll_time) + 24)
+# Cut data at 24 months after final enrollment
+mb_delayed_effect <- cut_data_by_date(ds, max(ds$enroll_time) + 24)
 
-if (!all.equal(existing, MBdelayed)) {
+if (!all.equal(existing, mb_delayed_effect)) {
   warning(
-    "The updated MBdelayed differs from the existing object",
+    "The updated mb_delayed_effect differs from the existing object",
     .call = FALSE,
     immediate. = TRUE
   )
 }
 
-usethis::use_data(MBdelayed, overwrite = TRUE)
+usethis::use_data(mb_delayed_effect, overwrite = TRUE)
