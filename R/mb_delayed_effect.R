@@ -40,7 +40,7 @@
 #' library(survival)
 #' library(dplyr)
 #'
-#' fit <- survfit(Surv(tte, event) ~ treatment, data = MBdelayed)
+#' fit <- survfit(Surv(tte, event) ~ treatment, data = mb_delayed_effect)
 #'
 #' # Plot survival
 #' plot(fit, lty = 1:2)
@@ -48,7 +48,7 @@
 #'
 #' # Set up time, event, number of event dataset for testing
 #' # with arbitrary weights
-#' ten <- MBdelayed |> counting_process(arm = "experimental")
+#' ten <- mb_delayed_effect |> counting_process(arm = "experimental")
 #' head(ten)
 #'
 #' # MaxCombo with logrank, FH(0,1), FH(1,1)
@@ -100,5 +100,5 @@
 #'   )
 #' )
 #' # Cut data at 24 months after final enrollment
-#' MBdelayed2 <- ds |> cut_data_by_date(max(ds$enroll_time) + 24)
-"MBdelayed"
+#' mb_delayed_effect_2 <- ds |> cut_data_by_date(max(ds$enroll_time) + 24)
+"mb_delayed_effect"

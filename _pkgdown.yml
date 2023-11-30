@@ -32,7 +32,7 @@ reference:
     - ex4_belly
     - ex5_widening
     - ex6_crossing
-    - MBdelayed
+    - mb_delayed_effect
 
 - title: "Distributions"
   contents:
