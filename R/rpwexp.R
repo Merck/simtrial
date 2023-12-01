@@ -26,7 +26,7 @@
 #' (for example, decreasing) over time.
 #' `rpwexp()` is to support simulation of both the Lachin and Foulkes (1986)
 #' sample size method for (fixed trial duration) as well as the
-#' Kim and Tsiatis(1990) method (fixed enrollment rates and either
+#' Kim and Tsiatis (1990) method (fixed enrollment rates and either
 #' fixed enrollment duration or fixed minimum follow-up);
 #' see [gsDesign::nSurv()].
 #'
