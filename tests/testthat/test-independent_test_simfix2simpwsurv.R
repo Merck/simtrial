@@ -12,8 +12,8 @@ fail_rate <- data.frame(
   dropout_rate = .01
 )
 
-failRatesPWSurv <- simfix2simpwsurv(fail_rate)$fail_rate
-dropoutRatesPWSurv <- simfix2simpwsurv(fail_rate)$dropout_rate
+failRatesPWSurv <- to_sim_pw_surv(fail_rate)$fail_rate
+dropoutRatesPWSurv <- to_sim_pw_surv(fail_rate)$dropout_rate
 
 testthat::test_that("stratgum values must be the same and stratum length must be doubled after converting", {
   stratum1 <- names(table(fail_rate$stratum))
