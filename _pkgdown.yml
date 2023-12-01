@@ -24,16 +24,6 @@ footer:
     blank: "<span></span>"
 
 reference:
-- title: "Example datasets"
-  contents:
-    - ex1_delayed_effect
-    - ex2_delayed_effect
-    - ex3_cure_with_ph
-    - ex4_belly
-    - ex5_widening
-    - ex6_crossing
-    - mb_delayed_effect
-
 - title: "Distributions"
   contents:
     - rpwexp
@@ -70,6 +60,16 @@ reference:
     - fh_weight
     - early_zero_weight
 
+- title: "Example datasets"
+  contents:
+    - ex1_delayed_effect
+    - ex2_delayed_effect
+    - ex3_cure_with_ph
+    - ex4_belly
+    - ex5_widening
+    - ex6_crossing
+    - mb_delayed_effect
+
 articles:
 - title: "Getting started"
   contents:
@@ -83,3 +83,4 @@ articles:
 - title: "Best practices"
   contents:
   - parallel
+
