@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Conversion of enrollment and failure rates from `sim_fixed_n()` to
+#' Convert enrollment and failure rates from `sim_fixed_n()` to
 #' `sim_pw_surv()` format
 #'
-#' `simfix2simpwsurv()` converts failure rates and dropout rates entered in
+#' `to_sim_pw_surv()` converts failure rates and dropout rates entered in
 #' the simpler format for [sim_fixed_n()] to that used for [sim_pw_surv()].
 #' The `fail_rate` argument for [sim_fixed_n()] requires enrollment rates,
 #' failure rates hazard ratios and dropout rates by stratum for a 2-arm trial,
@@ -43,7 +43,7 @@
 #' @examples
 #' # Example 1
 #' # Convert standard input
-#' simfix2simpwsurv()
+#' to_sim_pw_surv()
 #'
 #' # Stratified example
 #' fail_rate <- data.frame(
@@ -60,7 +60,7 @@
 #'   dropout_rate = .01
 #' )
 #'
-#' x <- simfix2simpwsurv(fail_rate)
+#' x <- to_sim_pw_surv(fail_rate)
 #'
 #' # Do a single simulation with the above rates
 #' # Enroll 300 patients in ~12 months at constant rate
@@ -77,7 +77,7 @@
 #'   cut_data_by_event(200) |> # Cut data
 #'   counting_process(arm = "experimental") |> # Convert format for fh_weight()
 #'   fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # Stratified logrank
-simfix2simpwsurv <- function(
+to_sim_pw_surv <- function(
     # Failure rates as in sim_fixed_n()
     fail_rate = data.frame(
       stratum = "All",

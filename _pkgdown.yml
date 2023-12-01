@@ -46,7 +46,7 @@ reference:
   contents:
     - sim_pw_surv
     - sim_fixed_n
-    - simfix2simpwsurv
+    - to_sim_pw_surv
 
 - title: "Cut data"
   contents:

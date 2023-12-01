@@ -35,8 +35,8 @@ test_that("functions that use data.table still return a data frame", {
   # sim_pw_surv()
   expect_identical(class(sim_pw_surv(n = 1)), class_expected)
 
-  # simfix2simpwsurv()
-  output <- simfix2simpwsurv()
+  # to_sim_pw_surv()
+  output <- to_sim_pw_surv()
   expect_identical(class(output$fail_rate), class_expected)
   expect_identical(class(output$dropout_rate), class_expected)
 })
@@ -109,7 +109,7 @@ test_that("functions that use data.table do not modify input data table", {
     dropout_rate = 0.01
   )
   # Simulate data
-  temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+  temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
   set.seed(2023)
   x <- sim_pw_surv(
     n = n, # Sample size
@@ -236,7 +236,7 @@ test_that("functions that use data.table do not modify input data table", {
   expect_identical(fail_rate, fail_rate_original)
   expect_identical(dropout_rate, dropout_rate_original)
 
-  # simfix2simpwsurv()
+  # to_sim_pw_surv()
   fail_rate <- data.table::data.table(
     stratum = "All",
     duration = c(3, 100),
@@ -246,6 +246,6 @@ test_that("functions that use data.table do not modify input data table", {
   )
   data.table::setDT(fail_rate)
   fail_rate_original <- data.table::copy(fail_rate)
-  simfix2simpwsurv(fail_rate = fail_rate)
+  to_sim_pw_surv(fail_rate = fail_rate)
   expect_identical(fail_rate, fail_rate_original)
 })

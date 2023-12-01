@@ -60,7 +60,7 @@ fail_rate <- define_fail_rate(
 )
 
 # Simulate data
-temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
 set.seed(2023)
 
 sim_pw_surv(

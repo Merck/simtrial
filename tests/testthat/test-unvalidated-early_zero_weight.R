@@ -37,7 +37,7 @@ test_that("early_zero_weight() with stratified data", {
     dropout_rate = 0.01
   )
   # Simulate data
-  temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+  temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
   set.seed(2023)
   input <- sim_pw_surv(
     n = n, # Sample size
@@ -84,7 +84,7 @@ test_that("early_zero_weight() fails with bad input", {
     dropout_rate = 0.01
   )
   # Simulate data
-  temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+  temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
   set.seed(2023)
   input <- sim_pw_surv(
     n = n, # Sample size

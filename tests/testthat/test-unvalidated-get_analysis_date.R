@@ -28,7 +28,7 @@ fail_rate <- gsDesign2::define_fail_rate(
   dropout_rate = 0.01
 )
 # Simulate data
-temp <- simfix2simpwsurv(fail_rate) # Convert the failure rate
+temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
 set.seed(2023)
 simulated_data <- sim_pw_surv(
   n = n, # Sample size
