@@ -134,7 +134,7 @@ plot Kaplan-Meier curves for the resulting dataset (red curve for
 experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7789</span><span class="op">)</span></span>
-<span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simpwsurv.html">simfix2simpwsurv</a></span><span class="op">(</span><span class="va">fail_rate</span><span class="op">)</span></span>
+<span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/to_sim_pw_surv.html">to_sim_pw_surv</a></span><span class="op">(</span><span class="va">fail_rate</span><span class="op">)</span></span>
 <span><span class="va">MBdelay</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="va">sample_size</span>,</span>
 <span>  stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
@@ -240,7 +240,7 @@ Kaplan-Meier curves for the resulting dataset (red curve for
 experimental treatment, black for control):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7783</span><span class="op">)</span></span>
-<span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simfix2simpwsurv.html">simfix2simpwsurv</a></span><span class="op">(</span><span class="va">fail_rate</span><span class="op">)</span></span>
+<span><span class="va">xpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/to_sim_pw_surv.html">to_sim_pw_surv</a></span><span class="op">(</span><span class="va">fail_rate</span><span class="op">)</span></span>
 <span><span class="va">FHwn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="va">sample_size</span>,</span>
 <span>  stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>stratum <span class="op">=</span> <span class="st">"All"</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
