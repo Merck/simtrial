@@ -22,6 +22,12 @@ A data frame. The column \code{mb_weight} contains the weights for the
 Magirr-Burman weighted logrank test for the data in \code{x}.
 }
 \description{
+Computes Magirr-Burman weights and adds them to a dataset created by
+\code{\link[=counting_process]{counting_process()}}.
+These weights can then be used to compute a z-statistic for the
+modestly weighted logrank test proposed.
+}
+\details{
 Magirr and Burman (2019) proposed a weighted logrank test to have better
 power than the logrank test when the treatment effect is delayed,
 but to still maintain good power under a proportional hazards assumption.
@@ -34,12 +40,6 @@ previous weights. Another advantage of the test is that under strong
 null hypothesis that the underlying survival in the control group is
 greater than or equal to underlying survival in the experimental group,
 Type I error is controlled as the specified level.
-}
-\details{
-Computes Magirr-Burman weights and adds them to a dataset created by
-\code{\link[=counting_process]{counting_process()}}.
-These weights can then be used to compute a z-statistic for the
-modestly weighted logrank test proposed.
 
 We define \eqn{t^*} to be the input variable \code{delay}.
 This specifies an initial period during which weights increase.

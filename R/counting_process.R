@@ -24,6 +24,7 @@
 #' at risk count and count of events at the specified tte
 #' sorted by stratum and tte.
 #'
+#' @details
 #' The function only considered two group situation.
 #'
 #' The tie is handled by the Breslow's Method.
@@ -43,7 +44,6 @@
 #' is at risk in both treatment group and control group.
 #' Other variables in this represent the following within each stratum at
 #' each time at which one or more events are observed:
-#'
 #' - `events`: Total number of events
 #' - `n_event_tol`: Total number of events at treatment group
 #' - `n_risk_tol`: Number of subjects at risk
@@ -121,7 +121,6 @@ counting_process <- function(x, arm) {
       n_risk_trt
     )]
   }
-
 
   # Keep calculation for observed time with at least one event,
   # at least one subject is at risk in both treatment group and control group.
