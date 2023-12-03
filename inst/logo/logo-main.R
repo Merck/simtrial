@@ -9,7 +9,7 @@ num_lines <- 3000
 r_vals <- seq(0.04, 2, by = 0.1)
 circles_list <- list()
 
-for (i in 1:length(r_vals)) {
+for (i in seq_along(r_vals)) {
   r <- r_vals[i]
   circle <- data.frame(len = seq(0, 2 * pi, length.out = num_lines))
   circle$x <- r * sin(circle$len)

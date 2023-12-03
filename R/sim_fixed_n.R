@@ -201,7 +201,7 @@ sim_fixed_n <- function(
     stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate.")
   }
 
-  if (any(is.na(match(stratum$stratum, stratum2))) | any(is.na(match(stratum2, stratum$stratum)))) {
+  if (any(is.na(match(stratum$stratum, stratum2))) || any(is.na(match(stratum2, stratum$stratum)))) {
     stop("sim_fixed_n: stratum in `sim_fixed_n()` must be the same in stratum and fail_rate.")
   }
 

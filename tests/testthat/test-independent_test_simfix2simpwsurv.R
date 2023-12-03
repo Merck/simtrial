@@ -41,12 +41,12 @@ testthat::test_that("Duration values match before and after converting and in ri
 })
 
 testthat::test_that("fail_rate match before and after converting and are in right length ", {
-  testthat::expect_equal(fail_rate$fail_rate, failRatesPWSurv$rate[1:length(fail_rate$fail_rate)])
+  testthat::expect_equal(fail_rate$fail_rate, failRatesPWSurv$rate[seq_along(fail_rate$fail_rate)])
   testthat::expect_equal(fail_rate$fail_rate * fail_rate$hr, failRatesPWSurv$rate[(length(fail_rate$fail_rate) + 1):(length(fail_rate$fail_rate) * 2)])
 })
 
 testthat::test_that("dropout_rate match before and after converting and are in right length ", {
-  testthat::expect_equal(fail_rate$dropout_rate, dropoutRatesPWSurv$rate[1:length(fail_rate$dropout_rate)])
+  testthat::expect_equal(fail_rate$dropout_rate, dropoutRatesPWSurv$rate[seq_along(fail_rate$dropout_rate)])
   testthat::expect_equal(fail_rate$dropout_rate, dropoutRatesPWSurv$rate[(length(fail_rate$fail_rate) + 1):(length(fail_rate$fail_rate) * 2)])
 })
 
