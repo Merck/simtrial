@@ -54,7 +54,7 @@ testthat::test_that("fh_weight calculated correct correlation value when input a
   wt1 <- c(list(a0 = c(0, 0)), wt)
   combo.wt <- combn(wt1, 2)
   combo.wt.list <- list()
-  for (i in 1:ncol(combo.wt)) {
+  for (i in seq_len(ncol(combo.wt))) {
     combo.wt.list[[i]] <- combo.wt[, i]
   }
   combo.wt.list.up <- lapply(combo.wt.list, function(a) {

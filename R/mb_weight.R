@@ -18,19 +18,6 @@
 
 #' Magirr and Burman modestly weighted logrank tests
 #'
-#' Magirr and Burman (2019) proposed a weighted logrank test to have better
-#' power than the logrank test when the treatment effect is delayed,
-#' but to still maintain good power under a proportional hazards assumption.
-#' In Magirr (2021), (the equivalent of) a maximum weight was proposed
-#' as opposed to a fixed time duration over which weights would increase.
-#' The weights for some early interval specified by the user are the inverse
-#' of the combined treatment group empirical survival distribution; see details.
-#' After this initial period, weights are constant at the maximum of the
-#' previous weights. Another advantage of the test is that under strong
-#' null hypothesis that the underlying survival in the control group is
-#' greater than or equal to underlying survival in the experimental group,
-#' Type I error is controlled as the specified level.
-#'
 #' Computes Magirr-Burman weights and adds them to a dataset created by
 #' [counting_process()].
 #' These weights can then be used to compute a z-statistic for the
@@ -48,6 +35,19 @@
 #'   Magirr-Burman weighted logrank test for the data in `x`.
 #'
 #' @details
+#' Magirr and Burman (2019) proposed a weighted logrank test to have better
+#' power than the logrank test when the treatment effect is delayed,
+#' but to still maintain good power under a proportional hazards assumption.
+#' In Magirr (2021), (the equivalent of) a maximum weight was proposed
+#' as opposed to a fixed time duration over which weights would increase.
+#' The weights for some early interval specified by the user are the inverse
+#' of the combined treatment group empirical survival distribution; see details.
+#' After this initial period, weights are constant at the maximum of the
+#' previous weights. Another advantage of the test is that under strong
+#' null hypothesis that the underlying survival in the control group is
+#' greater than or equal to underlying survival in the experimental group,
+#' Type I error is controlled as the specified level.
+#'
 #' We define \eqn{t^*} to be the input variable `delay`.
 #' This specifies an initial period during which weights increase.
 #' We also set a maximum weight \eqn{w_{\max}}.

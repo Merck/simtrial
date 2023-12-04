@@ -214,11 +214,11 @@ fh_weight <- function(
 
     if (return_corr) {
       corr_mat <- stats::cov2cor(cov_mat)
-      colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
+      colnames(corr_mat) <- paste("v", seq_len(ncol(corr_mat)), sep = "")
       ans <- cbind(rho_gamma, z, as.data.frame(corr_mat))
     } else if (return_variance) {
       corr_mat <- cov_mat
-      colnames(corr_mat) <- paste("v", 1:ncol(corr_mat), sep = "")
+      colnames(corr_mat) <- paste("v", seq_len(ncol(corr_mat)), sep = "")
       ans <- cbind(rho_gamma, z, as.data.frame(corr_mat))
     } else if (return_corr + return_corr == 0) {
       corr_mat <- NULL
@@ -243,7 +243,7 @@ wlr_z_stat <- function(x, rho_gamma, return_variance) {
     ans$var <- rep(0, nrow(rho_gamma))
   }
 
-  for (i in 1:nrow(rho_gamma)) {
+  for (i in seq_len(nrow(rho_gamma))) {
     weight <- xx$s^rho_gamma$rho[i] * (1 - xx$s)^rho_gamma$gamma[i]
     weighted_o_minus_e <- weight * xx$o_minus_e
     weighted_var <- weight^2 * xx$var_o_minus_e

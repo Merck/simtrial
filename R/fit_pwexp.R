@@ -95,7 +95,7 @@ fit_pwexp <- function(
   times <- c(0, cumsum(intervals))
 
   ans <- NULL
-  for (i in 1:length(intervals)) {
+  for (i in seq_along(intervals)) {
     dat <- subset(xx, time > times[i])
     dat$status[dat$time > times[i + 1]] <- 0
     dat$time[dat$time > times[i + 1]] <- times[i + 1]

@@ -54,7 +54,7 @@ testthat::test_that("test for events in the correct directions in timing_type=3 
   tt2test <- subset(test2, test2$cut == "Targeted events", select = c(event, ln_hr, z, duration, sim))
   tt3test <- subset(test2, test2$cut == "Minimum follow-up", select = c(event, ln_hr, z, duration, sim))
   ttvalue <- 0
-  for (i in 1:nrow(tt3test)) {
+  for (i in seq_len(nrow(tt3test))) {
     if ((tt3test$duration[i] > tt2test$duration[i]) & (tt3test$event[i] >= tt2test$event[i])) {
       ttvalue[i] <- 1
     } else if ((tt3test$duration[i] <= tt2test$duration[i]) & (tt3test$event[i] <= tt2test$event[i])) {
@@ -71,7 +71,7 @@ testthat::test_that("test for timing_type=4 outputs using timing_type 1 and 2 ou
   tt2test <- subset(test2, test2$cut == "Targeted events", select = c(event, ln_hr, z, duration, sim))
   tt4test <- subset(test2, test2$cut == "Max(planned duration, event cut)", select = c(event, ln_hr, z, duration, sim))
   tt4event <- 0
-  for (i in 1:nrow(tt4test)) {
+  for (i in seq_len(nrow(tt4test))) {
     if (tt1test$duration[i] < tt2test$duration[i]) {
       tt4event[i] <- tt2test$event[i]
     } else {
@@ -87,7 +87,7 @@ testthat::test_that("test for timing_type=5 outputs using timing_type 2 and 3 ou
   tt3test <- subset(test2, test2$cut == "Minimum follow-up", select = c(event, ln_hr, z, duration, sim))
   tt5test <- subset(test2, test2$cut == "Max(min follow-up, event cut)", select = c(event, ln_hr, z, duration, sim))
   tt5event <- 0
-  for (i in 1:nrow(tt5test)) {
+  for (i in seq_len(nrow(tt5test))) {
     if (tt2test$duration[i] < tt3test$duration[i]) {
       tt5event[i] <- tt3test$event[i]
     } else {

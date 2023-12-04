@@ -23,7 +23,7 @@ or a treatment effect that that is otherwise changing
 (for example, decreasing) over time.
 \code{rpwexp()} is to support simulation of both the Lachin and Foulkes (1986)
 sample size method for (fixed trial duration) as well as the
-Kim and Tsiatis(1990) method (fixed enrollment rates and either
+Kim and Tsiatis (1990) method (fixed enrollment rates and either
 fixed enrollment duration or fixed minimum follow-up);
 see \code{\link[gsDesign:nSurv]{gsDesign::nSurv()}}.
 }
