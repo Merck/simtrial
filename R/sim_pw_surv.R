@@ -154,7 +154,7 @@ sim_pw_surv <- function(
     replace = TRUE,
     prob = stratum$p
   ))
-  x[, enroll_time := rpw_enroll(n, enroll_rate)]
+  x[, enroll_time := rpwexp_enroll(n, enroll_rate)]
   # The awkward back and forth ordering is to maintain 1:1 parity with
   # dplyr::group_by() for backwards compatibility. group_by() sorts by the
   # grouping variable and then returns the rows to their original positions.

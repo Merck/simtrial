@@ -29,7 +29,7 @@ reference:
     - rpwexp
     - rpwexpRcpp
     - rpwexpinvRcpp
-    - rpw_enroll
+    - rpwexp_enroll
     - fit_pwexp
 
 - title: "Simulate data under the piecewise model"
