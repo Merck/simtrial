@@ -5,7 +5,7 @@ test_fit_pwexp <- function(Srv, intervals) {
   out <- NULL
   interval.start <- 0
   interval.end <- 0
-  for (i in seq_along(length(intervals))) {
+  for (i in seq_along(intervals)) {
     if (i == length(intervals)) {
       interval.start <- 0
     } else {
