@@ -137,8 +137,8 @@ have varying durations and rates.</p>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5000</span></span>
 <span><span class="va">enroll_rate1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">20</span>, <span class="fl">10</span><span class="op">)</span>, duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">enroll_rate2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">30</span><span class="op">)</span>, duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">175</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpw_enroll.html">rpw_enroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, enroll_rate <span class="op">=</span> <span class="va">enroll_rate1</span><span class="op">)</span></span>
-<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpw_enroll.html">rpw_enroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, enroll_rate <span class="op">=</span> <span class="va">enroll_rate2</span><span class="op">)</span></span>
+<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpwexp_enroll.html">rpwexp_enroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, enroll_rate <span class="op">=</span> <span class="va">enroll_rate1</span><span class="op">)</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rpwexp_enroll.html">rpwexp_enroll</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, enroll_rate <span class="op">=</span> <span class="va">enroll_rate2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">x1</span>, <span class="fl">1</span><span class="op">:</span><span class="va">n</span>,</span>
@@ -206,8 +206,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.892   0.060   7.999</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.89 and the elapsed time is 8.00
+<span><span class="co">#&gt;  13.834   0.082   7.975</span></span></code></pre></div>
+<p>We can see that the CPU time is 13.83 and the elapsed time is 7.98
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -265,8 +265,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.463   0.009   7.751</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.46 and the elapsed time is 7.75
+<span><span class="co">#&gt;   0.457   0.001   7.986</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.46 and the elapsed time is 7.99
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we

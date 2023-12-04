@@ -94,13 +94,13 @@
     <loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/simtrial/reference/rpw_enroll.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/simtrial/reference/rpwexp.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/rpwexpRcpp.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/rpwexp_enroll.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/rpwexpinvRcpp.html</loc>
