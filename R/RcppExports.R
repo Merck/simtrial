@@ -6,6 +6,8 @@
 #' @param n Number of observations to be generated.
 #' @param fail_rate A data frame containing `duration` and `rate` variables.
 #'
+#' @noRd
+#'
 rpwexp_inverse_cdf_cpp <- function(n, fail_rate) {
     .Call(`_simtrial_rpwexp_inverse_cdf_cpp`, n, fail_rate)
 }
@@ -14,6 +16,8 @@ rpwexp_inverse_cdf_cpp <- function(n, fail_rate) {
 #'
 #' @param n Number of observations to be generated.
 #' @param fail_rate A data frame containing `duration` and `rate` variables.
+#'
+#' @noRd
 #'
 rpwexp_naive_cpp <- function(n, fail_rate) {
     .Call(`_simtrial_rpwexp_naive_cpp`, n, fail_rate)

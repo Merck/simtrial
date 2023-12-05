@@ -7,6 +7,8 @@ using namespace Rcpp;
 //' @param n Number of observations to be generated.
 //' @param fail_rate A data frame containing `duration` and `rate` variables.
 //'
+//' @noRd
+//'
 // [[Rcpp::export]]
 NumericVector rpwexp_naive_cpp(int n, DataFrame fail_rate)
 {
