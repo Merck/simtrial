@@ -10,34 +10,34 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// rpwexpRcpp
-NumericVector rpwexpRcpp(int n, DataFrame fail_rate);
-RcppExport SEXP _simtrial_rpwexpRcpp(SEXP nSEXP, SEXP fail_rateSEXP) {
+// rpwexp_inverse_cdf_cpp
+NumericVector rpwexp_inverse_cdf_cpp(int n, DataFrame fail_rate);
+RcppExport SEXP _simtrial_rpwexp_inverse_cdf_cpp(SEXP nSEXP, SEXP fail_rateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type fail_rate(fail_rateSEXP);
-    rcpp_result_gen = Rcpp::wrap(rpwexpRcpp(n, fail_rate));
+    rcpp_result_gen = Rcpp::wrap(rpwexp_inverse_cdf_cpp(n, fail_rate));
     return rcpp_result_gen;
 END_RCPP
 }
-// rpwexpinvRcpp
-NumericVector rpwexpinvRcpp(int n, DataFrame fail_rate);
-RcppExport SEXP _simtrial_rpwexpinvRcpp(SEXP nSEXP, SEXP fail_rateSEXP) {
+// rpwexp_naive_cpp
+NumericVector rpwexp_naive_cpp(int n, DataFrame fail_rate);
+RcppExport SEXP _simtrial_rpwexp_naive_cpp(SEXP nSEXP, SEXP fail_rateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type fail_rate(fail_rateSEXP);
-    rcpp_result_gen = Rcpp::wrap(rpwexpinvRcpp(n, fail_rate));
+    rcpp_result_gen = Rcpp::wrap(rpwexp_naive_cpp(n, fail_rate));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_simtrial_rpwexpRcpp", (DL_FUNC) &_simtrial_rpwexpRcpp, 2},
-    {"_simtrial_rpwexpinvRcpp", (DL_FUNC) &_simtrial_rpwexpinvRcpp, 2},
+    {"_simtrial_rpwexp_inverse_cdf_cpp", (DL_FUNC) &_simtrial_rpwexp_inverse_cdf_cpp, 2},
+    {"_simtrial_rpwexp_naive_cpp", (DL_FUNC) &_simtrial_rpwexp_naive_cpp, 2},
     {NULL, NULL, 0}
 };
 
