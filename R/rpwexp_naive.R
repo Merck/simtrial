@@ -24,7 +24,7 @@
 #' but also for simulations where there may be a delayed treatment effect
 #' or a treatment effect that that is otherwise changing
 #' (for example, decreasing) over time.
-#' `rpwexp()` is to support simulation of both the Lachin and Foulkes (1986)
+#' `rpwexp_naive()` is to support simulation of both the Lachin and Foulkes (1986)
 #' sample size method for (fixed trial duration) as well as the
 #' Kim and Tsiatis (1990) method (fixed enrollment rates and either
 #' fixed enrollment duration or fixed minimum follow-up);
@@ -39,12 +39,12 @@
 #'   specified in `duration`. The final interval is extended to be infinite
 #'   to ensure all observations are generated.
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' # Example 1
 #' # Exponential failure times
-#' x <- rpwexp(
+#' x <- rpwexp_naive(
 #'   n = 10000,
 #'   fail_rate = data.frame(rate = 5, duration = 1)
 #' )
@@ -59,7 +59,7 @@
 #' # Failure rates are 1 for time 0 to 0.5, 3 for time 0.5 to 1, and 10 for > 1.
 #' # Intervals specifies duration of each failure rate interval
 #' # with the final interval running to infinity.
-#' x <- rpwexp(
+#' x <- rpwexp_naive(
 #'   n = 1e4,
 #'   fail_rate = data.frame(rate = c(1, 3, 10), duration = c(.5, .5, 1))
 #' )
@@ -67,8 +67,54 @@
 #'   log = "y", main = "PW Exponential simulated survival curve",
 #'   xlab = "Time", ylab = "P{Survival}"
 #' )
-rpwexp <- function(
+rpwexp_naive <- function(
     n = 100,
     fail_rate = data.frame(duration = c(1, 1), rate = c(10, 20))) {
-  rpwexp_inverse_cdf_cpp(n = n, fail_rate = fail_rate)
+  n_rate <- nrow(fail_rate)
+
+  if (n_rate == 1) {
+    # Set failure time to Inf if 0 failure rate
+    if (fail_rate$rate == 0) {
+      ans <- rep(Inf, n)
+    } else {
+      # Generate exponential failure time if non-0 failure rate
+      ans <- stats::rexp(n, fail_rate$rate)
+    }
+  } else {
+    # Start of first failure rate interval
+    start_time <- 0
+    # Ends of failure rate interval
+    end_time <- cumsum(fail_rate$duration)
+    # Initiate vector for failure times
+    ans <- rep(0, n)
+    # Index for event times not yet reached
+    indx <- rep(TRUE, n)
+
+    for (i in 1:n_rate) {
+      # Number of event times left to generate
+      n_event_left <- sum(indx)
+
+      # Stop if event is arrived
+      if (n_event_left == 0) {
+        break
+      }
+
+      # Set failure time to Inf for interval i if 0 fail rate
+      if (fail_rate$rate[i] == 0) {
+        ans[indx] <- start_time + rep(Inf, n_event_left)
+      } else {
+        # Generate exponential failure time for interval i if non-0 failure rate
+        ans[indx] <- start_time + stats::rexp(n_event_left, fail_rate$rate[i])
+      }
+
+      # Skip this for last interval as all remaining times are generated there
+      if (i < n_rate) {
+        start_time <- end_time[i]
+        # Update index of event times not yet reached
+        indx <- (ans > end_time[i])
+      }
+    }
+  }
+
+  ans
 }
