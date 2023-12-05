@@ -27,8 +27,6 @@ reference:
 - title: "Distributions"
   contents:
     - rpwexp
-    - rpwexpRcpp
-    - rpwexpinvRcpp
     - rpwexp_enroll
     - fit_pwexp
 
