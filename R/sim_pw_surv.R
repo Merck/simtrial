@@ -174,11 +174,11 @@ sim_pw_surv <- function(
   for (sr in unique_stratum) {
     for (tr in unique_treatment) {
       indx <- x$stratum == sr & x$treatment == tr
-      x$fail_time[indx] <- rpwexpinvRcpp(
+      x$fail_time[indx] <- rpwexp(
         n = sum(indx),
         fail_rate = fail_rate[fail_rate$stratum == sr & fail_rate$treatment == tr, , drop = FALSE]
       )
-      x$dropout_time[indx] <- rpwexpinvRcpp(
+      x$dropout_time[indx] <- rpwexp(
         n = sum(indx),
         fail_rate = dropout_rate[dropout_rate$stratum == sr & dropout_rate$treatment == tr, , drop = FALSE]
       )
