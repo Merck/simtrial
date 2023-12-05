@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace Rcpp;
 
-//' Piecewise exponential distribution using the inverse CDF method
+//' The piecewise exponential distribution using the inverse CDF method
 //'
 //' @param n Number of observations to be generated.
 //' @param fail_rate A data frame containing `duration` and `rate` variables.

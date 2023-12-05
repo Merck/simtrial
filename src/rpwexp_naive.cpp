@@ -2,7 +2,7 @@
 #include <random>
 using namespace Rcpp;
 
-//' Piecewise exponential distribution using the naive method
+//' The piecewise exponential distribution using the naive method
 //'
 //' @param n Number of observations to be generated.
 //' @param fail_rate A data frame containing `duration` and `rate` variables.
