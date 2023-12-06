@@ -25,9 +25,9 @@ Description: Provides some basic routines for simulating a
     generate trial simulations for trials with time to event outcomes.
     Piecewise exponential failure rates and piecewise constant
     enrollment rates are the underlying mechanism used to simulate
-    a broad range of scenarios. However, the basic generation of data
-    is done using pipes to allow maximum flexibility for users to
-    meet different needs.
+    a broad range of scenarios such as those presented in
+    Lin et al. (2020) <doi:10.1080/19466315.2019.1697738>.
+    However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
 License: GPL-3
 URL: https://merck.github.io/simtrial/, https://github.com/Merck/simtrial
 BugReports: https://github.com/Merck/simtrial/issues
