@@ -14,6 +14,9 @@ rpwexp(n = 100, fail_rate = data.frame(duration = c(1, 1), rate = c(10, 20)))
 specified in \code{duration}. The final interval is extended to be infinite
 to ensure all observations are generated.}
 }
+\value{
+The generated random numbers.
+}
 \description{
 The piecewise exponential distribution allows a simple method to specify
 a distribution where the hazard rate changes over time.

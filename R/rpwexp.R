@@ -39,6 +39,8 @@
 #'   specified in `duration`. The final interval is extended to be infinite
 #'   to ensure all observations are generated.
 #'
+#' @return The generated random numbers.
+#'
 #' @export
 #'
 #' @examples
