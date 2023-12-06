@@ -1,41 +1,53 @@
 # simtrial 0.3.1
 
+This release introduces significant changes to the API, improves simulation
+performance substantially, and adds new features and documentation.
+
 ## Significant user-visible changes
 
-- API: function names, argument names changed.
-  We recommend to checking out the
-  [function reference page](https://merck.github.io/simtrial/reference/)
-  to see the latest naming scheme and search the merged
-  [pull requests](https://github.com/Merck/simtrial/pulls?q=is%3Apr+is%3Aclosed)
-  to see detailed change history
-  (thanks, @LittleBeannie, @lili-ling-msd, @XintongLi2023).
-- Dataset names are updated.
+- Complete overhaul of the API. Function and argument names now use
+  snake case for consistency and readability. See the
+  [function reference](https://merck.github.io/simtrial/reference/)
+  for the updated naming scheme. Detailed change history is available in the
+  [merged pull requests](https://github.com/Merck/simtrial/pulls?q=is%3Apr+is%3Aclosed)
+  (thanks, @LittleBeannie, @lili-ling-msd, and @XintongLi2023).
+- Dataset names updated to snake case (thanks, @nanxstats, #164).
+- The base pipe operator is now used throughout the package.
+  The magrittr pipe is no longer re-exported (thanks, @nanxstats, #146).
 
 ## Improvements
 
-- The table backend has been rewritten to use data.table for
-  optimal computational performance. On average, 3x to 5x speedup can be
-  observed compared to the previous implementation
+- Rewritten table backend for simtrial functions using data.table,
+  achieving a 3x to 5x speedup compared to the previous implementation
   (thanks, @jdblischak, #111).
-- Use `%dofuture%` to follow modern standard (thanks, @cmansch, #77).
-- `rpwexp()` inverse CDF method, naive method implementations unexported
-  as internal functions (#174).
-  The C++ implementation is from #15 (thanks, @jianxiaoyang).
+- `sim_fixed_n()` now utilizes the `%dofuture%` operator for parallelization,
+  enhancing flexibility and reproducibility (thanks, @cmansch, #110).
+- `rpwexp()` adopts the inverse CDF method for random number generation,
+  with the naive methods now as internal functions
+  (thanks, @jianxiaoyang, #15 and #174).
+- `sim_fixed_n()` is optimized to skip Breslow's method in the absence of ties
+  (thanks, @jdblischak, #130).
+- The internal function for computing Z statistics in Fleming-Harrington
+  weighted logrank tests is now named `wlr_z_stat()` (thanks, @elong0527, #105).
 
 ## New features
 
-- New function `early_zero_weight()` is added as a weighting function
-  for early data removal (thanks, @LittleBeannie, #123).
-- New function `get_analysis_date()` is added to enable the calculation
-  of interim/final analysis dates based on various conditions
-  (thanks, @LittleBeannie, #122).
+- `early_zero_weight()` is added as a weighting function for early data removal
+  (thanks, @LittleBeannie, #123).
+- `get_analysis_date()` is added to calculate interim/final analysis dates
+  under various conditions (thanks, @LittleBeannie, #122).
 
 ## Documentation
 
-- Add a vignette to demonstrate the parallelization workflow and
+- New `vignette("workflow")` providing an overview of data manipulations
+  involved in TTE simulations (thanks, @keaven, #99).
+- New `vignette("parallel")` demonstrating the parallelization workflow and
   coding best practices (thanks, @cmansch, #113 and #134).
 
-## Bug fixes
+## Miscellaneous
+
+- Added a hex sticker logo with a generative art design for the package
+  (thanks, @keaven, #158).
 
 # simtrial 0.2.2
 
