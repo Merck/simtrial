@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Provides some basic routines for simulating a clinical trial. The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used to simulate a broad range of scenarios. However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
+Provides some basic routines for simulating a clinical trial. The primary intent is to provide some tools to generate trial simulations for trials with time to event outcomes. Piecewise exponential failure rates and piecewise constant enrollment rates are the underlying mechanism used to simulate a broad range of scenarios such as those presented in Lin et al. (2020) \doi{10.1080/19466315.2019.1697738}. However, the basic generation of data is done using pipes to allow maximum flexibility for users to meet different needs.
 }
 \seealso{
 Useful links:
