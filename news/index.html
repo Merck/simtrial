@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,23 +48,73 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="simtrial-020-august-2020">simtrial 0.2.0, August, 2020<a class="anchor" aria-label="anchor" href="#simtrial-020-august-2020"></a></h2>
-<ul><li>Updated vignettes and web site</li>
-<li>Prepared for Regulatory/Industry Training session in September</li>
+<h2 class="pkg-version" data-toc-text="0.3.1" id="simtrial-031">simtrial 0.3.1<a class="anchor" aria-label="anchor" href="#simtrial-031"></a></h2>
+<p>This release introduces significant changes to the API, improves simulation performance substantially, and adds new features and documentation.</p>
+<div class="section level3">
+<h3 id="significant-user-visible-changes-0-3-1">Significant user-visible changes<a class="anchor" aria-label="anchor" href="#significant-user-visible-changes-0-3-1"></a></h3>
+<ul><li>Complete overhaul of the API. Function and argument names now use snake case for consistency and readability. See the <a href="https://merck.github.io/simtrial/reference/">function reference</a> for the updated naming scheme. Detailed change history is available in the <a href="https://github.com/Merck/simtrial/pulls?q=is%3Apr+is%3Aclosed" class="external-link">merged pull requests</a> (thanks, <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>, <a href="https://github.com/lili-ling-msd" class="external-link">@lili-ling-msd</a>, and <a href="https://github.com/XintongLi2023" class="external-link">@XintongLi2023</a>).</li>
+<li>Dataset names updated to snake case (thanks, <a href="https://github.com/nanxstats" class="external-link">@nanxstats</a>, <a href="https://github.com/Merck/simtrial/issues/164" class="external-link">#164</a>).</li>
+<li>The base pipe operator is now used throughout the package. The magrittr pipe is no longer re-exported (thanks, <a href="https://github.com/nanxstats" class="external-link">@nanxstats</a>, <a href="https://github.com/Merck/simtrial/issues/146" class="external-link">#146</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-3-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-1"></a></h3>
+<ul><li>Rewritten table backend for simtrial functions using data.table, achieving a 3x to 5x speedup compared to the previous implementation (thanks, <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>, <a href="https://github.com/Merck/simtrial/issues/111" class="external-link">#111</a>).</li>
+<li>
+<code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> now utilizes the <code>%dofuture%</code> operator for parallelization, enhancing flexibility and reproducibility (thanks, <a href="https://github.com/cmansch" class="external-link">@cmansch</a>, <a href="https://github.com/Merck/simtrial/issues/110" class="external-link">#110</a>).</li>
+<li>
+<code><a href="../reference/rpwexp.html">rpwexp()</a></code> adopts the inverse CDF method for random number generation, with the naive methods now as internal functions (thanks, <a href="https://github.com/jianxiaoyang" class="external-link">@jianxiaoyang</a>, <a href="https://github.com/Merck/simtrial/issues/15" class="external-link">#15</a> and <a href="https://github.com/Merck/simtrial/issues/174" class="external-link">#174</a>).</li>
+<li>
+<code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> is optimized to skip Breslow’s method in the absence of ties (thanks, <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>, <a href="https://github.com/Merck/simtrial/issues/130" class="external-link">#130</a>).</li>
+<li>The internal function for computing Z statistics in Fleming-Harrington weighted logrank tests is now named <code>wlr_z_stat()</code> (thanks, <a href="https://github.com/elong0527" class="external-link">@elong0527</a>, <a href="https://github.com/Merck/simtrial/issues/105" class="external-link">#105</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-3-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-1"></a></h3>
+<ul><li>
+<code><a href="../reference/early_zero_weight.html">early_zero_weight()</a></code> is added as a weighting function for early data removal (thanks, <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>, <a href="https://github.com/Merck/simtrial/issues/123" class="external-link">#123</a>).</li>
+<li>
+<code><a href="../reference/get_analysis_date.html">get_analysis_date()</a></code> is added to calculate interim/final analysis dates under various conditions (thanks, <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>, <a href="https://github.com/Merck/simtrial/issues/122" class="external-link">#122</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-3-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-1"></a></h3>
+<ul><li>New <code><a href="../articles/workflow.html">vignette("workflow")</a></code> providing an overview of data manipulations involved in TTE simulations (thanks, <a href="https://github.com/keaven" class="external-link">@keaven</a>, <a href="https://github.com/Merck/simtrial/issues/99" class="external-link">#99</a>).</li>
+<li>New <code><a href="../articles/parallel.html">vignette("parallel")</a></code> demonstrating the parallelization workflow and coding best practices (thanks, <a href="https://github.com/cmansch" class="external-link">@cmansch</a>, <a href="https://github.com/Merck/simtrial/issues/113" class="external-link">#113</a> and <a href="https://github.com/Merck/simtrial/issues/134" class="external-link">#134</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-3-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-1"></a></h3>
+<ul><li>Added a hex sticker logo with a generative art design for the package (thanks, <a href="https://github.com/keaven" class="external-link">@keaven</a>, <a href="https://github.com/Merck/simtrial/issues/158" class="external-link">#158</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.2" id="simtrial-022">simtrial 0.2.2<a class="anchor" aria-label="anchor" href="#simtrial-022"></a></h2>
+<p>GitHub release in February 2023.</p>
+<p>This is the version that enables parallel computation in <code>simfix()</code>.</p>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="simtrial-021">simtrial 0.2.1<a class="anchor" aria-label="anchor" href="#simtrial-021"></a></h2>
+<p>GitHub release in May 2022.</p>
+<p>This version supports the <em>Biometrical Journal</em> paper “A unified framework for weighted parametric group sequential design (WPGSD)” by Keaven M. Anderson, Zifang Guo, Jing Zhao, and Linda Z. Sun.</p>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="simtrial-020">simtrial 0.2.0<a class="anchor" aria-label="anchor" href="#simtrial-020"></a></h2>
+<p>Internal development release in August 2020.</p>
+<ul><li>Updated vignettes and website.</li>
+<li>Prepared for Regulatory/Industry training session in September.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.7.9004" id="simtrial-0179004-february-2020">simtrial 0.1.7.9004, February, 2020<a class="anchor" aria-label="anchor" href="#simtrial-0179004-february-2020"></a></h2>
-<ul><li>Added wMB() to compute Magirr-Burman weights</li>
-<li>Added vignette to demonstrate working with different weighting schemes</li>
-<li>Replaced Depends with Imports in DESCRIPTION</li>
+<h2 class="pkg-version" data-toc-text="0.1.7.9004" id="simtrial-0179004">simtrial 0.1.7.9004<a class="anchor" aria-label="anchor" href="#simtrial-0179004"></a></h2>
+<p>Internal development release in February 2020.</p>
+<ul><li>Added <code>wMB()</code> to compute Magirr-Burman weights.</li>
+<li>Added vignette to demonstrate working with different weighting schemes.</li>
+<li>Replaced <code>Depends</code> with <code>Imports</code> in <code>DESCRIPTION</code>.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.7.9003" id="simtrial-0179003-november-2019">simtrial 0.1.7.9003, November, 2019<a class="anchor" aria-label="anchor" href="#simtrial-0179003-november-2019"></a></h2>
-<ul><li>Incorporated new functions to simplify use (simfix, simfix2simPWSurv, pMaxCombo)</li>
-<li>Removed hgraph with intent to put it into a release of gsDesign</li>
-<li>Limited to 2 essential vignettes</li>
-<li>Added continuous integration/continuous deployment (yaml) and pkgdown for web site development</li>
-<li>Limited dependencies to those that are essential; this removed some convenience functions not related to core package functionality</li>
+<h2 class="pkg-version" data-toc-text="0.1.7.9003" id="simtrial-0179003">simtrial 0.1.7.9003<a class="anchor" aria-label="anchor" href="#simtrial-0179003"></a></h2>
+<p>Internal development release in November 2019.</p>
+<ul><li>Incorporated new functions to simplify use (<code>simfix()</code>, <code>simfix2simPWSurv()</code>, <code>pMaxCombo()</code>).</li>
+<li>Removed <code>hgraph()</code> with intent to put it into a release of gsDesign.</li>
+<li>Limited to 2 essential vignettes.</li>
+<li>Added continuous integration/continuous deployment (YAML) and pkgdown for website generation.</li>
+<li>Limited dependencies to those that are essential; this removed some convenience functions not related to core package functionality.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
