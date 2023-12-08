@@ -1,3 +1,13 @@
+# simtrial 0.3.2
+
+This release makes minor improvements on auxiliary code with side-effects.
+
+## Improvements
+
+- Remove the code that sets `options()` within `vignette("modest-wlrt")`.
+- Updated the code used for generating image assets. These scripts now write to
+  `tempdir()` instead of the package directory.
+
 # simtrial 0.3.1
 
 This release introduces significant changes to the API, improves simulation
