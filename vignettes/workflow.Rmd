@@ -105,5 +105,5 @@ digraph boxes_and_diamonds {
 }
 ")
 
-rsvg::rsvg_png(charToRaw(DiagrammeRsvg::export_svg(g)), file = "vignettes/workflow.png")
+rsvg::rsvg_png(charToRaw(DiagrammeRsvg::export_svg(g)), file = file.path(tempdir(), "workflow.png"))
 ```

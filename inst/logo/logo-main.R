@@ -51,7 +51,7 @@ dots <- ggplot() +
   )
 
 ggsave(
-  "inst/logo/logo-main.png",
+  file.path(tempdir(), "logo-main.png"),
   device = ragg::agg_png,
   scale = 4, width = 256 * 2, height = 256 * 2,
   units = "px", dpi = 300
