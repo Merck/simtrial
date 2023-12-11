@@ -3,7 +3,8 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/Merck/simtrial/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Merck/simtrial/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/Merck/simtrial/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Merck/simtrial?branch=main)
-![CRAN status](https://www.r-pkg.org/badges/version/simtrial)
+[![CRAN status](https://www.r-pkg.org/badges/version/simtrial)](https://cran.r-project.org/package=simtrial)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/simtrial)](https://cran.r-project.org/package=simtrial)
 <!-- badges: end -->
 
 simtrial is a fast and extensible clinical trial simulation framework
