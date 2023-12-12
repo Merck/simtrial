@@ -26,7 +26,7 @@
 #' @return A data frame. The column `weight` contains the weights for the
 #'   early zero weighted logrank test for the data in `x`.
 #'
-#' @importFrom data.table ":=" as.data.table merge.data.table setDF
+#' @importFrom data.table ":=" as.data.table fifelse merge.data.table setDF
 #'
 #' @export
 #'
@@ -97,7 +97,7 @@ early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
 
   # If it is unstratified design
   if (n_stratum == 1) {
-    ans[, weight := ifelse(tte < early_period, 0, 1)]
+    ans[, weight := fifelse(tte < early_period, 0, 1)]
   } else {
     if (is.null(fail_rate)) {
       stop("For stratified design to use `early_zero_weight()`, `fail_rate` can't be `NULL`.")
@@ -114,7 +114,7 @@ early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
 
     ans <- merge.data.table(ans, late_hr, by = "stratum", all.x = TRUE)
     ans <- merge.data.table(ans, delay_change_time, by = "stratum", all.x = TRUE)
-    ans[, weight := ifelse(tte < duration, 0, hr)]
+    ans[, weight := fifelse(tte < duration, 0, hr)]
   }
 
   setDF(ans)

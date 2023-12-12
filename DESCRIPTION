@@ -1,7 +1,7 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.3.2
+Version: 0.3.2.1
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
     person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
@@ -38,7 +38,7 @@ VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
     Rcpp,
-    data.table,
+    data.table (>= 1.12.4),
     doFuture,
     foreach,
     future,

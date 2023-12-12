@@ -66,7 +66,7 @@
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
 #'
-#' @importFrom data.table ":=" as.data.table data.table merge.data.table setDF
+#' @importFrom data.table ":=" as.data.table data.table fifelse merge.data.table setDF
 #'
 #' @export
 #'
@@ -151,7 +151,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
   # Get back stratum with no records before delay ends
   ans <- ans[tbl_all_stratum, on = "stratum"]
   # `max_weight` is 1 when there are no records before delay ends
-  ans[, max_weight := ifelse(is.na(max_weight), 1, max_weight)]
+  ans[, max_weight := fifelse(is.na(max_weight), 1, max_weight)]
   # Cut off weights at w_max
   ans[, max_weight := pmin(w_max, max_weight)]
   # Now merge max_weight back to stratified dataset
