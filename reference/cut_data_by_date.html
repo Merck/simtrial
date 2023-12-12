@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,27 +80,27 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Use default enrollment and event rates and</span></span></span>
 <span class="r-in"><span><span class="co"># cut at calendar time 5 after start of randomization</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">cut_data_by_date</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          tte event stratum    treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  4.9016271     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  4.6568997     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.4917967     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4.4503140     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  4.3230523     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  4.2943791     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.4789171     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.8926336     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.1603759     1     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 4.0327318     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 4.0116805     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 3.9354712     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 3.7582454     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 3.7054093     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 3.7009493     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 3.3314032     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 3.3160863     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.2645847     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 3.2144007     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 3.0687820     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           tte event stratum    treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  4.93518994     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  3.37770039     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.35107607     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4.32525473     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  3.79177003     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  3.77351728     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  3.77014471     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.05936999     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  3.47730464     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 3.47595084     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 2.59055037     1     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 3.36988236     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 3.26214500     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 3.18789077     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 3.03464988     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.31812713     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.53505890     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.33885057     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.22811784     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.15410341     0     All      control</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,15 +105,15 @@ early zero weighted logrank test for the data in <code>x</code>.</p>
 <span class="r-in"><span>  <span class="fu"><a href="counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">early_zero_weight</span><span class="op">(</span>early_period <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html" class="external-link">row_number</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">200</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum events n_event_tol        tte n_risk_tol n_risk_trt         s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1           1  0.3571522        196         98 0.9800000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      1           0  3.6186798        155         79 0.7796131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1           0  9.2281828        115         66 0.5784226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      1           1 29.6759532          8          6 0.2510119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum events n_event_tol        tte n_risk_tol n_risk_trt        s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1           1  0.1501447        196         98 0.980000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      1           0  2.1421473        155         82 0.779697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1           0  7.7311299         92         50 0.561681</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      1           1 23.2124164          8          6 0.217140</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    o_minus_e var_o_minus_e weight</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.5000000     0.2500000      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.5096774     0.2499063      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.5739130     0.2445369      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.5290323     0.2491571      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.5434783     0.2481096      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.2500000     0.1875000      1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: Stratified</span></span></span>
