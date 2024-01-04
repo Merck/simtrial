@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_analysis_date.R
 \name{get_analysis_date}
 \alias{get_analysis_date}
-\title{Derive analysis date for interim/final analysis given multiple conditions.}
+\title{Derive analysis date for interim/final analysis given multiple conditions}
 \usage{
 get_analysis_date(
   data,
@@ -52,23 +52,31 @@ minimal follow-up time after specified enrollment fraction in
 A numerical value of the analysis date.
 }
 \description{
+Derive analysis date for interim/final analysis given multiple conditions
+}
+\details{
+To obtain the analysis date, consider the following multiple conditions:
+
 \describe{
-\item{Condition 1:}{The planned calendar time for analysis.}
-\item{Condition 2:}{The targeted events, encompassing both overall population
+\item{Condition 1}{The planned calendar time for analysis.}
+\item{Condition 2}{The targeted events, encompassing both overall population
 and stratum-specific events.}
-\item{Condition 3:}{The maximum time extension required to achieve the targeted events.}
-\item{Condition 4:}{The planned minimum time interval after the previous analysis.}
-\item{Condition 5:}{The minimum follow-up time needed to reach a certain number of
-patients in enrollments.}
+\item{Condition 3}{The maximum time extension required to achieve the
+targeted events.}
+\item{Condition 4}{The planned minimum time interval after the
+previous analysis.}
+\item{Condition 5}{The minimum follow-up time needed to reach a
+certain number of patients in enrollments.}
+}
+
 Users have the flexibility to employ all 5 conditions simultaneously or
 selectively choose specific conditions to determine the analysis date.
 Any unused conditions will default to \code{NA} and not affect the output.
-Regardless of the number of conditions used, the analysis date is determined by
-min(max(date1, date2, date4, date5, na.rm = TRUE), date3, na.rm = TRUE),
-where date1, date2, date3, date4, date5 represent the analysis dates determined
-solely by Condition 1, Condition 2, Condition 3, Condition 4 and Condition 5,
-respectively.
-}
+Regardless of the number of conditions used, the analysis date is determined
+by \code{min(max(date1, date2, date4, date5, na.rm = TRUE), date3, na.rm = TRUE)},
+where \code{date1}, \code{date2}, \code{date3}, \code{date4}, \code{date5} represent the analysis
+dates determined solely by Condition 1, Condition 2, Condition 3,
+Condition 4 and Condition 5, respectively.
 }
 \examples{
 library(gsDesign2)
