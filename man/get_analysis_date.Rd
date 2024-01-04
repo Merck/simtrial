@@ -2,14 +2,7 @@
 % Please edit documentation in R/get_analysis_date.R
 \name{get_analysis_date}
 \alias{get_analysis_date}
-\title{To obtain the analysis date, consider the following multiple conditions:
-Condition 1: The planned calendar time for analysis.
-Condition 2: The targeted events, encompassing both overall population
-and stratum-specific events.
-Condition 3: The maximum time extension required to achieve the targeted events.
-Condition 4: The planned minimum time interval after the previous analysis.
-Condition 5: The minimum follow-up time needed to reach a certain number of
-patients in enrollments.}
+\title{Derive analysis date for interim/final analysis given multiple conditions.}
 \usage{
 get_analysis_date(
   data,
@@ -59,11 +52,20 @@ minimal follow-up time after specified enrollment fraction in
 A numerical value of the analysis date.
 }
 \description{
+To obtain the analysis date, consider the following multiple conditions:
+Condition 1: The planned calendar time for analysis.
+Condition 2: The targeted events, encompassing both overall population
+and stratum-specific events.
+Condition 3: The maximum time extension required to achieve the targeted events.
+Condition 4: The planned minimum time interval after the previous analysis.
+Condition 5: The minimum follow-up time needed to reach a certain number of
+patients in enrollments.
+}
+\details{
 Users have the flexibility to employ all 5 conditions simultaneously or
 selectively choose specific conditions to determine the analysis date.
 Any unused conditions will default to \code{NA} and not affect the output.
-}
-\details{
+
 Regardless of the number of conditions used, the analysis date is determined by
 min(max(date1, date2, date4, date5, na.rm = TRUE), date3, na.rm = TRUE),
 where date1, date2, date3, date4, date5 represent the analysis dates determined
