@@ -60,12 +60,9 @@ Condition 3: The maximum time extension required to achieve the targeted events.
 Condition 4: The planned minimum time interval after the previous analysis.
 Condition 5: The minimum follow-up time needed to reach a certain number of
 patients in enrollments.
-}
-\details{
 Users have the flexibility to employ all 5 conditions simultaneously or
 selectively choose specific conditions to determine the analysis date.
 Any unused conditions will default to \code{NA} and not affect the output.
-
 Regardless of the number of conditions used, the analysis date is determined by
 min(max(date1, date2, date4, date5, na.rm = TRUE), date3, na.rm = TRUE),
 where date1, date2, date3, date4, date5 represent the analysis dates determined
