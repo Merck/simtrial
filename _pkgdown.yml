@@ -79,6 +79,7 @@ articles:
   - arbitrary-hazard
   - modest-wlrt
   - pvalue-maxcombo
+  - rmst
 - title: "Best practices"
   contents:
   - parallel
