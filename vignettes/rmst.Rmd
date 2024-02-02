@@ -13,27 +13,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# R package to compute sample size under NPH
-library(gsDesign)
-library(gsDesign2)
-
 # R package to simulate NPH data from the piecewise model
 library(simtrial)
 
-# R package for data manipulation
-library(tibble)
-library(dplyr)
-
-# R packages for parallel computation
-library(doFuture)
-library(doRNG)
-
-# R packages to compute running time
-library(tictoc)
-
 # R packages for table display
 library(gt)
-library(ggplot2)
 ```
 
 # Introduction
