@@ -36,7 +36,7 @@
 #' \if{html}{The contents of this section are shown in PDF user manual only.}
 #'
 #' @return Check failure detailed error message
-#'
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' tbl < -as.data.frame(matrix(1:9, nrow = 3))

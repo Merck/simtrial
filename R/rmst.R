@@ -30,7 +30,7 @@
 #'  - variance, std, and CIs of the estimated RMST;
 #'  - number of events.
 #' @importFrom survival survfit Surv
-#'
+#' @keywords internal
 #' @examples
 #' data(ex1_delayed_effect)
 #' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
@@ -125,6 +125,7 @@ rmst_single_tau <- function(time_var,
 #' @inheritParams rmst_single_tau
 #' @param trunc_time A numeric vector of pre-defined cut-off time point(s).
 #' @return A date frame of estimated RMST with confidence interval.
+#' @keywords internal
 #' @examples
 #' data(ex1_delayed_effect)
 #' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
@@ -162,7 +163,7 @@ rmst_single <- function(time_var,
 #' - RMST: the calculation results per group.
 #' - RMSTDIFF: the calculation results of RMST differences.
 #' - ALL: all calculation results of RMST and RMST differences.
-#'
+#' @keywords internal
 #' @examples
 #' data(ex1_delayed_effect)
 #' with(ex1_delayed_effect,
