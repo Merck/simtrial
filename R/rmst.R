@@ -30,7 +30,6 @@
 #'  - variance, std, and CIs of the estimated RMST;
 #'  - number of events.
 #' @importFrom survival survfit Surv
-#' @export
 #'
 #' @examples
 #' data(ex1_delayed_effect)
@@ -135,7 +134,6 @@ rmst_single_tau <- function(time_var,
 #'                  trunc_time = c(6, 12, 18),
 #'                  group_label = "Treatment 1",
 #'                  alpha = 0.05))
-#' @export
 rmst_single <- function(time_var,
                         event_var,
                         trunc_time,
@@ -174,7 +172,6 @@ rmst_single <- function(time_var,
 #'                    trunc_time = 6,
 #'                    reference = "0",
 #'                    alpha = 0.05))
-#' @export
 #'
 rmst_multiple <- function(time_var,
                           event_var,
@@ -242,7 +239,7 @@ rmst_multiple <- function(time_var,
   return(ans)
 }
 
-#' Title
+#' RMST difference of 2 arms
 #'
 #' @param data a time -to-event dataset with a column `tte` indicating the survival time and
 #' a column of `event` indicating whether it is event or censor.
