@@ -229,7 +229,7 @@ rmst_multiple <- function(time_var,
     std <- sqrt(variance)
     lcl <- rmst_diff - stats::qnorm(1 - alpha / 2) * std
     ucl <- rmst_diff + stats::qnorm(1 - alpha / 2) * std
-    data.frame(cutoff_time, group, rmst_diff, variance, std, lcl, ucl, event, stringsAsFactors = FALSE)
+    data.frame(cutoff_time, group, rmst_diff, variance, std, lcl, ucl, stringsAsFactors = FALSE)
   }
 
   op_diff <- do.call(rbind, lapply(setdiff(g_label, reference), diff_rmst))
