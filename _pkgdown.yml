@@ -47,6 +47,7 @@ reference:
   contents:
     - counting_process
     - pvalue_maxcombo
+    - rmst
 
 - title: "Randomization algorithms"
   contents:
