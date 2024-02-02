@@ -47,4 +47,5 @@ with(ex1_delayed_effect,
                    trunc_time = 6,
                    reference = "0",
                    alpha = 0.05))
+
 }

@@ -95,9 +95,10 @@ where $\alpha$ is a predefined significant level, and $z_{\alpha/2}$ is the uppe
 ```{r}
 data(ex1_delayed_effect)
 data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-rmst_single_tau(time_var = data_single_arm$month,
-                event_var = data_single_arm$evntd,
-                tau = 10) |> gt()
+simtrial:::rmst_single_tau(
+  time_var = data_single_arm$month,
+  event_var = data_single_arm$evntd,
+  tau = 10) |> gt()
 ```
 
 

@@ -8,7 +8,7 @@ rmst_single(
   time_var,
   event_var,
   trunc_time,
-  group_label = "Single Group",
+  group_label = "single group",
   alpha = 0.05
 )
 }

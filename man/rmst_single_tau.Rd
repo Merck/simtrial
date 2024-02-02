@@ -24,7 +24,14 @@ rmst_single_tau(
 \item{alpha}{A numeric value of the significant level for RMST confidence interval. Default is 0.05.}
 }
 \value{
-A date frame of estimated RMST with confidence interval and no. of events.
+A date frame of
+\itemize{
+\item cutoff_time: same as \code{tau};
+\item group lable: same as \code{group_label};
+\item estimated RMST;
+\item variance, std, and CIs of the estimated RMST;
+\item number of events.
+}
 }
 \description{
 Calculate RMST for A Single Cut-off Time Point

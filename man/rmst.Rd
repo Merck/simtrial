@@ -2,7 +2,7 @@
 % Please edit documentation in R/rmst.R
 \name{rmst}
 \alias{rmst}
-\title{Title}
+\title{RMST difference of 2 arms}
 \usage{
 rmst(
   data,
@@ -28,7 +28,7 @@ a column of \code{event} indicating whether it is event or censor.}
 the z statistics
 }
 \description{
-Title
+RMST difference of 2 arms
 }
 \examples{
 data(ex1_delayed_effect)
