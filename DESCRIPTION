@@ -58,6 +58,7 @@ Suggests:
     knitr,
     rmarkdown,
     survMisc,
+    survRM2,
     testthat,
     tidyr
 LinkingTo:
