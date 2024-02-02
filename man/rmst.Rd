@@ -20,6 +20,12 @@ a column of \code{event} indicating whether it is event or censor.}
 
 \item{tau}{RMST analysis time}
 
+\item{var_label_tte}{column name of the tte variable}
+
+\item{var_label_event}{column name of the event variable}
+
+\item{var_label_group}{column name of the grouping variable}
+
 \item{reference}{a group label indicating the reference group}
 
 \item{alpha}{type I error}

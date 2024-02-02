@@ -41,12 +41,12 @@ Calculate RMST difference
 \examples{
 data(ex1_delayed_effect)
 with(ex1_delayed_effect,
-     rmst_multiple(time_var = month,
-                   event_var = evntd,
-                   group_var = trt,
-                   trunc_time = 6,
-                   reference = "0",
-                   alpha = 0.05))
+     simtrial:::rmst_multiple(time_var = month,
+                              event_var = evntd,
+                              group_var = trt,
+                              trunc_time = 6,
+                              reference = "0",
+                              alpha = 0.05))
 
 }
 \keyword{internal}

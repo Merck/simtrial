@@ -34,11 +34,12 @@
 #' @examples
 #' data(ex1_delayed_effect)
 #' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-#' rmst_single_tau(time_var = data_single_arm$month,
-#'                 event_var = data_single_arm$evntd,
-#'                 tau = 10,
-#'                 group_label = "Treatment 1",
-#'                 alpha = 0.05)
+#' simtrial:::rmst_single_tau(
+#'   time_var = data_single_arm$month,
+#'   event_var = data_single_arm$evntd,
+#'   tau = 10,
+#'   group_label = "Treatment 1",
+#'   alpha = 0.05)
 rmst_single_tau <- function(time_var,
                             event_var,
                             tau,
@@ -130,11 +131,11 @@ rmst_single_tau <- function(time_var,
 #' data(ex1_delayed_effect)
 #' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
 #' with(data_single_arm,
-#'      rmst_single(time_var = month,
-#'                  event_var = evntd,
-#'                  trunc_time = c(6, 12, 18),
-#'                  group_label = "Treatment 1",
-#'                  alpha = 0.05))
+#'      simtrial:::rmst_single(time_var = month,
+#'                             event_var = evntd,
+#'                             trunc_time = c(6, 12, 18),
+#'                             group_label = "Treatment 1",
+#'                             alpha = 0.05))
 rmst_single <- function(time_var,
                         event_var,
                         trunc_time,
@@ -167,12 +168,12 @@ rmst_single <- function(time_var,
 #' @examples
 #' data(ex1_delayed_effect)
 #' with(ex1_delayed_effect,
-#'      rmst_multiple(time_var = month,
-#'                    event_var = evntd,
-#'                    group_var = trt,
-#'                    trunc_time = 6,
-#'                    reference = "0",
-#'                    alpha = 0.05))
+#'      simtrial:::rmst_multiple(time_var = month,
+#'                               event_var = evntd,
+#'                               group_var = trt,
+#'                               trunc_time = 6,
+#'                               reference = "0",
+#'                               alpha = 0.05))
 #'
 rmst_multiple <- function(time_var,
                           event_var,
@@ -247,6 +248,9 @@ rmst_multiple <- function(time_var,
 #' @param tau RMST analysis time
 #' @param reference a group label indicating the reference group
 #' @param alpha type I error
+#' @param var_label_tte column name of the tte variable
+#' @param var_label_event column name of the event variable
+#' @param var_label_group column name of the grouping variable
 #'
 #' @return the z statistics
 #' @export
