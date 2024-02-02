@@ -49,3 +49,4 @@ with(ex1_delayed_effect,
                    alpha = 0.05))
 
 }
+\keyword{internal}

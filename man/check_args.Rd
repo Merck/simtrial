@@ -46,3 +46,4 @@ check_args(arg = vec, type = c("character"), length = 3)
 }
 
 }
+\keyword{internal}

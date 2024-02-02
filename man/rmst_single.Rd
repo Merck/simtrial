@@ -39,3 +39,4 @@ with(data_single_arm,
                  group_label = "Treatment 1",
                  alpha = 0.05))
 }
+\keyword{internal}

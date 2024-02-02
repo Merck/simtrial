@@ -45,3 +45,4 @@ rmst_single_tau(time_var = data_single_arm$month,
                 group_label = "Treatment 1",
                 alpha = 0.05)
 }
+\keyword{internal}
