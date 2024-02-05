@@ -77,10 +77,9 @@ rmst <- function(
 #' @param reference Group name of reference group for RMST comparison.
 #'   Default is the first group name by alphabetical order.
 #'
-#' @return A list of 3 data frames of RMST calculations (`RMST`, `RMSTDIFF`, `ALL`).
-#' - `RMST`: the calculation results per group.
-#' - `RMSTDIFF`: the calculation results of RMST differences.
-#' - `ALL`: all calculation results of RMST and RMST differences.
+#' @return A list of 2 data frames of RMST calculations (`RMST`, `RMSTDIFF`, `ALL`).
+#' - `rmst`: the calculation results per group.
+#' - `rmst_diff`: the calculation results of RMST differences.
 #'
 #' @keywords internal
 #'
