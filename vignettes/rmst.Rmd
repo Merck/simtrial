@@ -3,7 +3,7 @@ title: "Restricted mean survival time (RMST)"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
-  %\VignetteIndexEntry{RMST}
+  %\VignetteIndexEntry{Restricted mean survival time (RMST)}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
@@ -12,19 +12,13 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-# R package to simulate NPH data from the piecewise model
-library(simtrial)
-
-# R packages for table display
-library(gt)
 ```
 
 # Introduction
 
-Restricted mean survival time (RMST) is defined as the area under the survival curve up to a specific time point.  It can be interpreted as the average survival time during a defined time period ranging from time 0 to a specific follow-up time point, which is a straightforward and clinically meaningful  way to interpret the contrast in survival between groups.
+Restricted mean survival time (RMST) is defined as the area under the survival curve up to a specific time point.  It can be interpreted as the average survival time during a defined time period ranging from time 0 to a specific follow-up time point, which is a straightforward and clinically meaningful way to interpret the contrast in survival between groups.
 
-The RMST may provide valuable information for comparing two survival curves when the proportional hazards assumption is not met, such as in cases of *crossing* or *delayed separation* of survival curves. 
+The RMST may provide valuable information for comparing two survival curves when the proportional hazards assumption is not met, such as in cases of *crossing* or *delayed separation* of survival curves.
 
 # RMST vs. logrank
 
@@ -36,11 +30,11 @@ Although RMST has an advantage over the hazard ratio, a previous study showed th
 
 # Estimation of RMST in a single arm at a single time point
 
-Assume the event time as $T$, and the survival function as $S(t) = Pr(T>t)$. The restricted mean survival time at a pre-specified cutoff time point $\tau$ is 
+Assume the event time as $T$, and the survival function as $S(t) = Pr(T>t)$. The restricted mean survival time at a pre-specified cutoff time point $\tau$ is
 $$
   \text{RMST}(\tau) = E[\min (T, \tau)] = \int_{0}^{\tau} S(u) d u.
 $$
-Suppose there are $D$ events, with distinct observed event times at $t_1 < t_2 < \ldots <t_D$. For any $i = 1, \ldots, D$, let $Y_i$ be the number of risk just prior to $t_i$, and let $d_i$ be the number of subjects that fail at $t_i$. The Kaplan-Meier (product-limit) estimate of the survival function at $t_i$ is 
+Suppose there are $D$ events, with distinct observed event times at $t_1 < t_2 < \ldots <t_D$. For any $i = 1, \ldots, D$, let $Y_i$ be the number of risk just prior to $t_i$, and let $d_i$ be the number of subjects that fail at $t_i$. The Kaplan-Meier (product-limit) estimate of the survival function at $t_i$ is
 
 $$
   \hat{S}(t_i)
@@ -50,7 +44,7 @@ $$
     1-\frac{d_{j}}{Y_{j}}
   \right)
 $$
-Based on the definition and formula above, $\text{RMST}(\tau)$ can be estimated by 
+Based on the definition and formula above, $\text{RMST}(\tau)$ can be estimated by
 $$
   \widehat{\text{RMST}}(\tau)
   =
@@ -68,7 +62,7 @@ $$
   =
   \widehat{\text{Var}}(\widehat{\text{RMST}}(\tau))
   =
-  \sqrt{\sum_{i=1}^{L_\tau} 
+  \sqrt{\sum_{i=1}^{L_\tau}
   \frac{d_{i} A_{i}^{2}}{Y_{i}\left(Y_{i}-d_{i}\right)}}
 $$
 where
@@ -77,20 +71,27 @@ $$
   =
   \int_{t_i}^{\tau} \hat{S}(t) d t
   =
-  \sum_{j=i}^{L_\tau} 
+  \sum_{j=i}^{L_\tau}
   \hat{S}(t_{j}) (t_{j+1}-t_{j})
   +
   \hat{S}(t_{L_\tau})(\tau-t_{L_\tau})
 $$
-and $m=\sum_{j=1}^{L_\tau} d_{j}$. The $(1-\alpha)$ confidence interval for $RMST$ can be calculated as
+and $m=\sum_{j=1}^{L_\tau} d_{j}$. The $(1-\alpha)$ confidence interval for $\text{RMST}$ can be calculated as
 $$
   \left[
-    \widehat{\operatorname{RMST}}(\tau) - z_{\alpha/2}\hat{\sigma}, 
+    \widehat{\operatorname{RMST}}(\tau) - z_{\alpha/2}\hat{\sigma},
     \;\;
     \widehat{\operatorname{RMST}}(\tau) + z_{\alpha/2}\hat{\sigma}
   \right]
 $$
 where $\alpha$ is a predefined significant level, and $z_{\alpha/2}$ is the upper $1-\alpha/2$ critical value for the standard normal distribution.
+
+```{r, message=FALSE, warning=FALSE}
+# Simulate NPH data from the piecewise model
+library(simtrial)
+# Table display
+library(gt)
+```
 
 ```{r}
 data(ex1_delayed_effect)
@@ -98,9 +99,9 @@ data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
 simtrial:::rmst_single_tau(
   time_var = data_single_arm$month,
   event_var = data_single_arm$evntd,
-  tau = 10) |> gt()
+  tau = 10
+) |> gt()
 ```
-
 
 ## Estimation of RMST differences in 2 arms at a single time point
 
@@ -113,10 +114,10 @@ $$
   \text{Var}(\theta) = \sigma_{1}^{2} + \sigma_{2}^{2}
 $$
 
-Similarly, the $(1-\alpha)$ confidence interval for $RMST$ difference between 2 groups can be calculated as:
+Similarly, the $(1-\alpha)$ confidence interval for $\text{RMST}$ difference between 2 groups can be calculated as:
 $$
   \left[
-    \hat{\theta} - z_{\alpha/2}\sqrt{\hat{\sigma}_1^2 + \hat{\sigma}_2^2}, 
+    \hat{\theta} - z_{\alpha/2}\sqrt{\hat{\sigma}_1^2 + \hat{\sigma}_2^2},
     \;\;
     \hat{\theta} + z_{\alpha/2}\sqrt{\hat{\sigma}_1^2 + \hat{\sigma}_2^2}
   \right].
@@ -127,25 +128,28 @@ tau <- 10
 
 data(ex1_delayed_effect)
 
-ex1_delayed_effect |> 
-  rmst(var_label_tte = "month",
-       var_label_event = "evntd",
-       var_label_group = "trt",
-       tau = 10,
-       reference = "0")
+ex1_delayed_effect |>
+  rmst(
+    var_label_tte = "month",
+    var_label_event = "evntd",
+    var_label_group = "trt",
+    tau = 10,
+    reference = "0"
+  )
 ```
 
-There is a R package called survRM2 [@uno2022package], which performs two-sample comparisons using RMST as a summary measure of the survival time distribution. Three kinds of between-group contrast metrics (i.e., the difference in RMST, the ratio of RMST and the ratio of the restricted mean time lost (RMTL)) are computed. It performs an ANCOVA-type co
-variate adjustment as well as unadjusted analyses for those measures. We use this R pakcge as validation of `simtrial::rmst()`.
+The R package survRM2 [@uno2022survrm2] performs two-sample comparisons using RMST as a summary measure of the survival time distribution. Three kinds of between-group contrast metrics (i.e., the difference in RMST, the ratio of RMST and the ratio of the restricted mean time lost (RMTL)) are computed. It performs an ANCOVA-type covariate adjustment as well as unadjusted analyses for those measures. We use this R package as validation of `simtrial::rmst()`.
+
 ```{r}
-verify <- survRM2::rmst2(time = ex1_delayed_effect$month, 
-                         status = ex1_delayed_effect$evntd, 
-                         arm = ex1_delayed_effect$trt, 
-                         tau = tau,
-                         alpha = 0.05)
+verify <- survRM2::rmst2(
+  time = ex1_delayed_effect$month,
+  status = ex1_delayed_effect$evntd,
+  arm = ex1_delayed_effect$trt,
+  tau = tau,
+  alpha = 0.05
+)
 
 verify$RMST.arm1$rmst[1] - verify$RMST.arm0$rmst[1]
 ```
-
 
 ## References
