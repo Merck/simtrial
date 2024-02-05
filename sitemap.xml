@@ -22,6 +22,9 @@
     <loc>https://merck.github.io/simtrial/articles/pvalue-maxcombo.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/articles/rmst.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/articles/routines.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/check_args.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/counting_process.html</loc>
@@ -92,6 +98,15 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/rmst.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/rmst_single_arm.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/rmst_two_arm.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/rpwexp.html</loc>
