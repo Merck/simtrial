@@ -130,7 +130,6 @@ rmst_multiple <- function(
   # Calculate RMST for each group by rmst_single()
   one_rmst <- function(x) {
     indx <- group_var == x
-    df <- data.frame(time_var, event_var, group_var, stringsAsFactors = FALSE)
     rmst_single(
       time_var = time_var[indx],
       event_var = event_var[indx],
