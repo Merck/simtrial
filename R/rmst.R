@@ -50,7 +50,7 @@ rmst <- function(
     var_label_group = "treatment",
     reference = "control",
     alpha = 0.05) {
-  res <- rmst_multiple(
+  res <- rmst_two_arm(
     time_var = data[[var_label_tte]],
     event_var = data[[var_label_event]],
     group_var = data[[var_label_group]],
@@ -71,7 +71,7 @@ rmst <- function(
 
 #' Calculate RMST difference
 #'
-#' @inheritParams rmst_single_tau
+#' @inheritParams rmst_single_arm
 #' @param group_var A vector of treatment groups.
 #' @param trunc_time A numeric vector of pre-defined cut-off time point(s).
 #' @param reference Group name of reference group for RMST comparison.
@@ -87,7 +87,7 @@ rmst <- function(
 #' data(ex1_delayed_effect)
 #' with(
 #'   ex1_delayed_effect,
-#'   simtrial:::rmst_multiple(
+#'   simtrial:::rmst_two_arm(
 #'     time_var = month,
 #'     event_var = evntd,
 #'     group_var = trt,
@@ -96,7 +96,7 @@ rmst <- function(
 #'     alpha = 0.05
 #'   )
 #' )
-rmst_multiple <- function(
+rmst_two_arm <- function(
     time_var,
     event_var,
     group_var,
@@ -161,45 +161,6 @@ rmst_multiple <- function(
   return(ans)
 }
 
-#' Calculate RMST for a single group at each truncation time point
-#'
-#' @inheritParams rmst_single_tau
-#' @param trunc_time A numeric vector of pre-defined cut-off time point(s).
-#'
-#' @return A data frame of estimated RMST with confidence interval.
-#'
-#' @keywords internal
-#'
-#' @examples
-#' data(ex1_delayed_effect)
-#' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-#' with(
-#'   data_single_arm,
-#'   simtrial:::rmst_single(
-#'     time_var = month,
-#'     event_var = evntd,
-#'     trunc_time = c(6, 12, 18),
-#'     group_label = "Treatment 1",
-#'     alpha = 0.05
-#'   )
-#' )
-rmst_single <- function(
-    time_var,
-    event_var,
-    trunc_time,
-    group_label = "single group",
-    alpha = 0.05) {
-  # Combine calculation result of each truncation time point into one data frame
-  do.call(rbind, lapply(
-    trunc_time,
-    rmst_single_tau,
-    time_var = time_var,
-    event_var = event_var,
-    group_label = group_label,
-    alpha = alpha
-  ))
-}
-
 #' Calculate RMST for a single cut-off time point
 #'
 #' @param time_var A numeric vector of follow up time.
@@ -224,14 +185,14 @@ rmst_single <- function(
 #' @examples
 #' data(ex1_delayed_effect)
 #' data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-#' simtrial:::rmst_single_tau(
+#' simtrial:::rmst_single_arm(
 #'   time_var = data_single_arm$month,
 #'   event_var = data_single_arm$evntd,
 #'   tau = 10,
 #'   group_label = "Treatment 1",
 #'   alpha = 0.05
 #' )
-rmst_single_tau <- function(
+rmst_single_arm <- function(
     time_var,
     event_var,
     tau,

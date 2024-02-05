@@ -96,7 +96,7 @@ library(gt)
 ```{r}
 data(ex1_delayed_effect)
 data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-simtrial:::rmst_single_tau(
+simtrial:::rmst_single_arm(
   time_var = data_single_arm$month,
   event_var = data_single_arm$evntd,
   tau = 10
