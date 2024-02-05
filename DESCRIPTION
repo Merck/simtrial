@@ -58,9 +58,10 @@ Suggests:
     knitr,
     rmarkdown,
     survMisc,
+    survRM2,
     testthat,
     tidyr
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
