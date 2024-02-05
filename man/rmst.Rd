@@ -15,33 +15,36 @@ rmst(
 )
 }
 \arguments{
-\item{data}{a time -to-event dataset with a column \code{tte} indicating the survival time and
-a column of \code{event} indicating whether it is event or censor.}
+\item{data}{A time-to-event dataset with a column \code{tte} indicating the
+survival time and a column of \code{event} indicating whether it is
+event or censor.}
 
-\item{tau}{RMST analysis time}
+\item{tau}{RMST analysis time.}
 
-\item{var_label_tte}{column name of the tte variable}
+\item{var_label_tte}{Column name of the TTE variable.}
 
-\item{var_label_event}{column name of the event variable}
+\item{var_label_event}{Column name of the event variable.}
 
-\item{var_label_group}{column name of the grouping variable}
+\item{var_label_group}{Column name of the grouping variable.}
 
-\item{reference}{a group label indicating the reference group}
+\item{reference}{A group label indicating the reference group.}
 
-\item{alpha}{type I error}
+\item{alpha}{Type I error.}
 }
 \value{
-the z statistics
+The z statistics.
 }
 \description{
 RMST difference of 2 arms
 }
 \examples{
 data(ex1_delayed_effect)
-rmst(data = ex1_delayed_effect,
-     var_label_tte = "month",
-     var_label_event = "evntd",
-     var_label_group = "trt",
-     tau = 10,
-     reference = "0")
+rmst(
+  data = ex1_delayed_effect,
+  var_label_tte = "month",
+  var_label_event = "evntd",
+  var_label_group = "trt",
+  tau = 10,
+  reference = "0"
+)
 }

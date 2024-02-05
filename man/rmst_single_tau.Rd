@@ -2,7 +2,7 @@
 % Please edit documentation in R/rmst.R
 \name{rmst_single_tau}
 \alias{rmst_single_tau}
-\title{Calculate RMST for A Single Cut-off Time Point}
+\title{Calculate RMST for a single cut-off time point}
 \usage{
 rmst_single_tau(
   time_var,
@@ -15,26 +15,28 @@ rmst_single_tau(
 \arguments{
 \item{time_var}{A numeric vector of follow up time.}
 
-\item{event_var}{A numeric or integer vector of the status indicator; 0=alive 1=event.}
+\item{event_var}{A numeric or integer vector of the status indicator;
+0=alive 1=event.}
 
 \item{tau}{A value of pre-defined cut-off time point.}
 
 \item{group_label}{A character of customized treatment group name.}
 
-\item{alpha}{A numeric value of the significant level for RMST confidence interval. Default is 0.05.}
+\item{alpha}{A numeric value of the significant level for RMST
+confidence interval. Default is 0.05.}
 }
 \value{
-A date frame of
+A data frame of
 \itemize{
-\item cutoff_time: same as \code{tau};
-\item group lable: same as \code{group_label};
-\item estimated RMST;
-\item variance, std, and CIs of the estimated RMST;
-\item number of events.
+\item Cutoff time: same as \code{tau};
+\item Group label: same as \code{group_label};
+\item Estimated RMST;
+\item Variance, std, and CIs of the estimated RMST;
+\item Number of events.
 }
 }
 \description{
-Calculate RMST for A Single Cut-off Time Point
+Calculate RMST for a single cut-off time point
 }
 \examples{
 data(ex1_delayed_effect)
@@ -44,6 +46,7 @@ simtrial:::rmst_single_tau(
   event_var = data_single_arm$evntd,
   tau = 10,
   group_label = "Treatment 1",
-  alpha = 0.05)
+  alpha = 0.05
+)
 }
 \keyword{internal}

@@ -16,7 +16,8 @@ rmst_multiple(
 \arguments{
 \item{time_var}{A numeric vector of follow up time.}
 
-\item{event_var}{A numeric or integer vector of the status indicator; 0=alive 1=event.}
+\item{event_var}{A numeric or integer vector of the status indicator;
+0=alive 1=event.}
 
 \item{group_var}{A vector of treatment groups.}
 
@@ -25,14 +26,15 @@ rmst_multiple(
 \item{reference}{Group name of reference group for RMST comparison.
 Default is the first group name by alphabetical order.}
 
-\item{alpha}{A numeric value of the significant level for RMST confidence interval. Default is 0.05.}
+\item{alpha}{A numeric value of the significant level for RMST
+confidence interval. Default is 0.05.}
 }
 \value{
-A list of 3 data frame of RMST calculations (RMST, RMSTDIFF, ALL).
+A list of 3 data frames of RMST calculations (\code{RMST}, \code{RMSTDIFF}, \code{ALL}).
 \itemize{
-\item RMST: the calculation results per group.
-\item RMSTDIFF: the calculation results of RMST differences.
-\item ALL: all calculation results of RMST and RMST differences.
+\item \code{RMST}: the calculation results per group.
+\item \code{RMSTDIFF}: the calculation results of RMST differences.
+\item \code{ALL}: all calculation results of RMST and RMST differences.
 }
 }
 \description{
@@ -40,13 +42,16 @@ Calculate RMST difference
 }
 \examples{
 data(ex1_delayed_effect)
-with(ex1_delayed_effect,
-     simtrial:::rmst_multiple(time_var = month,
-                              event_var = evntd,
-                              group_var = trt,
-                              trunc_time = 6,
-                              reference = "0",
-                              alpha = 0.05))
-
+with(
+  ex1_delayed_effect,
+  simtrial:::rmst_multiple(
+    time_var = month,
+    event_var = evntd,
+    group_var = trt,
+    trunc_time = 6,
+    reference = "0",
+    alpha = 0.05
+  )
+)
 }
 \keyword{internal}

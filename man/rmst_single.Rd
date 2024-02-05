@@ -15,16 +15,18 @@ rmst_single(
 \arguments{
 \item{time_var}{A numeric vector of follow up time.}
 
-\item{event_var}{A numeric or integer vector of the status indicator; 0=alive 1=event.}
+\item{event_var}{A numeric or integer vector of the status indicator;
+0=alive 1=event.}
 
 \item{trunc_time}{A numeric vector of pre-defined cut-off time point(s).}
 
 \item{group_label}{A character of customized treatment group name.}
 
-\item{alpha}{A numeric value of the significant level for RMST confidence interval. Default is 0.05.}
+\item{alpha}{A numeric value of the significant level for RMST
+confidence interval. Default is 0.05.}
 }
 \value{
-A date frame of estimated RMST with confidence interval.
+A data frame of estimated RMST with confidence interval.
 }
 \description{
 Calculate RMST for a single group at each truncation time point
@@ -32,11 +34,15 @@ Calculate RMST for a single group at each truncation time point
 \examples{
 data(ex1_delayed_effect)
 data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
-with(data_single_arm,
-     simtrial:::rmst_single(time_var = month,
-                            event_var = evntd,
-                            trunc_time = c(6, 12, 18),
-                            group_label = "Treatment 1",
-                            alpha = 0.05))
+with(
+  data_single_arm,
+  simtrial:::rmst_single(
+    time_var = month,
+    event_var = evntd,
+    trunc_time = c(6, 12, 18),
+    group_label = "Treatment 1",
+    alpha = 0.05
+  )
+)
 }
 \keyword{internal}

@@ -2,27 +2,27 @@
 % Please edit documentation in R/check_args.R
 \name{check_args}
 \alias{check_args}
-\title{Check Argument Types, Length or Dimension}
+\title{Check argument types, length, or dimension}
 \usage{
 check_args(arg, type, length = NULL, dim = NULL)
 }
 \arguments{
-\item{arg}{an argument to be checked.}
+\item{arg}{An argument to be checked.}
 
-\item{type}{a character vector of candidate argument type.}
+\item{type}{A character vector of candidate argument type.}
 
-\item{length}{a numeric value of argument length or NULL}
+\item{length}{A numeric value of argument length or \code{NULL}.}
 
-\item{dim}{a numeric vector of argument dimension or NULL.}
+\item{dim}{A numeric vector of argument dimension or \code{NULL}.}
 }
 \value{
-Check failure detailed error message
+Check failure detailed error message.
 }
 \description{
-Check Argument Types, Length or Dimension
+Check argument types, length, or dimension
 }
 \details{
-if \code{type}, \code{length} or \code{dim} is NULL, the corresponding check will not be executed.
+If \code{type}, \code{length} or \code{dim} is \code{NULL}, the corresponding check will not be executed.
 }
 \section{Specification}{
 
@@ -38,12 +38,11 @@ if \code{type}, \code{length} or \code{dim} is NULL, the corresponding check wil
 
 \examples{
 \dontrun{
-tbl < -as.data.frame(matrix(1:9, nrow = 3))
-check_args(arg = tbl, type = c("data.frame"))
+tbl <- as.data.frame(matrix(1:9, nrow = 3))
+simtrial:::check_args(arg = tbl, type = c("data.frame"))
 
 vec <- c("a", "b", "c")
-check_args(arg = vec, type = c("character"), length = 3)
+simtrial:::check_args(arg = vec, type = c("character"), length = 3)
 }
-
 }
 \keyword{internal}
