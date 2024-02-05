@@ -30,9 +30,9 @@ Default is the first group name by alphabetical order.}
 confidence interval. Default is 0.05.}
 }
 \value{
-A list of 2 data frames of RMST calculations (\code{RMST}, \code{RMSTDIFF}, \code{ALL}).
+A list of 2 data frames of RMST calculations:
 \itemize{
-\item \code{rmst}: the calculation results per group.
+\item \code{rmst_per_arm}: the calculation results per group.
 \item \code{rmst_diff}: the calculation results of RMST differences.
 }
 }

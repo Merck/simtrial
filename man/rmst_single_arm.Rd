@@ -31,7 +31,7 @@ A data frame of
 \item Cutoff time: same as \code{tau};
 \item Group label: same as \code{group_label};
 \item Estimated RMST;
-\item Variance, std, and CIs of the estimated RMST;
+\item Variance, standard error, and CIs of the estimated RMST;
 \item Number of events.
 }
 }

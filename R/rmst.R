@@ -77,8 +77,9 @@ rmst <- function(
 #' @param reference Group name of reference group for RMST comparison.
 #'   Default is the first group name by alphabetical order.
 #'
-#' @return A list of 2 data frames of RMST calculations (`RMST`, `RMSTDIFF`, `ALL`).
-#' - `rmst`: the calculation results per group.
+#' @return
+#' A list of 2 data frames of RMST calculations:
+#' - `rmst_per_arm`: the calculation results per group.
 #' - `rmst_diff`: the calculation results of RMST differences.
 #'
 #' @keywords internal
@@ -171,12 +172,13 @@ rmst_two_arm <- function(
 #' @param alpha A numeric value of the significant level for RMST
 #'   confidence interval. Default is 0.05.
 #'
-#' @return A data frame of
-#'  - Cutoff time: same as \code{tau};
-#'  - Group label: same as \code{group_label};
-#'  - Estimated RMST;
-#'  - Variance, std, and CIs of the estimated RMST;
-#'  - Number of events.
+#' @return
+#' A data frame of
+#' - Cutoff time: same as \code{tau};
+#' - Group label: same as \code{group_label};
+#' - Estimated RMST;
+#' - Variance, standard error, and CIs of the estimated RMST;
+#' - Number of events.
 #'
 #' @importFrom survival survfit Surv
 #'
@@ -262,7 +264,7 @@ rmst_single_arm <- function(
   # std is the standard error of the estimated RMST
   variance <- sum(dev, na.rm = TRUE) * sum(n_event, na.rm = TRUE) / (sum(n_event, na.rm = TRUE) - 1)
   std <- sqrt(variance)
-  # lcl and ucl are lower/upper control limit of CIs for rmst
+  # lcl and ucl are lower/upper control limit of CIs for RMST
   lcl <- rmst - stats::qnorm(1 - alpha / 2) * std
   ucl <- rmst + stats::qnorm(1 - alpha / 2) * std
   event <- sum(n_event, na.rm = TRUE)
