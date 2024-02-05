@@ -132,7 +132,7 @@ rmst_two_arm <- function(
     rmst_single_arm(
       time_var = time_var[indx],
       event_var = event_var[indx],
-      trunc_time = trunc_time,
+      tau = trunc_time,
       group_label = x,
       alpha = alpha
     )
