@@ -60,7 +60,7 @@ enroll_rate <- define_enroll_rate(duration = c(enroll_rampup_duration,
 # parameters for treatment effect
 delay_effect_duration <- 3  # delay treatment effect in months
 median_col <- 9             # survival median of the control arm
-median_exp <- c(9, 14)      # survival median of the experimental arm (9 month for first 3 months and 18 afterwards)
+median_exp <- c(9, 14)      # survival median of the experimental arm
 dropout_rate <- 0.001
 fail_rate <- define_fail_rate(duration = c(delay_effect_duration, 100),
                               hr = median_col / median_exp,
@@ -85,8 +85,8 @@ ia1 <- get_analysis_date(data,
                          min_n_overall = 200,
                          min_followup = 20) |> quote()
 
-IA2
-The 2nd interim analysis will occur at the later of the following 3 conditions:
+# IA2
+# The 2nd interim analysis will occur at the later of the following 3 conditions:
 # - At least 32 months have passed since the start of the study
 # - At least 250 events have occurred
 # - At least 10 months after IA1
@@ -98,7 +98,7 @@ ia2 <- get_analysis_date(data,
                          min_time_after_previous_analysis = 10) |> quote()
 
 # FA
-The final analysis will occur at the later of the following 2 conditions:
+# The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study
 # - At least 300 events have occurred
 fa <- get_analysis_date(data,
