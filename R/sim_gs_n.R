@@ -41,6 +41,7 @@
 #' median_exp <- c(9, 14)      # survival median of the experimental arm
 #' dropout_rate <- 0.001
 #' fail_rate <- define_fail_rate(duration = c(delay_effect_duration, 100),
+#'                               fail_rate = log(2) /  median_col,
 #'                               hr = median_col / median_exp,
 #'                               dropout_rate = dropout_rate)
 #'
@@ -195,9 +196,9 @@ sim_gs_n <- function(
 
       # get cut date
       if (i_analysis < n_analysis) {
-        cut_date[i_analysis] <- cutting[[paste0("ia", i_analysis)]] |> eval(envir = env(data = simu_data))
+        cut_date[i_analysis] <- cutting[[paste0("ia", i_analysis)]] |> eval(envir = rlang::env(data = simu_data))
       } else {
-        cut_date[i_analysis] <- cutting[["fa"]] |> eval(envir = env(data = simu_data))
+        cut_date[i_analysis] <- cutting[["fa"]] |> eval(envir = rlang::env(data = simu_data))
       }
 
       # cut the data
