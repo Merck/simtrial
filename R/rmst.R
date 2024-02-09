@@ -127,39 +127,59 @@ rmst_two_arm <- function(
 
   g_label <- sort(unique(as.character(group_var)))
 
-  # Calculate RMST for each group by rmst_single()
-  one_rmst <- function(x) {
-    indx <- group_var == x
-    rmst_single_arm(
-      time_var = time_var[indx],
-      event_var = event_var[indx],
-      tau = trunc_time,
-      group_label = x,
-      alpha = alpha
-    )
-  }
+  op_single_list <- lapply(
+    X = g_label,
+    FUN = one_rmst,
+    # arguments passed to FUN (one_rmst)
+    group_var = group_var,
+    time_var = time_var,
+    event_var = event_var,
+    trunc_time = trunc_time,
+    alpha = alpha
+  )
+  op_single <- do.call(rbind, op_single_list)
 
-  op_single <- do.call(rbind, lapply(g_label, one_rmst))
-
-  # Calculate RMST difference and corresponding confidence intervals between each group with reference group
-  diff_rmst <- function(x) {
-    df_rf <- op_single[op_single$group == reference, ]
-    df2 <- op_single[op_single$group == x, ]
-    cutoff_time <- trunc_time
-    group <- paste(unique(df2$group), "-", unique(df_rf$group))
-    rmst_diff <- df2$rmst - df_rf$rmst
-    variance <- df2$variance + df_rf$variance
-    std <- sqrt(variance)
-    lcl <- rmst_diff - stats::qnorm(1 - alpha / 2) * std
-    ucl <- rmst_diff + stats::qnorm(1 - alpha / 2) * std
-    data.frame(cutoff_time, group, rmst_diff, variance, std, lcl, ucl, stringsAsFactors = FALSE)
-  }
-
-  op_diff <- do.call(rbind, lapply(setdiff(g_label, reference), diff_rmst))
+  op_diff_list <- lapply(
+    X = setdiff(g_label, reference),
+    FUN = diff_rmst,
+    # arguments passed to FUN (diff_rmst)
+    op_single = op_single,
+    reference = reference,
+    trunc_time = trunc_time,
+    alpha = alpha
+  )
+  op_diff <- do.call(rbind, op_diff_list)
 
   ans <- list(rmst_per_arm = op_single, rmst_diff = op_diff)
 
   return(ans)
+}
+
+# Calculate RMST for each group by rmst_single()
+one_rmst <- function(x, group_var, time_var, event_var, trunc_time, alpha) {
+  indx <- group_var == x
+  rmst_single_arm(
+    time_var = time_var[indx],
+    event_var = event_var[indx],
+    tau = trunc_time,
+    group_label = x,
+    alpha = alpha
+  )
+}
+
+# Calculate RMST difference and corresponding confidence intervals between each
+# group with reference group
+diff_rmst <- function(x, op_single, reference, trunc_time, alpha = alpha) {
+  df_rf <- op_single[op_single$group == reference, ]
+  df2 <- op_single[op_single$group == x, ]
+  cutoff_time <- trunc_time
+  group <- paste(unique(df2$group), "-", unique(df_rf$group))
+  rmst_diff <- df2$rmst - df_rf$rmst
+  variance <- df2$variance + df_rf$variance
+  std <- sqrt(variance)
+  lcl <- rmst_diff - stats::qnorm(1 - alpha / 2) * std
+  ucl <- rmst_diff + stats::qnorm(1 - alpha / 2) * std
+  data.frame(cutoff_time, group, rmst_diff, variance, std, lcl, ucl, stringsAsFactors = FALSE)
 }
 
 #' Calculate RMST for a single cut-off time point
