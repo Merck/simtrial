@@ -205,7 +205,7 @@ sim_gs_n <- function(
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
 
       # test
-      ans_1sim_new <- eval(test, envir = env(data = simu_data_cut))
+      ans_1sim_new <- eval(test, envir = rlang::env(data = simu_data_cut))
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
