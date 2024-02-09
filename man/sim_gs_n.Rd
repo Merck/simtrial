@@ -147,13 +147,13 @@ sim_gs_n(
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024)
 
-# Test 5: weighted logrank test by RMST
+# Test 5: RMST
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = rmst(10)) |> quote(),
+  test = rmst(10) |> quote(),
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024)
 
