@@ -47,20 +47,20 @@ wlr <- function(data, weight){
     ans <- data |>
       counting_process(arm = "experimental") |>
       mb_weight(delay = weight$delay, w_max = weight$w_max) |>
-      summarize(
+      dplyr::summarize(
         s = sum(o_minus_e * mb_weight),
         v = sum(var_o_minus_e * mb_weight^2),
         z = s / sqrt(v)) |>
-      select(z)
+      dplyr::select(z)
   } else if ("early_period" %in% class(weight)){
     ans <- data |>
       counting_process(arm = "experimental") |>
       early_zero_weight(early_period = weight$early_period) |>
-      summarize(
+      dplyr::summarize(
         s = sum(o_minus_e * weight),
         v = sum(var_o_minus_e * weight^2),
         z = s / sqrt(v)) |>
-      select(z)
+      dplyr::select(z)
   }
   return(ans)
 }
