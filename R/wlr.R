@@ -22,7 +22,7 @@
 #' @param weight weighting functions, such as \code{fh_weight}, \code{mb_weight}, and \code{early_zero_weight}.
 #'
 #' @return test results
-#'
+#' @export
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
