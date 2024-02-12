@@ -153,17 +153,19 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = rmst(10) |> quote(),
+  test = rmst(data, tau = 20) |> quote(),
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024)
 
-# Test 6: weighted logrank test by RMST
+# Test 6: maxcombo (FH(0,0) + FH(0, 0.5))
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = rmst(10)) |> quote(),
+  test = maxcombo(data,
+                  test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
+                  test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()) |> quote(),
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024)
 }
