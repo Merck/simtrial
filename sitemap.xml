@@ -52,6 +52,9 @@
     <loc>https://merck.github.io/simtrial/reference/cut_data_by_event.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/early_zero.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/early_zero_weight.html</loc>
   </url>
   <url>
@@ -73,6 +76,9 @@
     <loc>https://merck.github.io/simtrial/reference/ex6_crossing.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/fh.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/fh_weight.html</loc>
   </url>
   <url>
@@ -86,6 +92,12 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/maxcombo.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/mb.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/mb_delayed_effect.html</loc>
@@ -118,6 +130,9 @@
     <loc>https://merck.github.io/simtrial/reference/sim_fixed_n.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/sim_gs_n.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/sim_pw_surv.html</loc>
   </url>
   <url>
@@ -125,5 +140,8 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/to_sim_pw_surv.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/wlr.html</loc>
   </url>
 </urlset>

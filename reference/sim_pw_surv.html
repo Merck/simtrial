@@ -159,26 +159,26 @@ i.e., 1 is a failure, 0 is a dropout.</p></li>
 <span class="r-in"><span><span class="co"># Example 1</span></span></span>
 <span class="r-in"><span><span class="fu">sim_pw_surv</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment  fail_time dropout_time        cte fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All   0.1169701      control  2.3522782   726.236246  2.4692483    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All   0.1655561 experimental  7.2130199  1375.314370  7.3785759    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All   0.2203226      control  5.2816125   279.355397  5.5019351    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All   0.4589592 experimental  4.5824607    11.342590  5.0414199    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All   0.5161879 experimental  0.3408276    98.581064  0.8570155    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All   0.5525417 experimental 48.4943098  3940.428363 49.0468516    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All   0.6023998      control  7.9020486  1506.827622  8.5044484    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All   0.7313558      control  5.3501473     8.859702  6.0815032    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All   0.8013719 experimental  4.6297940   591.700214  5.4311659    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All   0.8438567      control  1.7559011    20.478716  2.5997577    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All   0.8919483      control  5.2311790   151.951748  6.1231272    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All   0.9181567 experimental 25.3045387  1074.127307 26.2226954    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All   1.0548415      control 20.0464765  1420.826969 21.1013180    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All   1.2705991 experimental  8.2785049   460.908456  9.5491040    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All   1.2920275 experimental  1.6351292   480.784251  2.9271566    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All   1.2945163      control 11.2924970   459.922500 12.5870132    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All   1.3919213 experimental 19.0080405    80.189760 20.3999618    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All   1.6078178      control 10.0045280   295.652900 11.6123458    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All   1.6174817      control  6.2319115   255.661979  7.8493933    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All   1.6770953 experimental  0.7551894   278.421726  2.4322847    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All  0.07871071 experimental  0.8537303    3814.4049  0.9324410    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All  0.47026321 experimental 14.4602565    1299.4046 14.9305197    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All  0.47994086      control  0.1330972    1008.1076  0.6130381    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All  0.48952155      control 24.1670368     922.0742 24.6565583    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All  0.53471429 experimental 38.9716282    1607.3073 39.5063425    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All  0.59386888      control 42.5781553    3317.0719 43.1720242    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All  0.78455146      control 22.0439755     965.5532 22.8285270    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All  0.84011530 experimental 15.0846482    2413.7393 15.9247635    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All  0.85965653 experimental 19.1110751    1714.4159 19.9707317    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All  0.93337303      control 17.8959969     124.9380 18.8293699    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All  1.05113537      control 10.4688811     717.6797 11.5200164    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All  1.16178034 experimental  1.6215705     421.1552  2.7833509    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All  1.25624680      control 27.7475045     322.8267 29.0037513    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All  1.34969344 experimental  5.4383655     729.7809  6.7880589    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All  1.38160544      control 19.9963748      34.9122 21.3779803    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All  1.70322101 experimental 74.4891447    1457.0016 76.1923657    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All  1.96431347      control 24.6891265     569.9275 26.6534400    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All  2.02746120 experimental  2.6682724     234.8326  4.6957335    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All  2.02883625 experimental 20.3642611    3707.3776 22.3930973    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All  2.07483249      control 41.2064449    1929.5912 43.2812774    1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># 3:1 randomization</span></span></span>
@@ -186,27 +186,27 @@ i.e., 1 is a failure, 0 is a dropout.</p></li>
 <span class="r-in"><span>  n <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"experimental"</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">"control"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment  fail_time dropout_time       cte fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All   0.0701005 experimental 67.0221105    1602.5241 67.092211    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All   0.3138125 experimental 23.9737611     189.7320 24.287574    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All   0.4815617      control  8.9365213     847.8221  9.418083    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All   0.7462000 experimental 20.2543626     699.6371 21.000563    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All   0.9607707 experimental 53.8871321     706.7815 54.847903    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All   1.0511800      control  0.1715598     255.8370  1.222740    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All   1.1067745 experimental 38.1885083    1101.2561 39.295283    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All   1.2658658 experimental 77.1229067    1447.0174 78.388772    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All   1.3559820      control  6.5343971     742.2296  7.890379    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All   1.3676125 experimental 58.7567835     251.6071 60.124396    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All   1.3691043 experimental 38.8468048     481.0761 40.215909    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All   1.4535872 experimental 13.4139827     596.6599 14.867570    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All   1.4727922 experimental  1.3089880    1697.0029  2.781780    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All   1.7945164 experimental 17.3633287    4614.3631 19.157845    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All   1.8293592 experimental 10.5662550      86.2281 12.395614    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All   1.8558251      control 10.2177042     685.6568 12.073529    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All   1.8972873 experimental  2.6178723    1819.2595  4.515160    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All   1.9490709 experimental  3.4084081     289.6376  5.357479    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All   1.9615621      control 51.0259561    1134.6053 52.987518    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All   2.0864015 experimental  2.3365045     384.2175  4.422906    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment   fail_time dropout_time        cte fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All   0.3394074      control   8.6798252    4679.0284   9.019233    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All   0.3514369 experimental  79.5996476    1328.2675  79.951085    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All   0.3928878 experimental  38.5427341    1922.6176  38.935622    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All   0.5034569 experimental   8.2467060    1033.8370   8.750163    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All   0.6262564 experimental   2.6286523    2438.6836   3.254909    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All   0.7785300 experimental   3.1935522    5787.6327   3.972082    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All   0.8784108 experimental  34.4718123     130.0677  35.350223    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All   0.8899508      control   5.3450682    1342.8364   6.235019    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All   0.9266900 experimental  26.0590347    1435.6105  26.985725    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All   0.9963989      control   0.8252429     428.1238   1.821642    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All   1.1710287 experimental  31.8069029     611.7869  32.977932    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All   1.4501068 experimental  87.7351564    4007.8564  89.185263    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All   1.5755139      control  34.5970358     680.3976  36.172550    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All   1.9586947 experimental  52.3140237    1314.4830  54.272718    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All   1.9733837 experimental   2.1468786     418.7007   4.120262    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All   2.1825953 experimental 113.6812780     783.3458 115.863873    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All   2.2419764 experimental  21.9996164     314.7699  24.241593    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All   2.8708139 experimental   1.6705914     129.1783   4.541405    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All   2.9452748 experimental   2.8462729     686.4160   5.791548    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All   2.9607731      control   3.2725614     777.8008   6.233334    1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 3</span></span></span>
 <span class="r-in"><span><span class="co"># Simulate 2 stratum; will use defaults for blocking and enrollRates</span></span></span>
@@ -232,27 +232,27 @@ i.e., 1 is a failure, 0 is a dropout.</p></li>
 <span class="r-in"><span>    rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">.001</span>, <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment  fail_time dropout_time       cte fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     High   0.1863179 experimental  8.5527734    437.33867  8.739091    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      Low   0.3170170      control 69.3565466    513.65581 69.673564    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      Low   0.3427688 experimental 23.3040655    485.16067 23.646834    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     High   0.3664647      control  4.1008854    790.71037  4.467350    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Low   0.6836981      control 23.9110679   1164.23533 24.594766    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     High   0.7075722      control 17.5605004    397.54149 18.268073    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      Low   0.7807614 experimental 26.2864537    475.16192 27.067215    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     High   0.8097265 experimental  0.1926551     43.34721  1.002382    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     High   0.8122659 experimental 15.0456185   4174.94331 15.857884    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     Low   1.4281633 experimental 12.7370848   1625.11183 14.165248    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    High   1.4808871 experimental 20.2331348    465.29175 21.714022    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    High   1.5638285      control 23.0282302    759.05162 24.592059    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    High   1.6907687      control 11.6284285   1004.53947 13.319197    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    High   1.7629898 experimental  4.1098911   2189.41244  5.872881    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    High   1.9106687      control  6.7833167    494.34540  8.693985    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16     Low   2.1112185 experimental  4.4710497   1487.11764  6.582268    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17    High   2.2452636      control 29.7332577     21.84553 24.090796    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    High   2.4984987 experimental  1.8322780    361.39980  4.330777    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19     Low   2.8414901      control 41.3615037   2212.00385 44.202994    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    High   3.0451995 experimental  0.8167457   3357.73901  3.861945    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment fail_time dropout_time       cte fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     High  0.07492052      control  5.887847    947.53200  5.962767    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      Low  0.13502778 experimental 48.059320   1575.46191 48.194348    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     High  0.39865660      control  6.385581    594.65722  6.784238    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     High  0.46889497 experimental  6.502192    101.48532  6.971086    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Low  0.60455860 experimental 70.910494     11.30581 11.910371    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     High  0.62445322 experimental  7.129680   1745.49713  7.754133    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     High  0.62488209 experimental 11.743456    140.48715 12.368338    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     High  0.82976440      control  4.701781    534.03903  5.531546    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      Low  0.99732749      control  8.650039   1618.77424  9.647367    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     Low  1.02977227      control  8.232462    298.39988  9.262234    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     Low  1.11813466      control  1.170722    338.56170  2.288857    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    High  1.21201118      control  6.176228    798.42951  7.388239    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     Low  1.30547882      control  2.371753    471.61170  3.677232    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    High  1.31769324 experimental 83.296196    120.75608 84.613889    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    High  1.33028083 experimental 18.983368    556.32841 20.313649    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     Low  1.39432486 experimental  7.980584    265.74101  9.374909    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     Low  1.41875001 experimental 23.774258    290.84161 25.193008    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    High  1.68017410 experimental  2.134892   2312.44321  3.815066    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    High  1.82422589      control 26.390533   2039.00719 28.214759    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    High  1.86734381      control  4.553985   1228.14940  6.421329    1</span>
 <span class="r-in"><span><span class="co"># Example 4</span></span></span>
 <span class="r-in"><span><span class="co"># If you want a more rectangular entry for a data.frame</span></span></span>
 <span class="r-in"><span><span class="va">fail_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span></span>
@@ -277,19 +277,19 @@ i.e., 1 is a failure, 0 is a dropout.</p></li>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  dropout_rate <span class="op">=</span> <span class="va">dropout_rate</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment   fail_time dropout_time        cte fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Low   0.0734264 experimental  19.8074367     65.86452  19.880863    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     High   0.1289682      control   9.4633770   1250.15328   9.592345    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     High   0.1502559 experimental   5.3931730   2506.43240   5.543429    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      Low   0.4075359      control   0.2998111    347.07976   0.707347    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     High   0.5873042 experimental   8.2992292    645.75643   8.886533    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      Low   0.6447172 experimental  68.4701859    875.86457  69.114903    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      Low   0.7176320      control  53.4130441    803.69807  54.130676    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      Low   1.2571982 experimental 181.0733138    465.17781 182.330512    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     High   1.3182567      control  31.2547073   2963.64946  32.572964    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     Low   1.4377561 experimental  54.9043285    723.83802  56.342085    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    High   1.6384161      control  27.0443860    403.53936  28.682802    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    High   1.7007771 experimental   8.5890783   1027.30887  10.289855    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment fail_time dropout_time       cte fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Low   0.3303511      control 29.302363    541.68921 29.632714    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     High   0.3558160 experimental 19.482764   1141.96183 19.838580    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     High   0.3805044      control  3.984188     17.81142  4.364693    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      Low   0.4365653 experimental 35.101857    246.42432 35.538422    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     High   0.4482662 experimental 40.290596    323.49290 40.738862    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     High   0.6482421      control  9.217221   1753.59986  9.865463    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     High   0.6498981 experimental 47.942699   1429.39814 48.592597    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     High   0.7809772      control  5.105759    611.20351  5.886737    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     High   0.7835750 experimental 31.775029    156.08091 32.558604    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    High   0.8084417      control 45.218498    398.01563 46.026939    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    High   0.8454368      control  4.826850   2369.46680  5.672287    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    High   0.8853096      control 12.108700   1231.07715 12.994010    1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
