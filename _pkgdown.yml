@@ -34,6 +34,7 @@ reference:
   contents:
     - sim_pw_surv
     - sim_fixed_n
+    - sim_gs_n
     - to_sim_pw_surv
 
 - title: "Cut data"
@@ -48,6 +49,8 @@ reference:
     - counting_process
     - pvalue_maxcombo
     - rmst
+    - wlr
+    - maxcombo
 
 - title: "Randomization algorithms"
   contents:
@@ -55,8 +58,11 @@ reference:
 
 - title: "Weight functions for WLR test"
   contents:
+    - mb
     - mb_weight
+    - fh
     - fh_weight
+    - early_zero
     - early_zero_weight
 
 - title: "Example datasets"
