@@ -82,6 +82,7 @@ rmst <- function(
 #' - `rmst_per_arm`: the calculation results per group.
 #' - `rmst_diff`: the calculation results of RMST differences.
 #'
+#' @importFrom data.table setDF rbindlist
 #' @keywords internal
 #'
 #' @examples
@@ -137,7 +138,8 @@ rmst_two_arm <- function(
     trunc_time = trunc_time,
     alpha = alpha
   )
-  op_single <- do.call(rbind, op_single_list)
+  op_single <- rbindlist(op_single_list)
+  setDF(op_single)
 
   op_diff_list <- lapply(
     X = setdiff(g_label, reference),
@@ -148,7 +150,8 @@ rmst_two_arm <- function(
     trunc_time = trunc_time,
     alpha = alpha
   )
-  op_diff <- do.call(rbind, op_diff_list)
+  op_diff <- rbindlist(op_diff_list)
+  setDF(op_diff)
 
   ans <- list(rmst_per_arm = op_single, rmst_diff = op_diff)
 
