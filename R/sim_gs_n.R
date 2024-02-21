@@ -55,7 +55,8 @@
 #' # The 1st interim analysis will occur at the later of the following 3 conditions:
 #' # - At least 20 months have passed since the start of the study
 #' # - At least 100 events have occurred
-#' # - At least 20 months have elapsed after enrolling 200/400 subjects, with a minimum of 20 months follow-up
+#' # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
+#' #   minimum of 20 months follow-up
 #' # However, if events accumulation is slow, we will wait for a maximum of 24 months.
 #' ia1 <- get_analysis_date(data,
 #'                          planned_calendar_time = 20,

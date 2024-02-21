@@ -55,8 +55,10 @@ utils::globalVariables(
     "time",
     "treatment",
     "tte",
+    "v",
     "var_o_minus_e",
-    "weight"
+    "weight",
+    "z"
   )
 )
 
