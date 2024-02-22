@@ -38,12 +38,12 @@
 #'
 wlr <- function(data, weight){
 
-  if ("fh" %in% class(weight)) {
+  if (inherits(weight, "fh")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
       fh_weight(rho_gamma = data.frame(rho = weight$rho, gamma = weight$gamma))
 
-  } else if ("mb" %in% class(weight)) {
+  } else if (inherits(weight, "mb")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
       mb_weight(delay = weight$delay, w_max = weight$w_max) |>
@@ -52,7 +52,7 @@ wlr <- function(data, weight){
         v = sum(var_o_minus_e * mb_weight^2),
         z = s / sqrt(v)) |>
       dplyr::select(z)
-  } else if ("early_period" %in% class(weight)){
+  } else if (inherits(weight, "early_period")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
       early_zero_weight(early_period = weight$early_period) |>

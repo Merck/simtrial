@@ -194,7 +194,7 @@ sim_gs_n <- function(
 
   # simulate for n_sim times
   ans <- NULL
-  for (sim_id in 1:n_sim) {
+  for (sim_id in seq_len(n_sim)) {
     set.seed(seed + sim_id)
     # generate data
     simu_data <- sim_pw_surv(
@@ -210,7 +210,7 @@ sim_gs_n <- function(
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
 
-    for (i_analysis in 1:n_analysis) {
+    for (i_analysis in seq_len(n_analysis)) {
 
       # get cut date
       cut_date[i_analysis] <- cutting[[i_analysis]](data = simu_data)

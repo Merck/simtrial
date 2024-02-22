@@ -26,9 +26,7 @@
 #' @examples
 #' fh(rho = 0, gamma = 0.5)
 fh <- function(rho = 0, gamma = 0){
-  ans <- list(rho = rho, gamma = gamma)
-  class(ans) <- c(class(ans), "fh", "wlr")
-  return(ans)
+  structure(list(rho = rho, gamma = gamma), class = c("list", "fh", "wlr"))
 }
 
 #' Magirr and Burman weighting function
@@ -45,9 +43,7 @@ fh <- function(rho = 0, gamma = 0){
 #' @examples
 #' mb(delay = 6, w_max = 2)
 mb <- function(delay = 4, w_max = Inf){
-  ans <- list(delay = delay, w_max = w_max)
-  class(ans) <- c(class(ans), "mb", "wlr")
-  return(ans)
+  structure(list(delay = delay, w_max = w_max), class = c("list", "mb", "wlr"))
 }
 
 #' Zero early weighting function
@@ -64,7 +60,5 @@ mb <- function(delay = 4, w_max = Inf){
 #' @examples
 #' early_zero(6)
 early_zero <- function(early_period){
-  ans <- list(early_period = early_period)
-  class(ans) <- c(class(ans), "early_period", "wlr")
-  return(ans)
+  structure(list(early_period = early_period), class = c("list", "early_period", "wlr"))
 }

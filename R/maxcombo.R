@@ -39,7 +39,7 @@ maxcombo <- function(data, test1, test2, ...){
   rho_vector <- NULL
   gamma_vector <- NULL
 
-  for (i in 1:n_test) {
+  for (i in seq_len(n_test)) {
     test_i <- get(paste0("test", i))
     rho_vector <- c(rho_vector, test_i$rho)
     gamma_vector <- c(gamma_vector, test_i$gamma)
