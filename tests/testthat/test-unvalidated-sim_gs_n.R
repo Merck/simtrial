@@ -61,9 +61,10 @@ test_that("Test 1: regular logrank test", {
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = wlr(data, weight = fh(rho = 0, gamma = 0)) |> quote(),
+    test = wlr,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    weight = fh(rho = 0, gamma = 0)
   )
   expected <- data.frame(
     rho = numeric(9),
@@ -86,9 +87,10 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = wlr(data, weight = fh(rho = 0, gamma = 0.5)) |> quote(),
+    test = wlr,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    weight = fh(rho = 0, gamma = 0.5)
   )
   expected <- data.frame(
     rho = numeric(9),
@@ -111,9 +113,10 @@ test_that("Test 3: weighted logrank test by MB(6)", {
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = wlr(data, weight = mb(delay = 3)) |> quote(),
+    test = wlr,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    weight = mb(delay = 3)
   )
   expected <- data.frame(
     z = c(
@@ -134,9 +137,10 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = wlr(data, weight = early_zero(6)) |> quote(),
+    test = wlr,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    weight = early_zero(6)
   )
   expected <- data.frame(
     z = c(
@@ -157,9 +161,10 @@ test_that("Test 5: RMST", {
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = rmst(data, tau = 20) |> quote(),
+    test = rmst,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    tau = 20
   )
   expected <- data.frame(
     rmst_arm1 = c(
@@ -189,18 +194,17 @@ test_that("Test 5: RMST", {
   expect_equal(observed, expected)
 })
 
-
 test_that("Test 6: maxcombo (FH(0,0) + FH(0, 0.5))", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
     enroll_rate = enroll_rate,
     fail_rate = fail_rate,
-    test = maxcombo(data,
-                    test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-                    test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()) |> quote(),
+    test = maxcombo,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-    seed = 2024
+    seed = 2024,
+    test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
+    test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()
   )
   expected <- data.frame(
     p_value = c(

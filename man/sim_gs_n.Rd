@@ -12,9 +12,10 @@ sim_gs_n(
   fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
-  test = quote(wlr(weight = fh(rho = 0, gamma = 0))),
+  test = wlr,
   cutting = NULL,
-  seed = 2024
+  seed = 2024,
+  ...
 )
 }
 \arguments{
@@ -35,11 +36,16 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{a functional call of the test such as \code{wlr()} or \code{maxcombo()}}
+\item{test}{a test function such as \code{\link{wlr}},
+\code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is
+passed as the first positional argument to the test function provided.}
 
 \item{cutting}{a functional call of the cutting for IA(s) and FA, see examples}
 
 \item{seed}{random seed}
+
+\item{...}{Arguments passed to the test function provided by the argument
+\code{test}}
 }
 \value{
 a data frame summaring the simulation ID, analysis date, z statistics or p-values
@@ -113,9 +119,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = fh(rho = 0, gamma = 0)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = fh(rho = 0, gamma = 0))
 
 # Test 2: weighted logrank test by FH(0, 0.5)
 sim_gs_n(
@@ -123,9 +130,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = fh(rho = 0, gamma = 0.5)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = fh(rho = 0, gamma = 0.5))
 
 
 # Test 3: weighted logrank test by MB(6)
@@ -134,9 +142,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = mb(delay = 3)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = mb(delay = 3))
 
 # Test 4: weighted logrank test by early zero (6)
 sim_gs_n(
@@ -144,9 +153,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = early_zero(6)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = early_zero(6))
 
 # Test 5: RMST
 sim_gs_n(
@@ -154,9 +164,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = rmst(data, tau = 20) |> quote(),
+  test = rmst,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  tau = 20)
 
 # Test 6: maxcombo (FH(0,0) + FH(0, 0.5))
 sim_gs_n(
@@ -164,9 +175,9 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo(data,
-                  test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-                  test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()) |> quote(),
+  test = maxcombo,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
+  test2 = wlr(data, rho = 0, gamma = 0.5) |> quote())
 }
