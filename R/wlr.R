@@ -50,29 +50,27 @@ wlr <- function(data, weight){
   } else if (inherits(weight, "mb")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
-      mb_weight(delay = weight$delay, w_max = weight$w_max) |>
-      setDT() |>
-      _[,
-        .(
-          s = sum(o_minus_e * mb_weight),
-          v = sum(var_o_minus_e * mb_weight^2)
-        )
-      ] |>
-      _[, .(z = s / sqrt(v))] |>
-      setDF()
+      mb_weight(delay = weight$delay, w_max = weight$w_max)
+    setDT(ans)
+    ans <- ans[,
+               .(
+                 s = sum(o_minus_e * mb_weight),
+                 v = sum(var_o_minus_e * mb_weight^2)
+               )
+    ][, .(z = s / sqrt(v))]
+    setDF(ans)
   } else if (inherits(weight, "early_period")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
-      early_zero_weight(early_period = weight$early_period) |>
-      setDT() |>
-      _[,
-        .(
-          s = sum(o_minus_e * weight),
-          v = sum(var_o_minus_e * weight^2)
-        )
-      ] |>
-      _[, .(z = s / sqrt(v))] |>
-      setDF()
+      early_zero_weight(early_period = weight$early_period)
+    setDT(ans)
+    ans <- ans[,
+               .(
+                 s = sum(o_minus_e * weight),
+                 v = sum(var_o_minus_e * weight^2)
+               )
+    ][, .(z = s / sqrt(v))]
+    setDF(ans)
   }
   return(ans)
 }
