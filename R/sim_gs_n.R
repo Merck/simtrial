@@ -16,17 +16,18 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Simulate group sequantial designs with fixed sample size
+#' Simulate group sequential designs with fixed sample size
 #' @inheritParams sim_fixed_n
 #' @param test a test function such as \code{\link{wlr}},
 #'   \code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is
 #'   passed as the first positional argument to the test function provided.
-#' @param cutting a functional call of the cutting for IA(s) and FA, see examples
+#' @param cutting a list of cutting functions created by
+#'   \code{\link{create_cutting}}, see examples
 #' @param seed random seed
 #' @param ... Arguments passed to the test function provided by the argument
 #'   \code{test}
 #'
-#' @return a data frame summaring the simulation ID, analysis date, z statistics or p-values
+#' @return a data frame summarizing the simulation ID, analysis date, z statistics or p-values
 #' @export
 #'
 #' @examples
@@ -62,12 +63,13 @@
 #' # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #' #   minimum of 20 months follow-up
 #' # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-#' ia1 <- get_analysis_date(data,
-#'                          planned_calendar_time = 20,
-#'                          target_event_overall = 100,
-#'                          max_extension_for_target_event = 24,
-#'                          min_n_overall = 200,
-#'                          min_followup = 20) |> quote()
+#' ia1 <- create_cutting(
+#'   planned_calendar_time = 20,
+#'   target_event_overall = 100,
+#'   max_extension_for_target_event = 24,
+#'   min_n_overall = 200,
+#'   min_followup = 20
+#' )
 #'
 #' # IA2
 #' # The 2nd interim analysis will occur at the later of the following 3 conditions:
@@ -75,19 +77,21 @@
 #' # - At least 250 events have occurred
 #' # - At least 10 months after IA1
 #' # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-#' ia2 <- get_analysis_date(data,
-#'                          planned_calendar_time = 32,
-#'                          target_event_overall = 200,
-#'                          max_extension_for_target_event = 34,
-#'                          min_time_after_previous_analysis = 10) |> quote()
+#' ia2 <- create_cutting(
+#'   planned_calendar_time = 32,
+#'   target_event_overall = 200,
+#'   max_extension_for_target_event = 34,
+#'   min_time_after_previous_analysis = 10
+#' )
 #'
 #' # FA
 #' # The final analysis will occur at the later of the following 2 conditions:
 #' # - At least 45 months have passed since the start of the study
 #' # - At least 300 events have occurred
-#' fa <- get_analysis_date(data,
-#'                        planned_calendar_time = 45,
-#'                        target_event_overall = 350) |> quote()
+#' fa <- create_cutting(
+#'   planned_calendar_time = 45,
+#'   target_event_overall = 350
+#' )
 #'
 #' # Test 1: regular logrank test
 #' sim_gs_n(
@@ -209,11 +213,7 @@ sim_gs_n <- function(
     for (i_analysis in 1:n_analysis) {
 
       # get cut date
-      if (i_analysis < n_analysis) {
-        cut_date[i_analysis] <- cutting[[paste0("ia", i_analysis)]] |> eval(envir = rlang::env(data = simu_data))
-      } else {
-        cut_date[i_analysis] <- cutting[["fa"]] |> eval(envir = rlang::env(data = simu_data))
-      }
+      cut_date[i_analysis] <- cutting[[i_analysis]](data = simu_data)
 
       # cut the data
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
@@ -231,4 +231,37 @@ sim_gs_n <- function(
     ans <- rbind(ans, ans_1sim)
   }
   return(ans)
+}
+
+#' Create a cutting function
+#'
+#' Create a cutting function for use with \code{\link{sim_gs_n}}
+#'
+#' @param ... Arguments passed to \code{\link{get_analysis_date}}
+#'
+#' @return A function that accepts a data frame of simulated trial data and
+#'   returns a cut date
+#'
+#' @export
+#'
+#' @seealso \code{\link{get_analysis_date}}, \code{\link{sim_gs_n}}
+#'
+#' @examples
+#' # Simulate trial data
+#' trial_data <- sim_pw_surv()
+#'
+#' # Create a cutting function that applies the following 2 conditions:
+#' # - At least 45 months have passed since the start of the study
+#' # - At least 300 events have occurred
+#' cutting <- create_cutting(
+#'   planned_calendar_time = 45,
+#'   target_event_overall = 350
+#' )
+#'
+#' # Cut the trial data
+#' cutting(trial_data)
+create_cutting <- function(...) {
+  function(data) {
+    get_analysis_date(data, ...)
+  }
 }

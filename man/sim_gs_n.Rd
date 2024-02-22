@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_gs_n.R
 \name{sim_gs_n}
 \alias{sim_gs_n}
-\title{Simulate group sequantial designs with fixed sample size}
+\title{Simulate group sequential designs with fixed sample size}
 \usage{
 sim_gs_n(
   n_sim = 1000,
@@ -40,7 +40,8 @@ in each block.}
 \code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is
 passed as the first positional argument to the test function provided.}
 
-\item{cutting}{a functional call of the cutting for IA(s) and FA, see examples}
+\item{cutting}{a list of cutting functions created by
+\code{\link{create_cutting}}, see examples}
 
 \item{seed}{random seed}
 
@@ -48,10 +49,10 @@ passed as the first positional argument to the test function provided.}
 \code{test}}
 }
 \value{
-a data frame summaring the simulation ID, analysis date, z statistics or p-values
+a data frame summarizing the simulation ID, analysis date, z statistics or p-values
 }
 \description{
-Simulate group sequantial designs with fixed sample size
+Simulate group sequential designs with fixed sample size
 }
 \examples{
 library(gsDesign2)
@@ -86,12 +87,13 @@ ratio <- 1                  # randomization ratio (exp:col)
 # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #   minimum of 20 months follow-up
 # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-ia1 <- get_analysis_date(data,
-                         planned_calendar_time = 20,
-                         target_event_overall = 100,
-                         max_extension_for_target_event = 24,
-                         min_n_overall = 200,
-                         min_followup = 20) |> quote()
+ia1 <- create_cutting(
+  planned_calendar_time = 20,
+  target_event_overall = 100,
+  max_extension_for_target_event = 24,
+  min_n_overall = 200,
+  min_followup = 20
+)
 
 # IA2
 # The 2nd interim analysis will occur at the later of the following 3 conditions:
@@ -99,19 +101,21 @@ ia1 <- get_analysis_date(data,
 # - At least 250 events have occurred
 # - At least 10 months after IA1
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-ia2 <- get_analysis_date(data,
-                         planned_calendar_time = 32,
-                         target_event_overall = 200,
-                         max_extension_for_target_event = 34,
-                         min_time_after_previous_analysis = 10) |> quote()
+ia2 <- create_cutting(
+  planned_calendar_time = 32,
+  target_event_overall = 200,
+  max_extension_for_target_event = 34,
+  min_time_after_previous_analysis = 10
+)
 
 # FA
 # The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study
 # - At least 300 events have occurred
-fa <- get_analysis_date(data,
-                       planned_calendar_time = 45,
-                       target_event_overall = 350) |> quote()
+fa <- create_cutting(
+  planned_calendar_time = 45,
+  target_event_overall = 350
+)
 
 # Test 1: regular logrank test
 sim_gs_n(
