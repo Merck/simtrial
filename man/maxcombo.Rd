@@ -4,26 +4,29 @@
 \alias{maxcombo}
 \title{Maxcombo test}
 \usage{
-maxcombo(data, test1, test2, ...)
+maxcombo(data, rho, gamma)
 }
 \arguments{
 \item{data}{a tte dataset}
 
-\item{test1}{maxcombo test1}
+\item{rho}{Numeric vector passed to \code{\link{fh_weight}}. Must be greater
+than or equal to zero. Must be the same length as \code{gamma}.}
 
-\item{test2}{maxcombo test2}
-
-\item{...}{additional tests}
+\item{gamma}{Numeric vector passed to \code{\link{fh_weight}}. Must be
+greater than or equal to zero. Must be the same length as \code{rho}.}
 }
 \value{
 pvalues
 }
 \description{
-Maxcombo test
+WARNING: This experimental function is a work-in-progress. The function
+arguments will change as we add additional features.
 }
 \examples{
 sim_pw_surv(n = 200) |>
   cut_data_by_event(150) |>
-  maxcombo(test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-           test2 = wlr(data, rho = 0, gamma = 0.5) |> quote())
+  maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
+}
+\seealso{
+\code{\link{fh_weight}}
 }

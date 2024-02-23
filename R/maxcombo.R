@@ -1,4 +1,4 @@
-#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  Copyright (c) 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
 #  All rights reserved.
 #
 #  This file is part of the simtrial program.
@@ -18,38 +18,37 @@
 
 #' Maxcombo test
 #'
+#' WARNING: This experimental function is a work-in-progress. The function
+#' arguments will change as we add additional features.
+#'
 #' @param data a tte dataset
-#' @param test1 maxcombo test1
-#' @param test2 maxcombo test2
-#' @param ... additional tests
+#' @param rho Numeric vector passed to \code{\link{fh_weight}}. Must be greater
+#'   than or equal to zero. Must be the same length as \code{gamma}.
+#' @param gamma Numeric vector passed to \code{\link{fh_weight}}. Must be
+#'   greater than or equal to zero. Must be the same length as \code{rho}.
 #'
 #' @return pvalues
 #' @export
 #'
+#' @seealso \code{\link{fh_weight}}
+#'
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
-#'   maxcombo(test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-#'            test2 = wlr(data, rho = 0, gamma = 0.5) |> quote())
-maxcombo <- function(data, test1, test2, ...){
-  all_args <- match.call(expand.dots = FALSE)
-  args <- all_args[-1]  # Exclude the first element (function name)
-
-  n_test <- length(args) - 1
-  rho_vector <- NULL
-  gamma_vector <- NULL
-
-  for (i in 1:n_test) {
-    test_i <- get(paste0("test", i))
-    rho_vector <- c(rho_vector, test_i$rho)
-    gamma_vector <- c(gamma_vector, test_i$gamma)
-  }
+#'   maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
+maxcombo <- function(data, rho, gamma){
+  stopifnot(
+    is.numeric(rho), is.numeric(gamma),
+    rho >= 0, gamma >= 0,
+    length(rho) == length(gamma)
+  )
 
   ans <- data |>
     counting_process(arm = "experimental") |>
     fh_weight(
-      rho_gamma = data.frame(rho = rho_vector, gamma = gamma_vector),
-      return_corr = TRUE)
+      rho_gamma = data.frame(rho = rho, gamma = gamma),
+      return_corr = TRUE
+    )
 
   ans <-  data.frame(p_value = pvalue_maxcombo(ans))
 

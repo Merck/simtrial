@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_gs_n.R
 \name{sim_gs_n}
 \alias{sim_gs_n}
-\title{Simulate group sequantial designs with fixed sample size}
+\title{Simulate group sequential designs with fixed sample size}
 \usage{
 sim_gs_n(
   n_sim = 1000,
@@ -12,9 +12,10 @@ sim_gs_n(
   fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
-  test = quote(wlr(weight = fh(rho = 0, gamma = 0))),
+  test = wlr,
   cutting = NULL,
-  seed = 2024
+  seed = 2024,
+  ...
 )
 }
 \arguments{
@@ -35,17 +36,24 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{a functional call of the test such as \code{wlr()} or \code{maxcombo()}}
+\item{test}{a test function such as \code{\link{wlr}},
+\code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is
+passed as the first positional argument to the test function provided.}
 
-\item{cutting}{a functional call of the cutting for IA(s) and FA, see examples}
+\item{cutting}{a list of cutting functions created by
+\code{\link{create_cutting}}, see examples}
 
 \item{seed}{random seed}
+
+\item{...}{Arguments passed to the test function provided by the argument
+\code{test}}
 }
 \value{
-a data frame summaring the simulation ID, analysis date, z statistics or p-values
+a data frame summarizing the simulation ID, analysis date, z statistics or p-values
 }
 \description{
-Simulate group sequantial designs with fixed sample size
+WARNING: This experimental function is a work-in-progress. The function
+arguments will change as we add additional features.
 }
 \examples{
 library(gsDesign2)
@@ -80,12 +88,13 @@ ratio <- 1                  # randomization ratio (exp:col)
 # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #   minimum of 20 months follow-up
 # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-ia1 <- get_analysis_date(data,
-                         planned_calendar_time = 20,
-                         target_event_overall = 100,
-                         max_extension_for_target_event = 24,
-                         min_n_overall = 200,
-                         min_followup = 20) |> quote()
+ia1 <- create_cutting(
+  planned_calendar_time = 20,
+  target_event_overall = 100,
+  max_extension_for_target_event = 24,
+  min_n_overall = 200,
+  min_followup = 20
+)
 
 # IA2
 # The 2nd interim analysis will occur at the later of the following 3 conditions:
@@ -93,19 +102,21 @@ ia1 <- get_analysis_date(data,
 # - At least 250 events have occurred
 # - At least 10 months after IA1
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-ia2 <- get_analysis_date(data,
-                         planned_calendar_time = 32,
-                         target_event_overall = 200,
-                         max_extension_for_target_event = 34,
-                         min_time_after_previous_analysis = 10) |> quote()
+ia2 <- create_cutting(
+  planned_calendar_time = 32,
+  target_event_overall = 200,
+  max_extension_for_target_event = 34,
+  min_time_after_previous_analysis = 10
+)
 
 # FA
 # The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study
 # - At least 300 events have occurred
-fa <- get_analysis_date(data,
-                       planned_calendar_time = 45,
-                       target_event_overall = 350) |> quote()
+fa <- create_cutting(
+  planned_calendar_time = 45,
+  target_event_overall = 350
+)
 
 # Test 1: regular logrank test
 sim_gs_n(
@@ -113,9 +124,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = fh(rho = 0, gamma = 0)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = fh(rho = 0, gamma = 0))
 
 # Test 2: weighted logrank test by FH(0, 0.5)
 sim_gs_n(
@@ -123,9 +135,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = fh(rho = 0, gamma = 0.5)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = fh(rho = 0, gamma = 0.5))
 
 
 # Test 3: weighted logrank test by MB(6)
@@ -134,9 +147,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = mb(delay = 3)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = mb(delay = 3))
 
 # Test 4: weighted logrank test by early zero (6)
 sim_gs_n(
@@ -144,9 +158,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr(data, weight = early_zero(6)) |> quote(),
+  test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  weight = early_zero(6))
 
 # Test 5: RMST
 sim_gs_n(
@@ -154,9 +169,10 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = rmst(data, tau = 20) |> quote(),
+  test = rmst,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  tau = 20)
 
 # Test 6: maxcombo (FH(0,0) + FH(0, 0.5))
 sim_gs_n(
@@ -164,9 +180,9 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo(data,
-                  test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-                  test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()) |> quote(),
+  test = maxcombo,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024)
+  seed = 2024,
+  rho = c(0, 0),
+  gamma = c(0, 0.5))
 }
