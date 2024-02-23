@@ -1,22 +1,25 @@
 # 2024-02-22: Converted `example("sim_gs_n")` to tests from commit 306de0d
 # https://github.com/Merck/simtrial/tree/306de0dbe380fdb1e906a59f34bf3871d3ee5312
 
-library(gsDesign2)
 # parameters for enrollment
 enroll_rampup_duration <- 4 # duration for enrollment ramp up
 enroll_duration <- 16       # total enrollment duration
-enroll_rate <- define_enroll_rate(duration = c(enroll_rampup_duration,
-                                               enroll_duration - enroll_rampup_duration),
-                                  rate = c(10, 30))
+enroll_rate <- gsDesign2::define_enroll_rate(
+  duration = c(enroll_rampup_duration,
+               enroll_duration - enroll_rampup_duration),
+  rate = c(10, 30)
+)
 # parameters for treatment effect
 delay_effect_duration <- 3  # delay treatment effect in months
 median_col <- 9             # survival median of the control arm
 median_exp <- c(9, 14)      # survival median of the experimental arm
 dropout_rate <- 0.001
-fail_rate <- define_fail_rate(duration = c(delay_effect_duration, 100),
-                              fail_rate = log(2) /  median_col,
-                              hr = median_col / median_exp,
-                              dropout_rate = dropout_rate)
+fail_rate <- gsDesign2::define_fail_rate(
+  duration = c(delay_effect_duration, 100),
+  fail_rate = log(2) /  median_col,
+  hr = median_col / median_exp,
+  dropout_rate = dropout_rate
+)
 # other related parameters
 alpha <- 0.025              # type I error
 beta <- 0.1                 # type II error
