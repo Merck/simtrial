@@ -17,7 +17,13 @@ milestone(data, ms_time)
 \item{ms_time}{Milestone analysis time.}
 }
 \value{
-A data frame containing the test statistics.
+A data frame containing the method (\code{method}), always "milestone",
+test statistics (\code{z}), milestone time point (\code{ms_time}),
+survival rate of the control arm (\code{surv0}),
+survival rate of the experimental arm (\code{surv1}),
+survival difference between the experimental and control arm (\code{surv_diff}),
+standard error of the control arm (\code{std_err0}),
+standard error of the experimental arm (\code{std_err1}).
 }
 \description{
 Milestone test for two survival curves
