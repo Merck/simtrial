@@ -7,13 +7,17 @@
 milestone(data, ms_time)
 }
 \arguments{
-\item{data}{Dataset contains at least 3 columns: \code{tte} (time to event),
-\code{event} (event indicator), and \code{treatment} (grouping variable).}
+\item{data}{Data frame containing at least 3 columns:
+\itemize{
+\item \code{tte} - Time to event.
+\item \code{event} - Event indicator.
+\item \code{treatment} - Grouping variable.
+}}
 
-\item{ms_time}{Milestone analysis time}
+\item{ms_time}{Milestone analysis time.}
 }
 \value{
-A data frame containing the test statistics
+A data frame containing the test statistics.
 }
 \description{
 Milestone test for two survival curves

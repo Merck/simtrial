@@ -1,4 +1,4 @@
-#  Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  Copyright (c) 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
 #  All rights reserved.
 #
 #  This file is part of the simtrial program.
@@ -18,11 +18,14 @@
 
 #' Milestone test for two survival curves
 #'
-#' @param data Dataset contains at least 3 columns: \code{tte} (time to event),
-#' \code{event} (event indicator), and \code{treatment} (grouping variable).
-#' @param ms_time Milestone analysis time
+#' @param data Data frame containing at least 3 columns:
+#'   - `tte` - Time to event.
+#'   - `event` - Event indicator.
+#'   - `treatment` - Grouping variable.
+#' @param ms_time Milestone analysis time.
 #'
-#' @return A data frame containing the test statistics
+#' @return A data frame containing the test statistics.
+#'
 #' @export
 #'
 #' @examples
@@ -41,12 +44,14 @@ milestone <- function(data, ms_time) {
   na_col <- is.na(fit_res$std.err[1])
   na_exp <- is.na(fit_res$std.err[2])
 
-  # Calcualte the test statistcis
-  if(na_col + na_exp == 2){
+  # Calculate the test statistics
+  if (na_col + na_exp == 2) {
     z <- -Inf
-  }else{
-    var_survival <- ifelse(na_col, 0, fit_res$std.err[1])^2 + ifelse(na_exp, 0, fit_res$std.err[2])^2
-    z <-  diff_survival / sqrt(var_survival)
+  } else {
+    term1 <- if (na_col) 0 else fit_res$std.err[1]
+    term2 <- if (na_exp) 0 else fit_res$std.err[2]
+    var_survival <- term1^2 + term2^2
+    z <- diff_survival / sqrt(var_survival)
   }
 
   ans <- data.frame(z = z)
