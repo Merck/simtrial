@@ -165,7 +165,7 @@
 #'   ms_time = 10)
 #'
 #' # Test 7: maxcombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
-#' for all analyses
+#' # for all analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
@@ -178,7 +178,7 @@
 #'   gamma = c(0, 0.5))
 #'
 #' # Test 8: maxcombo (WLR-FH(0,0.5) + milestone(10))
-#' for all analyses
+#' # for all analyses
 #' \dontrun{
 #' sim_gs_n(
 #'   n_sim = 3,
@@ -193,7 +193,7 @@
 #' }
 #'
 #' # Test 9: maxcombo (WLR-FH(0,0) at IAs
-#' and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
+#' # and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
 #' \dontrun{
 #' sim_gs_n(
 #'   n_sim = 3,
