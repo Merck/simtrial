@@ -49,6 +49,7 @@ reference:
     - counting_process
     - pvalue_maxcombo
     - rmst
+    - milestone
     - wlr
     - maxcombo
 
