@@ -17,6 +17,10 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Simulate group sequential designs with fixed sample size
+#'
+#' WARNING: This experimental function is a work-in-progress. The function
+#' arguments will change as we add additional features.
+#'
 #' @inheritParams sim_fixed_n
 #' @param test a test function such as \code{\link{wlr}},
 #'   \code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is

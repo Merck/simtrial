@@ -52,7 +52,8 @@ passed as the first positional argument to the test function provided.}
 a data frame summarizing the simulation ID, analysis date, z statistics or p-values
 }
 \description{
-Simulate group sequential designs with fixed sample size
+WARNING: This experimental function is a work-in-progress. The function
+arguments will change as we add additional features.
 }
 \examples{
 library(gsDesign2)

@@ -18,6 +18,9 @@
 
 #' Maxcombo test
 #'
+#' WARNING: This experimental function is a work-in-progress. The function
+#' arguments will change as we add additional features.
+#'
 #' @param data a tte dataset
 #' @param rho Numeric vector passed to \code{\link{fh_weight}}. Must be greater
 #'   than or equal to zero. Must be the same length as \code{gamma}.

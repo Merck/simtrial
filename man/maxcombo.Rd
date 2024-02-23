@@ -19,7 +19,8 @@ greater than or equal to zero. Must be the same length as \code{rho}.}
 pvalues
 }
 \description{
-Maxcombo test
+WARNING: This experimental function is a work-in-progress. The function
+arguments will change as we add additional features.
 }
 \examples{
 sim_pw_surv(n = 200) |>
