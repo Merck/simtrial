@@ -141,7 +141,7 @@ sim_gs_n(
   weight = fh(rho = 0, gamma = 0.5))
 
 
-# Test 3: weighted logrank test by MB(6)
+# Test 3: weighted logrank test by MB(3)
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
@@ -174,7 +174,19 @@ sim_gs_n(
   seed = 2024,
   tau = 20)
 
-# Test 6: maxcombo (FH(0,0) + FH(0, 0.5))
+# Test 6: Milestone
+sim_gs_n(
+  n_sim = 3,
+  sample_size = 400,
+  enroll_rate = enroll_rate,
+  fail_rate = fail_rate,
+  test = milestone,
+  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  seed = 2024,
+  ms_time = 10)
+
+# Test 7: maxcombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
+for all analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
@@ -185,4 +197,37 @@ sim_gs_n(
   seed = 2024,
   rho = c(0, 0),
   gamma = c(0, 0.5))
+
+# Test 8: maxcombo (WLR-FH(0,0.5) + milestone(10))
+for all analyses
+\dontrun{
+sim_gs_n(
+  n_sim = 3,
+  sample_size = 400,
+  enroll_rate = enroll_rate,
+  fail_rate = fail_rate,
+  test = maxcombo(test1 = wlr, test2 = milestone),
+  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  seed = 2024,
+  test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
+  test2_par = list(ms_time = 10))
+}
+
+# Test 9: maxcombo (WLR-FH(0,0) at IAs
+and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
+\dontrun{
+sim_gs_n(
+  n_sim = 3,
+  sample_size = 400,
+  enroll_rate = enroll_rate,
+  fail_rate = fail_rate,
+  test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
+  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  seed = 2024,
+  test_par = list(ia1 = list(weight = fh(rho = 0, gamma = 0)),
+                  ia2 = list(weight = fh(rho = 0, gamma = 0)),
+                  ia3 = list(test1_par = list(weight = fh(rho = 0, gamma = 0)),
+                             test2_par = list(ms_time = 10),
+                             test3_par = list(delay = 4, w_max = 2))))
+}
 }
