@@ -205,8 +205,8 @@ test_that("Test 6: maxcombo (FH(0,0) + FH(0, 0.5))", {
     test = maxcombo,
     cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
     seed = 2024,
-    test1 = wlr(data, rho = 0, gamma = 0) |> quote(),
-    test2 = wlr(data, rho = 0, gamma = 0.5) |> quote()
+    rho = c(0, 0),
+    gamma = c(0, 0.5)
   )
   expected <- data.frame(
     p_value = c(
