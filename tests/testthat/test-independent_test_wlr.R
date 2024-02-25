@@ -1,4 +1,4 @@
-testthat::test_that("the z values match with the correspondings in fh_weight", {
+test_that("the z values match with the correspondings in fh_weight", {
   set.seed(1234)
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
@@ -12,11 +12,9 @@ testthat::test_that("the z values match with the correspondings in fh_weight", {
   fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
-  survMisc::comp(fit, p = sapply(wt, function(x) {
-    x[1]
-  }), q = sapply(wt, function(x) {
-    x[2]
-  }))
+  survMisc::comp(fit, p = sapply(wt, function(x) x[1]), q = sapply(wt, function(x) x[2])) |>
+    capture.output() |>
+    invisible()
   tst.rslt <- attr(fit, "lrt")
   z1 <- tst.rslt$Z
   a2 <- y |> counting_process(arm = "experimental")
@@ -25,7 +23,7 @@ testthat::test_that("the z values match with the correspondings in fh_weight", {
   expect_equal(c(z1[1], z1[7:9]), z2, tolerance = 0.00001)
 })
 
-testthat::test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
+test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
   set.seed(123)
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
@@ -39,11 +37,9 @@ testthat::test_that("fh_weight calculated correct correlation value when input a
   fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
-  survMisc::comp(fit, p = sapply(wt, function(x) {
-    x[1]
-  }), q = sapply(wt, function(x) {
-    x[2]
-  }))
+  survMisc::comp(fit, p = sapply(wt, function(x) x[1]), q = sapply(wt, function(x) x[2])) |>
+    capture.output() |>
+    invisible()
   tst.rslt <- attr(fit, "lrt")
   # Combination test ("asymp")
   # Calculating the covariace matrix
@@ -69,11 +65,9 @@ testthat::test_that("fh_weight calculated correct correlation value when input a
   fit2 <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing (for calculating the covariances)
-  survMisc::comp(fit2, p = sapply(wt3, function(x) {
-    x[1]
-  }), q = sapply(wt3, function(x) {
-    x[2]
-  }))
+  survMisc::comp(fit2, p = sapply(wt3, function(x) x[1]), q = sapply(wt3, function(x) x[2])) |>
+    capture.output() |>
+    invisible()
   tst.rsltt <- attr(fit2, "lrt")
   tst.rslt2 <- subset(tst.rsltt, grepl("FH", tst.rsltt$W))
   cov.tst.rslt11 <- tst.rslt2$Var

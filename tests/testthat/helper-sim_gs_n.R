@@ -1,4 +1,4 @@
-# helper functions used by test-unvalidated-sim_gs_n.R
+# Helper functions used by test-unvalidated-sim_gs_n.R
 
 test_enroll_rate <- function() {
   # parameters for enrollment
