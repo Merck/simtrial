@@ -4,15 +4,16 @@
 test_that("maxcombo returns consistent results", {
   set.seed(1)
   observed <- sim_pw_surv(n = 200) |>
-   cut_data_by_event(150) |>
-   maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
+    cut_data_by_event(150) |>
+    maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
   expected <- data.frame(p_value = 1.5739680815363144e-06)
+
   expect_equal(observed, expected)
 })
 
 test_that("maxcombo fails early with bad input", {
-  input <- observed <- sim_pw_surv(n = 200) |>
-    cut_data_by_event(150)
+  input <- observed <- sim_pw_surv(n = 200) |> cut_data_by_event(150)
+
   expect_error(maxcombo(input, rho = c(-1, 0), gamma = c(0, 0.5)))
   expect_error(maxcombo(input, rho = c(0, 0), gamma = c(-1, 0.5)))
   expect_error(maxcombo(input, rho = letters[1:2], gamma = c(0, 0.5)))

@@ -1,6 +1,6 @@
-testthat::test_that("the p-values correspond to pvalue_maxcombo", {
+test_that("the p-values correspond to pvalue_maxcombo", {
   set.seed(2022)
-  # this part is a double programming
+  # This part is double programming
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
   wt <- list(a1 = c(0, 0), a2 = c(0, 1), a3 = c(1, 0), a4 = c(1, 1))
@@ -12,11 +12,9 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo", {
   fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
-  survMisc::comp(fit, p = sapply(wt, function(x) {
-    x[1]
-  }), q = sapply(wt, function(x) {
-    x[2]
-  }))
+  survMisc::comp(fit, p = sapply(wt, function(x) x[1]), q = sapply(wt, function(x) x[2])) |>
+    capture.output() |>
+    invisible()
   tst.rslt <- attr(fit, "lrt")
 
   # Combination test ("asymp")
@@ -28,26 +26,18 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo", {
   wt1 <- c(list(a0 = c(0, 0)), wt)
   combo.wt <- combn(wt1, 2)
   combo.wt.list <- list()
-  for (i in seq_len(ncol(combo.wt))) {
-    combo.wt.list[[i]] <- combo.wt[, i]
-  }
-  combo.wt.list.up <- lapply(combo.wt.list, function(a) {
-    mapply("+", a)
-  })
-  wt2 <- lapply(combo.wt.list.up, function(a) {
-    apply(a, 1, "sum") / 2
-  })
+  for (i in seq_len(ncol(combo.wt))) combo.wt.list[[i]] <- combo.wt[, i]
+  combo.wt.list.up <- lapply(combo.wt.list, function(a) mapply("+", a))
+  wt2 <- lapply(combo.wt.list.up, function(a) apply(a, 1, "sum") / 2)
   d1 <- data.frame(do.call(rbind, wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind, wt3))
   fit2 <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing (for calculating the covariances)
-  survMisc::comp(fit2, p = sapply(wt3, function(x) {
-    x[1]
-  }), q = sapply(wt3, function(x) {
-    x[2]
-  }))
+  survMisc::comp(fit2, p = sapply(wt3, function(x) x[1]), q = sapply(wt3, function(x) x[2])) |>
+    capture.output() |>
+    invisible()
   tst.rsltt <- attr(fit2, "lrt")
   tst.rslt2 <- subset(tst.rsltt, grepl("FH", tst.rsltt$W))
   cov.tst.rslt11 <- tst.rslt2$Var
@@ -68,12 +58,8 @@ testthat::test_that("the p-values correspond to pvalue_maxcombo", {
     corr = cor.tst, algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
   )[1], 0.9999), 0.0001)
   max.tst <- which(abs(Z.tst.rslt1) == max(abs(Z.tst.rslt1)), arr.ind = TRUE)
-  if (Z.tst.rslt1[max.tst] >= 0) {
-    pval <- 1 - pval2 / 2
-  }
-  if (Z.tst.rslt1[max.tst] < 0) {
-    pval <- pval2 / 2
-  }
+  if (Z.tst.rslt1[max.tst] >= 0) pval <- 1 - pval2 / 2
+  if (Z.tst.rslt1[max.tst] < 0) pval <- pval2 / 2
   p1 <- pval
 
   a2 <- y |> counting_process(arm = "experimental")
