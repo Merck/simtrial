@@ -36,20 +36,21 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{a test function such as \code{\link{wlr}},
-\code{\link{maxcombo}}, or \code{\link{rmst}}. The simulated data set is
+\item{test}{A test function such as \code{\link[=wlr]{wlr()}},
+\code{\link[=maxcombo]{maxcombo()}}, or \code{\link[=rmst]{rmst()}}. The simulated data set is
 passed as the first positional argument to the test function provided.}
 
-\item{cutting}{a list of cutting functions created by
-\code{\link{create_cutting}}, see examples}
+\item{cutting}{A list of cutting functions created by \code{\link[=create_cutting]{create_cutting()}},
+see examples.}
 
-\item{seed}{random seed}
+\item{seed}{Random seed.}
 
 \item{...}{Arguments passed to the test function provided by the argument
-\code{test}}
+\code{test}.}
 }
 \value{
-a data frame summarizing the simulation ID, analysis date, z statistics or p-values
+A data frame summarizing the simulation ID, analysis date,
+z statistics or p-values.
 }
 \description{
 WARNING: This experimental function is a work-in-progress. The function
@@ -58,35 +59,41 @@ arguments will change as we add additional features.
 \examples{
 library(gsDesign2)
 
-# parameters for enrollment
-enroll_rampup_duration <- 4 # duration for enrollment ramp up
-enroll_duration <- 16       # total enrollment duration
-enroll_rate <- define_enroll_rate(duration = c(enroll_rampup_duration,
-                                               enroll_duration - enroll_rampup_duration),
-                                  rate = c(10, 30))
+# Parameters for enrollment
+enroll_rampup_duration <- 4 # Duration for enrollment ramp up
+enroll_duration <- 16 # Total enrollment duration
+enroll_rate <- define_enroll_rate(
+  duration = c(
+    enroll_rampup_duration,
+    enroll_duration - enroll_rampup_duration
+  ),
+  rate = c(10, 30)
+)
 
-# parameters for treatment effect
-delay_effect_duration <- 3  # delay treatment effect in months
-median_col <- 9             # survival median of the control arm
-median_exp <- c(9, 14)      # survival median of the experimental arm
+# Parameters for treatment effect
+delay_effect_duration <- 3 # Delay treatment effect in months
+median_col <- 9 # Survival median of the control arm
+median_exp <- c(9, 14) # Survival median of the experimental arm
 dropout_rate <- 0.001
-fail_rate <- define_fail_rate(duration = c(delay_effect_duration, 100),
-                              fail_rate = log(2) /  median_col,
-                              hr = median_col / median_exp,
-                              dropout_rate = dropout_rate)
+fail_rate <- define_fail_rate(
+  duration = c(delay_effect_duration, 100),
+  fail_rate = log(2) / median_col,
+  hr = median_col / median_exp,
+  dropout_rate = dropout_rate
+)
 
-# other related parameters
-alpha <- 0.025              # type I error
-beta <- 0.1                 # type II error
-ratio <- 1                  # randomization ratio (exp:col)
+# Other related parameters
+alpha <- 0.025 # type I error
+beta <- 0.1 # type II error
+ratio <- 1 # randomization ratio (exp:col)
 
 # Define cuttings of 2 IAs and 1 FA
 # IA1
 # The 1st interim analysis will occur at the later of the following 3 conditions:
-# - At least 20 months have passed since the start of the study
-# - At least 100 events have occurred
+# - At least 20 months have passed since the start of the study.
+# - At least 100 events have occurred.
 # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
-#   minimum of 20 months follow-up
+#   minimum of 20 months follow-up.
 # However, if events accumulation is slow, we will wait for a maximum of 24 months.
 ia1 <- create_cutting(
   planned_calendar_time = 20,
@@ -98,9 +105,9 @@ ia1 <- create_cutting(
 
 # IA2
 # The 2nd interim analysis will occur at the later of the following 3 conditions:
-# - At least 32 months have passed since the start of the study
-# - At least 250 events have occurred
-# - At least 10 months after IA1
+# - At least 32 months have passed since the start of the study.
+# - At least 250 events have occurred.
+# - At least 10 months after IA1.
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
 ia2 <- create_cutting(
   planned_calendar_time = 32,
@@ -111,8 +118,8 @@ ia2 <- create_cutting(
 
 # FA
 # The final analysis will occur at the later of the following 2 conditions:
-# - At least 45 months have passed since the start of the study
-# - At least 300 events have occurred
+# - At least 45 months have passed since the start of the study.
+# - At least 300 events have occurred.
 fa <- create_cutting(
   planned_calendar_time = 45,
   target_event_overall = 350
@@ -127,7 +134,8 @@ sim_gs_n(
   test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  weight = fh(rho = 0, gamma = 0))
+  weight = fh(rho = 0, gamma = 0)
+)
 
 # Test 2: weighted logrank test by FH(0, 0.5)
 sim_gs_n(
@@ -138,8 +146,8 @@ sim_gs_n(
   test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  weight = fh(rho = 0, gamma = 0.5))
-
+  weight = fh(rho = 0, gamma = 0.5)
+)
 
 # Test 3: weighted logrank test by MB(3)
 sim_gs_n(
@@ -150,7 +158,8 @@ sim_gs_n(
   test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  weight = mb(delay = 3))
+  weight = mb(delay = 3)
+)
 
 # Test 4: weighted logrank test by early zero (6)
 sim_gs_n(
@@ -161,7 +170,8 @@ sim_gs_n(
   test = wlr,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  weight = early_zero(6))
+  weight = early_zero(6)
+)
 
 # Test 5: RMST
 sim_gs_n(
@@ -172,7 +182,8 @@ sim_gs_n(
   test = rmst,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  tau = 20)
+  tau = 20
+)
 
 # Test 6: Milestone
 sim_gs_n(
@@ -183,9 +194,10 @@ sim_gs_n(
   test = milestone,
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  ms_time = 10)
+  ms_time = 10
+)
 
-# Test 7: maxcombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
+# Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
 # for all analyses
 sim_gs_n(
   n_sim = 3,
@@ -196,9 +208,10 @@ sim_gs_n(
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   rho = c(0, 0),
-  gamma = c(0, 0.5))
+  gamma = c(0, 0.5)
+)
 
-# Test 8: maxcombo (WLR-FH(0,0.5) + milestone(10))
+# Test 8: MaxCombo (WLR-FH(0,0.5) + milestone(10))
 # for all analyses
 \dontrun{
 sim_gs_n(
@@ -210,10 +223,11 @@ sim_gs_n(
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
-  test2_par = list(ms_time = 10))
+  test2_par = list(ms_time = 10)
+)
 }
 
-# Test 9: maxcombo (WLR-FH(0,0) at IAs
+# Test 9: MaxCombo (WLR-FH(0,0) at IAs
 # and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
 \dontrun{
 sim_gs_n(
@@ -224,10 +238,15 @@ sim_gs_n(
   test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
-  test_par = list(ia1 = list(weight = fh(rho = 0, gamma = 0)),
-                  ia2 = list(weight = fh(rho = 0, gamma = 0)),
-                  ia3 = list(test1_par = list(weight = fh(rho = 0, gamma = 0)),
-                             test2_par = list(ms_time = 10),
-                             test3_par = list(delay = 4, w_max = 2))))
+  test_par = list(
+    ia1 = list(weight = fh(rho = 0, gamma = 0)),
+    ia2 = list(weight = fh(rho = 0, gamma = 0)),
+    ia3 = list(
+      test1_par = list(weight = fh(rho = 0, gamma = 0)),
+      test2_par = list(ms_time = 10),
+      test3_par = list(delay = 4, w_max = 2)
+    )
+  )
+)
 }
 }

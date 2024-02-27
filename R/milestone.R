@@ -24,13 +24,15 @@
 #'   - `treatment` - Grouping variable.
 #' @param ms_time Milestone analysis time.
 #'
-#' @return A data frame containing the method (\code{method}), always "milestone",
-#' test statistics (\code{z}), milestone time point (\code{ms_time}),
-#' survival rate of the control arm (\code{surv0}),
-#' survival rate of the experimental arm (\code{surv1}),
-#' survival difference between the experimental and control arm (\code{surv_diff}),
-#' standard error of the control arm (\code{std_err0}),
-#' standard error of the experimental arm (\code{std_err1}).
+#' @return A data frame containing:
+#' - `method` - The method, always `"milestone"`.
+#' - `z` - Test statistics.
+#' - `ms_time` - Milestone time point.
+#' - `surv0` - Survival rate of the control arm.
+#' - `surv1` - Survival rate of the experimental arm.
+#' - `surv_diff` - Survival difference between the experimental and control arm.
+#' - `std_err0` - Standard error of the control arm.
+#' - `std_err1` - Standard error of the experimental arm.
 #'
 #' @export
 #'
@@ -60,9 +62,11 @@ milestone <- function(data, ms_time) {
     z <- diff_survival / sqrt(var_survival)
   }
 
-  ans <- data.frame(method = "milestone", z = z, ms_time = ms_time,
-                    surv0 = fit_res$surv[1], surv1 = fit_res$surv[2],
-                    surv_diff = diff_survival,
-                    std_err0 = fit_res$std.err[1], std_err1 = fit_res$std.err[2])
+  ans <- data.frame(
+    method = "milestone", z = z, ms_time = ms_time,
+    surv0 = fit_res$surv[1], surv1 = fit_res$surv[2],
+    surv_diff = diff_survival,
+    std_err0 = fit_res$std.err[1], std_err1 = fit_res$std.err[2]
+  )
   return(ans)
 }
