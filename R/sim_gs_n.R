@@ -63,9 +63,9 @@
 #' )
 #'
 #' # Other related parameters
-#' alpha <- 0.025 # type I error
-#' beta <- 0.1 # type II error
-#' ratio <- 1 # randomization ratio (exp:col)
+#' alpha <- 0.025 # Type I error
+#' beta <- 0.1 # Type II error
+#' ratio <- 1 # Randomization ratio (experimental:control)
 #'
 #' # Define cuttings of 2 IAs and 1 FA
 #' # IA1
