@@ -227,6 +227,8 @@ sim_gs_n <- function(
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
+      ans_1sim_new$n <- nrow(simu_data_cut)
+      ans_1sim_new$event <- sum(simu_data_cut$event)
 
       # rbind simulation results for all IA(s) and FA in 1 simulation
       ans_1sim <- rbind(ans_1sim, ans_1sim_new)
