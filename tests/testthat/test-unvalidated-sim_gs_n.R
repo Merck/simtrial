@@ -26,7 +26,7 @@ test_that("Test 1: regular logrank test", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
 
 test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
@@ -52,7 +52,7 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
 
 test_that("Test 3: weighted logrank test by MB(6)", {
@@ -76,7 +76,7 @@ test_that("Test 3: weighted logrank test by MB(6)", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
 
 test_that("Test 4: weighted logrank test by early zero (6)", {
@@ -100,7 +100,7 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
 
 test_that("Test 5: RMST", {
@@ -139,7 +139,7 @@ test_that("Test 5: RMST", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
 
 test_that("Test 6: maxcombo (FH(0,0) + FH(0, 0.5))", {
@@ -164,5 +164,5 @@ test_that("Test 6: maxcombo (FH(0,0) + FH(0, 0.5))", {
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     sim_id = rep(1:3, each = 3L)
   )
-  expect_equal(observed, expected)
+  expect_equal(observed |> dplyr::select(-c(n, event)), expected)
 })
