@@ -1,4 +1,4 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -9,7 +9,7 @@ articles:
   rmst: rmst.html
   routines: routines.html
   workflow: workflow.html
-last_built: 2024-02-27T18:10Z
+last_built: 2024-03-01T02:09Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles
