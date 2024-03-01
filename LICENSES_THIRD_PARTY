@@ -7,17 +7,28 @@ You must agree to the terms of these licenses, in addition to the simtrial
 source code license, in order to use this software.
 
 --------------------------------------------------
-  Third party R packages listed by License type
+Third party R packages listed by License type
 [Format: Name - URL]
 --------------------------------------------------
 
-  MIT License (or adaptations) (https://www.opensource.org/licenses/MIT)
-* dplyr - https://dplyr.tidyverse.org/LICENSE.html
-* tidyr - https://tidyr.tidyverse.org/LICENSE.html
+Apache License (== 2.0) (https://opensource.org/license/apache-2-0)
+  * foreach - https://github.com/RevolutionAnalytics/foreach/blob/master/LICENSE
 
-  GNU License (https://opensource.org/licenses/lgpl-license)
-* survival - https://cran.r-project.org/web/packages/survival/index.html
-* mvtnorm - https://cran.r-project.org/web/packages/mvtnorm/index.html
+GPL-2 (https://opensource.org/license/gpl-2-0)
+  * mvtnorm - https://cran.r-project.org/package=mvtnorm
 
-  MPL License (https://opensource.org/license/mpl-2-0/)
-* data.table - https://github.com/Rdatatable/data.table/blob/master/LICENSE
+GPL-2 | GPL-3 (https://opensource.org/license/gpl-2-0)
+  * Rcpp - https://cran.r-project.org/package=Rcpp
+  * methods - https://www.r-project.org/COPYING
+  * stats - https://www.r-project.org/COPYING
+  * utils - https://www.r-project.org/COPYING
+
+LGPL (>= 2) (https://opensource.org/licenses/lgpl-license)
+  * survival - https://cran.r-project.org/package=survival
+
+LGPL (>= 2.1) (https://opensource.org/licenses/lgpl-license)
+  * doFuture - https://cran.r-project.org/package=doFuture
+  * future - https://cran.r-project.org/package=future
+
+MPL-2.0 (https://opensource.org/license/mpl-2-0/)
+  * data.table - https://github.com/Rdatatable/data.table/blob/master/LICENSE
