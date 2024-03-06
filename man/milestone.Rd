@@ -37,3 +37,7 @@ sim_pw_surv(n = 200) |>
   cut_data_by_event(150) |>
   milestone(10)
 }
+\references{
+Klein, John P., et al. "Analyzing survival curves at a fixed point in time."
+Statistics in medicine 26.24 (2007): 4505-4519.
+}
