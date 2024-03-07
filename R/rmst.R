@@ -197,8 +197,8 @@ diff_rmst <- function(x, op_single, reference, trunc_time, alpha = alpha) {
 #'
 #' @return
 #' A data frame of
-#' - Cutoff time: same as \code{tau};
-#' - Group label: same as \code{group_label};
+#' - Cutoff time: same as `tau`;
+#' - Group label: same as `group_label`;
 #' - Estimated RMST;
 #' - Variance, standard error, and CIs of the estimated RMST;
 #' - Number of events.

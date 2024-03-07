@@ -294,16 +294,16 @@ sim_gs_n <- function(
 
 #' Create a cutting function
 #'
-#' Create a cutting function for use with \code{\link{sim_gs_n}}
+#' Create a cutting function for use with [sim_gs_n()]
 #'
-#' @param ... Arguments passed to \code{\link{get_analysis_date}}
+#' @param ... Arguments passed to [get_analysis_date()]
 #'
 #' @return A function that accepts a data frame of simulated trial data and
 #'   returns a cut date
 #'
 #' @export
 #'
-#' @seealso \code{\link{get_analysis_date}}, \code{\link{sim_gs_n}}
+#' @seealso [get_analysis_date()], [sim_gs_n()]
 #'
 #' @examples
 #' # Simulate trial data

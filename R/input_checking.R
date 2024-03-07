@@ -87,7 +87,7 @@ input_check_vector <- function(x = NA, require_whole_number = FALSE) {
 #' @param tol tolerance
 #'
 #' @return TRUE, FALSE, or NA
-#' @seealso \code{\link[base]{is.integer}}
+#' @seealso [base::is.integer()]
 #' @noRd
 #' @examples
 #' x <- c(1.1, -1.1, 0, 2, NA)

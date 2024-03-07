@@ -7,14 +7,14 @@
 create_cutting(...)
 }
 \arguments{
-\item{...}{Arguments passed to \code{\link{get_analysis_date}}}
+\item{...}{Arguments passed to \code{\link[=get_analysis_date]{get_analysis_date()}}}
 }
 \value{
 A function that accepts a data frame of simulated trial data and
 returns a cut date
 }
 \description{
-Create a cutting function for use with \code{\link{sim_gs_n}}
+Create a cutting function for use with \code{\link[=sim_gs_n]{sim_gs_n()}}
 }
 \examples{
 # Simulate trial data
@@ -32,5 +32,5 @@ cutting <- create_cutting(
 cutting(trial_data)
 }
 \seealso{
-\code{\link{get_analysis_date}}, \code{\link{sim_gs_n}}
+\code{\link[=get_analysis_date]{get_analysis_date()}}, \code{\link[=sim_gs_n]{sim_gs_n()}}
 }

@@ -9,10 +9,10 @@ maxcombo(data, rho, gamma)
 \arguments{
 \item{data}{a tte dataset}
 
-\item{rho}{Numeric vector passed to \code{\link{fh_weight}}. Must be greater
+\item{rho}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be greater
 than or equal to zero. Must be the same length as \code{gamma}.}
 
-\item{gamma}{Numeric vector passed to \code{\link{fh_weight}}. Must be
+\item{gamma}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be
 greater than or equal to zero. Must be the same length as \code{rho}.}
 }
 \value{
@@ -28,5 +28,5 @@ sim_pw_surv(n = 200) |>
   maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
 }
 \seealso{
-\code{\link{fh_weight}}
+\code{\link[=fh_weight]{fh_weight()}}
 }

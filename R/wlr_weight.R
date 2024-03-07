@@ -18,8 +18,8 @@
 
 #' Fleming-Harrington weighting function
 #'
-#' @param rho Non-negative number. \code{rho = 0, gamma = 0} is equivalent to regular logrank test.
-#' @param gamma Non-negative number. \code{rho = 0, gamma = 0} is equivalent to regular logrank test.
+#' @param rho Non-negative number. `rho = 0, gamma = 0` is equivalent to regular logrank test.
+#' @param gamma Non-negative number. `rho = 0, gamma = 0` is equivalent to regular logrank test.
 #'
 #' @export
 #' @return A list of parameters of the Fleming-Harrington weighting function
