@@ -22,11 +22,11 @@ A data frame containing:
 \item \code{method} - The method, always \code{"milestone"}.
 \item \code{z} - Test statistics.
 \item \code{ms_time} - Milestone time point.
-\item \code{surv0} - Survival rate of the control arm.
-\item \code{surv1} - Survival rate of the experimental arm.
+\item \code{surv_ctrl} - Survival rate of the control arm.
+\item \code{surv_exp} - Survival rate of the experimental arm.
 \item \code{surv_diff} - Survival difference between the experimental and control arm.
-\item \code{std_err0} - Standard error of the control arm.
-\item \code{std_err1} - Standard error of the experimental arm.
+\item \code{std_err_ctrl} - Standard error of the control arm.
+\item \code{std_err_exp} - Standard error of the experimental arm.
 }
 }
 \description{
@@ -38,6 +38,7 @@ sim_pw_surv(n = 200) |>
   milestone(10)
 }
 \references{
-Klein, John P., et al. "Analyzing survival curves at a fixed point in time."
-Statistics in medicine 26.24 (2007): 4505-4519.
+Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
+"Analyzing survival curves at a fixed point in time."
+\emph{Statistics in Medicine}, 26(24), 4505--4519.
 }

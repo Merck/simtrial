@@ -28,13 +28,16 @@
 #' - `method` - The method, always `"milestone"`.
 #' - `z` - Test statistics.
 #' - `ms_time` - Milestone time point.
-#' - `surv0` - Survival rate of the control arm.
-#' - `surv1` - Survival rate of the experimental arm.
+#' - `surv_ctrl` - Survival rate of the control arm.
+#' - `surv_exp` - Survival rate of the experimental arm.
 #' - `surv_diff` - Survival difference between the experimental and control arm.
-#' - `std_err0` - Standard error of the control arm.
-#' - `std_err1` - Standard error of the experimental arm.
-#' @references Klein, John P., et al. "Analyzing survival curves at a fixed point in time."
-#' Statistics in medicine 26.24 (2007): 4505-4519.
+#' - `std_err_ctrl` - Standard error of the control arm.
+#' - `std_err_exp` - Standard error of the experimental arm.
+#'
+#' @references
+#' Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
+#' "Analyzing survival curves at a fixed point in time."
+#' _Statistics in Medicine_, 26(24), 4505--4519.
 #'
 #' @export
 #'
@@ -48,32 +51,33 @@ milestone <- function(data, ms_time) {
   fit_res <- summary(fit, time = ms_time, extend = TRUE)
 
   # Survival difference
-  surv_col <- fit_res$surv[1]
+  surv_ctrl <- fit_res$surv[1]
   surv_exp <- fit_res$surv[2]
-  diff_survival <- surv_exp - surv_col
+  diff_survival <- surv_exp - surv_ctrl
 
   # Indicator whether the std is NA or not
-  var_col <- fit_res$std.err[1]^2
+  var_ctrl <- fit_res$std.err[1]^2
   var_exp <- fit_res$std.err[2]^2
 
-  na_col <- is.na(var_col)
+  na_ctrl <- is.na(var_ctrl)
   na_exp <- is.na(var_exp)
 
-  sigma2_col <- var_col / (surv_col^2)
+  sigma2_ctrl <- var_ctrl / (surv_ctrl^2)
   sigma2_exp <- var_exp / (surv_exp^2)
 
   # Calculate the test statistics
-  if (na_col + na_exp == 2) {
+  if (na_ctrl + na_exp == 2) {
     z <- -Inf
   } else {
-    z <- (log(-log(surv_exp)) - log(-log(surv_col)))^2 / (sigma2_exp / (log(surv_exp))^2 + sigma2_col / (log(surv_col))^2)
+    z <- (log(-log(surv_exp)) - log(-log(surv_ctrl)))^2 /
+      (sigma2_exp / (log(surv_exp))^2 + sigma2_ctrl / (log(surv_ctrl))^2)
   }
 
   ans <- data.frame(
     method = "milestone", z = z, ms_time = ms_time,
-    surv_col = surv_col, surv_exp = surv_exp,
+    surv_ctrl = surv_ctrl, surv_exp = surv_exp,
     surv_diff = diff_survival,
-    std_err_col = fit_res$std.err[1], std_err_exp = fit_res$std.err[2]
+    std_err_ctrl = fit_res$std.err[1], std_err_exp = fit_res$std.err[2]
   )
   return(ans)
 }
