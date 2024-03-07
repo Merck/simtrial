@@ -44,6 +44,7 @@ reference:
     - get_cut_date_by_event
     - get_analysis_date
     - create_cutting
+    - create_cutting_test
 
 - title: "Compute p-values/test statistics"
   contents:

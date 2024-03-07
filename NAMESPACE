@@ -2,6 +2,7 @@
 
 export(counting_process)
 export(create_cutting)
+export(create_cutting_test)
 export(cut_data_by_date)
 export(cut_data_by_event)
 export(early_zero)
