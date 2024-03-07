@@ -363,3 +363,45 @@ create_cutting_test <- function(test, ...) {
     test(data, ...)
   }
 }
+
+#' Perform multiple tests on trial data cutting
+#'
+#' WARNING: This experimental function is a work-in-progress. The function
+#' arguments and/or returned output format may change as we add additional
+#' features.
+#'
+#' @param data Trial data cut by [cut_data_by_event()] or [cut_data_by_date()]
+#' @param ... One or more test functions. Use [create_cutting_test()] to change
+#'   the default arguments of each test function.
+#'
+#' @return A list of test results, one per test. If the test functions are named
+#'   in the call to `multitest()`, the returned list uses the same names.
+#'
+#' @export
+#'
+#' @seealso [create_cutting_test()]
+#'
+#' @examples
+#' trial_data <- sim_pw_surv(n = 200)
+#' trial_data_cut <- cut_data_by_event(trial_data, 150)
+#'
+#' # create cutting test functions
+#' wlr_partial <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+#' rmst_partial <- create_cutting_test(rmst, tau = 20)
+#' maxcombo_partial <- create_cutting_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
+#'
+#' multitest(
+#'   data = trial_data_cut,
+#'   wlr = wlr_partial,
+#'   rmst = rmst_partial,
+#'   maxcombo = maxcombo_partial
+#' )
+multitest <- function(data, ...) {
+  tests <- list(...)
+  output <- vector(mode = "list", length = length(tests))
+  names(output) <- names(tests)
+  for (i in seq_along(tests)) {
+    output[[i]] <- tests[[i]](data)
+  }
+  return(output)
+}
