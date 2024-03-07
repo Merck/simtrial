@@ -159,9 +159,9 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Other related parameters</span></span></span>
-<span class="r-in"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.025</span> <span class="co"># type I error</span></span></span>
-<span class="r-in"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> <span class="co"># type II error</span></span></span>
-<span class="r-in"><span><span class="va">ratio</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># randomization ratio (exp:col)</span></span></span>
+<span class="r-in"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.025</span> <span class="co"># Type I error</span></span></span>
+<span class="r-in"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> <span class="co"># Type II error</span></span></span>
+<span class="r-in"><span><span class="va">ratio</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Randomization ratio (experimental:control)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define cuttings of 2 IAs and 1 FA</span></span></span>
 <span class="r-in"><span><span class="co"># IA1</span></span></span>
@@ -322,26 +322,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  ms_time <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      method        z ms_time     surv0     surv1 surv_diff   std_err0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone 3.094781      10 0.4080041 0.5689750 0.1609709 0.03693588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 milestone 3.551528      10 0.4097269 0.5850000 0.1752731 0.03495270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 milestone 3.551528      10 0.4097269 0.5850000 0.1752731 0.03495270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 milestone 2.383960      10 0.4718269 0.5922854 0.1204585 0.03614098</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 milestone 2.359935      10 0.4667007 0.5840901 0.1173894 0.03543263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 milestone 2.359935      10 0.4667007 0.5840901 0.1173894 0.03543263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 milestone 3.064212      10 0.4614961 0.6150543 0.1535582 0.03581573</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 milestone 3.064160      10 0.4620000 0.6139773 0.1519773 0.03540131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 milestone 3.064160      10 0.4620000 0.6139773 0.1519773 0.03540131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     std_err1 analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.03662190        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.03484071        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.03484071        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.03531267        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.03491216        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.03491216        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.03505127        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.03473824        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 0.03473824        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      method         z ms_time  surv_col  surv_exp surv_diff std_err_col</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone  9.252619      10 0.4080041 0.5689750 0.1609709  0.03693588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 milestone 12.078381      10 0.4097269 0.5850000 0.1752731  0.03495270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 milestone 12.078381      10 0.4097269 0.5850000 0.1752731  0.03495270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 milestone  5.565741      10 0.4718269 0.5922854 0.1204585  0.03614098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 milestone  5.457930      10 0.4667007 0.5840901 0.1173894  0.03543263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 milestone  5.457930      10 0.4667007 0.5840901 0.1173894  0.03543263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 milestone  9.051773      10 0.4614961 0.6150543 0.1535582  0.03581573</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 milestone  9.054983      10 0.4620000 0.6139773 0.1519773  0.03540131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 milestone  9.054983      10 0.4620000 0.6139773 0.1519773  0.03540131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   std_err_exp analysis cut_date sim_id   n event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.03662190        1 24.00000      1 400   229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.03484071        2 32.00000      1 400   295</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.03484071        3 45.00000      1 400   355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.03531267        1 24.00000      2 400   241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.03491216        2 32.00000      2 400   290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.03491216        3 46.21933      2 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.03505127        1 24.00000      3 400   226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.03473824        2 32.00000      3 400   282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.03473824        3 50.86585      3 400   350</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))</span></span></span>
 <span class="r-in"><span><span class="co"># for all analyses</span></span></span>
