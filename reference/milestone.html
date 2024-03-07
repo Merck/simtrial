@@ -77,16 +77,17 @@
 <p>A data frame containing:</p><ul><li><p><code>method</code> - The method, always <code>"milestone"</code>.</p></li>
 <li><p><code>z</code> - Test statistics.</p></li>
 <li><p><code>ms_time</code> - Milestone time point.</p></li>
-<li><p><code>surv0</code> - Survival rate of the control arm.</p></li>
-<li><p><code>surv1</code> - Survival rate of the experimental arm.</p></li>
+<li><p><code>surv_ctrl</code> - Survival rate of the control arm.</p></li>
+<li><p><code>surv_exp</code> - Survival rate of the experimental arm.</p></li>
 <li><p><code>surv_diff</code> - Survival difference between the experimental and control arm.</p></li>
-<li><p><code>std_err0</code> - Standard error of the control arm.</p></li>
-<li><p><code>std_err1</code> - Standard error of the experimental arm.</p></li>
+<li><p><code>std_err_ctrl</code> - Standard error of the control arm.</p></li>
+<li><p><code>std_err_exp</code> - Standard error of the experimental arm.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Klein, John P., et al. "Analyzing survival curves at a fixed point in time."
-Statistics in medicine 26.24 (2007): 4505-4519.</p>
+    <p>Klein, J. P., Logan, B., Harhoff, M., &amp; Andersen, P. K. (2007).
+"Analyzing survival curves at a fixed point in time."
+<em>Statistics in Medicine</em>, 26(24), 4505--4519.</p>
     </div>
 
     <div class="section level2">
@@ -94,8 +95,8 @@ Statistics in medicine 26.24 (2007): 4505-4519.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">milestone</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      method       z ms_time  surv_col  surv_exp surv_diff std_err_col</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone 2.41552      10 0.4785455 0.5887879 0.1102424  0.05008046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      method       z ms_time surv_ctrl  surv_exp surv_diff std_err_ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone 2.41552      10 0.4785455 0.5887879 0.1102424   0.05008046</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   std_err_exp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.04931511</span>
 </code></pre></div>
