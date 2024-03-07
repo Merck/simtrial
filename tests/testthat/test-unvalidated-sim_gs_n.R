@@ -231,3 +231,52 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   )
   expect_equal(observed, expected)
 })
+
+test_that("sim_gs_n() accepts different tests per cutting", {
+  wlr_cut1 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+  wlr_cut2 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+  wlr_cut3 <- create_cutting_test(wlr, weight = fh(rho = 0.5, gamma = 0))
+
+  observed <- sim_gs_n(
+    n_sim = 3,
+    sample_size = 400,
+    enroll_rate = test_enroll_rate(),
+    fail_rate = test_fail_rate(),
+    test = list(wlr_cut1, wlr_cut2, wlr_cut3),
+    cutting = test_cutting(),
+    seed = 2024
+  )
+  expected <- data.frame(
+    rho = rep(c(0, 0, 0.5), 3),
+    gamma = rep(c(0, 0.5, 0), 3),
+    z = c(
+      -3.7486049782713247, -4.778107819550277, -4.189693884801371,
+      -3.4771440155825752, -3.945081123231263, -3.438138809871842,
+      -3.075862925191481, -3.640458610667732, -3.9489173860678495
+    ),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    sim_id = rep(1:3, each = 3L),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+  )
+  expect_equal(observed, expected)
+})
+
+test_that("sim_gs_n() requires a test for each cutting", {
+  wlr_cut1 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+  wlr_cut2 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+
+  expect_error(
+    sim_gs_n(
+      n_sim = 3,
+      sample_size = 400,
+      enroll_rate = test_enroll_rate(),
+      fail_rate = test_fail_rate(),
+      test = list(wlr_cut1, wlr_cut2),
+      cutting = test_cutting(),
+      seed = 2024
+    ),
+    "If you want to run different tests at each cutting"
+  )
+})

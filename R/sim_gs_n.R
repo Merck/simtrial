@@ -22,9 +22,13 @@
 #' arguments will change as we add additional features.
 #'
 #' @inheritParams sim_fixed_n
-#' @param test A test function such as [wlr()],
-#'   [maxcombo()], or [rmst()]. The simulated data set is
-#'   passed as the first positional argument to the test function provided.
+#' @param test A test function such as [wlr()], [maxcombo()], or [rmst()]. The
+#'   simulated data set is passed as the first positional argument to the test
+#'   function provided. Alternatively a list of functions created by
+#'   [create_cutting_test()]. The list form is experimental and currently
+#'   limited. It only accepts one test per cutting (in the future multiple tests
+#'   may be accepted), and all the tests must consistently return the same exact
+#'   results (again this may be more flexible in the future).
 #' @param cutting A list of cutting functions created by [create_cutting()],
 #'   see examples.
 #' @param seed Random seed.
@@ -268,6 +272,17 @@ sim_gs_n <- function(
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
 
+    # Organize tests for each cutting
+    if (is.function(test)) {
+      test_single <- test
+      test <- vector(mode = "list", length = n_analysis)
+      test[] <- list(test_single)
+    }
+    if (length(test) != length(cutting)) {
+      stop("If you want to run different tests at each cutting, the list of
+           tests must be the same length as the list of cuttings")
+    }
+
     for (i_analysis in seq_len(n_analysis)) {
       # Get cut date
       cut_date[i_analysis] <- cutting[[i_analysis]](data = simu_data)
@@ -276,7 +291,7 @@ sim_gs_n <- function(
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
 
       # Test
-      ans_1sim_new <- test(simu_data_cut, ...)
+      ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
