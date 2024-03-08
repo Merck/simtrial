@@ -52,13 +52,13 @@
 #'
 #' # Parameters for treatment effect
 #' delay_effect_duration <- 3 # Delay treatment effect in months
-#' median_col <- 9 # Survival median of the control arm
+#' median_ctrl <- 9 # Survival median of the control arm
 #' median_exp <- c(9, 14) # Survival median of the experimental arm
 #' dropout_rate <- 0.001
 #' fail_rate <- define_fail_rate(
 #'   duration = c(delay_effect_duration, 100),
-#'   fail_rate = log(2) / median_col,
-#'   hr = median_col / median_exp,
+#'   fail_rate = log(2) / median_ctrl,
+#'   hr = median_ctrl / median_exp,
 #'   dropout_rate = dropout_rate
 #' )
 #'

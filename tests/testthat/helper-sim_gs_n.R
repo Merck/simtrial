@@ -15,13 +15,13 @@ test_enroll_rate <- function() {
 test_fail_rate <- function() {
   # parameters for treatment effect
   delay_effect_duration <- 3  # delay treatment effect in months
-  median_col <- 9             # survival median of the control arm
+  median_ctrl <- 9            # survival median of the control arm
   median_exp <- c(9, 14)      # survival median of the experimental arm
   dropout_rate <- 0.001
   fail_rate <- gsDesign2::define_fail_rate(
     duration = c(delay_effect_duration, 100),
-    fail_rate = log(2) /  median_col,
-    hr = median_col / median_exp,
+    fail_rate = log(2) /  median_ctrl,
+    hr = median_ctrl / median_exp,
     dropout_rate = dropout_rate
   )
   return(fail_rate)
@@ -31,7 +31,7 @@ test_cutting <- function() {
   # other related parameters
   alpha <- 0.025              # type I error
   beta <- 0.1                 # type II error
-  ratio <- 1                  # randomization ratio (exp:col)
+  ratio <- 1                  # randomization ratio (exp:ctrl)
   # Define cuttings of 2 IAs and 1 FA
   # IA1
   # The 1st interim analysis will occur at the later of the following 3 conditions:
