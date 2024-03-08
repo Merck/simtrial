@@ -148,13 +148,13 @@ z statistics or p-values.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Parameters for treatment effect</span></span></span>
 <span class="r-in"><span><span class="va">delay_effect_duration</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># Delay treatment effect in months</span></span></span>
-<span class="r-in"><span><span class="va">median_col</span> <span class="op">&lt;-</span> <span class="fl">9</span> <span class="co"># Survival median of the control arm</span></span></span>
+<span class="r-in"><span><span class="va">median_ctrl</span> <span class="op">&lt;-</span> <span class="fl">9</span> <span class="co"># Survival median of the control arm</span></span></span>
 <span class="r-in"><span><span class="va">median_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">14</span><span class="op">)</span> <span class="co"># Survival median of the experimental arm</span></span></span>
 <span class="r-in"><span><span class="va">dropout_rate</span> <span class="op">&lt;-</span> <span class="fl">0.001</span></span></span>
 <span class="r-in"><span><span class="va">fail_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/define_fail_rate.html" class="external-link">define_fail_rate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">delay_effect_duration</span>, <span class="fl">100</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">median_col</span>,</span></span>
-<span class="r-in"><span>  hr <span class="op">=</span> <span class="va">median_col</span> <span class="op">/</span> <span class="va">median_exp</span>,</span></span>
+<span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">median_ctrl</span>,</span></span>
+<span class="r-in"><span>  hr <span class="op">=</span> <span class="va">median_ctrl</span> <span class="op">/</span> <span class="va">median_exp</span>,</span></span>
 <span class="r-in"><span>  dropout_rate <span class="op">=</span> <span class="va">dropout_rate</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
