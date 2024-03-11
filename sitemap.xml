@@ -49,6 +49,9 @@
     <loc>https://merck.github.io/simtrial/reference/create_cutting.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/simtrial/reference/create_cutting_test.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/simtrial/reference/cut_data_by_date.html</loc>
   </url>
   <url>
@@ -110,6 +113,9 @@
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/milestone.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/simtrial/reference/multitest.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/simtrial/reference/pvalue_maxcombo.html</loc>

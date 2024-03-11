@@ -12,7 +12,7 @@ arguments will change as we add additional features."><meta property="og:image" 
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,9 +104,13 @@ in each block.</p></dd>
 
 
 <dt>test</dt>
-<dd><p>A test function such as <code><a href="wlr.html">wlr()</a></code>,
-<code><a href="maxcombo.html">maxcombo()</a></code>, or <code><a href="rmst.html">rmst()</a></code>. The simulated data set is
-passed as the first positional argument to the test function provided.</p></dd>
+<dd><p>A test function such as <code><a href="wlr.html">wlr()</a></code>, <code><a href="maxcombo.html">maxcombo()</a></code>, or <code><a href="rmst.html">rmst()</a></code>. The
+simulated data set is passed as the first positional argument to the test
+function provided. Alternatively a list of functions created by
+<code><a href="create_cutting_test.html">create_cutting_test()</a></code>. The list form is experimental and currently
+limited. It only accepts one test per cutting (in the future multiple tests
+may be accepted), and all the tests must consistently return the same exact
+results (again this may be more flexible in the future).</p></dd>
 
 
 <dt>cutting</dt>
