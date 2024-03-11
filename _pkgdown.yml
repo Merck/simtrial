@@ -53,6 +53,8 @@ reference:
     - milestone
     - wlr
     - maxcombo
+    - create_cutting_test
+    - multitest
 
 - title: "Randomization algorithms"
   contents:

@@ -7,9 +7,9 @@
 fh(rho = 0, gamma = 0)
 }
 \arguments{
-\item{rho}{Non-negative number. \code{rho = 0, gamma = 0} is equivalent to regular logrank test.}
+\item{rho}{Non-negative number. \verb{rho = 0, gamma = 0} is equivalent to regular logrank test.}
 
-\item{gamma}{Non-negative number. \code{rho = 0, gamma = 0} is equivalent to regular logrank test.}
+\item{gamma}{Non-negative number. \verb{rho = 0, gamma = 0} is equivalent to regular logrank test.}
 }
 \value{
 A list of parameters of the Fleming-Harrington weighting function

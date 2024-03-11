@@ -22,15 +22,15 @@
 #' arguments will change as we add additional features.
 #'
 #' @param data a tte dataset
-#' @param rho Numeric vector passed to \code{\link{fh_weight}}. Must be greater
-#'   than or equal to zero. Must be the same length as \code{gamma}.
-#' @param gamma Numeric vector passed to \code{\link{fh_weight}}. Must be
-#'   greater than or equal to zero. Must be the same length as \code{rho}.
+#' @param rho Numeric vector passed to [fh_weight()]. Must be greater
+#'   than or equal to zero. Must be the same length as `gamma`.
+#' @param gamma Numeric vector passed to [fh_weight()]. Must be
+#'   greater than or equal to zero. Must be the same length as `rho`.
 #'
 #' @return pvalues
 #' @export
 #'
-#' @seealso \code{\link{fh_weight}}
+#' @seealso [fh_weight()]
 #'
 #' @examples
 #' sim_pw_surv(n = 200) |>

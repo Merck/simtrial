@@ -22,9 +22,13 @@
 #' arguments will change as we add additional features.
 #'
 #' @inheritParams sim_fixed_n
-#' @param test A test function such as [wlr()],
-#'   [maxcombo()], or [rmst()]. The simulated data set is
-#'   passed as the first positional argument to the test function provided.
+#' @param test A test function such as [wlr()], [maxcombo()], or [rmst()]. The
+#'   simulated data set is passed as the first positional argument to the test
+#'   function provided. Alternatively a list of functions created by
+#'   [create_cutting_test()]. The list form is experimental and currently
+#'   limited. It only accepts one test per cutting (in the future multiple tests
+#'   may be accepted), and all the tests must consistently return the same exact
+#'   results (again this may be more flexible in the future).
 #' @param cutting A list of cutting functions created by [create_cutting()],
 #'   see examples.
 #' @param seed Random seed.
@@ -268,6 +272,17 @@ sim_gs_n <- function(
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
 
+    # Organize tests for each cutting
+    if (is.function(test)) {
+      test_single <- test
+      test <- vector(mode = "list", length = n_analysis)
+      test[] <- list(test_single)
+    }
+    if (length(test) != length(cutting)) {
+      stop("If you want to run different tests at each cutting, the list of
+           tests must be the same length as the list of cuttings")
+    }
+
     for (i_analysis in seq_len(n_analysis)) {
       # Get cut date
       cut_date[i_analysis] <- cutting[[i_analysis]](data = simu_data)
@@ -276,7 +291,7 @@ sim_gs_n <- function(
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
 
       # Test
-      ans_1sim_new <- test(simu_data_cut, ...)
+      ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
@@ -294,16 +309,16 @@ sim_gs_n <- function(
 
 #' Create a cutting function
 #'
-#' Create a cutting function for use with \code{\link{sim_gs_n}}
+#' Create a cutting function for use with [sim_gs_n()]
 #'
-#' @param ... Arguments passed to \code{\link{get_analysis_date}}
+#' @param ... Arguments passed to [get_analysis_date()]
 #'
 #' @return A function that accepts a data frame of simulated trial data and
 #'   returns a cut date
 #'
 #' @export
 #'
-#' @seealso \code{\link{get_analysis_date}}, \code{\link{sim_gs_n}}
+#' @seealso [get_analysis_date()], [sim_gs_n()]
 #'
 #' @examples
 #' # Simulate trial data
@@ -323,4 +338,85 @@ create_cutting <- function(...) {
   function(data) {
     get_analysis_date(data, ...)
   }
+}
+
+#' Create a cutting test function
+#'
+#' Create a cutting test function for use with [sim_gs_n()]
+#'
+#' @param test A test function such as [wlr()], [maxcombo()], or [rmst()]
+#' @param ... Arguments passed to the cutting test function
+#'
+#' @return A function that accepts a data frame of simulated trial data and
+#'   returns a test result
+#'
+#' @export
+#'
+#' @seealso [sim_gs_n()], [create_cutting()]
+#'
+#' @examples
+#' # Simulate trial data
+#' trial_data <- sim_pw_surv()
+#'
+#' # Cut after 150 events
+#' trial_data_cut <- cut_data_by_event(trial_data, 150)
+#'
+#' # Create a cutting test function that can be used by sim_gs_n()
+#' regular_logrank_test <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+#'
+#' # Test the cutting
+#' regular_logrank_test(trial_data_cut)
+#'
+#' # The results are the same as directly calling the function
+#' stopifnot(all.equal(
+#'   regular_logrank_test(trial_data_cut),
+#'   wlr(trial_data_cut, weight = fh(rho = 0, gamma = 0))
+#' ))
+create_cutting_test <- function(test, ...) {
+  stopifnot(is.function(test))
+  function(data) {
+    test(data, ...)
+  }
+}
+
+#' Perform multiple tests on trial data cutting
+#'
+#' WARNING: This experimental function is a work-in-progress. The function
+#' arguments and/or returned output format may change as we add additional
+#' features.
+#'
+#' @param data Trial data cut by [cut_data_by_event()] or [cut_data_by_date()]
+#' @param ... One or more test functions. Use [create_cutting_test()] to change
+#'   the default arguments of each test function.
+#'
+#' @return A list of test results, one per test. If the test functions are named
+#'   in the call to `multitest()`, the returned list uses the same names.
+#'
+#' @export
+#'
+#' @seealso [create_cutting_test()]
+#'
+#' @examples
+#' trial_data <- sim_pw_surv(n = 200)
+#' trial_data_cut <- cut_data_by_event(trial_data, 150)
+#'
+#' # create cutting test functions
+#' wlr_partial <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+#' rmst_partial <- create_cutting_test(rmst, tau = 20)
+#' maxcombo_partial <- create_cutting_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
+#'
+#' multitest(
+#'   data = trial_data_cut,
+#'   wlr = wlr_partial,
+#'   rmst = rmst_partial,
+#'   maxcombo = maxcombo_partial
+#' )
+multitest <- function(data, ...) {
+  tests <- list(...)
+  output <- vector(mode = "list", length = length(tests))
+  names(output) <- names(tests)
+  for (i in seq_along(tests)) {
+    output[[i]] <- tests[[i]](data)
+  }
+  return(output)
 }

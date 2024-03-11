@@ -36,9 +36,13 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{A test function such as \code{\link[=wlr]{wlr()}},
-\code{\link[=maxcombo]{maxcombo()}}, or \code{\link[=rmst]{rmst()}}. The simulated data set is
-passed as the first positional argument to the test function provided.}
+\item{test}{A test function such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or \code{\link[=rmst]{rmst()}}. The
+simulated data set is passed as the first positional argument to the test
+function provided. Alternatively a list of functions created by
+\code{\link[=create_cutting_test]{create_cutting_test()}}. The list form is experimental and currently
+limited. It only accepts one test per cutting (in the future multiple tests
+may be accepted), and all the tests must consistently return the same exact
+results (again this may be more flexible in the future).}
 
 \item{cutting}{A list of cutting functions created by \code{\link[=create_cutting]{create_cutting()}},
 see examples.}
