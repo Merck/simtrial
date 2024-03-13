@@ -299,3 +299,26 @@ rmst_single_arm <- function(
 
   return(ans)
 }
+
+#' @export
+rmst.formula <- function(formula, data, tau = 10, reference = "control",
+                         alpha = 0.05) {
+  stopifnot(is.data.frame(data))
+
+  variables <- colnames(stats::get_all_vars(formula = formula, data = data))
+  if (length(variables) != 3) {
+    stop("The formula interface requires exactly 3 variables specified")
+  }
+
+  ans <- rmst(
+    data = data,
+    tau = tau,
+    var_label_tte = variables[1],
+    var_label_event = variables[2],
+    var_label_group = variables[3],
+    reference = reference,
+    alpha = alpha
+  )
+
+  return(ans)
+}
