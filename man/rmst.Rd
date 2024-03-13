@@ -4,15 +4,7 @@
 \alias{rmst}
 \title{RMST difference of 2 arms}
 \usage{
-rmst(
-  data,
-  tau = 10,
-  var_label_tte = "tte",
-  var_label_event = "event",
-  var_label_group = "treatment",
-  reference = "control",
-  alpha = 0.05
-)
+rmst(x, ...)
 }
 \arguments{
 \item{data}{A time-to-event dataset with a column \code{tte} indicating the
@@ -40,7 +32,7 @@ RMST difference of 2 arms
 \examples{
 data(ex1_delayed_effect)
 rmst(
-  data = ex1_delayed_effect,
+  x = ex1_delayed_effect,
   var_label_tte = "month",
   var_label_event = "evntd",
   var_label_group = "trt",

@@ -285,7 +285,7 @@ sim_gs_n <- function(
 
     for (i_analysis in seq_len(n_analysis)) {
       # Get cut date
-      cut_date[i_analysis] <- cutting[[i_analysis]](data = simu_data)
+      cut_date[i_analysis] <- cutting[[i_analysis]](simu_data)
 
       # Cut the data
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])

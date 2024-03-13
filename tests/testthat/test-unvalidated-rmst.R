@@ -1,7 +1,7 @@
 test_that("rmst() snapshot test", {
   data(ex1_delayed_effect)
   observed <- rmst(
-    data = ex1_delayed_effect,
+    ex1_delayed_effect,
     var_label_tte = "month",
     var_label_event = "evntd",
     var_label_group = "trt",
@@ -21,7 +21,7 @@ test_that("formula method matches default method", {
   data(ex1_delayed_effect)
 
   rmst_default <- rmst(
-    data = ex1_delayed_effect,
+    ex1_delayed_effect,
     var_label_tte = "month",
     var_label_event = "evntd",
     var_label_group = "trt",
@@ -29,7 +29,7 @@ test_that("formula method matches default method", {
     reference = "0"
   )
 
-  rmst_formula_1 <- rmst.formula(
+  rmst_formula_1 <- rmst(
     month ~ evntd + trt,
     data = ex1_delayed_effect,
     tau = 10,
@@ -37,7 +37,7 @@ test_that("formula method matches default method", {
   )
   expect_equal(rmst_formula_1, rmst_default)
 
-  rmst_formula_2 <- rmst.formula(
+  rmst_formula_2 <- rmst(
     survival::Surv(month | evntd) ~ trt,
     data = ex1_delayed_effect,
     tau = 10,

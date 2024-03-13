@@ -35,25 +35,31 @@
 #' @examples
 #' data(ex1_delayed_effect)
 #' rmst(
-#'   data = ex1_delayed_effect,
+#'   x = ex1_delayed_effect,
 #'   var_label_tte = "month",
 #'   var_label_event = "evntd",
 #'   var_label_group = "trt",
 #'   tau = 10,
 #'   reference = "0"
 #' )
-rmst <- function(
-    data,
+rmst <- function(x, ...) {
+  UseMethod("rmst")
+}
+
+#' @export
+rmst.default <- function(
+    x,
     tau = 10,
     var_label_tte = "tte",
     var_label_event = "event",
     var_label_group = "treatment",
     reference = "control",
-    alpha = 0.05) {
+    alpha = 0.05,
+    ...) {
   res <- rmst_two_arm(
-    time_var = data[[var_label_tte]],
-    event_var = data[[var_label_event]],
-    group_var = data[[var_label_group]],
+    time_var = x[[var_label_tte]],
+    event_var = x[[var_label_event]],
+    group_var = x[[var_label_group]],
     trunc_time = tau,
     reference = reference,
     alpha = alpha
@@ -301,17 +307,17 @@ rmst_single_arm <- function(
 }
 
 #' @export
-rmst.formula <- function(formula, data, tau = 10, reference = "control",
-                         alpha = 0.05) {
+rmst.formula <- function(x, data, tau = 10, reference = "control",
+                         alpha = 0.05, ...) {
   stopifnot(is.data.frame(data))
 
-  variables <- colnames(stats::get_all_vars(formula = formula, data = data))
+  variables <- colnames(stats::get_all_vars(formula = x, data = data))
   if (length(variables) != 3) {
     stop("The formula interface requires exactly 3 variables specified")
   }
 
-  ans <- rmst(
-    data = data,
+  ans <- rmst.default(
+    x = data,
     tau = tau,
     var_label_tte = variables[1],
     var_label_event = variables[2],
