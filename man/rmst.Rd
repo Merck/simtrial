@@ -2,14 +2,31 @@
 % Please edit documentation in R/rmst.R
 \name{rmst}
 \alias{rmst}
+\alias{rmst.default}
+\alias{rmst.formula}
 \title{RMST difference of 2 arms}
 \usage{
 rmst(x, ...)
+
+\method{rmst}{default}(
+  x,
+  tau = 10,
+  var_label_tte = "tte",
+  var_label_event = "event",
+  var_label_group = "treatment",
+  reference = "control",
+  alpha = 0.05,
+  ...
+)
+
+\method{rmst}{formula}(x, data, tau = 10, reference = "control", alpha = 0.05, ...)
 }
 \arguments{
-\item{data}{A time-to-event dataset with a column \code{tte} indicating the
-survival time and a column of \code{event} indicating whether it is
-event or censor.}
+\item{x}{Either a time-to-event dataset (see argument \code{data}) or a formula
+that indicates the TTE, event, and group variables (in that exact order;
+see Details below).}
+
+\item{...}{Currently unused (required for S3 generic function)}
 
 \item{tau}{RMST analysis time.}
 
@@ -22,12 +39,27 @@ event or censor.}
 \item{reference}{A group label indicating the reference group.}
 
 \item{alpha}{Type I error.}
+
+\item{data}{A time-to-event dataset with a column \code{tte} indicating the
+survival time and a column of \code{event} indicating whether it is
+event or censor.}
 }
 \value{
 The z statistics.
 }
 \description{
 RMST difference of 2 arms
+}
+\details{
+The formula interface is provided as a convenience to easily specify the TTE,
+event, and grouping variables. Note however that only the order of the three
+variables is actually used by the underlying function. Any functions applied
+in the formula are ignored, and thus should only be used for documenting your
+intent. For example, you can use the syntax from the survival package
+\code{Surv(tte | event) ~ group} to highlight the relation between the TTE and
+event variables, but the function \code{Surv()} is never actually executed.
+Importantly, you shouldn't apply any transformation functions such as \code{log()}
+since these will also be ignored.
 }
 \examples{
 data(ex1_delayed_effect)
@@ -36,6 +68,22 @@ rmst(
   var_label_tte = "month",
   var_label_event = "evntd",
   var_label_group = "trt",
+  tau = 10,
+  reference = "0"
+)
+
+# Formula interface
+rmst(
+  month ~ evntd + trt,
+  data = ex1_delayed_effect,
+  tau = 10,
+  reference = "0"
+)
+
+library("survival")
+rmst(
+  Surv(month | evntd) ~ trt,
+  data = ex1_delayed_effect,
   tau = 10,
   reference = "0"
 )

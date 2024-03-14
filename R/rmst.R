@@ -18,6 +18,9 @@
 
 #' RMST difference of 2 arms
 #'
+#' @param x Either a time-to-event dataset (see argument `data`) or a formula
+#'   that indicates the TTE, event, and group variables (in that exact order;
+#'   see Details below).
 #' @param data A time-to-event dataset with a column `tte` indicating the
 #'   survival time and a column of `event` indicating whether it is
 #'   event or censor.
@@ -27,6 +30,18 @@
 #' @param var_label_group Column name of the grouping variable.
 #' @param reference A group label indicating the reference group.
 #' @param alpha Type I error.
+#' @param ... Currently unused (required for S3 generic function)
+#'
+#' @details
+#' The formula interface is provided as a convenience to easily specify the TTE,
+#' event, and grouping variables. Note however that only the order of the three
+#' variables is actually used by the underlying function. Any functions applied
+#' in the formula are ignored, and thus should only be used for documenting your
+#' intent. For example, you can use the syntax from the survival package
+#' `Surv(tte | event) ~ group` to highlight the relation between the TTE and
+#' event variables, but the function `Surv()` is never actually executed.
+#' Importantly, you shouldn't apply any transformation functions such as `log()`
+#' since these will also be ignored.
 #'
 #' @return The z statistics.
 #'
@@ -42,10 +57,27 @@
 #'   tau = 10,
 #'   reference = "0"
 #' )
+#'
+#' # Formula interface
+#' rmst(
+#'   month ~ evntd + trt,
+#'   data = ex1_delayed_effect,
+#'   tau = 10,
+#'   reference = "0"
+#' )
+#'
+#' library("survival")
+#' rmst(
+#'   Surv(month | evntd) ~ trt,
+#'   data = ex1_delayed_effect,
+#'   tau = 10,
+#'   reference = "0"
+#' )
 rmst <- function(x, ...) {
   UseMethod("rmst")
 }
 
+#' @rdname rmst
 #' @export
 rmst.default <- function(
     x,
@@ -306,6 +338,7 @@ rmst_single_arm <- function(
   return(ans)
 }
 
+#' @rdname rmst
 #' @export
 rmst.formula <- function(x, data, tau = 10, reference = "control",
                          alpha = 0.05, ...) {
