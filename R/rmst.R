@@ -59,16 +59,27 @@
 #' )
 #'
 #' # Formula interface
+#' library("survival")
+#'
 #' rmst(
-#'   month ~ evntd + trt,
+#'   Surv(month | evntd) ~ trt,
 #'   data = ex1_delayed_effect,
 #'   tau = 10,
 #'   reference = "0"
 #' )
 #'
-#' library("survival")
+#' # alternative
 #' rmst(
-#'   Surv(month | evntd) ~ trt,
+#'   ~ Surv(month, evntd, trt),
+#'   data = ex1_delayed_effect,
+#'   tau = 10,
+#'   reference = "0"
+#' )
+#'
+#' # This example doesn't make statistical sense, but demonstrates that only the
+#' # order of the 3 variables actually matters
+#' rmst(
+#'   month ~ evntd + trt,
 #'   data = ex1_delayed_effect,
 #'   tau = 10,
 #'   reference = "0"

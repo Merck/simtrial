@@ -44,4 +44,12 @@ test_that("formula method matches default method", {
     reference = "0"
   )
   expect_equal(rmst_formula_2, rmst_default)
+
+  rmst_formula_3 <- rmst(
+    ~ survival::Surv(month, evntd, trt),
+    data = ex1_delayed_effect,
+    tau = 10,
+    reference = "0"
+  )
+  expect_equal(rmst_formula_3, rmst_default)
 })
