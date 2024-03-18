@@ -75,3 +75,41 @@ test_that("default and formula methods of rmst are pipeable", {
 
   expect_equal(rmst_formula_1, rmst_default)
 })
+
+test_that("formula argument throws error for bad input data", {
+  data("ex1_delayed_effect")
+
+  # formula with 2 variables
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = month ~ evntd,
+      tau = 10,
+      reference = "0"
+    ),
+    "The formula interface requires exactly 3 variables specified"
+  )
+
+  # formula with 4 variables
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = month ~ evntd + trt + id,
+      tau = 10,
+      reference = "0"
+    ),
+    "The formula interface requires exactly 3 variables specified"
+  )
+
+  # non-formula
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = "month ~ evntd + trt + id",
+      tau = 10,
+      reference = "0"
+    ),
+    'inherits(formula, "formula") is not TRUE',
+    fixed = TRUE
+  )
+})

@@ -97,6 +97,7 @@ rmst <- function(
   stopifnot(is.data.frame(data))
 
   if (!is.null(formula)) {
+    stopifnot(inherits(formula, "formula"))
     variables <- colnames(stats::get_all_vars(formula = formula, data = data))
     if (length(variables) != 3) {
       stop("The formula interface requires exactly 3 variables specified")
