@@ -18,9 +18,6 @@
 
 #' RMST difference of 2 arms
 #'
-#' @param x Either a time-to-event dataset (see argument `data`) or a formula
-#'   that indicates the TTE, event, and group variables (in that exact order;
-#'   see Details below).
 #' @param data A time-to-event dataset with a column `tte` indicating the
 #'   survival time and a column of `event` indicating whether it is
 #'   event or censor.
@@ -28,12 +25,16 @@
 #' @param var_label_tte Column name of the TTE variable.
 #' @param var_label_event Column name of the event variable.
 #' @param var_label_group Column name of the grouping variable.
+#' @param formula (default: `NULL`) A formula that indicates the TTE, event, and
+#'   group variables (in that exact order; see Details below). This is an
+#'   alternative to specifying the variables as strings. If a formula is
+#'   provided, the values passed to `var_label_tte`, `var_label_event`, and
+#'   `var_label_group` are ignored.
 #' @param reference A group label indicating the reference group.
 #' @param alpha Type I error.
-#' @param ... Currently unused (required for S3 generic function)
 #'
 #' @details
-#' The formula interface is provided as a convenience to easily specify the TTE,
+#' The argument `formula` is provided as a convenience to easily specify the TTE,
 #' event, and grouping variables. Note however that only the order of the three
 #' variables is actually used by the underlying function. Any functions applied
 #' in the formula are ignored, and thus should only be used for documenting your
@@ -50,7 +51,7 @@
 #' @examples
 #' data(ex1_delayed_effect)
 #' rmst(
-#'   x = ex1_delayed_effect,
+#'   data = ex1_delayed_effect,
 #'   var_label_tte = "month",
 #'   var_label_event = "evntd",
 #'   var_label_group = "trt",
@@ -62,16 +63,16 @@
 #' library("survival")
 #'
 #' rmst(
-#'   Surv(month | evntd) ~ trt,
 #'   data = ex1_delayed_effect,
+#'   formula = Surv(month | evntd) ~ trt,
 #'   tau = 10,
 #'   reference = "0"
 #' )
 #'
 #' # alternative
 #' rmst(
-#'   ~ Surv(month, evntd, trt),
 #'   data = ex1_delayed_effect,
+#'   formula = ~ Surv(month, evntd, trt),
 #'   tau = 10,
 #'   reference = "0"
 #' )
@@ -79,30 +80,36 @@
 #' # This example doesn't make statistical sense, but demonstrates that only the
 #' # order of the 3 variables actually matters
 #' rmst(
-#'   month ~ evntd + trt,
 #'   data = ex1_delayed_effect,
+#'   formula = month ~ evntd + trt,
 #'   tau = 10,
 #'   reference = "0"
 #' )
-rmst <- function(x, ...) {
-  UseMethod("rmst")
-}
-
-#' @rdname rmst
-#' @export
-rmst.default <- function(
-    x,
+rmst <- function(
+    data,
     tau = 10,
     var_label_tte = "tte",
     var_label_event = "event",
     var_label_group = "treatment",
+    formula = NULL,
     reference = "control",
-    alpha = 0.05,
-    ...) {
+    alpha = 0.05) {
+  stopifnot(is.data.frame(data))
+
+  if (!is.null(formula)) {
+    variables <- colnames(stats::get_all_vars(formula = formula, data = data))
+    if (length(variables) != 3) {
+      stop("The formula interface requires exactly 3 variables specified")
+    }
+    var_label_tte <- variables[1]
+    var_label_event <- variables[2]
+    var_label_group <- variables[3]
+  }
+
   res <- rmst_two_arm(
-    time_var = x[[var_label_tte]],
-    event_var = x[[var_label_event]],
-    group_var = x[[var_label_group]],
+    time_var = data[[var_label_tte]],
+    event_var = data[[var_label_event]],
+    group_var = data[[var_label_group]],
     trunc_time = tau,
     reference = reference,
     alpha = alpha
@@ -344,30 +351,6 @@ rmst_single_arm <- function(
   ans <- data.frame(
     cutoff_time, group, rmst, variance, std, lcl, ucl, event,
     stringsAsFactors = FALSE
-  )
-
-  return(ans)
-}
-
-#' @rdname rmst
-#' @export
-rmst.formula <- function(x, data, tau = 10, reference = "control",
-                         alpha = 0.05, ...) {
-  stopifnot(is.data.frame(data))
-
-  variables <- colnames(stats::get_all_vars(formula = x, data = data))
-  if (length(variables) != 3) {
-    stop("The formula interface requires exactly 3 variables specified")
-  }
-
-  ans <- rmst.default(
-    x = data,
-    tau = tau,
-    var_label_tte = variables[1],
-    var_label_event = variables[2],
-    var_label_group = variables[3],
-    reference = reference,
-    alpha = alpha
   )
 
   return(ans)

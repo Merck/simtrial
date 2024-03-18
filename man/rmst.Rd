@@ -2,31 +2,23 @@
 % Please edit documentation in R/rmst.R
 \name{rmst}
 \alias{rmst}
-\alias{rmst.default}
-\alias{rmst.formula}
 \title{RMST difference of 2 arms}
 \usage{
-rmst(x, ...)
-
-\method{rmst}{default}(
-  x,
+rmst(
+  data,
   tau = 10,
   var_label_tte = "tte",
   var_label_event = "event",
   var_label_group = "treatment",
+  formula = NULL,
   reference = "control",
-  alpha = 0.05,
-  ...
+  alpha = 0.05
 )
-
-\method{rmst}{formula}(x, data, tau = 10, reference = "control", alpha = 0.05, ...)
 }
 \arguments{
-\item{x}{Either a time-to-event dataset (see argument \code{data}) or a formula
-that indicates the TTE, event, and group variables (in that exact order;
-see Details below).}
-
-\item{...}{Currently unused (required for S3 generic function)}
+\item{data}{A time-to-event dataset with a column \code{tte} indicating the
+survival time and a column of \code{event} indicating whether it is
+event or censor.}
 
 \item{tau}{RMST analysis time.}
 
@@ -36,13 +28,15 @@ see Details below).}
 
 \item{var_label_group}{Column name of the grouping variable.}
 
+\item{formula}{(default: \code{NULL}) A formula that indicates the TTE, event, and
+group variables (in that exact order; see Details below). This is an
+alternative to specifying the variables as strings. If a formula is
+provided, the values passed to \code{var_label_tte}, \code{var_label_event}, and
+\code{var_label_group} are ignored.}
+
 \item{reference}{A group label indicating the reference group.}
 
 \item{alpha}{Type I error.}
-
-\item{data}{A time-to-event dataset with a column \code{tte} indicating the
-survival time and a column of \code{event} indicating whether it is
-event or censor.}
 }
 \value{
 The z statistics.
@@ -51,7 +45,7 @@ The z statistics.
 RMST difference of 2 arms
 }
 \details{
-The formula interface is provided as a convenience to easily specify the TTE,
+The argument \code{formula} is provided as a convenience to easily specify the TTE,
 event, and grouping variables. Note however that only the order of the three
 variables is actually used by the underlying function. Any functions applied
 in the formula are ignored, and thus should only be used for documenting your
@@ -64,7 +58,7 @@ since these will also be ignored.
 \examples{
 data(ex1_delayed_effect)
 rmst(
-  x = ex1_delayed_effect,
+  data = ex1_delayed_effect,
   var_label_tte = "month",
   var_label_event = "evntd",
   var_label_group = "trt",
@@ -76,16 +70,16 @@ rmst(
 library("survival")
 
 rmst(
-  Surv(month | evntd) ~ trt,
   data = ex1_delayed_effect,
+  formula = Surv(month | evntd) ~ trt,
   tau = 10,
   reference = "0"
 )
 
 # alternative
 rmst(
-  ~ Surv(month, evntd, trt),
   data = ex1_delayed_effect,
+  formula = ~ Surv(month, evntd, trt),
   tau = 10,
   reference = "0"
 )
@@ -93,8 +87,8 @@ rmst(
 # This example doesn't make statistical sense, but demonstrates that only the
 # order of the 3 variables actually matters
 rmst(
-  month ~ evntd + trt,
   data = ex1_delayed_effect,
+  formula = month ~ evntd + trt,
   tau = 10,
   reference = "0"
 )
