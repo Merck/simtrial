@@ -12,8 +12,8 @@ sim_gs_n(
   fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
-  test = wlr,
-  cutting = NULL,
+  tests = wlr,
+  cuts = NULL,
   seed = 2024,
   ...
 )
@@ -36,21 +36,23 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{A test function such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or \code{\link[=rmst]{rmst()}}. The
-simulated data set is passed as the first positional argument to the test
-function provided. Alternatively a list of functions created by
-\code{\link[=create_cutting_test]{create_cutting_test()}}. The list form is experimental and currently
-limited. It only accepts one test per cutting (in the future multiple tests
-may be accepted), and all the tests must consistently return the same exact
-results (again this may be more flexible in the future).}
+\item{tests}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or
+\code{\link[=rmst]{rmst()}}. If a single test function is provided, it will be applied at each
+cut. Alternatively a list of functions created by \code{\link[=create_test]{create_test()}}. The list
+form is experimental and currently limited. It only accepts one test per
+cutting (in the future multiple tests may be accepted), and all the tests
+must consistently return the same exact results (again this may be more
+flexible in the future). Importantly, note that the simulated data set is
+always passed as the first positional argument to each test function
+provided.}
 
-\item{cutting}{A list of cutting functions created by \code{\link[=create_cutting]{create_cutting()}},
+\item{cuts}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}},
 see examples.}
 
 \item{seed}{Random seed.}
 
-\item{...}{Arguments passed to the test function provided by the argument
-\code{test}.}
+\item{...}{Arguments passed to the test function(s) provided by the argument
+\code{tests}.}
 }
 \value{
 A data frame summarizing the simulation ID, analysis date,
@@ -99,7 +101,7 @@ ratio <- 1 # Randomization ratio (experimental:control)
 # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #   minimum of 20 months follow-up.
 # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-ia1 <- create_cutting(
+ia1 <- create_cut(
   planned_calendar_time = 20,
   target_event_overall = 100,
   max_extension_for_target_event = 24,
@@ -113,7 +115,7 @@ ia1 <- create_cutting(
 # - At least 250 events have occurred.
 # - At least 10 months after IA1.
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-ia2 <- create_cutting(
+ia2 <- create_cut(
   planned_calendar_time = 32,
   target_event_overall = 200,
   max_extension_for_target_event = 34,
@@ -124,7 +126,7 @@ ia2 <- create_cutting(
 # The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study.
 # - At least 300 events have occurred.
-fa <- create_cutting(
+fa <- create_cut(
   planned_calendar_time = 45,
   target_event_overall = 350
 )
@@ -135,8 +137,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = wlr,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0)
 )
@@ -147,8 +149,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = wlr,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0.5)
 )
@@ -159,8 +161,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = wlr,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = mb(delay = 3)
 )
@@ -171,8 +173,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = wlr,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = wlr,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = early_zero(6)
 )
@@ -183,8 +185,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = rmst,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = rmst,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   tau = 20
 )
@@ -195,8 +197,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = milestone,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = milestone,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   ms_time = 10
 )
@@ -208,8 +210,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo,
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = maxcombo,
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   rho = c(0, 0),
   gamma = c(0, 0.5)
@@ -223,8 +225,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo(test1 = wlr, test2 = milestone),
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = maxcombo(test1 = wlr, test2 = milestone),
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
   test2_par = list(ms_time = 10)
@@ -239,8 +241,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-  cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  tests = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
+  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   test_par = list(
     ia1 = list(weight = fh(rho = 0, gamma = 0)),

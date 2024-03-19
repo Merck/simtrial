@@ -43,7 +43,7 @@ reference:
     - cut_data_by_event
     - get_cut_date_by_event
     - get_analysis_date
-    - create_cutting
+    - create_cut
 
 - title: "Compute p-values/test statistics"
   contents:
@@ -53,7 +53,7 @@ reference:
     - milestone
     - wlr
     - maxcombo
-    - create_cutting_test
+    - create_test
     - multitest
 
 - title: "Randomization algorithms"

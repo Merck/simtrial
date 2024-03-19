@@ -9,8 +9,8 @@ test_that("Test 1: regular logrank test", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = wlr,
-    cutting = test_cutting(),
+    tests = wlr,
+    cuts = test_cutting(),
     seed = 2024,
     weight = fh(rho = 0, gamma = 0)
   )
@@ -37,8 +37,8 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = wlr,
-    cutting = test_cutting(),
+    tests = wlr,
+    cuts = test_cutting(),
     seed = 2024,
     weight = fh(rho = 0, gamma = 0.5)
   )
@@ -65,8 +65,8 @@ test_that("Test 3: weighted logrank test by MB(3)", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = wlr,
-    cutting = test_cutting(),
+    tests = wlr,
+    cuts = test_cutting(),
     seed = 2024,
     weight = mb(delay = 3)
   )
@@ -91,8 +91,8 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = wlr,
-    cutting = test_cutting(),
+    tests = wlr,
+    cuts = test_cutting(),
     seed = 2024,
     weight = early_zero(6)
   )
@@ -117,8 +117,8 @@ test_that("Test 5: RMST", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = rmst,
-    cutting = test_cutting(),
+    tests = rmst,
+    cuts = test_cutting(),
     seed = 2024,
     tau = 20
   )
@@ -158,8 +158,8 @@ test_that("Test 6: Milestone", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = milestone,
-    cutting = test_cutting(),
+    tests = milestone,
+    cuts = test_cutting(),
     seed = 2024,
     ms_time = 10
   )
@@ -211,8 +211,8 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = maxcombo,
-    cutting = test_cutting(),
+    tests = maxcombo,
+    cuts = test_cutting(),
     seed = 2024,
     rho = c(0, 0),
     gamma = c(0, 0.5)
@@ -233,17 +233,17 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
 })
 
 test_that("sim_gs_n() accepts different tests per cutting", {
-  wlr_cut1 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
-  wlr_cut2 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0.5))
-  wlr_cut3 <- create_cutting_test(wlr, weight = fh(rho = 0.5, gamma = 0))
+  wlr_cut1 <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
+  wlr_cut2 <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+  wlr_cut3 <- create_test(wlr, weight = fh(rho = 0.5, gamma = 0))
 
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
     enroll_rate = test_enroll_rate(),
     fail_rate = test_fail_rate(),
-    test = list(wlr_cut1, wlr_cut2, wlr_cut3),
-    cutting = test_cutting(),
+    tests = list(wlr_cut1, wlr_cut2, wlr_cut3),
+    cuts = test_cutting(),
     seed = 2024
   )
   expected <- data.frame(
@@ -264,8 +264,8 @@ test_that("sim_gs_n() accepts different tests per cutting", {
 })
 
 test_that("sim_gs_n() requires a test for each cutting", {
-  wlr_cut1 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
-  wlr_cut2 <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+  wlr_cut1 <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
+  wlr_cut2 <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 
   expect_error(
     sim_gs_n(
@@ -273,8 +273,8 @@ test_that("sim_gs_n() requires a test for each cutting", {
       sample_size = 400,
       enroll_rate = test_enroll_rate(),
       fail_rate = test_fail_rate(),
-      test = list(wlr_cut1, wlr_cut2),
-      cutting = test_cutting(),
+      tests = list(wlr_cut1, wlr_cut2),
+      cuts = test_cutting(),
       seed = 2024
     ),
     "If you want to run different tests at each cutting"
