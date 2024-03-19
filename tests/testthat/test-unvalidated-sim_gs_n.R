@@ -154,14 +154,14 @@ test_that("Test 5: RMST", {
 
 test_that("Test 6: Milestone", {
   observed <- sim_gs_n(
-   n_sim = 3,
-   sample_size = 400,
-   enroll_rate = test_enroll_rate(),
-   fail_rate = test_fail_rate(),
-   test = milestone,
-   cutting = test_cutting(),
-   seed = 2024,
-   ms_time = 10
+    n_sim = 3,
+    sample_size = 400,
+    enroll_rate = test_enroll_rate(),
+    fail_rate = test_fail_rate(),
+    test = milestone,
+    cutting = test_cutting(),
+    seed = 2024,
+    ms_time = 10
   )
   expected <- data.frame(
     method = rep("milestone", 9L),

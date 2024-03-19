@@ -25,7 +25,7 @@
 #' @return A list of parameters of the Fleming-Harrington weighting function
 #' @examples
 #' fh(rho = 0, gamma = 0.5)
-fh <- function(rho = 0, gamma = 0){
+fh <- function(rho = 0, gamma = 0) {
   structure(list(rho = rho, gamma = gamma), class = c("list", "fh", "wlr"))
 }
 
@@ -42,7 +42,7 @@ fh <- function(rho = 0, gamma = 0){
 #'
 #' @examples
 #' mb(delay = 6, w_max = 2)
-mb <- function(delay = 4, w_max = Inf){
+mb <- function(delay = 4, w_max = Inf) {
   structure(list(delay = delay, w_max = w_max), class = c("list", "mb", "wlr"))
 }
 
@@ -59,6 +59,6 @@ mb <- function(delay = 4, w_max = Inf){
 #'
 #' @examples
 #' early_zero(6)
-early_zero <- function(early_period){
+early_zero <- function(early_period) {
   structure(list(early_period = early_period), class = c("list", "early_period", "wlr"))
 }

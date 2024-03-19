@@ -25,8 +25,24 @@
 #' @param var_label_tte Column name of the TTE variable.
 #' @param var_label_event Column name of the event variable.
 #' @param var_label_group Column name of the grouping variable.
+#' @param formula (default: `NULL`) A formula that indicates the TTE, event, and
+#'   group variables (in that exact order; see Details below). This is an
+#'   alternative to specifying the variables as strings. If a formula is
+#'   provided, the values passed to `var_label_tte`, `var_label_event`, and
+#'   `var_label_group` are ignored.
 #' @param reference A group label indicating the reference group.
 #' @param alpha Type I error.
+#'
+#' @details
+#' The argument `formula` is provided as a convenience to easily specify the TTE,
+#' event, and grouping variables. Note however that only the order of the three
+#' variables is actually used by the underlying function. Any functions applied
+#' in the formula are ignored, and thus should only be used for documenting your
+#' intent. For example, you can use the syntax from the survival package
+#' `Surv(tte | event) ~ group` to highlight the relation between the TTE and
+#' event variables, but the function `Surv()` is never actually executed.
+#' Importantly, you shouldn't apply any transformation functions such as `log()`
+#' since these will also be ignored.
 #'
 #' @return The z statistics.
 #'
@@ -42,14 +58,55 @@
 #'   tau = 10,
 #'   reference = "0"
 #' )
+#'
+#' # Formula interface
+#' library("survival")
+#'
+#' rmst(
+#'   data = ex1_delayed_effect,
+#'   formula = Surv(month | evntd) ~ trt,
+#'   tau = 10,
+#'   reference = "0"
+#' )
+#'
+#' # alternative
+#' rmst(
+#'   data = ex1_delayed_effect,
+#'   formula = ~ Surv(month, evntd, trt),
+#'   tau = 10,
+#'   reference = "0"
+#' )
+#'
+#' # This example doesn't make statistical sense, but demonstrates that only the
+#' # order of the 3 variables actually matters
+#' rmst(
+#'   data = ex1_delayed_effect,
+#'   formula = month ~ evntd + trt,
+#'   tau = 10,
+#'   reference = "0"
+#' )
 rmst <- function(
     data,
     tau = 10,
     var_label_tte = "tte",
     var_label_event = "event",
     var_label_group = "treatment",
+    formula = NULL,
     reference = "control",
     alpha = 0.05) {
+  stopifnot(is.data.frame(data))
+
+  if (!is.null(formula)) {
+    stopifnot(inherits(formula, "formula"))
+    variables <- colnames(stats::get_all_vars(formula = formula, data = data))
+    if (length(variables) != 3) {
+      stop("The formula interface requires exactly 3 variables specified")
+    }
+    var_label_tte <- variables[1]
+    var_label_event <- variables[2]
+    var_label_group <- variables[3]
+  }
+
   res <- rmst_two_arm(
     time_var = data[[var_label_tte]],
     event_var = data[[var_label_event]],

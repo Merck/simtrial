@@ -3,10 +3,12 @@
 test_enroll_rate <- function() {
   # parameters for enrollment
   enroll_rampup_duration <- 4 # duration for enrollment ramp up
-  enroll_duration <- 16       # total enrollment duration
+  enroll_duration <- 16 # total enrollment duration
   enroll_rate <- gsDesign2::define_enroll_rate(
-    duration = c(enroll_rampup_duration,
-                 enroll_duration - enroll_rampup_duration),
+    duration = c(
+      enroll_rampup_duration,
+      enroll_duration - enroll_rampup_duration
+    ),
     rate = c(10, 30)
   )
   return(enroll_rate)
@@ -14,13 +16,13 @@ test_enroll_rate <- function() {
 
 test_fail_rate <- function() {
   # parameters for treatment effect
-  delay_effect_duration <- 3  # delay treatment effect in months
-  median_ctrl <- 9            # survival median of the control arm
-  median_exp <- c(9, 14)      # survival median of the experimental arm
+  delay_effect_duration <- 3 # delay treatment effect in months
+  median_ctrl <- 9 # survival median of the control arm
+  median_exp <- c(9, 14) # survival median of the experimental arm
   dropout_rate <- 0.001
   fail_rate <- gsDesign2::define_fail_rate(
     duration = c(delay_effect_duration, 100),
-    fail_rate = log(2) /  median_ctrl,
+    fail_rate = log(2) / median_ctrl,
     hr = median_ctrl / median_exp,
     dropout_rate = dropout_rate
   )
@@ -29,9 +31,9 @@ test_fail_rate <- function() {
 
 test_cutting <- function() {
   # other related parameters
-  alpha <- 0.025              # type I error
-  beta <- 0.1                 # type II error
-  ratio <- 1                  # randomization ratio (exp:ctrl)
+  alpha <- 0.025 # type I error
+  beta <- 0.1 # type II error
+  ratio <- 1 # randomization ratio (exp:ctrl)
   # Define cuttings of 2 IAs and 1 FA
   # IA1
   # The 1st interim analysis will occur at the later of the following 3 conditions:

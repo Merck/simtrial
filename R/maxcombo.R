@@ -36,7 +36,7 @@
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
 #'   maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
-maxcombo <- function(data, rho, gamma){
+maxcombo <- function(data, rho, gamma) {
   stopifnot(
     is.numeric(rho), is.numeric(gamma),
     rho >= 0, gamma >= 0,
@@ -50,7 +50,7 @@ maxcombo <- function(data, rho, gamma){
       return_corr = TRUE
     )
 
-  ans <-  data.frame(p_value = pvalue_maxcombo(ans))
+  ans <- data.frame(p_value = pvalue_maxcombo(ans))
 
   return(ans)
 }

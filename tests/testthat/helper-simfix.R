@@ -1,6 +1,6 @@
 # Helper functions used by test-double_programming_simfix.R
 
-test_simfix <- function () {
+test_simfix <- function() {
   # Study design using gsDesign
   alpha <- 0.025
   gamma <- c(5, 5, 47)

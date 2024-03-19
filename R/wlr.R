@@ -40,23 +40,22 @@
 #'   cut_data_by_event(150) |>
 #'   wlr(weight = early_zero(early_period = 4))
 #'
-wlr <- function(data, weight){
-
+wlr <- function(data, weight) {
   if (inherits(weight, "fh")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
       fh_weight(rho_gamma = data.frame(rho = weight$rho, gamma = weight$gamma))
-
   } else if (inherits(weight, "mb")) {
     ans <- data |>
       counting_process(arm = "experimental") |>
       mb_weight(delay = weight$delay, w_max = weight$w_max)
     setDT(ans)
-    ans <- ans[,
-               .(
-                 s = sum(o_minus_e * mb_weight),
-                 v = sum(var_o_minus_e * mb_weight^2)
-               )
+    ans <- ans[
+      ,
+      .(
+        s = sum(o_minus_e * mb_weight),
+        v = sum(var_o_minus_e * mb_weight^2)
+      )
     ][, .(z = s / sqrt(v))]
     setDF(ans)
   } else if (inherits(weight, "early_period")) {
@@ -64,11 +63,12 @@ wlr <- function(data, weight){
       counting_process(arm = "experimental") |>
       early_zero_weight(early_period = weight$early_period)
     setDT(ans)
-    ans <- ans[,
-               .(
-                 s = sum(o_minus_e * weight),
-                 v = sum(var_o_minus_e * weight^2)
-               )
+    ans <- ans[
+      ,
+      .(
+        s = sum(o_minus_e * weight),
+        v = sum(var_o_minus_e * weight^2)
+      )
     ][, .(z = s / sqrt(v))]
     setDF(ans)
   }

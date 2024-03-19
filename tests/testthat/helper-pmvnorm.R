@@ -137,7 +137,7 @@ ptvnorm <- function(h, r, ro) {
   hp2 <- (h2 * rr133 - h1 * f3 - h3 * f2) / fac / sqrt(rr133)
   TV <- w * exp((rr12 * h12 - h122) / rr122) / sqrt(rr122) * pnorm(hp1) *
     r12 + w * exp((rr13 * h13 - h132) / rr133) / sqrt(rr133) * pnorm(hp2) *
-    r13
+      r13
   TV <- sum(TV)
   rho <- matrix(c(1, r23, r23, 1), 2, 2)
   p2 <- mvtnorm::pmvnorm(-Inf, c(h2, h3), c(0, 0), rho)
