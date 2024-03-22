@@ -117,8 +117,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = wlr,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = wlr,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
@@ -129,8 +129,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = wlr,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = wlr,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0.5)
 #' )
@@ -141,8 +141,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = wlr,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = wlr,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = mb(delay = 3)
 #' )
@@ -153,8 +153,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = wlr,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = wlr,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = early_zero(6)
 #' )
@@ -165,8 +165,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = rmst,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = rmst,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   tau = 20
 #' )
@@ -177,8 +177,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = milestone,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = milestone,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   ms_time = 10
 #' )
@@ -190,8 +190,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = maxcombo,
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = maxcombo,
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   rho = c(0, 0),
 #'   gamma = c(0, 0.5)
@@ -205,8 +205,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = maxcombo(test1 = wlr, test2 = milestone),
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = maxcombo(test1 = wlr, test2 = milestone),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
 #'   test2_par = list(ms_time = 10)
@@ -221,8 +221,8 @@
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
-#'   tests = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-#'   cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   test_par = list(
 #'     ia1 = list(weight = fh(rho = 0, gamma = 0)),
@@ -248,8 +248,8 @@ sim_gs_n <- function(
       dropout_rate = rep(.001, 2)
     ),
     block = rep(c("experimental", "control"), 2),
-    tests = wlr,
-    cuts = NULL,
+    test = wlr,
+    cut = NULL,
     seed = 2024,
     ...) {
   # Input checking
@@ -270,30 +270,30 @@ sim_gs_n <- function(
     )
 
     # Initialize the cut date of IA(s) and FA
-    n_analysis <- length(cuts)
+    n_analysis <- length(cut)
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
 
     # Organize tests for each cutting
-    if (is.function(tests)) {
-      test_single <- tests
-      tests <- vector(mode = "list", length = n_analysis)
-      tests[] <- list(test_single)
+    if (is.function(test)) {
+      test_single <- test
+      test <- vector(mode = "list", length = n_analysis)
+      test[] <- list(test_single)
     }
-    if (length(tests) != length(cuts)) {
+    if (length(test) != length(cut)) {
       stop("If you want to run different tests at each cutting, the list of
            tests must be the same length as the list of cuttings")
     }
 
     for (i_analysis in seq_len(n_analysis)) {
       # Get cut date
-      cut_date[i_analysis] <- cuts[[i_analysis]](simu_data)
+      cut_date[i_analysis] <- cut[[i_analysis]](simu_data)
 
       # Cut the data
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
 
       # Test
-      ans_1sim_new <- tests[[i_analysis]](simu_data_cut, ...)
+      ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id

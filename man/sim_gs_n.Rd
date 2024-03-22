@@ -12,8 +12,8 @@ sim_gs_n(
   fail_rate = data.frame(stratum = "All", duration = c(3, 100), fail_rate = log(2)/c(9,
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
-  tests = wlr,
-  cuts = NULL,
+  test = wlr,
+  cut = NULL,
   seed = 2024,
   ...
 )
@@ -36,6 +36,11 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
+\item{seed}{Random seed.}
+
+\item{...}{Arguments passed to the test function(s) provided by the argument
+\code{tests}.}
+
 \item{tests}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or
 \code{\link[=rmst]{rmst()}}. If a single test function is provided, it will be applied at each
 cut. Alternatively a list of functions created by \code{\link[=create_test]{create_test()}}. The list
@@ -48,11 +53,6 @@ provided.}
 
 \item{cuts}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}},
 see examples.}
-
-\item{seed}{Random seed.}
-
-\item{...}{Arguments passed to the test function(s) provided by the argument
-\code{tests}.}
 }
 \value{
 A data frame summarizing the simulation ID, analysis date,
@@ -137,8 +137,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = wlr,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = wlr,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0)
 )
@@ -149,8 +149,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = wlr,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = wlr,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0.5)
 )
@@ -161,8 +161,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = wlr,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = wlr,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = mb(delay = 3)
 )
@@ -173,8 +173,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = wlr,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = wlr,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   weight = early_zero(6)
 )
@@ -185,8 +185,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = rmst,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = rmst,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   tau = 20
 )
@@ -197,8 +197,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = milestone,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = milestone,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   ms_time = 10
 )
@@ -210,8 +210,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = maxcombo,
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = maxcombo,
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   rho = c(0, 0),
   gamma = c(0, 0.5)
@@ -225,8 +225,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = maxcombo(test1 = wlr, test2 = milestone),
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = maxcombo(test1 = wlr, test2 = milestone),
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
   test2_par = list(ms_time = 10)
@@ -241,8 +241,8 @@ sim_gs_n(
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  tests = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-  cuts = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
+  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
   seed = 2024,
   test_par = list(
     ia1 = list(weight = fh(rho = 0, gamma = 0)),
