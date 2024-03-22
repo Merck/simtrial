@@ -22,7 +22,7 @@
 #' arguments will change as we add additional features.
 #'
 #' @inheritParams sim_fixed_n
-#' @param tests One or more test functions such as [wlr()], [maxcombo()], or
+#' @param test One or more test functions such as [wlr()], [maxcombo()], or
 #'   [rmst()]. If a single test function is provided, it will be applied at each
 #'   cut. Alternatively a list of functions created by [create_test()]. The list
 #'   form is experimental and currently limited. It only accepts one test per
@@ -31,8 +31,8 @@
 #'   flexible in the future). Importantly, note that the simulated data set is
 #'   always passed as the first positional argument to each test function
 #'   provided.
-#' @param cuts A list of cutting functions created by [create_cut()],
-#'   see examples.
+#' @param cut A list of cutting functions created by [create_cut()], see
+#'   examples.
 #' @param seed Random seed.
 #' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `tests`.

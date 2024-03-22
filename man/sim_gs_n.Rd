@@ -36,12 +36,7 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{seed}{Random seed.}
-
-\item{...}{Arguments passed to the test function(s) provided by the argument
-\code{tests}.}
-
-\item{tests}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or
+\item{test}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or
 \code{\link[=rmst]{rmst()}}. If a single test function is provided, it will be applied at each
 cut. Alternatively a list of functions created by \code{\link[=create_test]{create_test()}}. The list
 form is experimental and currently limited. It only accepts one test per
@@ -51,8 +46,13 @@ flexible in the future). Importantly, note that the simulated data set is
 always passed as the first positional argument to each test function
 provided.}
 
-\item{cuts}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}},
-see examples.}
+\item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
+examples.}
+
+\item{seed}{Random seed.}
+
+\item{...}{Arguments passed to the test function(s) provided by the argument
+\code{tests}.}
 }
 \value{
 A data frame summarizing the simulation ID, analysis date,
