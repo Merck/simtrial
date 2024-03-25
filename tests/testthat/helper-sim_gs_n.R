@@ -42,7 +42,7 @@ test_cutting <- function() {
   # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
   #   minimum of 20 months follow-up
   # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-  ia1 <- create_cutting(
+  ia1 <- create_cut(
     planned_calendar_time = 20,
     target_event_overall = 100,
     max_extension_for_target_event = 24,
@@ -55,7 +55,7 @@ test_cutting <- function() {
   # - At least 250 events have occurred
   # - At least 10 months after IA1
   # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-  ia2 <- create_cutting(
+  ia2 <- create_cut(
     planned_calendar_time = 32,
     target_event_overall = 200,
     max_extension_for_target_event = 34,
@@ -65,7 +65,7 @@ test_cutting <- function() {
   # The final analysis will occur at the later of the following 2 conditions:
   # - At least 45 months have passed since the start of the study
   # - At least 300 events have occurred
-  fa <- create_cutting(
+  fa <- create_cut(
     planned_calendar_time = 45,
     target_event_overall = 350
   )

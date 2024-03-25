@@ -22,17 +22,19 @@
 #' arguments will change as we add additional features.
 #'
 #' @inheritParams sim_fixed_n
-#' @param test A test function such as [wlr()], [maxcombo()], or [rmst()]. The
-#'   simulated data set is passed as the first positional argument to the test
-#'   function provided. Alternatively a list of functions created by
-#'   [create_cutting_test()]. The list form is experimental and currently
-#'   limited. It only accepts one test per cutting (in the future multiple tests
-#'   may be accepted), and all the tests must consistently return the same exact
-#'   results (again this may be more flexible in the future).
-#' @param cutting A list of cutting functions created by [create_cutting()],
-#'   see examples.
+#' @param test One or more test functions such as [wlr()], [maxcombo()], or
+#'   [rmst()]. If a single test function is provided, it will be applied at each
+#'   cut. Alternatively a list of functions created by [create_test()]. The list
+#'   form is experimental and currently limited. It only accepts one test per
+#'   cutting (in the future multiple tests may be accepted), and all the tests
+#'   must consistently return the same exact results (again this may be more
+#'   flexible in the future). Importantly, note that the simulated data set is
+#'   always passed as the first positional argument to each test function
+#'   provided.
+#' @param cut A list of cutting functions created by [create_cut()], see
+#'   examples.
 #' @param seed Random seed.
-#' @param ... Arguments passed to the test function provided by the argument
+#' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `test`.
 #'
 #' @return A data frame summarizing the simulation ID, analysis date,
@@ -79,7 +81,7 @@
 #' # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #' #   minimum of 20 months follow-up.
 #' # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-#' ia1 <- create_cutting(
+#' ia1 <- create_cut(
 #'   planned_calendar_time = 20,
 #'   target_event_overall = 100,
 #'   max_extension_for_target_event = 24,
@@ -93,7 +95,7 @@
 #' # - At least 250 events have occurred.
 #' # - At least 10 months after IA1.
 #' # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-#' ia2 <- create_cutting(
+#' ia2 <- create_cut(
 #'   planned_calendar_time = 32,
 #'   target_event_overall = 200,
 #'   max_extension_for_target_event = 34,
@@ -104,7 +106,7 @@
 #' # The final analysis will occur at the later of the following 2 conditions:
 #' # - At least 45 months have passed since the start of the study.
 #' # - At least 300 events have occurred.
-#' fa <- create_cutting(
+#' fa <- create_cut(
 #'   planned_calendar_time = 45,
 #'   target_event_overall = 350
 #' )
@@ -116,7 +118,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
@@ -128,7 +130,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0.5)
 #' )
@@ -140,7 +142,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = mb(delay = 3)
 #' )
@@ -152,7 +154,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   weight = early_zero(6)
 #' )
@@ -164,7 +166,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = rmst,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   tau = 20
 #' )
@@ -176,7 +178,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = milestone,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   ms_time = 10
 #' )
@@ -189,7 +191,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = maxcombo,
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   rho = c(0, 0),
 #'   gamma = c(0, 0.5)
@@ -204,7 +206,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = maxcombo(test1 = wlr, test2 = milestone),
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
 #'   test2_par = list(ms_time = 10)
@@ -220,7 +222,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-#'   cutting = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
 #'   seed = 2024,
 #'   test_par = list(
 #'     ia1 = list(weight = fh(rho = 0, gamma = 0)),
@@ -247,7 +249,7 @@ sim_gs_n <- function(
     ),
     block = rep(c("experimental", "control"), 2),
     test = wlr,
-    cutting = NULL,
+    cut = NULL,
     seed = 2024,
     ...) {
   # Input checking
@@ -268,7 +270,7 @@ sim_gs_n <- function(
     )
 
     # Initialize the cut date of IA(s) and FA
-    n_analysis <- length(cutting)
+    n_analysis <- length(cut)
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
 
@@ -278,14 +280,14 @@ sim_gs_n <- function(
       test <- vector(mode = "list", length = n_analysis)
       test[] <- list(test_single)
     }
-    if (length(test) != length(cutting)) {
+    if (length(test) != length(cut)) {
       stop("If you want to run different tests at each cutting, the list of
            tests must be the same length as the list of cuttings")
     }
 
     for (i_analysis in seq_len(n_analysis)) {
       # Get cut date
-      cut_date[i_analysis] <- cutting[[i_analysis]](simu_data)
+      cut_date[i_analysis] <- cut[[i_analysis]](simu_data)
 
       # Cut the data
       simu_data_cut <- simu_data |> cut_data_by_date(cut_date[i_analysis])
@@ -327,14 +329,14 @@ sim_gs_n <- function(
 #' # Create a cutting function that applies the following 2 conditions:
 #' # - At least 45 months have passed since the start of the study
 #' # - At least 300 events have occurred
-#' cutting <- create_cutting(
+#' cutting <- create_cut(
 #'   planned_calendar_time = 45,
 #'   target_event_overall = 350
 #' )
 #'
 #' # Cut the trial data
 #' cutting(trial_data)
-create_cutting <- function(...) {
+create_cut <- function(...) {
   function(data) {
     get_analysis_date(data, ...)
   }
@@ -352,7 +354,7 @@ create_cutting <- function(...) {
 #'
 #' @export
 #'
-#' @seealso [sim_gs_n()], [create_cutting()]
+#' @seealso [sim_gs_n()], [create_cut()]
 #'
 #' @examples
 #' # Simulate trial data
@@ -362,7 +364,7 @@ create_cutting <- function(...) {
 #' trial_data_cut <- cut_data_by_event(trial_data, 150)
 #'
 #' # Create a cutting test function that can be used by sim_gs_n()
-#' regular_logrank_test <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
+#' regular_logrank_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
 #'
 #' # Test the cutting
 #' regular_logrank_test(trial_data_cut)
@@ -372,7 +374,7 @@ create_cutting <- function(...) {
 #'   regular_logrank_test(trial_data_cut),
 #'   wlr(trial_data_cut, weight = fh(rho = 0, gamma = 0))
 #' ))
-create_cutting_test <- function(test, ...) {
+create_test <- function(test, ...) {
   stopifnot(is.function(test))
   function(data) {
     test(data, ...)
@@ -386,7 +388,7 @@ create_cutting_test <- function(test, ...) {
 #' features.
 #'
 #' @param data Trial data cut by [cut_data_by_event()] or [cut_data_by_date()]
-#' @param ... One or more test functions. Use [create_cutting_test()] to change
+#' @param ... One or more test functions. Use [create_test()] to change
 #'   the default arguments of each test function.
 #'
 #' @return A list of test results, one per test. If the test functions are named
@@ -394,16 +396,16 @@ create_cutting_test <- function(test, ...) {
 #'
 #' @export
 #'
-#' @seealso [create_cutting_test()]
+#' @seealso [create_test()]
 #'
 #' @examples
 #' trial_data <- sim_pw_surv(n = 200)
 #' trial_data_cut <- cut_data_by_event(trial_data, 150)
 #'
 #' # create cutting test functions
-#' wlr_partial <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
-#' rmst_partial <- create_cutting_test(rmst, tau = 20)
-#' maxcombo_partial <- create_cutting_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
+#' wlr_partial <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
+#' rmst_partial <- create_test(rmst, tau = 20)
+#' maxcombo_partial <- create_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
 #'
 #' multitest(
 #'   data = trial_data_cut,

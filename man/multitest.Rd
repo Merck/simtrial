@@ -9,7 +9,7 @@ multitest(data, ...)
 \arguments{
 \item{data}{Trial data cut by \code{\link[=cut_data_by_event]{cut_data_by_event()}} or \code{\link[=cut_data_by_date]{cut_data_by_date()}}}
 
-\item{...}{One or more test functions. Use \code{\link[=create_cutting_test]{create_cutting_test()}} to change
+\item{...}{One or more test functions. Use \code{\link[=create_test]{create_test()}} to change
 the default arguments of each test function.}
 }
 \value{
@@ -26,9 +26,9 @@ trial_data <- sim_pw_surv(n = 200)
 trial_data_cut <- cut_data_by_event(trial_data, 150)
 
 # create cutting test functions
-wlr_partial <- create_cutting_test(wlr, weight = fh(rho = 0, gamma = 0))
-rmst_partial <- create_cutting_test(rmst, tau = 20)
-maxcombo_partial <- create_cutting_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
+wlr_partial <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
+rmst_partial <- create_test(rmst, tau = 20)
+maxcombo_partial <- create_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
 
 multitest(
   data = trial_data_cut,
@@ -38,5 +38,5 @@ multitest(
 )
 }
 \seealso{
-\code{\link[=create_cutting_test]{create_cutting_test()}}
+\code{\link[=create_test]{create_test()}}
 }
