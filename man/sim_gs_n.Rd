@@ -52,7 +52,7 @@ examples.}
 \item{seed}{Random seed.}
 
 \item{...}{Arguments passed to the test function(s) provided by the argument
-\code{tests}.}
+\code{test}.}
 }
 \value{
 A data frame summarizing the simulation ID, analysis date,

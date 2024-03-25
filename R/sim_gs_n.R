@@ -35,7 +35,7 @@
 #'   examples.
 #' @param seed Random seed.
 #' @param ... Arguments passed to the test function(s) provided by the argument
-#'   `tests`.
+#'   `test`.
 #'
 #' @return A data frame summarizing the simulation ID, analysis date,
 #'   z statistics or p-values.
