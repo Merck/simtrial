@@ -12,7 +12,7 @@ arguments will change as we add additional features."><meta property="og:image" 
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.14</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@ arguments will change as we add additional features.</p>
 <span>    <span class="fl">18</span><span class="op">)</span>, hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.6</span><span class="op">)</span>, dropout_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"experimental"</span>, <span class="st">"control"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  test <span class="op">=</span> <span class="va">wlr</span>,</span>
-<span>  cutting <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cut <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -104,18 +104,20 @@ in each block.</p></dd>
 
 
 <dt>test</dt>
-<dd><p>A test function such as <code><a href="wlr.html">wlr()</a></code>, <code><a href="maxcombo.html">maxcombo()</a></code>, or <code><a href="rmst.html">rmst()</a></code>. The
-simulated data set is passed as the first positional argument to the test
-function provided. Alternatively a list of functions created by
-<code><a href="create_cutting_test.html">create_cutting_test()</a></code>. The list form is experimental and currently
-limited. It only accepts one test per cutting (in the future multiple tests
-may be accepted), and all the tests must consistently return the same exact
-results (again this may be more flexible in the future).</p></dd>
+<dd><p>One or more test functions such as <code><a href="wlr.html">wlr()</a></code>, <code><a href="maxcombo.html">maxcombo()</a></code>, or
+<code><a href="rmst.html">rmst()</a></code>. If a single test function is provided, it will be applied at each
+cut. Alternatively a list of functions created by <code><a href="create_test.html">create_test()</a></code>. The list
+form is experimental and currently limited. It only accepts one test per
+cutting (in the future multiple tests may be accepted), and all the tests
+must consistently return the same exact results (again this may be more
+flexible in the future). Importantly, note that the simulated data set is
+always passed as the first positional argument to each test function
+provided.</p></dd>
 
 
-<dt>cutting</dt>
-<dd><p>A list of cutting functions created by <code><a href="create_cutting.html">create_cutting()</a></code>,
-see examples.</p></dd>
+<dt>cut</dt>
+<dd><p>A list of cutting functions created by <code><a href="create_cut.html">create_cut()</a></code>, see
+examples.</p></dd>
 
 
 <dt>seed</dt>
@@ -123,7 +125,7 @@ see examples.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Arguments passed to the test function provided by the argument
+<dd><p>Arguments passed to the test function(s) provided by the argument
 <code>test</code>.</p></dd>
 
 </dl></div>
@@ -175,7 +177,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># - At least 20 months have elapsed after enrolling 200/400 subjects, with a</span></span></span>
 <span class="r-in"><span><span class="co">#   minimum of 20 months follow-up.</span></span></span>
 <span class="r-in"><span><span class="co"># However, if events accumulation is slow, we will wait for a maximum of 24 months.</span></span></span>
-<span class="r-in"><span><span class="va">ia1</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting.html">create_cutting</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ia1</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  max_extension_for_target_event <span class="op">=</span> <span class="fl">24</span>,</span></span>
@@ -189,7 +191,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># - At least 250 events have occurred.</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 10 months after IA1.</span></span></span>
 <span class="r-in"><span><span class="co"># However, if events accumulation is slow, we will wait for a maximum of 34 months.</span></span></span>
-<span class="r-in"><span><span class="va">ia2</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting.html">create_cutting</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ia2</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">32</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">200</span>,</span></span>
 <span class="r-in"><span>  max_extension_for_target_event <span class="op">=</span> <span class="fl">34</span>,</span></span>
@@ -200,7 +202,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># The final analysis will occur at the later of the following 2 conditions:</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 45 months have passed since the start of the study.</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 300 events have occurred.</span></span></span>
-<span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting.html">create_cutting</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">45</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">350</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -212,7 +214,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -234,7 +236,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -256,7 +258,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -278,7 +280,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -300,7 +302,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">rmst</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  tau <span class="op">=</span> <span class="fl">20</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -322,7 +324,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">milestone</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  ms_time <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -355,7 +357,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">maxcombo</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
@@ -380,7 +382,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="maxcombo.html">maxcombo</a></span><span class="op">(</span>test1 <span class="op">=</span> <span class="va">wlr</span>, test2 <span class="op">=</span> <span class="va">milestone</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  test1_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  test2_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ms_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
@@ -396,7 +398,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">wlr</span>, ia2 <span class="op">=</span> <span class="va">wlr</span>, fa <span class="op">=</span> <span class="va">maxcombo</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cutting <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  test_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    ia1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>

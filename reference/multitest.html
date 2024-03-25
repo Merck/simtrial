@@ -14,7 +14,7 @@ features."><meta property="og:image" content="https://merck.github.io/simtrial/l
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.14</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@ features.</p>
 
 
 <dt>...</dt>
-<dd><p>One or more test functions. Use <code><a href="create_cutting_test.html">create_cutting_test()</a></code> to change
+<dd><p>One or more test functions. Use <code><a href="create_test.html">create_test()</a></code> to change
 the default arguments of each test function.</p></dd>
 
 </dl></div>
@@ -83,7 +83,7 @@ in the call to <code>multitest()</code>, the returned list uses the same names.<
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="create_cutting_test.html">create_cutting_test()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="create_test.html">create_test()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -92,9 +92,9 @@ in the call to <code>multitest()</code>, the returned list uses the same names.<
 <span class="r-in"><span><span class="va">trial_data_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="va">trial_data</span>, <span class="fl">150</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create cutting test functions</span></span></span>
-<span class="r-in"><span><span class="va">wlr_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting_test.html">create_cutting_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rmst_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting_test.html">create_cutting_test</a></span><span class="op">(</span><span class="va">rmst</span>, tau <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">maxcombo_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cutting_test.html">create_cutting_test</a></span><span class="op">(</span><span class="va">maxcombo</span>, rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wlr_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rmst_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">rmst</span>, tau <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">maxcombo_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">maxcombo</span>, rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">multitest</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">trial_data_cut</span>,</span></span>
