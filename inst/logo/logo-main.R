@@ -20,7 +20,7 @@ for (i in seq_along(r_vals)) {
 
 final_circle <- data.table::rbindlist(circles_list)
 
-font_add("DM Sans Display", "inst/logo/DMSans40pt-SemiBold.ttf")
+font_add("Invention Bold", "inst/logo/Invention_Bd.ttf")
 showtext_auto()
 
 dots <- ggplot() +
@@ -43,10 +43,10 @@ dots <- ggplot() +
   ) +
   annotate(
     "text",
-    x = -0.574, y = -0.215,
+    x = -0.5825, y = -0.2,
     label = "simtrial",
-    family = "DM Sans Display",
-    size = 90,
+    family = "Invention Bold",
+    size = 82,
     color = "#ffffff"
   )
 
