@@ -83,29 +83,13 @@ The stratified Fleming-Harrington weighted logrank test is then computed as:
 }
 \examples{
 library(dplyr)
-
-# Example 1
-# Use default enrollment and event rates at cut at 100 events
-x <- sim_pw_surv(n = 200) |>
-  cut_data_by_event(100) |>
-  counting_process(arm = "experimental")
-
-# Compute logrank FH(0, 1)
-fh_weight(x, rho_gamma = data.frame(rho = 0, gamma = 1))
-fh_weight(x, rho_gamma = data.frame(rho = 0, gamma = 1), return_variance = TRUE)
-
-# Compute the corvariance between FH(0, 0), FH(0, 1) and FH(1, 0)
-fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)))
-fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_variance = TRUE)
-fh_weight(x, rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 0)), return_corr = TRUE)
-
 # Example 2
 # Use default enrollment and event rates at cut of 100 events
 set.seed(123)
 x <- sim_pw_surv(n = 200) |>
   cut_data_by_event(100) |>
   counting_process(arm = "experimental") |>
-  fh_weight(rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
+  simtrial:::fh_weight(rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
 
 # Compute p-value for MaxCombo
 library(mvtnorm)
@@ -120,7 +104,7 @@ x <- sim_pw_surv(n = 200) |>
   cut_data_by_event(100) |>
   counting_process(arm = "experimental")
 
-x |> fh_weight(
+x |> simtrial:::fh_weight(
   rho_gamma = data.frame(
     rho = c(0, 0),
     gamma = c(0, 1)
@@ -129,7 +113,7 @@ x |> fh_weight(
 )
 
 # Off-diagonal element should be variance in following
-x |> fh_weight(
+x |> simtrial:::fh_weight(
   rho_gamma = data.frame(
     rho = 0,
     gamma = .5
@@ -138,5 +122,5 @@ x |> fh_weight(
 )
 
 # Compare off diagonal result with fh_weight()
-x |> fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
+x |> simtrial:::fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
 }
