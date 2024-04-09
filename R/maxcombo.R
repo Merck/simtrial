@@ -35,22 +35,36 @@
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
-#'   maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
-maxcombo <- function(data, rho, gamma) {
+#'   maxcombo(rho = c(0, 0), gamma = c(0, 1))
+maxcombo <- function(data, rho, gamma, return_corr = FALSE) {
   stopifnot(
     is.numeric(rho), is.numeric(gamma),
     rho >= 0, gamma >= 0,
     length(rho) == length(gamma)
   )
 
-  ans <- data |>
+  res <- data |>
     counting_process(arm = "experimental") |>
     fh_weight(
       rho_gamma = data.frame(rho = rho, gamma = gamma),
       return_corr = TRUE
     )
 
-  ans <- data.frame(p_value = pvalue_maxcombo(ans))
+  ans <- list()
+  ans$method <- "Maxcombo"
+  temp <- data.frame(rho = rho, gamma = gamma) %>% mutate(x= paste0("FH(", rho, ", ", gamma, ")"))
+  ans$parameter <- paste(temp$x, collapse = " + ")
+  ans$estimation <- NULL
+  ans$se <- NULL
+  ans$z <- res$z
+
+  res_df <- as.data.frame(cbind(res$z, res$corr))
+  colnames(res_df)[1] <- "z"
+  ans$p_value <- pvalue_maxcombo(res_df)
+
+  if (return_corr) {
+    ans$corr <- res$corr
+  }
 
   return(ans)
 }
