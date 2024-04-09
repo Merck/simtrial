@@ -151,6 +151,6 @@ mb <- function(delay = 4, w_max = Inf) {
 #' ) |>
 #'   cut_data_by_event(125) |>
 #'   wlr(weight = early_zero(early_period = 2, fail_rate = fail_rate))
-early_zero <- function(early_period, fail_rate) {
+early_zero <- function(early_period, fail_rate = NULL) {
   structure(list(early_period = early_period, fail_rate = fail_rate), class = c("list", "early_period", "wlr"))
 }

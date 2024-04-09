@@ -1,10 +1,11 @@
 test_that("early_zero_weight() with unstratified data", {
   # Example 1: Unstratified
   set.seed(123)
-  input <- sim_pw_surv(n = 200)
-  input <- cut_data_by_event(input, 125)
-  input <- counting_process(input, arm = "experimental")
-  output <- early_zero_weight(input, early_period = 2)
+
+  output <- sim_pw_surv(n = 200) |>
+    cut_data_by_event(125) |>
+    counting_process(arm = "experimental") |>
+    early_zero_weight(early_period = 2)
 
   observed <- output$weight
   expected <- rep(c(0, 1), c(15L, 110L))

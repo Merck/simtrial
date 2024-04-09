@@ -110,7 +110,8 @@ maxcombo <- function(data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
   # Tidy outputs ----
   ans <- list()
   ans$method <- "Maxcombo"
-  temp <- data.frame(rho = rho, gamma = gamma) %>% mutate(x= paste0("FH(", rho, ", ", gamma, ")"))
+  temp <- data.frame(rho = rho, gamma = gamma)
+  temp$x <- paste0("FH(", temp$rho, ", ", temp$gamma, ")")
   ans$parameter <- paste(temp$x, collapse = " + ")
   ans$estimation <- NULL
   ans$se <- NULL
