@@ -43,7 +43,7 @@ The package could be extended in many ways in the future, including:
 
 ```{r, message=FALSE, warning=FALSE}
 library(simtrial)
-library(knitr)
+library(gt)
 library(dplyr)
 ```
 
@@ -134,9 +134,11 @@ x <- sim_pw_surv(
   block = block,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  dropout_rate = dropout_rate
-)
-head(x) |> kable(digits = 2)
+  dropout_rate = dropout_rate)
+
+head(x) |>
+  gt() |>
+  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
 
 ## Cutting data for analysis
@@ -148,7 +150,9 @@ Observations enrolled after the input `cut_date` are deleted and events and cens
 ```{r}
 y <- cut_data_by_date(x, cut_date = 5)
 
-head(y) |> kable(digits = 2)
+head(y) |>
+  gt() |>
+  fmt_number(columns = "tte", decimals = 2)
 ```
 
 For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `get_cut_date_by_event` function as follows:
@@ -175,7 +179,9 @@ The counting process format is further discussed in the next section where we co
 ```{r}
 ten150 <- counting_process(y150, arm = "experimental")
 
-head(ten150) |> kable(digits = 2)
+head(ten150) |>
+  gt() |>
+  fmt_number(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
 ```
 
 ## Logrank and weighted logrank testing
@@ -201,30 +207,28 @@ c(z, pnorm(z))
 For Fleming-Harrington tests, a routine has been built to do these tests for you:
 
 ```{r}
-fh_weight(
-  x = ten150,
-  rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
-) |> kable(digits = 2)
+fh00 <- y150 |> wlr(weight = fh(rho = 0, gamma = 0))
+fh01 <- y150 |> wlr(weight = fh(rho = 0, gamma = 1))
+fh10 <- y150 |> wlr(weight = fh(rho = 1, gamma = 0))
+fh11 <- y150 |> wlr(weight = fh(rho = 1, gamma = 1))
+
+temp_tbl <- fh00 |> unlist() |> as.data.frame() |> 
+  cbind(fh01 |> unlist() |> as.data.frame()) |>
+  cbind(fh10 |> unlist() |> as.data.frame()) |>
+  cbind(fh11 |> unlist() |> as.data.frame()) 
+
+colnames(temp_tbl) <- c("Test 1", "Test 2", "Test 3", "Test 4")
+temp_tbl
 ```
 
 If we wanted to take the minimum of these for a MaxCombo test, we would first use `fh_weight()` to compute a correlation matrix for the above z-statistics as follows.
 Note that the ordering of `rho_gamma` and `g` in the argument list is opposite of the above.
-The correlation matrix for the `z`-values is now in `V1`-`V4`.
-
-```{r, message=FALSE}
-x <- ten150 |>
-  fh_weight(
-    rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
-    return_corr = TRUE
-  )
-x |> kable(digits = 2)
-```
-
+The correlation matrix for the `z`-values is now in `V1`-`V4`. 
 We can compute a p-value for the MaxCombo as follows using `mvtnorm::pmvnorm()`. Note the arguments for `GenzBretz()` which are more stringent than the defaults; we have also used these more stringent parameters in the example in the help file.
 
 ```{r, message=FALSE}
-# Compute p-value for MaxCombo
-pvalue_maxcombo(x)
+y150 |>
+  maxcombo(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
 ```
 
 ## Simplification for 2-arm trials
@@ -269,7 +273,9 @@ sim_fixed_n(
   block = block, # Block for treatment
   timing_type = 1:5, # Use all possible data cutoff methods
   rho_gamma = rho_gamma # FH test(s) to use; in this case, logrank
-) |> kable(digits = 2)
+) |>
+  gt() |>
+  fmt_number(columns = c("ln_hr", "z", "duration"))
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.
