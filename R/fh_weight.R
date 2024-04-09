@@ -84,15 +84,17 @@ fh_weight <- function(
     x = sim_pw_surv(n = 200) |>
       cut_data_by_event(150) |>
       counting_process(arm = "experimental"),
-    rho_gamma = data.frame(
-      rho = c(0, 0, 1, 1),
-      gamma = c(0, 1, 0, 1)
-    ),
+    rho = 0,
+    gamma = 1,
     return_variance = FALSE,
     return_corr = FALSE) {
-  n_weight <- nrow(rho_gamma)
 
-  # Check input failure rate assumptions
+
+  # Input checking ----
+  if(length(rho) != 1 || length(gamma) != 1) {
+    stop("fh_weight: please input single numerical values of rho and gamma.")
+  }
+
   if (!is.data.frame(x)) {
     stop("fh_weight: x in `fh_weight()` must be a data frame.")
   }
@@ -109,116 +111,7 @@ fh_weight <- function(
     stop("fh_weight: x column names in `fh_weight()` must contain var_o_minus_e.")
   }
 
-  if (return_variance && return_corr) {
-    stop("fh_weight: can't report both covariance and correlation for MaxCombo test.")
-  }
+  x$weight <- x$s^rho * (1 - x$s)^gamma
 
-  if (return_corr && n_weight == 1) {
-    stop("fh_weight: can't report the correlation for a single WLR test.")
-  }
-
-  if (n_weight == 1) {
-    test_result <- wlr_fh_z_stat(x, rho_gamma = rho_gamma, return_variance = return_variance)
-
-    ans <- list()
-    ans$method <- "WLR"
-    ans$parameter <- paste0("FH(", rho_gamma$rho, ", ", rho_gamma$gamma, ")")
-    ans$z <- test_result$z
-    ans$estimation <- test_result$estimation
-    ans$se <- test_result$se
-    if (return_variance) {
-      ans$var <- test_result$var
-    }
-  } else {
-
-    ans <- list()
-    ans$method <- "MaxCombo"
-    ans$parameter <- paste((rho_gamma  %>% mutate(x = paste0("FH(", rho, ", ", gamma, ")")))$x, collapse = " + ")
-    ans$estimation <- NULL
-    ans$se <- NULL
-    # Get average rho and gamma for FH covariance matrix
-    # We want ave_rho[i,j]   = (rho[i] + rho[j])/2
-    # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
-    ave_rho <- (matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
-      matrix(rho_gamma$rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
-    ) / 2
-    ave_gamma <- (matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight) +
-      matrix(rho_gamma$gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
-    ) / 2
-
-    # Convert to data.table
-    rg_new <- data.table(rho = as.numeric(ave_rho), gamma = as.numeric(ave_gamma))
-    # Get unique values of rho, gamma
-    rg_unique <- unique(rg_new)
-
-    # Compute FH statistic for unique values
-    # and merge back to full set of pairs
-    temp <- wlr_fh_z_stat(x, rho_gamma = rg_unique, return_variance = TRUE) |> as.data.frame()
-    rg_fh <- merge.data.table(
-      x = rg_new,
-      y = temp,
-      by = c("rho", "gamma"),
-      all.x = TRUE,
-      sort = FALSE
-    )
-
-    # Get z statistics for input rho, gamma combinations
-    ans$z <- rg_fh$z[(0:(n_weight - 1)) * n_weight + 1:n_weight]
-
-    # Get correlation matrix
-    cov_mat <- matrix(rg_fh$var, nrow = n_weight, byrow = TRUE)
-
-    if (return_corr) {
-      corr_mat <- stats::cov2cor(cov_mat)
-      colnames(corr_mat) <- paste("v", seq_len(ncol(corr_mat)), sep = "")
-      ans$corr <- as.data.frame(corr_mat)
-    } else if (return_variance) {
-      corr_mat <- cov_mat
-      colnames(corr_mat) <- paste("v", seq_len(ncol(corr_mat)), sep = "")
-      ans$var <- as.data.frame(corr_mat)
-    }
-  }
-
-  return(ans)
-}
-
-# Build an internal function to compute the Z statistics
-# under a sequence of rho and gamma of WLR.
-wlr_fh_z_stat <- function(x, rho_gamma, return_variance) {
-
-  xx <- x[, c("s", "o_minus_e", "var_o_minus_e")]
-
-  # Initialization of the output
-  ans <- list()
-  ans$z <- rep(0, nrow(rho_gamma))
-  ans$estimation <- rep(0, nrow(rho_gamma))
-  ans$se <- rep(0, nrow(rho_gamma))
-  ans$rho <- rep(0, nrow(rho_gamma))
-  ans$gamma <- rep(0, nrow(rho_gamma))
-
-  if (return_variance) {
-    ans$var <- rep(0, nrow(rho_gamma))
-  }
-
-  # Loop for each WLR-FH test with 1 rho and 1 gamma
-  for (i in seq_len(nrow(rho_gamma))) {
-    weight <- xx$s^rho_gamma$rho[i] * (1 - xx$s)^rho_gamma$gamma[i]
-    weighted_o_minus_e <- weight * xx$o_minus_e
-    weighted_var <- weight^2 * xx$var_o_minus_e
-
-    weighted_var_total <- sum(weighted_var)
-    weighted_o_minus_e_total <- sum(weighted_o_minus_e)
-
-    ans$rho[i] <- rho_gamma$rho[i]
-    ans$gamma[i] <- rho_gamma$gamma[i]
-    ans$estimation[i] <- weighted_o_minus_e_total
-    ans$se[i] <- sqrt(weighted_var_total)
-    ans$z[i] <- ans$estimation[i] / ans$se[i]
-
-    if (return_variance) {
-      ans$var[i] <- weighted_var_total
-    }
-  }
-
-  return(ans)
+  return(x)
 }

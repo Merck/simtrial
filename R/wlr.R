@@ -43,19 +43,41 @@
 #' # Example 3: WLR test with early zero wights
 #' x |> wlr(weight = early_zero(early_period = 4))
 wlr <- function(data, weight, return_variance = FALSE) {
+  x <- data |> counting_process(arm = "experimental")
+
+  ans <- list()
+  ans$method <- "WLR"
+
   if (inherits(weight, "fh")) {
-    ans <- data |>
-      counting_process(arm = "experimental") |>
-      fh_weight(rho_gamma = data.frame(rho = weight$rho, gamma = weight$gamma), return_variance = return_variance)
+    x <- x |> fh_weight(rho = weight$rho, gamma = weight$gamma)
+
+    x$weighted_o_minus_e <- x$weight * x$o_minus_e
+    x$weighted_var <- x$weight^2 * x$var_o_minus_e
+
+    weighted_var_total <- sum(x$weighted_var)
+    weighted_o_minus_e_total <- sum(x$weighted_o_minus_e)
+
+    ans$parameter <- paste0("FH(rho=", weight$rho, ", gamma =", weight$gamma, ")")
+    ans$estimation <- weighted_o_minus_e_total
+    ans$se <- sqrt(weighted_var_total)
+    ans$z <- ans$estimation / ans$se
+
   } else if (inherits(weight, "mb")) {
-    ans <- data |>
-      counting_process(arm = "experimental") |>
-      mb_weight(delay = weight$delay, w_max = weight$w_max)
+    x <- x |> mb_weight(delay = weight$delay, w_max = weight$w_max)
+
+    ans$parameter <- paste0("MB(delay = ", delay, ", max_weight = ", w_max, ")")
+    ans$estimate <- sum(res$o_minus_e * res$mb_weight)
+    ans$se <- sqrt(sum(res$var_o_minus_e * res$mb_weight^2))
+    ans$z <- ans$estimate / ans$se
 
   } else if (inherits(weight, "early_period")) {
-    ans <- data |>
-      counting_process(arm = "experimental") |>
-      early_zero_weight(early_period = weight$early_period)
+    x <- x |> early_zero_weight(early_period = weight$early_period)
+
+    ans$parameter <- paste0("Xu 2017 with first ", early_period, " months of 0 weights")
+    ans$estimate <- sum(res$o_minus_e * res$weight)
+    ans$se <- sqrt(sum(res$var_o_minus_e * res$weight^2))
+    ans$z <- ans$estimate / ans$se
+
   }
   return(ans)
 }

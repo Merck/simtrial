@@ -68,35 +68,28 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
     stop("x column names in `mb_weight()` must contain s")
   }
 
-  ans <- list()
-  ans$method <- "WLR"
-  ans$parameter <- paste0("MB(delay = ", delay, ", max_weight = ", w_max, ")")
   # Compute max weight by stratum
   x2 <- as.data.table(x)
   # Make sure you don't lose any stratum!
   tbl_all_stratum <- data.table(stratum = unique(x2$stratum))
 
   # Look only up to delay time
-  res <- x2[tte <= delay, ]
+  ans <- x2[tte <= delay, ]
   # Weight before delay specified as 1/S
-  res <- res[, .(max_weight = max(1 / s)), by = "stratum"]
+  ans <- ans[, .(max_weight = max(1 / s)), by = "stratum"]
   # Get back stratum with no records before delay ends
-  res <- res[tbl_all_stratum, on = "stratum"]
+  ans <- ans[tbl_all_stratum, on = "stratum"]
   # `max_weight` is 1 when there are no records before delay ends
-  res[, max_weight := fifelse(is.na(max_weight), 1, max_weight)]
+  ans[, max_weight := fifelse(is.na(max_weight), 1, max_weight)]
   # Cut off weights at w_max
-  res[, max_weight := pmin(w_max, max_weight)]
+  ans[, max_weight := pmin(w_max, max_weight)]
   # Now merge max_weight back to stratified dataset
-  res <- merge.data.table(res, x2, by = "stratum", all = TRUE)
+  ans <- merge.data.table(ans, x2, by = "stratum", all = TRUE)
   # Weight is min of max_weight and 1/S which will increase up to delay
-  res[, mb_weight := pmin(max_weight, 1 / s)]
-  res[, max_weight := NULL]
+  ans[, mb_weight := pmin(max_weight, 1 / s)]
+  ans[, max_weight := NULL]
 
-  setDF(res)
-
-  ans$estimate <- sum(res$o_minus_e * res$mb_weight)
-  ans$se <- sqrt(sum(res$var_o_minus_e * res$mb_weight^2))
-  ans$z <- ans$estimate / ans$se
+  setDF(ans)
 
   return(ans)
 }

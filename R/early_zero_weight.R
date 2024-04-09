@@ -28,16 +28,14 @@
 #'
 #' @importFrom data.table ":=" as.data.table fifelse merge.data.table setDF
 early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
-  ans <- list()
-  ans$method <- "WLR"
-  ans$parameter <- paste0("Xu 2017 with first ", early_period, " months of 0 weights")
 
-  res <- as.data.table(x)
-  n_stratum <- length(unique(res$stratum))
+
+  ans <- as.data.table(x)
+  n_stratum <- length(unique(ans$stratum))
 
   # If it is unstratified design
   if (n_stratum == 1) {
-    res[, weight := fifelse(tte < early_period, 0, 1)]
+    ans[, weight := fifelse(tte < early_period, 0, 1)]
   } else {
     if (is.null(fail_rate)) {
       stop("For stratified design to use `early_zero_weight()`, `fail_rate` can't be `NULL`.")
@@ -52,16 +50,12 @@ early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
     late_hr <- fail_rate[hr != 1, .(stratum, hr)]
     delay_change_time <- fail_rate[hr == 1, .(stratum, duration)]
 
-    res <- merge.data.table(res, late_hr, by = "stratum", all.x = TRUE)
-    res <- merge.data.table(res, delay_change_time, by = "stratum", all.x = TRUE)
-    res[, weight := fifelse(tte < duration, 0, hr)]
+    ans <- merge.data.table(ans, late_hr, by = "stratum", all.x = TRUE)
+    ans <- merge.data.table(ans, delay_change_time, by = "stratum", all.x = TRUE)
+    ans[, weight := fifelse(tte < duration, 0, hr)]
   }
 
-  setDF(res)
-
-  ans$estimate <- sum(res$o_minus_e * res$weight)
-  ans$se <- sqrt(sum(res$var_o_minus_e * res$weight^2))
-  ans$z <- ans$estimate / ans$se
+  setDF(ans)
 
   return(ans)
 }
