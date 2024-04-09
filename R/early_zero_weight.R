@@ -27,77 +27,17 @@
 #'   early zero weighted logrank test for the data in `x`.
 #'
 #' @importFrom data.table ":=" as.data.table fifelse merge.data.table setDF
-#'
-#' @export
-#'
-#' @references
-#' Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
-#' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
-#' _Statistics in Medicine_, 36(4), 592--605.
-#'
-#' @examples
-#' library(dplyr)
-#' library(gsDesign2)
-#'
-#' # Example 1: Unstratified
-#' sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(125) |>
-#'   counting_process(arm = "experimental") |>
-#'   early_zero_weight(early_period = 2) |>
-#'   filter(row_number() %in% seq(5, 200, 40))
-#'
-#' # Example 2: Stratified
-#' n <- 500
-#' # Two strata
-#' stratum <- c("Biomarker-positive", "Biomarker-negative")
-#' prevalence_ratio <- c(0.6, 0.4)
-#'
-#' # Enrollment rate
-#' enroll_rate <- define_enroll_rate(
-#'   stratum = rep(stratum, each = 2),
-#'   duration = c(2, 10, 2, 10),
-#'   rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
-#' )
-#' enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
-#'
-#' # Failure rate
-#' med_pos <- 10 # Median of the biomarker positive population
-#' med_neg <- 8 # Median of the biomarker negative population
-#' hr_pos <- c(1, 0.7) # Hazard ratio of the biomarker positive population
-#' hr_neg <- c(1, 0.8) # Hazard ratio of the biomarker negative population
-#' fail_rate <- define_fail_rate(
-#'   stratum = rep(stratum, each = 2),
-#'   duration = c(3, 1000, 4, 1000),
-#'   fail_rate = c(log(2) / c(med_pos, med_pos, med_neg, med_neg)),
-#'   hr = c(hr_pos, hr_neg),
-#'   dropout_rate = 0.01
-#' )
-#'
-#' # Simulate data
-#' temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
-#' set.seed(2023)
-#'
-#' sim_pw_surv(
-#'   n = n, # Sample size
-#'   # Stratified design with prevalence ratio of 6:4
-#'   stratum = tibble(stratum = stratum, p = prevalence_ratio),
-#'   # Randomization ratio
-#'   block = c("control", "control", "experimental", "experimental"),
-#'   enroll_rate = enroll_rate, # Enrollment rate
-#'   fail_rate = temp$fail_rate, # Failure rate
-#'   dropout_rate = temp$dropout_rate # Dropout rate
-#' ) |>
-#'   cut_data_by_event(125) |>
-#'   counting_process(arm = "experimental") |>
-#'   early_zero_weight(early_period = 2, fail_rate = fail_rate) |>
-#'   filter(row_number() %in% seq(5, 200, 40))
 early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
-  ans <- as.data.table(x)
-  n_stratum <- length(unique(ans$stratum))
+  ans <- list()
+  ans$method <- "WLR"
+  ans$parameter <- paste0("Xu 2017 with first ", early_period, " months of 0 weights")
+
+  res <- as.data.table(x)
+  n_stratum <- length(unique(res$stratum))
 
   # If it is unstratified design
   if (n_stratum == 1) {
-    ans[, weight := fifelse(tte < early_period, 0, 1)]
+    res[, weight := fifelse(tte < early_period, 0, 1)]
   } else {
     if (is.null(fail_rate)) {
       stop("For stratified design to use `early_zero_weight()`, `fail_rate` can't be `NULL`.")
@@ -112,11 +52,16 @@ early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
     late_hr <- fail_rate[hr != 1, .(stratum, hr)]
     delay_change_time <- fail_rate[hr == 1, .(stratum, duration)]
 
-    ans <- merge.data.table(ans, late_hr, by = "stratum", all.x = TRUE)
-    ans <- merge.data.table(ans, delay_change_time, by = "stratum", all.x = TRUE)
-    ans[, weight := fifelse(tte < duration, 0, hr)]
+    res <- merge.data.table(res, late_hr, by = "stratum", all.x = TRUE)
+    res <- merge.data.table(res, delay_change_time, by = "stratum", all.x = TRUE)
+    res[, weight := fifelse(tte < duration, 0, hr)]
   }
 
-  setDF(ans)
+  setDF(res)
+
+  ans$estimate <- sum(res$o_minus_e * res$weight)
+  ans$se <- sqrt(sum(res$var_o_minus_e * res$weight^2))
+  ans$z <- ans$estimate / ans$se
+
   return(ans)
 }
