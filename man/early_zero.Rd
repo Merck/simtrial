@@ -4,7 +4,7 @@
 \alias{early_zero}
 \title{Zero early weighting function}
 \usage{
-early_zero(early_period, fail_rate)
+early_zero(early_period, fail_rate = NULL)
 }
 \arguments{
 \item{early_period}{The initial delay period where weights increase;

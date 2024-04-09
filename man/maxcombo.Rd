@@ -4,7 +4,13 @@
 \alias{maxcombo}
 \title{Maxcombo test}
 \usage{
-maxcombo(data, rho, gamma, return_corr = FALSE)
+maxcombo(
+  data = cut_data_by_event(sim_pw_surv(n = 200), 150),
+  rho = c(0, 0, 1),
+  gamma = c(0, 1, 1),
+  return_variance = FALSE,
+  return_corr = FALSE
+)
 }
 \arguments{
 \item{data}{a tte dataset}
