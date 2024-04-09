@@ -23,19 +23,15 @@ test results
 Weighted logrank test
 }
 \examples{
-# Example 1: WLR test with FH wights
 x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 
-# Compute logrank FH(0, 1)
+# Example 1: WLR test with FH wights
 x |> wlr(weight = fh(rho = 0, gamma = 1))
 x |> wlr(weight = fh(rho = 0, gamma = 1), return_variance = TRUE)
 
-sim_pw_surv(n = 200) |>
-  cut_data_by_event(150) |>
-  wlr(weight = mb(delay = 4, w_max = 2))
+# Example 2: WLR test with MB wights
+x |> wlr(weight = mb(delay = 4, w_max = 2))
 
-sim_pw_surv(n = 200) |>
-  cut_data_by_event(150) |>
-  wlr(weight = early_zero(early_period = 4))
-
+# Example 3: WLR test with early zero wights
+x |> wlr(weight = early_zero(early_period = 4))
 }

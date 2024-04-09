@@ -18,79 +18,11 @@ Set \code{delay = Inf}, \code{w_max = 2} to be consistent with recommendation of
 Magirr (2021).}
 }
 \value{
-A data frame. The column \code{mb_weight} contains the weights for the
-Magirr-Burman weighted logrank test for the data in \code{x}.
+A list.
 }
 \description{
 Computes Magirr-Burman weights and adds them to a dataset created by
 \code{\link[=counting_process]{counting_process()}}.
 These weights can then be used to compute a z-statistic for the
 modestly weighted logrank test proposed.
-}
-\details{
-Magirr and Burman (2019) proposed a weighted logrank test to have better
-power than the logrank test when the treatment effect is delayed,
-but to still maintain good power under a proportional hazards assumption.
-In Magirr (2021), (the equivalent of) a maximum weight was proposed
-as opposed to a fixed time duration over which weights would increase.
-The weights for some early interval specified by the user are the inverse
-of the combined treatment group empirical survival distribution; see details.
-After this initial period, weights are constant at the maximum of the
-previous weights. Another advantage of the test is that under strong
-null hypothesis that the underlying survival in the control group is
-greater than or equal to underlying survival in the experimental group,
-Type I error is controlled as the specified level.
-
-We define \eqn{t^*} to be the input variable \code{delay}.
-This specifies an initial period during which weights increase.
-We also set a maximum weight \eqn{w_{\max}}.
-To define specific weights, we let \eqn{S(t)} denote the Kaplan-Meier
-survival estimate at time \eqn{t} for the combined data
-(control plus experimental treatment groups).
-The weight at time \eqn{t} is then defined as
-\deqn{w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).}
-}
-\examples{
-library(dplyr)
-
-# Use default enrollment and event rates at cut at 100 events
-# For transparency, may be good to set either `delay` or `w_max` to `Inf`
-x <- sim_pw_surv(n = 200) |>
-  cut_data_by_event(125) |>
-  counting_process(arm = "experimental")
-
-# Example 1
-# Compute Magirr-Burman weights with `delay = 6`
-ZMB <- x |>
-  mb_weight(delay = 6, w_max = Inf) |>
-  summarize(
-    S = sum(o_minus_e * mb_weight),
-    V = sum(var_o_minus_e * mb_weight^2),
-    z = S / sqrt(V)
-  )
-
-# Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB$z)
-
-# Example 2
-# Now compute with maximum weight of 2 as recommended in Magirr, 2021
-ZMB2 <- x |>
-  mb_weight(delay = Inf, w_max = 2) |>
-  summarize(
-    S = sum(o_minus_e * mb_weight),
-    V = sum(var_o_minus_e * mb_weight^2),
-    z = S / sqrt(V)
-  )
-
-# Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB2$z)
-}
-\references{
-Magirr, Dominic, and Carl‐Fredrik Burman. 2019.
-"Modestly weighted logrank tests."
-\emph{Statistics in Medicine} 38 (20): 3782--3790.
-
-Magirr, Dominic. 2021.
-"Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
-\emph{Pharmaceutical Statistics} 20 (3): 512--527.
 }
