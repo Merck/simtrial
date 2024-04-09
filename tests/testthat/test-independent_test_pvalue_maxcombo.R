@@ -62,9 +62,7 @@ test_that("the p-values correspond to pvalue_maxcombo", {
   if (Z.tst.rslt1[max.tst] < 0) pval <- pval2 / 2
   p1 <- pval
 
-  a2 <- y |> counting_process(arm = "experimental")
-  aa <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
-  p2 <- pvalue_maxcombo(z = aa)
+  p2 <- (y |> maxcombo(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1), return_corr = TRUE))$p_value
 
   expect_equal(p1, p2, tolerance = 0.005)
 })

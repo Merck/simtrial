@@ -5,7 +5,7 @@ test_that("mb_weight works for single stratum", {
 
   out1 <- test_mb_weight(x, delay = 3)
   out1 <- data.frame(out1[order(out1$stratum, out1$tte), ])
-  out2 <- mb_weight(x, delay = 3)
+  out2 <- simtrial:::mb_weight(x, delay = 3)
   out2 <- data.frame(out2[order(out2$stratum, out2$tte), ])
   expect_equal(out1, out2)
 })
