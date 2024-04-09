@@ -103,7 +103,7 @@
 #' p <- xx |>
 #'   filter(cut != "Targeted events") |>
 #'   group_by(sim) |>
-#'   group_map(~ pvalue_maxcombo(.x)) |>
+#'   group_map(~ simtrial:::pvalue_maxcombo(.x)) |>
 #'   unlist()
 #'
 #' mean(p < .025)
@@ -112,7 +112,7 @@
 #' p <- xx |>
 #'   filter(cut == "Targeted events") |>
 #'   group_by(sim) |>
-#'   group_map(~ pvalue_maxcombo(.x)) |>
+#'   group_map(~ simtrial:::pvalue_maxcombo(.x)) |>
 #'   unlist()
 #'
 #' mean(p < .025)
@@ -395,7 +395,9 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
     z <- data.frame(z = tmp$z)
   } else {
     tmp <- counting_process(d, arm = "experimental")
-    z <- fh_weight(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
+    res <- fh_weight(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
+    z <- cbind(res$z, res$corr) |> as.data.frame()
+    colnames(z)[1] <- "z"
   }
 
   event <- sum(d$event)
