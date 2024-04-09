@@ -46,21 +46,18 @@ When more than one test is chosen the correlation between tests is computed as s
 library(simtrial)
 library(knitr)
 library(dplyr)
+library(gt)
 ```
 
 ```{r}
 x <- sim_fixed_n(
   n_sim = 1,
   timing_type = 5,
-  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1))
-)
-x |> kable(digits = 2)
-```
+  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 
-Once you have this format, the MaxCombo $p$-value per @Karrison2016, @NPHWGDesign can be computed as follows (note that you will need to have the package mvtnorm installed):
-
-```{r, warning=FALSE, message=FALSE}
-pvalue_maxcombo(x)
+x |> 
+  gt() |>
+  fmt_number(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
 ```
 
 ### Generating data with `sim_pw_surv()`
@@ -70,14 +67,22 @@ Again, we use defaults for that routine.
 
 ```{r, message=FALSE, warning=FALSE, cache=FALSE}
 s <- sim_pw_surv(n = 100)
-head(s) |> kable(digits = 2)
+
+s |> 
+  head() |> 
+  gt() |>
+  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
 
 Once generated, we need to cut the data for analysis. Here we cut after 75 events.
 
 ```{r, warning=FALSE, message=FALSE}
 x <- s |> cut_data_by_event(75)
-head(x) |> kable(digits = 2)
+
+x |> 
+  head() |> 
+  gt() |>
+  fmt_number(columns = "tte", decimals = 2)
 ```
 
 Now we can analyze this data. We begin with `s` to show how this can be done in a single line.
@@ -86,29 +91,20 @@ In this case, we use the 4 test combination suggested in @NPHWGSimulation, @NPHW
 ```{r, warning=FALSE, message=FALSE}
 z <- s |>
   cut_data_by_event(75) |>
-  counting_process(arm = "experimental") |>
-  fh_weight(
-    rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)),
-    return_corr = TRUE
-  )
-z |> kable(digits = 2)
-```
+  maxcombo(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
 
-Now we compute our $p$-value as before:
-
-```{r, warning=FALSE, message=FALSE}
-pvalue_maxcombo(z)
+z
 ```
 
 Suppose we want the $p$-value just based on the logrank and FH(0, 1) and FH(1, 0) as suggested by @Lee2007.
 We remove the rows and columns associated with FH(0, 0) and FH(1, 1) and then apply `pvalue_maxcombo()`.
 
 ```{r, warning=FALSE, message=FALSE}
-pvalue_maxcombo(
-  z |>
-    select(-c(v1, v4)) |>
-    filter((rho == 0 & gamma == 1) | (rho == 1 & gamma == 0))
-)
+z <- s |>
+  cut_data_by_event(75) |>
+  maxcombo(rho = c(0, 1), gamma = c(1, 0))
+
+z
 ```
 
 ### Using survival data in another format
@@ -119,7 +115,7 @@ In this case we use the small `aml` dataset from the survival package.
 
 ```{r, warning=FALSE, message=FALSE}
 library(survival)
-head(aml) |> kable()
+aml |> head() |> gt()
 ```
 
 We rename variables and create a stratum variable as follows:
@@ -129,37 +125,34 @@ x <- aml |> transmute(
   tte = time,
   event = status,
   stratum = "All",
-  treatment = as.character(x)
-)
-head(x) |> kable()
+  treatment = case_when(x == "Maintained" ~ "experimental",
+                        x == "Nonmaintained" ~ "control"))
+
+x |> head() |> gt()
 ```
 Now we analyze the data with a MaxCombo with the logrank and FH(0, 1) and compute a $p$-value.
 
 ```{r, warning=FALSE, message=FALSE}
 x |>
-  counting_process(arm = "Maintained") |>
-  fh_weight(
-    rho_gamma = data.frame(rho = 0, gamma = c(0, 1)),
-    return_corr = TRUE
-  ) |>
-  pvalue_maxcombo()
+  maxcombo(rho = c(0, 0), gamma = c(0, 1))
 ```
 
 ## Simulation
 
 We now consider the example simulation from the `pvalue_maxcombo()` help file to demonstrate how to simulate power for the MaxCombo test. However, we increase the number of simulations to 100 in this case; a larger number should be used (e.g., 1000) for a better estimate of design properties. Here we will test at the $\alpha=0.001$ level.
 
-```{r, cache=FALSE, warning=FALSE, message=FALSE}
+```{r, cache=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
 # Only use cut events + min follow-up
 xx <- sim_fixed_n(
   n_sim = 100,
   timing_type = 5,
-  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1))
-)
+  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
+
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
+# This chunk will be updated after the development of sim_gs_n and sim_fixed_n
 p <- xx |>
   group_by(sim) |>
-  group_map(~ pvalue_maxcombo(.x)) |>
+  group_map(~ maxcombo(.x, rho = c(0, 0, 1), gamma = c(0, 1, 1))) |>
   unlist()
 mean(p < .001)
 ```
@@ -180,8 +173,9 @@ head(xx) |> kable(digits = 2)
 
 Now we compute a $p$-value separately for each cut type, first for targeted event count.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
 # Subset to targeted events cutoff tests
+# This chunk will be updated after the development of sim_gs_n and sim_fixed_n
 p <- xx |>
   filter(cut == "Targeted events") |>
   group_by(sim) |>
@@ -192,8 +186,9 @@ mean(p < .025)
 
 Now we use the later of targeted events and minimum follow-up cutoffs.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
 # Subset to targeted events cutoff tests
+# This chunk will be updated after the development of sim_gs_n and sim_fixed_n
 p <- xx |>
   filter(cut != "Targeted events") |>
   group_by(sim) |>
