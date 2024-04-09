@@ -80,49 +80,6 @@
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
 #' @importFrom data.table data.table merge.data.table setDF
-#' @export
-#' @examples
-#' library(dplyr)
-#' # Example 2
-#' # Use default enrollment and event rates at cut of 100 events
-#' set.seed(123)
-#' x <- sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(100) |>
-#'   counting_process(arm = "experimental") |>
-#'   simtrial:::fh_weight(rho_gamma = data.frame(rho = c(0, 0), gamma = c(0, 1)), return_corr = TRUE)
-#'
-#' # Compute p-value for MaxCombo
-#' library(mvtnorm)
-#' 1 - pmvnorm(
-#'   lower = rep(min(x$z), nrow(x)),
-#'   corr = data.matrix(select(x, -c(rho, gamma, z))),
-#'   algorithm = GenzBretz(maxpts = 50000, abseps = 0.00001)
-#' )[1]
-#'
-#' # Check that covariance is as expected
-#' x <- sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(100) |>
-#'   counting_process(arm = "experimental")
-#'
-#' x |> simtrial:::fh_weight(
-#'   rho_gamma = data.frame(
-#'     rho = c(0, 0),
-#'     gamma = c(0, 1)
-#'   ),
-#'   return_variance = TRUE
-#' )
-#'
-#' # Off-diagonal element should be variance in following
-#' x |> simtrial:::fh_weight(
-#'   rho_gamma = data.frame(
-#'     rho = 0,
-#'     gamma = .5
-#'   ),
-#'   return_variance = TRUE
-#' )
-#'
-#' # Compare off diagonal result with fh_weight()
-#' x |> simtrial:::fh_weight(rho_gamma = data.frame(rho = 0, gamma = .5))
 fh_weight <- function(
     x = sim_pw_surv(n = 200) |>
       cut_data_by_event(150) |>
@@ -176,7 +133,7 @@ fh_weight <- function(
 
     ans <- list()
     ans$method <- "MaxCombo"
-    ans$parameter <- paste((rho_gamma  %>% mutate(x= paste0("FH(", rho, ", ", gamma, ")")))$x, collapse = " + ")
+    ans$parameter <- paste((rho_gamma  %>% mutate(x = paste0("FH(", rho, ", ", gamma, ")")))$x, collapse = " + ")
     ans$estimation <- NULL
     ans$se <- NULL
     # Get average rho and gamma for FH covariance matrix
@@ -196,9 +153,10 @@ fh_weight <- function(
 
     # Compute FH statistic for unique values
     # and merge back to full set of pairs
+    temp <- wlr_fh_z_stat(x, rho_gamma = rg_unique, return_variance = TRUE) |> as.data.frame()
     rg_fh <- merge.data.table(
       x = rg_new,
-      y = wlr_fh_z_stat(x, rho_gamma = rg_unique, return_variance = TRUE) |> as.data.frame(),
+      y = temp,
       by = c("rho", "gamma"),
       all.x = TRUE,
       sort = FALSE
