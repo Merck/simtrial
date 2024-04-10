@@ -59,7 +59,7 @@ wlr <- function(data, weight, return_variance = FALSE) {
   } else if (inherits(weight, "mb")) {
     x <- x |> mb_weight(delay = weight$delay, w_max = weight$w_max)
 
-    ans$parameter <- paste0("MB(delay = ", delay, ", max_weight = ", w_max, ")")
+    ans$parameter <- paste0("MB(delay = ", weight$delay, ", max_weight = ", weight$w_max, ")")
     ans$estimate <- sum(x$o_minus_e * x$mb_weight)
     ans$se <- sqrt(sum(x$var_o_minus_e * x$mb_weight^2))
     ans$z <- ans$estimate / ans$se
