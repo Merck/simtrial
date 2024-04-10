@@ -1,5 +1,6 @@
 ---
 title: "Computing p-values for Fleming-Harrington weighted logrank tests and the MaxCombo test"
+author: "Keaven Anderson, Yujie Zhao"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >

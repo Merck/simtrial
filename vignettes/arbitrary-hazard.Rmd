@@ -1,5 +1,6 @@
 ---
 title: "Approximating an arbitrary hazard function"
+author: "Keaven Anderson"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Approximating an arbitrary hazard function}

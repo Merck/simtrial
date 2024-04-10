@@ -1,5 +1,6 @@
 ---
 title: "Basic tools for time-to-event trial simulation and testing"
+author: "Keaven Anderson"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >

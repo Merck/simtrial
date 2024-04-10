@@ -1,5 +1,6 @@
 ---
-title: "Using the Magirr-Burman weights for testing"
+title: "Using the Magirr-Burman weights for WLR testing"
+author: "Keaven Anderson, Yujie Zhao"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >

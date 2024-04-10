@@ -1,5 +1,6 @@
 ---
 title: "Simulating time-to-event trials in parallel"
+author: "Cole Manschot, Nan Xiao"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Simulating time-to-event trials in parallel}
