@@ -9,6 +9,8 @@ early_zero(early_period, fail_rate = NULL)
 \arguments{
 \item{early_period}{The initial delay period where weights increase;
 after this, weights are constant at the final weight in the delay period.}
+
+\item{fail_rate}{Failure rate}
 }
 \value{
 A list of parameters of the zero early weighting function

@@ -17,7 +17,11 @@ estimated variance for weighted sum of observed minus expected;
 see details; Default: \code{FALSE}.}
 }
 \value{
-test results
+A list contraining the test method (\code{method}),
+parameters of this test method (\code{parameter}),
+point estimation of the treatment effect (\code{estimation}),
+standardized error of the treatment effect (\code{se}),
+Z-score (\code{z}), p-values (\code{p_value}).
 }
 \description{
 Weighted logrank test

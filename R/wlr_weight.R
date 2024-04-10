@@ -87,7 +87,7 @@ mb <- function(delay = 4, w_max = Inf) {
 #'
 #' @param early_period The initial delay period where weights increase;
 #'   after this, weights are constant at the final weight in the delay period.
-#'
+#' @param fail_rate Failure rate
 #' @return A list of parameters of the zero early weighting function
 #' @references
 #' Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).

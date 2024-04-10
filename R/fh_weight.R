@@ -22,15 +22,10 @@
 #'
 #' @param x A [counting_process()]-class data frame with a counting process
 #'   dataset.
-#' @param rho_gamma A data frame with variables `rho` and `gamma`, both greater
-#'   than equal to zero, to specify one Fleming-Harrington weighted logrank test
-#'   per row; Default: `data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))`.
-#' @param return_variance A logical flag that, if `TRUE`, adds columns
-#'   estimated variance for weighted sum of observed minus expected;
-#'   see details; Default: `FALSE`.
-#' @param return_corr A logical flag that, if `TRUE`, adds columns
-#'   estimated correlation for weighted sum of observed minus expected;
-#'   see details; Default: `FALSE`.
+#' @param rho A numerical value greater than equal to zero,
+#' to specify one Fleming-Harrington weighted logrank test
+#' @param gamma A numerical value greater than equal to zero,
+#' to specify one Fleming-Harrington weighted logrank test
 #'
 #' @return A data frame with `rho_gamma` as input and the FH test statistic
 #'   for the data in `x`. (`z`, a directional square root of the usual
@@ -85,9 +80,7 @@ fh_weight <- function(
       cut_data_by_event(150) |>
       counting_process(arm = "experimental"),
     rho = 0,
-    gamma = 1,
-    return_variance = FALSE,
-    return_corr = FALSE) {
+    gamma = 1) {
 
 
   # Input checking ----

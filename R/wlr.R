@@ -25,7 +25,11 @@
 #'   estimated variance for weighted sum of observed minus expected;
 #'   see details; Default: `FALSE`.
 #'
-#' @return test results
+#' @return A list contraining the test method (`method`),
+#' parameters of this test method (`parameter`),
+#' point estimation of the treatment effect (`estimation`),
+#' standardized error of the treatment effect (`se`),
+#' Z-score (`z`), p-values (`p_value`).
 #'
 #' @importFrom data.table setDF setDT
 #'

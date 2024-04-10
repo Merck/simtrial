@@ -20,9 +20,23 @@ than or equal to zero. Must be the same length as \code{gamma}.}
 
 \item{gamma}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be
 greater than or equal to zero. Must be the same length as \code{rho}.}
+
+\item{return_variance}{A logical flag that, if \code{TRUE}, adds columns
+estimated variance for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
+
+\item{return_corr}{A logical flag that, if \code{TRUE}, adds columns
+estimated correlation for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
 }
 \value{
-pvalues
+A list contraining the test method (\code{method}),
+parameters of this test method (\code{parameter}),
+point estimation of the treatment effect (\code{estimation}),
+standardized error of the treatment effect (\code{se}),
+Z-score of each test of the Maxcombo (\code{z}),
+p-values (\code{p_value})
+and the correlation matrix of each tests in Maxcombo (begin with \code{v})
 }
 \description{
 WARNING: This experimental function is a work-in-progress. The function

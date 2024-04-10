@@ -8,26 +8,18 @@ fh_weight(
   x = counting_process(cut_data_by_event(sim_pw_surv(n = 200), 150), arm =
     "experimental"),
   rho = 0,
-  gamma = 1,
-  return_variance = FALSE,
-  return_corr = FALSE
+  gamma = 1
 )
 }
 \arguments{
 \item{x}{A \code{\link[=counting_process]{counting_process()}}-class data frame with a counting process
 dataset.}
 
-\item{return_variance}{A logical flag that, if \code{TRUE}, adds columns
-estimated variance for weighted sum of observed minus expected;
-see details; Default: \code{FALSE}.}
+\item{rho}{A numerical value greater than equal to zero,
+to specify one Fleming-Harrington weighted logrank test}
 
-\item{return_corr}{A logical flag that, if \code{TRUE}, adds columns
-estimated correlation for weighted sum of observed minus expected;
-see details; Default: \code{FALSE}.}
-
-\item{rho_gamma}{A data frame with variables \code{rho} and \code{gamma}, both greater
-than equal to zero, to specify one Fleming-Harrington weighted logrank test
-per row; Default: \code{data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))}.}
+\item{gamma}{A numerical value greater than equal to zero,
+to specify one Fleming-Harrington weighted logrank test}
 }
 \value{
 A data frame with \code{rho_gamma} as input and the FH test statistic

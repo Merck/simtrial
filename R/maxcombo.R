@@ -26,8 +26,20 @@
 #'   than or equal to zero. Must be the same length as `gamma`.
 #' @param gamma Numeric vector passed to [fh_weight()]. Must be
 #'   greater than or equal to zero. Must be the same length as `rho`.
+#' @param return_variance A logical flag that, if `TRUE`, adds columns
+#'   estimated variance for weighted sum of observed minus expected;
+#'   see details; Default: `FALSE`.
+#' @param return_corr A logical flag that, if `TRUE`, adds columns
+#'   estimated correlation for weighted sum of observed minus expected;
+#'   see details; Default: `FALSE`.
 #'
-#' @return pvalues
+#' @return A list contraining the test method (`method`),
+#' parameters of this test method (`parameter`),
+#' point estimation of the treatment effect (`estimation`),
+#' standardized error of the treatment effect (`se`),
+#' Z-score of each test of the Maxcombo (`z`),
+#' p-values (`p_value`)
+#' and the correlation matrix of each tests in Maxcombo (begin with `v`)
 #' @export
 #'
 #' @seealso [fh_weight()]
