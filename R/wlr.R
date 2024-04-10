@@ -65,7 +65,7 @@ wlr <- function(data, weight, return_variance = FALSE) {
     ans$z <- ans$estimate / ans$se
 
   } else if (inherits(weight, "early_period")) {
-    x <- x |> early_zero_weight(early_period = weight$early_period)
+    x <- x |> early_zero_weight(early_period = weight$early_period, fail_rate = weight$fail_rate)
 
     ans$parameter <- paste0("Xu 2017 with first ", weight$early_period, " months of 0 weights")
     ans$estimate <- sum(x$o_minus_e * x$weight)
