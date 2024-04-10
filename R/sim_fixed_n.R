@@ -77,45 +77,31 @@
 #' library(dplyr)
 #' library(future)
 #'
-#' # Example 1
-#' # Show output structure
-#' sim_fixed_n(n_sim = 3)
+#' # Example 1: logrank test ----
+#' x <- sim_fixed_n(n_sim = 10, timing_type = 1, rho_gamma = data.frame(rho = 0, gamma = 0))
+#' # Get power approximation
+#' mean(x$z <= qnorm(.025))
 #'
-#' # Example 2
-#' # Example with 2 tests: logrank and FH(0,1)
-#' sim_fixed_n(n_sim = 1, rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
+#' # Example 2: WLR with FH(0,1) ----
+#' sim_fixed_n(n_sim = 1, timing_type = 1, rho_gamma = data.frame(rho = 0, gamma = 1))
+#' # Get power approximation
+#' mean(x$z <= qnorm(.025))
 #'
 #' \donttest{
-#' # Example 3
+#' # Example 3: MaxCombo, i.e., WLR-FH(0,0)+ WLR-FH(0,1)
 #' # Power by test
 #' # Only use cuts for events, events + min follow-up
-#' xx <- sim_fixed_n(
-#'   n_sim = 100,
-#'   timing_type = c(2, 5),
-#'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
-#' )
-#' # Get power approximation for FH, data cutoff combination
-#' xx |>
-#'   group_by(cut, rho, gamma) |>
-#'   summarize(mean(z <= qnorm(.025)))
+#' x <- sim_fixed_n(
+#'   n_sim = 10,
+#'   timing_type = 2,
+#'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
 #'
-#' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx |>
-#'   filter(cut != "Targeted events") |>
+#' # Get power approximation
+#' x |>
 #'   group_by(sim) |>
-#'   group_map(~ simtrial:::pvalue_maxcombo(.x)) |>
-#'   unlist()
-#'
-#' mean(p < .025)
-#'
-#' # MaxCombo estimate for targeted events cutoff
-#' p <- xx |>
-#'   filter(cut == "Targeted events") |>
-#'   group_by(sim) |>
-#'   group_map(~ simtrial:::pvalue_maxcombo(.x)) |>
-#'   unlist()
-#'
-#' mean(p < .025)
+#'   filter(row_number() == 1) |>
+#'   ungroup() |>
+#'   summarize(power = mean(p_value < .025))
 #'
 #' # Example 4
 #' # Use two cores
@@ -149,7 +135,8 @@ sim_fixed_n <- function(
     # Default is to to logrank testing, but one or more Fleming-Harrington tests
     # can be specified
     rho_gamma = data.frame(rho = 0, gamma = 0)) {
-  # Check input values
+
+  # Check input values ----
   # Check input enrollment rate assumptions
   if (!("duration" %in% names(enroll_rate))) {
     stop("sim_fixed_n: enrollRates column names in `sim_fixed_n()` must contain duration.")
@@ -240,16 +227,16 @@ sim_fixed_n <- function(
 
   n_stratum <- nrow(stratum)
 
-  # Compute minimum planned follow-up time
+  # Compute minimum planned follow-up time ----
   minFollow <- max(0, total_duration - sum(enroll_rate$duration))
 
-  # Put failure rates into sim_pw_surv format
+  # Put failure rates into sim_pw_surv format ----
   temp <- to_sim_pw_surv(fail_rate)
   fr <- temp$fail_rate
   dr <- temp$dropout_rate
   results <- NULL
 
-  # message for backends
+  # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
     # future backend
     message("Using ", nbrOfWorkers(), " cores with backend ", attr(plan("list")[[1]], "class")[2])
@@ -261,13 +248,14 @@ sim_fixed_n <- function(
     message("Backend uses sequential processing.")
   }
 
+  # parallel computation start ----
   results <- foreach::foreach(
     i = seq_len(n_sim),
     .combine = "rbind",
     .errorhandling = "pass",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
-    # Generate piecewise data
+    # Generate piecewise data ----
     sim <- sim_pw_surv(
       n = sample_size,
       stratum = stratum,
@@ -276,11 +264,12 @@ sim_fixed_n <- function(
       dropout_rate = dr,
       block = block
     )
+  #for (i in 1:n_sim) {
 
-    # Study date that targeted event rate achieved
+    # Calculate possible cutting dates ----
+    # Date 1: Study date that targeted event rate achieved
     tedate <- get_cut_date_by_event(sim, target_event)
-
-    # Study data that targeted minimum follow-up achieved
+    # Date 2: Study data that targeted minimum follow-up achieved
     tmfdate <- max(sim$enroll_time) + minFollow
 
     # Compute tests for all specified cutoff options
@@ -381,33 +370,49 @@ sim_fixed_n <- function(
     results_sim <- rbindlist(addit)
     results_sim[, sim := i]
     setDF(results_sim)
-    return(results_sim)
+    results <- rbind(results, results_sim)
+    # return(results_sim)
   }
 
   return(results)
 }
 
-# Build a function to calculate z and log-hr
+# Build a function to calculate test related statistics (e.g., z, estimation, se, etc.) and log-hr
 doAnalysis <- function(d, rho_gamma, n_stratum) {
   if (nrow(rho_gamma) == 1) {
-    tmp <- counting_process(d, arm = "experimental")
-    tmp <- fh_weight(tmp, rho_gamma = rho_gamma)
-    z <- data.frame(z = tmp$z)
+    res <- d |>
+      wlr(weight = fh(rho = rho_gamma$rho, gamma = rho_gamma$gamma))
+
+    ans <- data.frame(method = res$method,
+                      parameter = res$parameter,
+                      estimation = res$estimation,
+                      se = res$se,
+                      z = res$z)
   } else {
-    tmp <- counting_process(d, arm = "experimental")
-    res <- fh_weight(tmp, rho_gamma = rho_gamma, return_corr = TRUE)
-    z <- cbind(res$z, res$corr) |> as.data.frame()
-    colnames(z)[1] <- "z"
+    res <- d |>
+      maxcombo(rho = rho_gamma$rho, gamma = rho_gamma$gamma, return_corr = TRUE)
+
+    ans <- data.frame(method = rep(res$method, nrow(rho_gamma)),
+                      parameter = rep(res$parameter, nrow(rho_gamma)),
+                      estimation = rep("-", nrow(rho_gamma)),
+                      se = rep("-", nrow(rho_gamma)),
+                      z = res$z,
+                      p_value = rep(res$p_value, nrow(rho_gamma)))
+    ans <- cbind(ans, res$corr |> as.data.frame())
   }
 
   event <- sum(d$event)
   if (n_stratum > 1) {
     ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients
+    ln_hr <- as.numeric(ln_hr)
+    ans$event <- rep(event, nrow(rho_gamma))
+    ans$ln_hr <- rep(ln_hr, nrow(rho_gamma))
   } else {
     ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+    ln_hr <- as.numeric(ln_hr)
+    ans$event <- event
+    ans$ln_hr <- ln_hr
   }
-  ln_hr <- as.numeric(ln_hr)
 
-  ans <- cbind(event, ln_hr, z)
   return(ans)
 }
