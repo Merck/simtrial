@@ -201,7 +201,7 @@ plan(sequential)
 
 We can also verify that the simulation results are identical because of setting a seed and that the backend type will not affect the results. Below, it is clear that the results from our sequential and multisession backends match completely.
 
-```{r compare-results}
+```{r compare-results, eval=FALSE}
 sum(seq_result1 != seq_result1m)
 sum(seq_result2 != seq_result2m)
 ```
