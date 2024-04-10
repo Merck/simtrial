@@ -63,8 +63,7 @@ sim <- sim_pw_surv(
 )
 
 # Cut after 200 events and do a stratified logrank test
-dat <- sim |>
+sim |>
   cut_data_by_event(200) |> # Cut data
-  counting_process(arm = "experimental") |> # Convert format for fh_weight()
-  fh_weight(rho_gamma = data.frame(rho = 0, gamma = 0)) # Stratified logrank
+  wlr(weight = fh(rho = 0, gamma = 0)) # Stratified logrank
 }

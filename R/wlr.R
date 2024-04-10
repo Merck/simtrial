@@ -55,7 +55,7 @@ wlr <- function(data, weight, return_variance = FALSE) {
   if (inherits(weight, "fh")) {
     x <- x |> fh_weight(rho = weight$rho, gamma = weight$gamma)
 
-    ans$parameter <- paste0("FH(rho=", weight$rho, ", gamma =", weight$gamma, ")")
+    ans$parameter <- paste0("FH(rho=", weight$rho, ", gamma=", weight$gamma, ")")
     ans$estimation <- sum(x$weight * x$o_minus_e)
     ans$se <- sqrt(sum(x$weight^2 * x$var_o_minus_e))
     ans$z <- ans$estimation / ans$se
