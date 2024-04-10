@@ -84,13 +84,14 @@ articles:
   contents:
   - workflow
   - routines
-- title: "Example simulation workflows"
+- title: "Simulations with NPH tests"
+  contents:
+  - modest-wlrt
+  - maxcombo
+  - rmst
+  - parallel
+- title: "NPH distribution approximations"
   contents:
   - arbitrary-hazard
-  - modest-wlrt
-  - pvalue-maxcombo
-  - rmst
-- title: "Best practices"
-  contents:
-  - parallel
+
 
