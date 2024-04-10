@@ -148,18 +148,17 @@ We now consider the example simulation from the `pvalue_maxcombo()` help file to
 set.seed(123)
 
 # Only use cut events + min follow-up
-xx <- sim_fixed_n(
+x <- sim_fixed_n(
   n_sim = 100,
   timing_type = 5,
   rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
 
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-# This chunk will be updated after the development of sim_gs_n and sim_fixed_n
-p <- xx |>
+x |>
   group_by(sim) |>
-  group_map(~ maxcombo(.x, rho = c(0, 0, 1), gamma = c(0, 1, 1))) |>
-  unlist()
-mean(p < .001)
+  filter(row_number() == 1) |>
+  ungroup() |>
+  summarize(power = mean(p_value < .001))
 ```
 
 We note the use of `group_map` in the above produces a list of $p$-values for each simulation.
@@ -170,12 +169,10 @@ The latter can be done without having to re-run all simulations as follows, demo
 # Only use cuts for events and events + min follow-up
 set.seed(123)
 
-xx <- sim_fixed_n(
+x <- sim_fixed_n(
   n_sim = 100,
   timing_type = c(2, 5),
-  rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
-)
-head(xx) |> kable(digits = 2)
+  rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
 ```
 
 Now we compute a $p$-value separately for each cut type, first for targeted event count.
@@ -183,25 +180,24 @@ Now we compute a $p$-value separately for each cut type, first for targeted even
 ```{r, warning=FALSE, message=FALSE, eval=FALSE}
 # Subset to targeted events cutoff tests
 # This chunk will be updated after the development of sim_gs_n and sim_fixed_n
-p <- xx |>
+x |>
   filter(cut == "Targeted events") |>
   group_by(sim) |>
-  group_map(~ pvalue_maxcombo(.x)) |>
-  unlist()
-mean(p < .025)
+  filter(row_number() == 1) |>
+  ungroup() |>
+  summarize(power = mean(p_value < .025))
 ```
 
 Now we use the later of targeted events and minimum follow-up cutoffs.
 
 ```{r, warning=FALSE, message=FALSE, eval=FALSE}
 # Subset to targeted events cutoff tests
-# This chunk will be updated after the development of sim_gs_n and sim_fixed_n
-p <- xx |>
+x |>
   filter(cut != "Targeted events") |>
   group_by(sim) |>
-  group_map(~ pvalue_maxcombo(.x)) |>
-  unlist()
-mean(p < .025)
+  filter(row_number() == 1) |>
+  ungroup() |>
+  summarize(power = mean(p_value < .025))
 ```
 
 ## References
