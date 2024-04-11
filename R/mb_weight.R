@@ -33,6 +33,7 @@
 #'
 #' @return A list.
 #' @importFrom data.table ":=" as.data.table data.table fifelse merge.data.table setDF
+#' @noRd
 mb_weight <- function(x, delay = 4, w_max = Inf) {
   # check input failure rate assumptions
   if (!is.data.frame(x)) {

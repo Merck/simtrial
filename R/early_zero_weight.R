@@ -27,6 +27,7 @@
 #'   early zero weighted logrank test for the data in `x`.
 #'
 #' @importFrom data.table ":=" as.data.table fifelse merge.data.table setDF
+#' @noRd
 early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
 
 

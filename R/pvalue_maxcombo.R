@@ -31,6 +31,7 @@
 #' @return A numeric p-value.
 #'
 #' @importFrom mvtnorm pmvnorm GenzBretz
+#' @noRd
 pvalue_maxcombo <- function(
     z,
     algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 0.00001)) {

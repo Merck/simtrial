@@ -75,6 +75,7 @@
 #'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
 #'
 #' @importFrom data.table data.table merge.data.table setDF
+#' @noRd
 fh_weight <- function(
     x = sim_pw_surv(n = 200) |>
       cut_data_by_event(150) |>
