@@ -51,6 +51,10 @@ sorted by stratum and tte.
 The function only considered two group situation.
 
 The tie is handled by the Breslow's Method.
+
+The output produced by \code{\link[=counting_process]{counting_process()}} produces a
+counting process dataset grouped by stratum and sorted within stratum
+by increasing times where events occur.
 }
 \examples{
 # Example 1

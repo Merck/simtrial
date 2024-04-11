@@ -17,16 +17,13 @@ milestone(data, ms_time)
 \item{ms_time}{Milestone analysis time.}
 }
 \value{
-A data frame containing:
+A list frame containing:
 \itemize{
 \item \code{method} - The method, always \code{"milestone"}.
+\item \code{parameter} - Milestone time point.
+\item \code{estimation} - Survival difference between the experimental and control arm.
+\item \code{se} - Standard error of the control and experimental arm.
 \item \code{z} - Test statistics.
-\item \code{ms_time} - Milestone time point.
-\item \code{surv_ctrl} - Survival rate of the control arm.
-\item \code{surv_exp} - Survival rate of the experimental arm.
-\item \code{surv_diff} - Survival difference between the experimental and control arm.
-\item \code{std_err_ctrl} - Standard error of the control arm.
-\item \code{std_err_exp} - Standard error of the experimental arm.
 }
 }
 \description{

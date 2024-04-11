@@ -48,7 +48,6 @@ reference:
 - title: "Compute p-values/test statistics"
   contents:
     - counting_process
-    - pvalue_maxcombo
     - rmst
     - milestone
     - wlr
@@ -63,11 +62,8 @@ reference:
 - title: "Weight functions for WLR test"
   contents:
     - mb
-    - mb_weight
     - fh
-    - fh_weight
     - early_zero
-    - early_zero_weight
 
 - title: "Example datasets"
   contents:
@@ -84,13 +80,14 @@ articles:
   contents:
   - workflow
   - routines
-- title: "Example simulation workflows"
+- title: "Simulations with NPH tests"
+  contents:
+  - modest-wlrt
+  - maxcombo
+  - rmst
+  - parallel
+- title: "NPH distribution approximations"
   contents:
   - arbitrary-hazard
-  - modest-wlrt
-  - pvalue-maxcombo
-  - rmst
-- title: "Best practices"
-  contents:
-  - parallel
+
 

@@ -1,5 +1,6 @@
 ---
 title: "Using the Magirr-Burman weights for testing"
+author: "Keaven Anderson, Yujie Zhao"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >
@@ -85,13 +86,7 @@ We begin with the default of `w_max=Inf` which corresponds to the original @Magi
 
 ```{r}
 ZMB <- MBdelay |>
-  counting_process(arm = "experimental") |>
-  mb_weight(delay = 6) |>
-  summarize(
-    S = sum(o_minus_e * mb_weight),
-    V = sum(var_o_minus_e * mb_weight^2),
-    z = S / sqrt(V)
-  )
+  wlr(weight = mb(delay = 6)) 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
@@ -100,13 +95,7 @@ Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` 
 
 ```{r}
 ZMB <- MBdelay |>
-  counting_process(arm = "experimental") |>
-  mb_weight(delay = Inf, w_max = 2) |>
-  summarize(
-    S = sum(o_minus_e * mb_weight),
-    V = sum(var_o_minus_e * mb_weight^2),
-    z = S / sqrt(V)
-  )
+  wlr(weight = mb(delay = Inf, w_max = 2))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
@@ -176,60 +165,34 @@ plot(fit, col = 1:2, mark = "|", xaxt = "n")
 axis(1, xaxp = c(0, 36, 6))
 ```
 
-We perform a logrank and weighted logrank tests as suggested for more limited downweighting by follows:
+We perform a logrank and weighted logrank tests as suggested for more limited downweighting by follows, and a MaxCombo test with these component tests, we have p-value of:
 
 ```{r}
 xx <- FHwn |>
-  counting_process(arm = "experimental") |>
-  fh_weight(
-    rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)),
-    return_corr = TRUE
-  ) |>
-  mutate(p = pnorm(z))
+  maxcombo(rho = c(0, 0, 1), gamma = c(0, 1, 1))
 xx
 ```
 
-Now for a MaxCombo test with the above component tests, we have p-value of
-
-```{r}
-xx |> pvalue_maxcombo()
-```
 
 Next, we consider the @MagirrBurman modestly weighted logrank test with down-weighting specified for the first 6 months but a maximum weight of 2.
 This requires generating weights and then computing the test.
 
 ```{r}
 ZMB <- FHwn |>
-  counting_process(arm = "experimental") |>
-  mb_weight(delay = 6, w_max = 2) |>
-  summarize(
-    S = sum(o_minus_e * mb_weight),
-    V = sum(var_o_minus_e * mb_weight^2),
-    z = S / sqrt(V)
-  )
-
+  wlr(weight = mb(delay = 6, w_max = 2))
+ 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
 
 Finally, we consider weighted logrank tests with less down-weighting.
 Results are quite similar to the results with greater down-weighting.
+We have p-value of
 
 ```{r}
 xx <- FHwn |>
-  counting_process(arm = "experimental") |>
-  fh_weight(
-    rho_gamma = data.frame(rho = c(0, 0, .5), gamma = c(0, .5, .5)),
-    return_corr = TRUE
-  ) |>
-  mutate(p = pnorm(z))
+  maxcombo(rho = c(0, 0, .5), gamma = c(0, .5, .5))
 xx
-```
-
-Now for a MaxCombo test with the above component tests, we have p-value of
-
-```{r}
-xx |> pvalue_maxcombo()
 ```
 
 Thus, with less down-weighting the MaxCombo test appears less problematic.

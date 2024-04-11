@@ -43,7 +43,7 @@ in each block.}
 \item{timing_type}{A numeric vector determining data cutoffs used;
 see details. Default is to include all available cutoff methods.}
 
-\item{rho_gamma}{As in \code{\link[=fh_weight]{fh_weight()}}. A data frame with variables
+\item{rho_gamma}{A data frame with variables
 \code{rho} and \code{gamma}, both greater than equal to zero,
 to specify one Fleming-Harrington weighted logrank test per row.}
 }
@@ -85,45 +85,31 @@ for data cutoff:
 library(dplyr)
 library(future)
 
-# Example 1
-# Show output structure
-sim_fixed_n(n_sim = 3)
+# Example 1: logrank test ----
+x <- sim_fixed_n(n_sim = 10, timing_type = 1, rho_gamma = data.frame(rho = 0, gamma = 0))
+# Get power approximation
+mean(x$z <= qnorm(.025))
 
-# Example 2
-# Example with 2 tests: logrank and FH(0,1)
-sim_fixed_n(n_sim = 1, rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
+# Example 2: WLR with FH(0,1) ----
+sim_fixed_n(n_sim = 1, timing_type = 1, rho_gamma = data.frame(rho = 0, gamma = 1))
+# Get power approximation
+mean(x$z <= qnorm(.025))
 
 \donttest{
-# Example 3
+# Example 3: MaxCombo, i.e., WLR-FH(0,0)+ WLR-FH(0,1)
 # Power by test
 # Only use cuts for events, events + min follow-up
-xx <- sim_fixed_n(
-  n_sim = 100,
-  timing_type = c(2, 5),
-  rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
-)
-# Get power approximation for FH, data cutoff combination
-xx |>
-  group_by(cut, rho, gamma) |>
-  summarize(mean(z <= qnorm(.025)))
+x <- sim_fixed_n(
+  n_sim = 10,
+  timing_type = 2,
+  rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
 
-# MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-p <- xx |>
-  filter(cut != "Targeted events") |>
+# Get power approximation
+x |>
   group_by(sim) |>
-  group_map(~ pvalue_maxcombo(.x)) |>
-  unlist()
-
-mean(p < .025)
-
-# MaxCombo estimate for targeted events cutoff
-p <- xx |>
-  filter(cut == "Targeted events") |>
-  group_by(sim) |>
-  group_map(~ pvalue_maxcombo(.x)) |>
-  unlist()
-
-mean(p < .025)
+  filter(row_number() == 1) |>
+  ungroup() |>
+  summarize(power = mean(p_value < .025))
 
 # Example 4
 # Use two cores

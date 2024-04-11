@@ -4,19 +4,39 @@
 \alias{maxcombo}
 \title{Maxcombo test}
 \usage{
-maxcombo(data, rho, gamma)
+maxcombo(
+  data = cut_data_by_event(sim_pw_surv(n = 200), 150),
+  rho = c(0, 0, 1),
+  gamma = c(0, 1, 1),
+  return_variance = FALSE,
+  return_corr = FALSE
+)
 }
 \arguments{
 \item{data}{a tte dataset}
 
-\item{rho}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be greater
+\item{rho}{Numeric vector. Must be greater
 than or equal to zero. Must be the same length as \code{gamma}.}
 
-\item{gamma}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be
+\item{gamma}{Numeric vector. Must be
 greater than or equal to zero. Must be the same length as \code{rho}.}
+
+\item{return_variance}{A logical flag that, if \code{TRUE}, adds columns
+estimated variance for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
+
+\item{return_corr}{A logical flag that, if \code{TRUE}, adds columns
+estimated correlation for weighted sum of observed minus expected;
+see details; Default: \code{FALSE}.}
 }
 \value{
-pvalues
+A list containing the test method (\code{method}),
+parameters of this test method (\code{parameter}),
+point estimation of the treatment effect (\code{estimation}),
+standardized error of the treatment effect (\code{se}),
+Z-score of each test of the Maxcombo (\code{z}),
+p-values (\code{p_value})
+and the correlation matrix of each tests in Maxcombo (begin with \code{v})
 }
 \description{
 WARNING: This experimental function is a work-in-progress. The function
@@ -25,8 +45,8 @@ arguments will change as we add additional features.
 \examples{
 sim_pw_surv(n = 200) |>
   cut_data_by_event(150) |>
-  maxcombo(rho = c(0, 0), gamma = c(0, 0.5))
+  maxcombo(rho = c(0, 0), gamma = c(0, 1), return_corr = TRUE)
 }
 \seealso{
-\code{\link[=fh_weight]{fh_weight()}}
+\code{\link[=wlr]{wlr()}}, \code{\link[=rmst]{rmst()}}, \code{\link[=milestone]{milestone()}}
 }

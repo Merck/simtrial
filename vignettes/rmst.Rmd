@@ -1,5 +1,6 @@
 ---
 title: "Restricted mean survival time (RMST)"
+author: "Yujie Zhao, Yilong Zhang"
 output: rmarkdown::html_vignette
 bibliography: simtrial.bib
 vignette: >

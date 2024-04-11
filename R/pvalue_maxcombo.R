@@ -31,42 +31,7 @@
 #' @return A numeric p-value.
 #'
 #' @importFrom mvtnorm pmvnorm GenzBretz
-#'
-#' @export
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' # Example 1
-#' x <- sim_fixed_n(
-#'   n_sim = 1,
-#'   timing_type = 5,
-#'   rho_gamma = data.frame(
-#'     rho = c(0, 0, 1),
-#'     gamma = c(0, 1, 1)
-#'   )
-#' )
-#' head(x)
-#' pvalue_maxcombo(x)
-#'
-#' # Example 2
-#' # Only use cuts for events, events + min follow-up
-#' xx <- sim_fixed_n(
-#'   n_sim = 100,
-#'   timing_type = 5,
-#'   rho_gamma = data.frame(
-#'     rho = c(0, 0, 1),
-#'     gamma = c(0, 1, 1)
-#'   )
-#' )
-#' head(xx)
-#'
-#' # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
-#' p <- xx |>
-#'   group_by(sim) |>
-#'   group_map(~ pvalue_maxcombo(.x)) |>
-#'   unlist()
-#' mean(p < .025)
+#' @noRd
 pvalue_maxcombo <- function(
     z,
     algorithm = mvtnorm::GenzBretz(maxpts = 50000, abseps = 0.00001)) {

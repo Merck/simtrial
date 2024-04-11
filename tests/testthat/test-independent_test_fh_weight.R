@@ -17,10 +17,13 @@ test_that("the z values match with the correspondings in fh_weight", {
     invisible()
   tst.rslt <- attr(fit, "lrt")
   z1 <- tst.rslt$Z
-  a2 <- y |> counting_process(arm = "experimental")
-  aa <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
-  z2 <- aa$z
-  expect_equal(c(z1[1], z1[7:9]), z2, tolerance = 0.00001)
+
+  aa1 <- y |> wlr(weight = fh(rho = 0, gamma = 0))
+  aa2 <- y |> wlr(weight = fh(rho = 0, gamma = 1))
+  aa3 <- y |> wlr(weight = fh(rho = 1, gamma = 0))
+  aa4 <- y |> wlr(weight = fh(rho = 1, gamma = 1))
+
+  expect_equal(c(z1[1], z1[7:9]), c(aa1$z, aa2$z, aa3$z, aa4$z), tolerance = 0.00001)
 })
 
 test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
@@ -95,8 +98,8 @@ test_that("fh_weight calculated correct correlation value when input a sequence 
     pval <- pval2 / 2
   }
   corr1 <- cor.tst[2:5, 2:5]
-  a2 <- y |> counting_process(arm = "experimental")
-  corr2 <- fh_weight(a2, rho_gamma = data.frame(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)), return_corr = TRUE)
+
+  corr2 <- (y |> maxcombo(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1), return_corr = TRUE))$corr
   corr2 <- rbind(corr2$v1, corr2$v2, corr2$v3, corr2$v4)
   expect_equal(corr1, corr2, tolerance = 0.00001)
 })

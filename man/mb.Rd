@@ -20,6 +20,40 @@ A list of parameters of the Magirr and Burman weighting function
 \description{
 Magirr and Burman weighting function
 }
+\details{
+Magirr and Burman (2019) proposed a weighted logrank test to have better
+power than the logrank test when the treatment effect is delayed,
+but to still maintain good power under a proportional hazards assumption.
+In Magirr (2021), (the equivalent of) a maximum weight was proposed
+as opposed to a fixed time duration over which weights would increase.
+The weights for some early interval specified by the user are the inverse
+of the combined treatment group empirical survival distribution; see details.
+After this initial period, weights are constant at the maximum of the
+previous weights. Another advantage of the test is that under strong
+null hypothesis that the underlying survival in the control group is
+greater than or equal to underlying survival in the experimental group,
+Type I error is controlled as the specified level.
+
+We define \eqn{t^*} to be the input variable \code{delay}.
+This specifies an initial period during which weights increase.
+We also set a maximum weight \eqn{w_{\max}}.
+To define specific weights, we let \eqn{S(t)} denote the Kaplan-Meier
+survival estimate at time \eqn{t} for the combined data
+(control plus experimental treatment groups).
+The weight at time \eqn{t} is then defined as
+\deqn{w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).}
+}
 \examples{
-mb(delay = 6, w_max = 2)
+sim_pw_surv(n = 200) |>
+  cut_data_by_event(100) |>
+  wlr(weight = mb(delay = 8, w_max = Inf))
+}
+\references{
+Magirr, Dominic, and Carl‐Fredrik Burman. 2019.
+"Modestly weighted logrank tests."
+\emph{Statistics in Medicine} 38 (20): 3782--3790.
+
+Magirr, Dominic. 2021.
+"Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
+\emph{Pharmaceutical Statistics} 20 (3): 512--527.
 }

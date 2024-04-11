@@ -8,13 +8,12 @@ test_that("rmst() snapshot test", {
     tau = 10,
     reference = "0"
   )
-  expected <- data.frame(
-    rmst_arm1 = 6.495175253205431,
-    rmst_arm0 = 5.630125973237457,
+  expected <- list(
     rmst_diff = 0.8650492799679741,
     z = 2.2178796367487963
   )
-  expect_equal(observed, expected)
+  expect_equal(observed$estimation, expected$rmst_diff)
+  expect_equal(observed$z, expected$z)
 })
 
 test_that("formula method matches default method", {

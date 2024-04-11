@@ -61,6 +61,11 @@
 #'
 #' @export
 #'
+#' @details
+#' The output produced by [counting_process()] produces a
+#' counting process dataset grouped by stratum and sorted within stratum
+#' by increasing times where events occur.
+#'
 #' @examples
 #' # Example 1
 #' x <- data.frame(

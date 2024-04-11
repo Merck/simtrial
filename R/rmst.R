@@ -116,12 +116,12 @@ rmst <- function(
     alpha = alpha
   )
 
-  ans <- data.frame(
-    rmst_arm1 = res$rmst_per_arm$rmst[res$rmst_per_arm$group != reference],
-    rmst_arm0 = res$rmst_per_arm$rmst[res$rmst_per_arm$group == reference],
-    rmst_diff = res$rmst_diff$rmst_diff,
-    z = res$rmst_diff$rmst_diff / res$rmst_diff$std
-  )
+  ans <- list()
+  ans$method <- "RMST"
+  ans$parameter <- tau
+  ans$estimation <- res$rmst_diff$rmst_diff
+  ans$se <- res$rmst_diff$std
+  ans$z <- res$rmst_diff$rmst_diff / res$rmst_diff$std
 
   return(ans)
 }

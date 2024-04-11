@@ -24,15 +24,12 @@
 #'   - `treatment` - Grouping variable.
 #' @param ms_time Milestone analysis time.
 #'
-#' @return A data frame containing:
+#' @return A list frame containing:
 #' - `method` - The method, always `"milestone"`.
+#' - `parameter` - Milestone time point.
+#' - `estimation` - Survival difference between the experimental and control arm.
+#' - `se` - Standard error of the control and experimental arm.
 #' - `z` - Test statistics.
-#' - `ms_time` - Milestone time point.
-#' - `surv_ctrl` - Survival rate of the control arm.
-#' - `surv_exp` - Survival rate of the experimental arm.
-#' - `surv_diff` - Survival difference between the experimental and control arm.
-#' - `std_err_ctrl` - Standard error of the control arm.
-#' - `std_err_exp` - Standard error of the experimental arm.
 #'
 #' @references
 #' Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
@@ -73,11 +70,12 @@ milestone <- function(data, ms_time) {
       (sigma2_exp / (log(surv_exp))^2 + sigma2_ctrl / (log(surv_ctrl))^2)
   }
 
-  ans <- data.frame(
-    method = "milestone", z = z, ms_time = ms_time,
-    surv_ctrl = surv_ctrl, surv_exp = surv_exp,
-    surv_diff = diff_survival,
-    std_err_ctrl = fit_res$std.err[1], std_err_exp = fit_res$std.err[2]
-  )
+  ans <- list()
+  ans$method <- "milestone"
+  ans$parameter <- ms_time
+  ans$estimation <- diff_survival
+  ans$se <- fit_res$std.err
+  ans$z <- z
+
   return(ans)
 }
