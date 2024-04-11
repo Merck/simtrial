@@ -30,7 +30,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -77,6 +77,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Simulating time-to-event trials in parallel</h1>
+                        <h4 data-toc-skip class="author">Cole Manschot,
+Nan Xiao</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/parallel.Rmd" class="external-link"><code>vignettes/parallel.Rmd</code></a></small>
@@ -206,8 +208,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.426   0.110   7.735</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.43 and the elapsed time is 7.74
+<span><span class="co">#&gt;  14.142   0.046   8.228</span></span></code></pre></div>
+<p>We can see that the CPU time is 14.14 and the elapsed time is 8.23
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -265,8 +267,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.426   0.001   7.528</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.43 and the elapsed time is 7.53
+<span><span class="co">#&gt;   0.448   0.005   7.748</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.45 and the elapsed time is 7.75
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
@@ -282,9 +284,7 @@ Below, it is clear that the results from our sequential and multisession
 backends match completely.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">seq_result1</span> <span class="op">!=</span> <span class="va">seq_result1m</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">seq_result2</span> <span class="op">!=</span> <span class="va">seq_result2m</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">seq_result2</span> <span class="op">!=</span> <span class="va">seq_result2m</span><span class="op">)</span></span></code></pre></div>
 <p><em>Note:</em> A parallel implementation may not always be faster
 than a serial implementation. If there is substantial overhead
 associated with executing in parallel, sequential evaluation may be
@@ -376,7 +376,7 @@ resources.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

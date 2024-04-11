@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -76,18 +76,59 @@ Magirr (2021).</p></dd>
 
 <p>A list of parameters of the Magirr and Burman weighting function</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Magirr and Burman (2019) proposed a weighted logrank test to have better
+power than the logrank test when the treatment effect is delayed,
+but to still maintain good power under a proportional hazards assumption.
+In Magirr (2021), (the equivalent of) a maximum weight was proposed
+as opposed to a fixed time duration over which weights would increase.
+The weights for some early interval specified by the user are the inverse
+of the combined treatment group empirical survival distribution; see details.
+After this initial period, weights are constant at the maximum of the
+previous weights. Another advantage of the test is that under strong
+null hypothesis that the underlying survival in the control group is
+greater than or equal to underlying survival in the experimental group,
+Type I error is controlled as the specified level.</p>
+<p>We define \(t^*\) to be the input variable <code>delay</code>.
+This specifies an initial period during which weights increase.
+We also set a maximum weight \(w_{\max}\).
+To define specific weights, we let \(S(t)\) denote the Kaplan-Meier
+survival estimate at time \(t\) for the combined data
+(control plus experimental treatment groups).
+The weight at time \(t\) is then defined as
+$$w(t)=\min(w_{\max}, S(\min(t, t^*))^{-1}).$$</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Magirr, Dominic, and Carl‐Fredrik Burman. 2019.
+"Modestly weighted logrank tests."
+<em>Statistics in Medicine</em> 38 (20): 3782--3790.</p>
+<p>Magirr, Dominic. 2021.
+"Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
+<em>Pharmaceutical Statistics</em> 20 (3): 512--527.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mb</span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $delay</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu">mb</span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">8</span>, w_max <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $w_max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "MB(delay = 8, max_weight = Inf)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "list" "mb"   "wlr" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -22.88848</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.367495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.594582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -95,7 +136,7 @@ Magirr (2021).</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -1,15 +1,15 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.8
 pkgdown_sha: ~
 articles:
   arbitrary-hazard: arbitrary-hazard.html
+  maxcombo: maxcombo.html
   modest-wlrt: modest-wlrt.html
   parallel: parallel.html
-  pvalue-maxcombo: pvalue-maxcombo.html
   rmst: rmst.html
   routines: routines.html
   workflow: workflow.html
-last_built: 2024-04-02T19:09Z
+last_built: 2024-04-11T18:51Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles

@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -74,14 +74,11 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data frame containing:</p><ul><li><p><code>method</code> - The method, always <code>"milestone"</code>.</p></li>
+<p>A list frame containing:</p><ul><li><p><code>method</code> - The method, always <code>"milestone"</code>.</p></li>
+<li><p><code>parameter</code> - Milestone time point.</p></li>
+<li><p><code>estimation</code> - Survival difference between the experimental and control arm.</p></li>
+<li><p><code>se</code> - Standard error of the control and experimental arm.</p></li>
 <li><p><code>z</code> - Test statistics.</p></li>
-<li><p><code>ms_time</code> - Milestone time point.</p></li>
-<li><p><code>surv_ctrl</code> - Survival rate of the control arm.</p></li>
-<li><p><code>surv_exp</code> - Survival rate of the experimental arm.</p></li>
-<li><p><code>surv_diff</code> - Survival difference between the experimental and control arm.</p></li>
-<li><p><code>std_err_ctrl</code> - Standard error of the control arm.</p></li>
-<li><p><code>std_err_exp</code> - Standard error of the experimental arm.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -95,10 +92,21 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">milestone</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      method       z ms_time surv_ctrl  surv_exp surv_diff std_err_ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone 2.41552      10 0.4785455 0.5887879 0.1102424   0.05008046</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   std_err_exp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.04931511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "milestone"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1760742</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05004997 0.04864582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.078061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -106,7 +114,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

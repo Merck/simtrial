@@ -30,7 +30,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -77,6 +77,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Using the Magirr-Burman weights for testing</h1>
+                        <h4 data-toc-skip class="author">Keaven
+Anderson, Yujie Zhao</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/vignettes/modest-wlrt.Rmd" class="external-link"><code>vignettes/modest-wlrt.Rmd</code></a></small>
@@ -98,7 +100,7 @@ efficient as the standard logrank test under proportional hazards.</p>
 <p>They have implemented this in the package <a href="https://github.com/dominicmagirr/modestWLRT" class="external-link">modestWLRT</a>. Since
 the implementation is relatively straightforward, we have added this
 functionality to the simtrial package and explain how to use it here
-with the <code><a href="../reference/mb_weight.html">mb_weight()</a></code> function.</p>
+with the <code>mb_weight()</code> function.</p>
 <p>Packages used are as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/simtrial/">simtrial</a></span><span class="op">)</span></span>
@@ -163,13 +165,7 @@ the original <span class="citation">Magirr and Burman (2019)</span> test
 and set the time until maximum weight <span class="math inline">\(\tau\)</span> with <code>delay = 6</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mb_weight.html">mb_weight</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>,</span>
-<span>    V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>    z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1395378</span></span></code></pre></div>
@@ -178,13 +174,7 @@ so that the maximum weight begins at the observed median of the observed
 combined treatment Kaplan-Meier curve.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mb_weight.html">mb_weight</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="cn">Inf</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>,</span>
-<span>    V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>    z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="cn">Inf</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1387672</span></span></code></pre></div>
@@ -255,62 +245,51 @@ experimental treatment, black for control):</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>, xaxp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modest-wlrt_files/figure-html/unnamed-chunk-9-1.png" width="720"></p>
 <p>We perform a logrank and weighted logrank tests as suggested for more
-limited downweighting by follows:</p>
+limited downweighting by follows, and a MaxCombo test with these
+component tests, we have p-value of:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/fh_weight.html">fh_weight</a></span><span class="op">(</span></span>
-<span>    rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    return_corr <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span>
-<span><span class="co">#&gt;   rho gamma         z        v1        v2        v3            p</span></span>
-<span><span class="co">#&gt; 1   0     0  4.808526 1.0000000 0.8652115 0.9356769 0.9999992398</span></span>
-<span><span class="co">#&gt; 2   0     1 -3.204735 0.8652115 1.0000000 0.9580098 0.0006759349</span></span>
-<span><span class="co">#&gt; 3   1     1 -1.220445 0.9356769 0.9580098 1.0000000 0.1111481087</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above component tests, we have
-p-value of</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $method</span></span>
+<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $parameter</span></span>
+<span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 1) + FH(1, 1)"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $z</span></span>
+<span><span class="co">#&gt; [1]  4.808526 -3.204735 -1.220445</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $p_value</span></span>
 <span><span class="co">#&gt; [1] 0.001256683</span></span></code></pre></div>
 <p>Next, we consider the <span class="citation">Magirr and Burman
 (2019)</span> modestly weighted logrank test with down-weighting
 specified for the first 6 months but a maximum weight of 2. This
 requires generating weights and then computing the test.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mb_weight.html">mb_weight</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>,</span>
-<span>    V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>    z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
+<span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span> </span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.920727</span></span></code></pre></div>
 <p>Finally, we consider weighted logrank tests with less down-weighting.
-Results are quite similar to the results with greater
-down-weighting.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+Results are quite similar to the results with greater down-weighting. We
+have p-value of</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/counting_process.html">counting_process</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/fh_weight.html">fh_weight</a></span><span class="op">(</span></span>
-<span>    rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    return_corr <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span>
-<span><span class="co">#&gt;   rho gamma          z        v1        v2        v3         p</span></span>
-<span><span class="co">#&gt; 1 0.0   0.0  4.8085258 1.0000000 0.9421013 0.9709414 0.9999992</span></span>
-<span><span class="co">#&gt; 2 0.0   0.5 -0.6919228 0.9421013 1.0000000 0.9872682 0.2444929</span></span>
-<span><span class="co">#&gt; 3 0.5   0.5  0.9278452 0.9709414 0.9872682 1.0000000 0.8232561</span></span></code></pre></div>
-<p>Now for a MaxCombo test with the above component tests, we have
-p-value of</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $method</span></span>
+<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $parameter</span></span>
+<span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 0.5) + FH(0.5, 0.5)"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $z</span></span>
+<span><span class="co">#&gt; [1]  4.8085258 -0.6919228  0.9278452</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $p_value</span></span>
 <span><span class="co">#&gt; [1] 0.2915952</span></span></code></pre></div>
 <p>Thus, with less down-weighting the MaxCombo test appears less
 problematic. This is addressed at greater length in <span class="citation">Mukhopadhyay et al. (2022)</span>.</p>
@@ -353,7 +332,7 @@ Meta-Analysis.”</span> <em>JAMA Oncology</em>.
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+<p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

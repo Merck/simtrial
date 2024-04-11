@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -54,7 +54,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">wlr</span><span class="op">(</span><span class="va">data</span>, <span class="va">weight</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">wlr</span><span class="op">(</span><span class="va">data</span>, <span class="va">weight</span>, return_variance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,37 +64,140 @@
 
 
 <dt>weight</dt>
-<dd><p>weighting functions, such as <code><a href="fh_weight.html">fh_weight()</a></code>, <code><a href="mb_weight.html">mb_weight()</a></code>, and
-<code><a href="early_zero_weight.html">early_zero_weight()</a></code>.</p></dd>
+<dd><p>weighting functions, such as <code><a href="fh.html">fh()</a></code>, <code><a href="mb.html">mb()</a></code>, and
+<code><a href="early_zero.html">early_zero()</a></code>.</p></dd>
+
+
+<dt>return_variance</dt>
+<dd><p>A logical flag that, if <code>TRUE</code>, adds columns
+estimated variance for weighted sum of observed minus expected;
+see details; Default: <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>test results</p>
+<p>A list contraining the test method (<code>method</code>),
+parameters of this test method (<code>parameter</code>),
+point estimation of the treatment effect (<code>estimation</code>),
+standardized error of the treatment effect (<code>se</code>),
+Z-score (<code>z</code>), p-values (<code>p_value</code>).</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    
+<ul><li><p>\(z\) - Standardized normal Fleming-Harrington weighted logrank test.</p></li>
+<li><p>\(i\) - Stratum index.</p></li>
+<li><p>\(d_i\) - Number of distinct times at which events occurred in
+stratum \(i\).</p></li>
+<li><p>\(t_{ij}\) - Ordered times at which events in stratum
+\(i\), \(j = 1, 2, \ldots, d_i\) were observed;
+for each observation, \(t_{ij}\) represents the time post study entry.</p></li>
+<li><p>\(O_{ij.}\) - Total number of events in stratum \(i\) that occurred
+at time \(t_{ij}\).</p></li>
+<li><p>\(O_{ije}\) - Total number of events in stratum \(i\) in the
+experimental treatment group that occurred at time \(t_{ij}\).</p></li>
+<li><p>\(N_{ij.}\) - Total number of study subjects in stratum \(i\)
+who were followed for at least duration.</p></li>
+<li><p>\(E_{ije}\) - Expected observations in experimental treatment group
+given random selection of \(O_{ij.}\) from those in
+stratum \(i\) at risk at time \(t_{ij}\).</p></li>
+<li><p>\(V_{ije}\) - Hypergeometric variance for \(E_{ije}\) as
+produced in <code>Var</code> from <code><a href="counting_process.html">counting_process()</a></code>.</p></li>
+<li><p>\(N_{ije}\) - Total number of study subjects in
+stratum \(i\) in the experimental treatment group
+who were followed for at least duration \(t_{ij}\).</p></li>
+<li><p>\(E_{ije}\) - Expected observations in experimental group in
+stratum \(i\) at time \(t_{ij}\) conditioning on the overall number
+of events and at risk populations at that time and sampling at risk
+observations without replacement:
+$$E_{ije} = O_{ij.} N_{ije}/N_{ij.}$$</p></li>
+<li><p>\(S_{ij}\) - Kaplan-Meier estimate of survival in combined
+treatment groups immediately prior to time \(t_{ij}\).</p></li>
+<li><p>\(\rho, \gamma\) - Real parameters for Fleming-Harrington test.</p></li>
+<li><p>\(X_i\) - Numerator for signed logrank test in stratum \(i\)
+$$X_i = \sum_{j=1}^{d_{i}} S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})$$</p></li>
+<li><p>\(V_{ij}\) - Variance used in denominator for Fleming-Harrington
+weighted logrank tests
+$$V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})$$
+The stratified Fleming-Harrington weighted logrank test is then computed as:
+$$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma        z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -2.81219</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">4</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -3.691296</span>
+<span class="r-in"><span><span class="co"># Example 1: WLR test with FH wights</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.581453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.668562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.345067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.581453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.668562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.345067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span>early_period <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -3.812576</span>
+<span class="r-in"><span><span class="co"># Example 2: WLR test with MB wights</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">4</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "MB(delay = 4, max_weight = 2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -18.61212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.949729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.12823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: WLR test with early zero wights</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span>early_period <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Xu 2017 with first 4 months of 0 weights"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -12.85986</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.811585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.373888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -102,7 +205,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

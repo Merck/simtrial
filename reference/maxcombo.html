@@ -8,7 +8,7 @@ arguments will change as we add additional features."><meta property="og:image" 
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -57,7 +57,13 @@ arguments will change as we add additional features.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">maxcombo</span><span class="op">(</span><span class="va">data</span>, <span class="va">rho</span>, <span class="va">gamma</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">maxcombo</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>, <span class="fl">150</span><span class="op">)</span>,</span>
+<span>  rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  return_variance <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return_corr <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,33 +73,66 @@ arguments will change as we add additional features.</p>
 
 
 <dt>rho</dt>
-<dd><p>Numeric vector passed to <code><a href="fh_weight.html">fh_weight()</a></code>. Must be greater
+<dd><p>Numeric vector. Must be greater
 than or equal to zero. Must be the same length as <code>gamma</code>.</p></dd>
 
 
 <dt>gamma</dt>
-<dd><p>Numeric vector passed to <code><a href="fh_weight.html">fh_weight()</a></code>. Must be
+<dd><p>Numeric vector. Must be
 greater than or equal to zero. Must be the same length as <code>rho</code>.</p></dd>
+
+
+<dt>return_variance</dt>
+<dd><p>A logical flag that, if <code>TRUE</code>, adds columns
+estimated variance for weighted sum of observed minus expected;
+see details; Default: <code>FALSE</code>.</p></dd>
+
+
+<dt>return_corr</dt>
+<dd><p>A logical flag that, if <code>TRUE</code>, adds columns
+estimated correlation for weighted sum of observed minus expected;
+see details; Default: <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>pvalues</p>
+<p>A list containing the test method (<code>method</code>),
+parameters of this test method (<code>parameter</code>),
+point estimation of the treatment effect (<code>estimation</code>),
+standardized error of the treatment effect (<code>se</code>),
+Z-score of each test of the Maxcombo (<code>z</code>),
+p-values (<code>p_value</code>)
+and the correlation matrix of each tests in Maxcombo (begin with <code>v</code>)</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="fh_weight.html">fh_weight()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="wlr.html">wlr()</a></code>, <code><a href="rmst.html">rmst()</a></code>, <code><a href="milestone.html">milestone()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">150</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">maxcombo</span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.05852863</span>
+<span class="r-in"><span>  <span class="fu">maxcombo</span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Maxcombo"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(0, 0) + FH(0, 1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.464343 -1.819921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $corr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          v1        v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0000000 0.8574337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8574337 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05015051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -101,7 +140,7 @@ greater than or equal to zero. Must be the same length as <code>rho</code>.</p><
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

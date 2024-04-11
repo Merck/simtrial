@@ -20,7 +20,7 @@ under the above scenario."><meta property="og:image" content="https://merck.gith
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -121,52 +121,26 @@ under the above scenario.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6     0.2499934</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># MaxCombo with logrank, FH(0,1), FH(1,1)</span></span></span>
-<span class="r-in"><span><span class="va">ten</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="fh_weight.html">fh_weight</a></span><span class="op">(</span>rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="pvalue_maxcombo.html">pvalue_maxcombo</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01104344</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Magirr-Burman modestly down-weighted rank test with 6 month delay</span></span></span>
-<span class="r-in"><span><span class="co"># First, add weights</span></span></span>
-<span class="r-in"><span><span class="va">ten</span> <span class="op">&lt;-</span> <span class="va">ten</span> <span class="op">|&gt;</span> <span class="fu"><a href="mb_weight.html">mb_weight</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ten</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   stratum events n_event_tol        tte n_risk_tol n_risk_trt     s  o_minus_e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     All      1           1 0.07659251        200        100 1.000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     All      1           0 0.49067015        199         99 0.995 -0.4974874</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     All      1           1 0.65465035        198         99 0.990  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     All      1           0 0.65906384        197         98 0.985 -0.4974619</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     All      1           1 0.81945349        196         98 0.980  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     All      1           0 0.82788909        195         97 0.975 -0.4974359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   var_o_minus_e mb_weight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.2500000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.2499937  1.005025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.2500000  1.010101</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     0.2499936  1.015228</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.2500000  1.020408</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     0.2499934  1.025641</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Now compute test based on these weights</span></span></span>
-<span class="r-in"><span><span class="va">ten</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">mb_weight</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           S        V        Z           p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -18.11459 52.42537 -2.50183 0.006177665</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create 0 weights for first 6 months</span></span></span>
-<span class="r-in"><span><span class="va">ten</span> <span class="op">&lt;-</span> <span class="va">ten</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>w6 <span class="op">=</span> <span class="fl">1</span> <span class="op">*</span> <span class="op">(</span><span class="va">tte</span> <span class="op">&gt;=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ten</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">o_minus_e</span> <span class="op">*</span> <span class="va">w6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">var_o_minus_e</span> <span class="op">*</span> <span class="va">w6</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    Z <span class="op">=</span> <span class="va">S</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           S       V         Z          p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -10.03651 22.5762 -2.112309 0.01732996</span>
+<span class="r-in"><span><span class="va">mb_delayed_effect</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, return_corr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Maxcombo"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(0, 0) + FH(0, 1) + FH(1, 1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.473248 -2.424018 -2.482653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $corr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          v1        v2        v3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0000000 0.8606625 0.9312916</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8606625 1.0000000 0.9579831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9312916 0.9579831 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01104234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generate another dataset</span></span></span>
 <span class="r-in"><span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span></span></span>
@@ -196,7 +170,7 @@ under the above scenario.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

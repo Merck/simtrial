@@ -8,7 +8,7 @@ arguments will change as we add additional features."><meta property="og:image" 
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
@@ -218,16 +218,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0     0 -3.748605        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0     0 -4.530340        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0     0 -4.316453        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0     0 -3.477144        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0     0 -3.863150        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0     0 -3.277778        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   0     0 -3.075863        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   0     0 -3.619345        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   0     0 -4.222592        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter            estimation se       z         analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -28.19483  7.521418 -3.748605 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -38.32581  8.459808 -4.53034  2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -39.4923   9.149248 -4.316453 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -26.84871  7.721484 -3.477144 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -32.54824  8.42531  -3.86315  2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -30.06631  9.172772 -3.277778 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -23.06302  7.498065 -3.075863 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -30.1633   8.33391  -3.619345 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -38.75506  9.178027 -4.222592 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 2: weighted logrank test by FH(0, 0.5)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
@@ -240,16 +250,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rho gamma         z analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0   0.5 -4.149161        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0   0.5 -4.778108        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0   0.5 -4.260730        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0   0.5 -3.605093        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0   0.5 -3.945081        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0   0.5 -2.919180        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   0   0.5 -3.143228        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   0   0.5 -3.640459        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   0   0.5 -4.243289        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter              estimation se       z        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -16.93422  4.081359 -4.149161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -24.44818  5.116707 -4.778108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -25.51076  5.987416 -4.26073 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -15.50024  4.299539 -3.605093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -19.96769  5.061414 -3.945081</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -17.53906  6.008214 -2.91918 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -12.66462  4.029178 -3.143228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -18.05051  4.958307 -3.640459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -25.59217  6.031211 -4.243289</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              analysis cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 3: weighted logrank test by MB(3)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
@@ -262,16 +282,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           z analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -3.797134        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -4.581331        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -4.349644        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -3.501131        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -3.886542        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -3.279286        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -3.114079        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -3.658715        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 -4.263279        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter                         estimate  se      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -34.19243 9.004801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -46.74548 10.20347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -48.19085 11.07926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -32.19277 9.194961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -39.18612 10.08251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -36.14078 11.02093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -27.89564 8.957908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -36.66946 10.0225 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -47.28631 11.09153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              z         analysis cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.797134 1        24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.581331 2        32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.349644 3        45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.501131 1        24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.886542 2        32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.279286 3        46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.114079 1        24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.658715 2        32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.263279 3        50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 4: weighted logrank test by early zero (6)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
@@ -284,16 +314,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           z analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -4.552617        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -5.188573        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -4.686074        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -3.185533        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -3.597503        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -2.786930        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -2.367344        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -3.063054        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 -3.781619        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter                                  estimate </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -21.99899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -32.12997</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -33.29646</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -17.19941</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -22.89893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -20.41701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -11.77606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -18.87634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -27.4681 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              se       z         analysis cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 4.832164 -4.552617 1        24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.192449 -5.188573 2        32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.105407 -4.686074 3        45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 5.399223 -3.185533 1        24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.36523  -3.597503 2        32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.325985 -2.78693  3        46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 4.974376 -2.367344 1        24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.162588 -3.063054 2        32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.263581 -3.781619 3        50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 5: RMST</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
@@ -306,16 +346,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  tau <span class="op">=</span> <span class="fl">20</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rmst_arm1 rmst_arm0 rmst_diff        z analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  12.46626  9.585108  2.881152 3.789982        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  12.44420  9.591074  2.853131 3.991863        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  12.42510  9.590593  2.834508 3.980101        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  12.39211  9.824722  2.567390 3.474869        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  12.49696 10.097271  2.399692 3.295021        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  12.47912 10.110784  2.368335 3.254115        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  12.62769 10.340196  2.287498 2.980534        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  12.73792 10.289798  2.448117 3.300952        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  12.74024 10.261300  2.478942 3.350430        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter estimation se        z        analysis cut_date</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.881152   0.760202  3.789982 1        24      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.853131   0.7147367 3.991863 2        32      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.834508   0.7121699 3.980101 3        45      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.56739    0.7388451 3.474869 1        24      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.399692   0.7282783 3.295021 2        32      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.368335   0.727797  3.254115 3        46.21933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.287498   0.7674791 2.980534 1        24      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.448117   0.7416398 3.300952 2        32      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.478942   0.7398877 3.35043  3        50.86585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 6: Milestone</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
@@ -328,26 +378,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  ms_time <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      method         z ms_time surv_ctrl  surv_exp surv_diff std_err_ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 milestone  9.252619      10 0.4080041 0.5689750 0.1609709   0.03693588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 milestone 12.078381      10 0.4097269 0.5850000 0.1752731   0.03495270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 milestone 12.078381      10 0.4097269 0.5850000 0.1752731   0.03495270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 milestone  5.565741      10 0.4718269 0.5922854 0.1204585   0.03614098</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 milestone  5.457930      10 0.4667007 0.5840901 0.1173894   0.03543263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 milestone  5.457930      10 0.4667007 0.5840901 0.1173894   0.03543263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 milestone  9.051773      10 0.4614961 0.6150543 0.1535582   0.03581573</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 milestone  9.054983      10 0.4620000 0.6139773 0.1519773   0.03540131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 milestone  9.054983      10 0.4620000 0.6139773 0.1519773   0.03540131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   std_err_exp analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.03662190        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.03484071        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.03484071        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.03531267        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.03491216        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.03491216        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.03505127        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.03473824        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.03473824        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method      parameter estimation se        z        analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1609709  numeric,2 9.252619 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1752731  numeric,2 12.07838 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1752731  numeric,2 12.07838 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1204585  numeric,2 5.565741 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1173894  numeric,2 5.45793  2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1173894  numeric,2 5.45793  3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1535582  numeric,2 9.051773 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1519773  numeric,2 9.054983 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        0.1519773  numeric,2 9.054983 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))</span></span></span>
 <span class="r-in"><span><span class="co"># for all analyses</span></span></span>
@@ -362,16 +412,26 @@ z statistics or p-values.</p>
 <span class="r-in"><span>  rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        p_value analysis cut_date sim_id   n event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.615539e-05        1 24.00000      1 400   229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.433049e-06        2 32.00000      1 400   295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.247802e-05        3 45.00000      1 400   355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2.358380e-04        1 24.00000      2 400   241</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 6.130078e-05        2 32.00000      2 400   290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 7.667834e-04        3 46.21933      2 400   350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 1.216230e-03        1 24.00000      3 400   226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2.047186e-04        2 32.00000      3 400   282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 1.724936e-05        3 50.86585      3 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              method     parameter               z         p_value      analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 2.615539e-05 1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.433049e-06 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.247802e-05 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.000235838  1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 6.130078e-05 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.0007667834 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.00121623   1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.0002047186 2       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "Maxcombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.724936e-05 3       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test 8: MaxCombo (WLR-FH(0,0.5) + milestone(10))</span></span></span>
 <span class="r-in"><span><span class="co"># for all analyses</span></span></span>
@@ -418,7 +478,7 @@ z statistics or p-values.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Keaven Anderson, Yilong Zhang, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
