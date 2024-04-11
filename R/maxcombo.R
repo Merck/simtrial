@@ -47,7 +47,7 @@
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
-#'   maxcombo(rho = c(0, 0), gamma = c(0, 1))
+#'   maxcombo(rho = c(0, 0), gamma = c(0, 1), return_corr = TRUE)
 maxcombo <- function(data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
                      rho = c(0, 0, 1),
                      gamma = c(0, 1, 1),

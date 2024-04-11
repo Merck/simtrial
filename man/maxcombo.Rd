@@ -45,7 +45,7 @@ arguments will change as we add additional features.
 \examples{
 sim_pw_surv(n = 200) |>
   cut_data_by_event(150) |>
-  maxcombo(rho = c(0, 0), gamma = c(0, 1))
+  maxcombo(rho = c(0, 0), gamma = c(0, 1), return_corr = TRUE)
 }
 \seealso{
 \code{\link[=fh_weight]{fh_weight()}}
