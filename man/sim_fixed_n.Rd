@@ -43,7 +43,7 @@ in each block.}
 \item{timing_type}{A numeric vector determining data cutoffs used;
 see details. Default is to include all available cutoff methods.}
 
-\item{rho_gamma}{As in \code{\link[=fh_weight]{fh_weight()}}. A data frame with variables
+\item{rho_gamma}{A data frame with variables
 \code{rho} and \code{gamma}, both greater than equal to zero,
 to specify one Fleming-Harrington weighted logrank test per row.}
 }

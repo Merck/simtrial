@@ -30,7 +30,7 @@ estimated correlation for weighted sum of observed minus expected;
 see details; Default: \code{FALSE}.}
 }
 \value{
-A list contraining the test method (\code{method}),
+A list containing the test method (\code{method}),
 parameters of this test method (\code{parameter}),
 point estimation of the treatment effect (\code{estimation}),
 standardized error of the treatment effect (\code{se}),
@@ -48,5 +48,5 @@ sim_pw_surv(n = 200) |>
   maxcombo(rho = c(0, 0), gamma = c(0, 1), return_corr = TRUE)
 }
 \seealso{
-\code{\link[=fh_weight]{fh_weight()}}
+\code{\link[=wlr]{wlr()}}, \code{\link[=rmst]{rmst()}}, \code{\link[=milestone]{milestone()}}
 }

@@ -37,7 +37,7 @@
 #'   in each block.
 #' @param timing_type A numeric vector determining data cutoffs used;
 #'   see details. Default is to include all available cutoff methods.
-#' @param rho_gamma As in [fh_weight()]. A data frame with variables
+#' @param rho_gamma A data frame with variables
 #'   `rho` and `gamma`, both greater than equal to zero,
 #'   to specify one Fleming-Harrington weighted logrank test per row.
 #'

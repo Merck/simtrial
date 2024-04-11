@@ -33,7 +33,7 @@
 #'   estimated correlation for weighted sum of observed minus expected;
 #'   see details; Default: `FALSE`.
 #'
-#' @return A list contraining the test method (`method`),
+#' @return A list containing the test method (`method`),
 #' parameters of this test method (`parameter`),
 #' point estimation of the treatment effect (`estimation`),
 #' standardized error of the treatment effect (`se`),
@@ -42,7 +42,7 @@
 #' and the correlation matrix of each tests in Maxcombo (begin with `v`)
 #' @export
 #'
-#' @seealso [fh_weight()]
+#' @seealso [wlr()], [rmst()], [milestone()]
 #'
 #' @examples
 #' sim_pw_surv(n = 200) |>
