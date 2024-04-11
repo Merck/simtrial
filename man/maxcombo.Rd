@@ -15,10 +15,10 @@ maxcombo(
 \arguments{
 \item{data}{a tte dataset}
 
-\item{rho}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be greater
+\item{rho}{Numeric vector. Must be greater
 than or equal to zero. Must be the same length as \code{gamma}.}
 
-\item{gamma}{Numeric vector passed to \code{\link[=fh_weight]{fh_weight()}}. Must be
+\item{gamma}{Numeric vector. Must be
 greater than or equal to zero. Must be the same length as \code{rho}.}
 
 \item{return_variance}{A logical flag that, if \code{TRUE}, adds columns

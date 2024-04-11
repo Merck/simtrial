@@ -22,9 +22,9 @@
 #' arguments will change as we add additional features.
 #'
 #' @param data a tte dataset
-#' @param rho Numeric vector passed to [fh_weight()]. Must be greater
+#' @param rho Numeric vector. Must be greater
 #'   than or equal to zero. Must be the same length as `gamma`.
-#' @param gamma Numeric vector passed to [fh_weight()]. Must be
+#' @param gamma Numeric vector. Must be
 #'   greater than or equal to zero. Must be the same length as `rho`.
 #' @param return_variance A logical flag that, if `TRUE`, adds columns
 #'   estimated variance for weighted sum of observed minus expected;
