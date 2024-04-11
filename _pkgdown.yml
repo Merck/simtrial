@@ -48,7 +48,6 @@ reference:
 - title: "Compute p-values/test statistics"
   contents:
     - counting_process
-    - pvalue_maxcombo
     - rmst
     - milestone
     - wlr
@@ -63,11 +62,8 @@ reference:
 - title: "Weight functions for WLR test"
   contents:
     - mb
-    - mb_weight
     - fh
-    - fh_weight
     - early_zero
-    - early_zero_weight
 
 - title: "Example datasets"
   contents:
