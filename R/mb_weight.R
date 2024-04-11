@@ -31,7 +31,8 @@
 #'   Set `delay = Inf`, `w_max = 2` to be consistent with recommendation of
 #'   Magirr (2021).
 #'
-#' @return A list.
+#' @return A data frame with `delay` and `w_max` as input and the MB weights
+#' for the data in `x`.
 #' @importFrom data.table ":=" as.data.table data.table fifelse merge.data.table setDF
 #' @noRd
 mb_weight <- function(x, delay = 4, w_max = Inf) {

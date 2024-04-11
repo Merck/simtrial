@@ -27,52 +27,8 @@
 #' @param gamma A numerical value greater than equal to zero,
 #' to specify one Fleming-Harrington weighted logrank test
 #'
-#' @return A data frame with `rho_gamma` as input and the FH test statistic
-#'   for the data in `x`. (`z`, a directional square root of the usual
-#'   weighted logrank test); if variance calculations are specified
-#'   (for example, to be used for covariances in a combination test),
-#'   then this will be returned in the column `Var`.
-#'
-#' @details
-#' The input value `x` produced by [counting_process()] produces a
-#' counting process dataset grouped by stratum and sorted within stratum
-#' by increasing times where events occur.
-#' - \eqn{z} - Standardized normal Fleming-Harrington weighted logrank test.
-#' - \eqn{i} - Stratum index.
-#' - \eqn{d_i} - Number of distinct times at which events occurred in
-#'   stratum \eqn{i}.
-#' - \eqn{t_{ij}} - Ordered times at which events in stratum
-#'   \eqn{i}, \eqn{j = 1, 2, \ldots, d_i} were observed;
-#'   for each observation, \eqn{t_{ij}} represents the time post study entry.
-#' - \eqn{O_{ij.}} - Total number of events in stratum \eqn{i} that occurred
-#'   at time \eqn{t_{ij}}.
-#' - \eqn{O_{ije}} - Total number of events in stratum \eqn{i} in the
-#'   experimental treatment group that occurred at time \eqn{t_{ij}}.
-#' - \eqn{N_{ij.}} - Total number of study subjects in stratum \eqn{i}
-#'   who were followed for at least duration.
-#' - \eqn{E_{ije}} - Expected observations in experimental treatment group
-#'   given random selection of \eqn{O_{ij.}} from those in
-#'   stratum \eqn{i} at risk at time \eqn{t_{ij}}.
-#' - \eqn{V_{ije}} - Hypergeometric variance for \eqn{E_{ije}} as
-#'   produced in `Var` from [counting_process()].
-#' - \eqn{N_{ije}} - Total number of study subjects in
-#'   stratum \eqn{i} in the experimental treatment group
-#'   who were followed for at least duration \eqn{t_{ij}}.
-#' - \eqn{E_{ije}} - Expected observations in experimental group in
-#'   stratum \eqn{i} at time \eqn{t_{ij}} conditioning on the overall number
-#'   of events and at risk populations at that time and sampling at risk
-#'   observations without replacement:
-#'   \deqn{E_{ije} = O_{ij.} N_{ije}/N_{ij.}}
-#' - \eqn{S_{ij}} - Kaplan-Meier estimate of survival in combined
-#'   treatment groups immediately prior to time \eqn{t_{ij}}.
-#' - \eqn{\rho, \gamma} - Real parameters for Fleming-Harrington test.
-#' - \eqn{X_i} - Numerator for signed logrank test in stratum \eqn{i}
-#'   \deqn{X_i = \sum_{j=1}^{d_{i}} S_{ij}^\rho(1-S_{ij}^\gamma)(O_{ije}-E_{ije})}
-#' - \eqn{V_{ij}} - Variance used in denominator for Fleming-Harrington
-#'   weighted logrank tests
-#'   \deqn{V_i = \sum_{j=1}^{d_{i}} (S_{ij}^\rho(1-S_{ij}^\gamma))^2V_{ij})}
-#'   The stratified Fleming-Harrington weighted logrank test is then computed as:
-#'   \deqn{z = \sum_i X_i/\sqrt{\sum_i V_i}.}
+#' @return A data frame with `rho` and `gamma` as input and the FH weights
+#' for the data in `x`.
 #'
 #' @importFrom data.table data.table merge.data.table setDF
 #' @noRd

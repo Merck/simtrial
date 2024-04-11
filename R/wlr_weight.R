@@ -74,7 +74,6 @@ fh <- function(rho = 0, gamma = 0) {
 #' "Non‐proportional hazards in immuno‐oncology: Is an old perspective needed?"
 #' _Pharmaceutical Statistics_ 20 (3): 512--527.
 #'
-#'
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(100) |>
@@ -93,11 +92,6 @@ mb <- function(delay = 4, w_max = Inf) {
 #' Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
 #' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
 #' @export
-#'
-#' @references
-#' Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
-#' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
-#' _Statistics in Medicine_, 36(4), 592--605.
 #'
 #' @examples
 #' library(dplyr)

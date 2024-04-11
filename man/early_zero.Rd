@@ -74,8 +74,4 @@ sim_pw_surv(
 \references{
 Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
 "Designing therapeutic cancer vaccine trials with delayed treatment effect."
-
-Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).
-"Designing therapeutic cancer vaccine trials with delayed treatment effect."
-\emph{Statistics in Medicine}, 36(4), 592--605.
 }
