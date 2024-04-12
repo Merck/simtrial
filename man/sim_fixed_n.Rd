@@ -102,7 +102,8 @@ mean(x$z <= qnorm(.025))
 x <- sim_fixed_n(
   n_sim = 10,
   timing_type = 2,
-  rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
+  rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
+)
 
 # Get power approximation
 x |>

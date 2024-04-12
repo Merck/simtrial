@@ -16,12 +16,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Maxcombo test
+#' MaxCombo test
 #'
 #' WARNING: This experimental function is a work-in-progress. The function
 #' arguments will change as we add additional features.
 #'
-#' @param data a tte dataset
+#' @param data A TTE dataset.
 #' @param rho Numeric vector. Must be greater
 #'   than or equal to zero. Must be the same length as `gamma`.
 #' @param gamma Numeric vector. Must be
@@ -37,9 +37,10 @@
 #' parameters of this test method (`parameter`),
 #' point estimation of the treatment effect (`estimation`),
 #' standardized error of the treatment effect (`se`),
-#' Z-score of each test of the Maxcombo (`z`),
+#' Z-score of each test of the MaxCombo (`z`),
 #' p-values (`p_value`)
-#' and the correlation matrix of each tests in Maxcombo (begin with `v`)
+#' and the correlation matrix of each tests in MaxCombo (begin with `v`)
+#'
 #' @export
 #'
 #' @seealso [wlr()], [rmst()], [milestone()]
@@ -48,15 +49,16 @@
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
 #'   maxcombo(rho = c(0, 0), gamma = c(0, 1), return_corr = TRUE)
-maxcombo <- function(data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
-                     rho = c(0, 0, 1),
-                     gamma = c(0, 1, 1),
-                     return_variance = FALSE,
-                     return_corr = FALSE) {
+maxcombo <- function(
+    data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
+    rho = c(0, 0, 1),
+    gamma = c(0, 1, 1),
+    return_variance = FALSE,
+    return_corr = FALSE) {
   # Input checking ----
   n_weight <- length(rho)
 
-  if(any(!is.numeric(rho)) || any(!is.numeric(gamma)) || any(rho < 0) || any(gamma < 0)) {
+  if (any(!is.numeric(rho)) || any(!is.numeric(gamma)) || any(rho < 0) || any(gamma < 0)) {
     stop("maxcombo: please input positive values of rho and gamma.")
   }
 
@@ -80,10 +82,10 @@ maxcombo <- function(data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
   # We want ave_rho[i,j]   = (rho[i] + rho[j])/2
   # and     ave_gamma[i,j] = (gamma[i] + gamma[j])/2
   ave_rho <- (matrix(rho, nrow = n_weight, ncol = n_weight, byrow = FALSE) +
-                matrix(rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+    matrix(rho, nrow = n_weight, ncol = n_weight, byrow = TRUE)
   ) / 2
   ave_gamma <- (matrix(gamma, nrow = n_weight, ncol = n_weight) +
-                  matrix(gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
+    matrix(gamma, nrow = n_weight, ncol = n_weight, byrow = TRUE)
   ) / 2
 
   # Convert to all original and average rho/gamma into a data.table ----
@@ -117,11 +119,12 @@ maxcombo <- function(data = sim_pw_surv(n = 200) |> cut_data_by_event(150),
     y = res |> as.data.frame(),
     by = c("rho", "gamma"),
     all.x = TRUE,
-    sort = FALSE)
+    sort = FALSE
+  )
 
   # Tidy outputs ----
   ans <- list()
-  ans$method <- "Maxcombo"
+  ans$method <- "MaxCombo"
   temp <- data.frame(rho = rho, gamma = gamma)
   temp$x <- paste0("FH(", temp$rho, ", ", temp$gamma, ")")
   ans$parameter <- paste(temp$x, collapse = " + ")

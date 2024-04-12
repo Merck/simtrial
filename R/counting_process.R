@@ -20,9 +20,9 @@
 #'
 #' Produces a data frame that is sorted by stratum and time.
 #' Included in this is only the times at which one or more event occurs.
-#' The output dataset contains stratum, tte (time-to-event),
-#' at risk count and count of events at the specified tte
-#' sorted by stratum and tte.
+#' The output dataset contains stratum, TTE (time-to-event),
+#' at risk count, and count of events at the specified TTE
+#' sorted by stratum and TTE.
 #'
 #' @details
 #' The function only considered two group situation.

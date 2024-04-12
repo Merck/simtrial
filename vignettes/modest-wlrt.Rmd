@@ -77,7 +77,7 @@ axis(1, xaxp = c(0, 36, 6))
 
 ## Generalizing the Magirr-Burman test
 
-Next, we consider the @Magirr2021 extension of the modestly weighted logrank test (MWLRT) of  @MagirrBurman where we have weights as follows:
+Next, we consider the @Magirr2021 extension of the modestly weighted logrank test (MWLRT) of @MagirrBurman where we have weights as follows:
 
 $$w(t, \tau, w_{\max}) = \min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).$$
 
@@ -86,7 +86,7 @@ We begin with the default of `w_max=Inf` which corresponds to the original @Magi
 
 ```{r}
 ZMB <- MBdelay |>
-  wlr(weight = mb(delay = 6)) 
+  wlr(weight = mb(delay = 6))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```
@@ -180,7 +180,7 @@ This requires generating weights and then computing the test.
 ```{r}
 ZMB <- FHwn |>
   wlr(weight = mb(delay = 6, w_max = 2))
- 
+
 # Compute p-value of modestly weighted logrank of Magirr-Burman
 pnorm(ZMB$z)
 ```

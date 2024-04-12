@@ -135,7 +135,8 @@ x <- sim_pw_surv(
   block = block,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  dropout_rate = dropout_rate)
+  dropout_rate = dropout_rate
+)
 
 head(x) |>
   gt() |>
@@ -213,10 +214,12 @@ fh01 <- y150 |> wlr(weight = fh(rho = 0, gamma = 1))
 fh10 <- y150 |> wlr(weight = fh(rho = 1, gamma = 0))
 fh11 <- y150 |> wlr(weight = fh(rho = 1, gamma = 1))
 
-temp_tbl <- fh00 |> unlist() |> as.data.frame() |> 
+temp_tbl <- fh00 |>
+  unlist() |>
+  as.data.frame() |>
   cbind(fh01 |> unlist() |> as.data.frame()) |>
   cbind(fh10 |> unlist() |> as.data.frame()) |>
-  cbind(fh11 |> unlist() |> as.data.frame()) 
+  cbind(fh11 |> unlist() |> as.data.frame())
 
 colnames(temp_tbl) <- c("Test 1", "Test 2", "Test 3", "Test 4")
 temp_tbl
