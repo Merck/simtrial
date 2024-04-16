@@ -25,7 +25,7 @@ Note that all $p$-values computed here are one-sided with small values indicatin
 
 The MaxCombo test has been posed as the maximum of multiple Fleming-Harrington weighted logrank tests (@FH1982, @FH2011).
 Combination tests looking at a maximum of selected tests in this class have also been proposed; see @Lee2007, @NPHWGDesign, and @NPHWGSimulation.
-The Fleming-Harrington class is indexed by the parameters $\rho\ge 0$ and $\gamma\ge 0$.
+The Fleming-Harrington class is indexed by the parameters $\rho \geq 0$ and $\gamma \geq 0$.
 We will denote these as FH($\rho, \gamma$).
 This class includes the logrank test as FH(0, 0).
 Other tests of interest here include:
@@ -56,9 +56,10 @@ set.seed(123)
 x <- sim_fixed_n(
   n_sim = 1,
   timing_type = 5,
-  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
+  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1))
+)
 
-x |> 
+x |>
   gt() |>
   fmt_number(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
 ```
@@ -73,8 +74,8 @@ set.seed(123)
 
 s <- sim_pw_surv(n = 100)
 
-s |> 
-  head() |> 
+s |>
+  head() |>
   gt() |>
   fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
@@ -84,8 +85,8 @@ Once generated, we need to cut the data for analysis. Here we cut after 75 event
 ```{r, warning=FALSE, message=FALSE}
 x <- s |> cut_data_by_event(75)
 
-x |> 
-  head() |> 
+x |>
+  head() |>
   gt() |>
   fmt_number(columns = "tte", decimals = 2)
 ```
@@ -120,7 +121,9 @@ In this case we use the small `aml` dataset from the survival package.
 
 ```{r, warning=FALSE, message=FALSE}
 library(survival)
-aml |> head() |> gt()
+aml |>
+  head() |>
+  gt()
 ```
 
 We rename variables and create a stratum variable as follows:
@@ -130,10 +133,15 @@ x <- aml |> transmute(
   tte = time,
   event = status,
   stratum = "All",
-  treatment = case_when(x == "Maintained" ~ "experimental",
-                        x == "Nonmaintained" ~ "control"))
+  treatment = case_when(
+    x == "Maintained" ~ "experimental",
+    x == "Nonmaintained" ~ "control"
+  )
+)
 
-x |> head() |> gt()
+x |>
+  head() |>
+  gt()
 ```
 Now we analyze the data with a MaxCombo with the logrank and FH(0, 1) and compute a $p$-value.
 
@@ -152,7 +160,8 @@ set.seed(123)
 x <- sim_fixed_n(
   n_sim = 100,
   timing_type = 5,
-  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1)))
+  rho_gamma = data.frame(rho = c(0, 0, 1), gamma = c(0, 1, 1))
+)
 
 # MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up
 x |>
@@ -173,7 +182,8 @@ set.seed(123)
 x <- sim_fixed_n(
   n_sim = 100,
   timing_type = c(2, 5),
-  rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
+  rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
+)
 ```
 
 Now we compute a $p$-value separately for each cut type, first for targeted event count.

@@ -94,7 +94,8 @@
 #' x <- sim_fixed_n(
 #'   n_sim = 10,
 #'   timing_type = 2,
-#'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1)))
+#'   rho_gamma = data.frame(rho = 0, gamma = c(0, 1))
+#' )
 #'
 #' # Get power approximation
 #' x |>
@@ -135,7 +136,6 @@ sim_fixed_n <- function(
     # Default is to to logrank testing, but one or more Fleming-Harrington tests
     # can be specified
     rho_gamma = data.frame(rho = 0, gamma = 0)) {
-
   # Check input values ----
   # Check input enrollment rate assumptions
   if (!("duration" %in% names(enroll_rate))) {
@@ -264,7 +264,7 @@ sim_fixed_n <- function(
       dropout_rate = dr,
       block = block
     )
-  #for (i in 1:n_sim) {
+    # for (i in 1:n_sim) {
 
     # Calculate possible cutting dates ----
     # Date 1: Study date that targeted event rate achieved
@@ -383,21 +383,25 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
     res <- d |>
       wlr(weight = fh(rho = rho_gamma$rho, gamma = rho_gamma$gamma))
 
-    ans <- data.frame(method = res$method,
-                      parameter = res$parameter,
-                      estimation = res$estimation,
-                      se = res$se,
-                      z = res$z)
+    ans <- data.frame(
+      method = res$method,
+      parameter = res$parameter,
+      estimation = res$estimation,
+      se = res$se,
+      z = res$z
+    )
   } else {
     res <- d |>
       maxcombo(rho = rho_gamma$rho, gamma = rho_gamma$gamma, return_corr = TRUE)
 
-    ans <- data.frame(method = rep(res$method, nrow(rho_gamma)),
-                      parameter = rep(res$parameter, nrow(rho_gamma)),
-                      estimation = rep("-", nrow(rho_gamma)),
-                      se = rep("-", nrow(rho_gamma)),
-                      z = res$z,
-                      p_value = rep(res$p_value, nrow(rho_gamma)))
+    ans <- data.frame(
+      method = rep(res$method, nrow(rho_gamma)),
+      parameter = rep(res$parameter, nrow(rho_gamma)),
+      estimation = rep("-", nrow(rho_gamma)),
+      se = rep("-", nrow(rho_gamma)),
+      z = res$z,
+      p_value = rep(res$p_value, nrow(rho_gamma))
+    )
     ans <- cbind(ans, res$corr |> as.data.frame())
   }
 

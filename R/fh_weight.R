@@ -38,10 +38,8 @@ fh_weight <- function(
       counting_process(arm = "experimental"),
     rho = 0,
     gamma = 1) {
-
-
   # Input checking ----
-  if(length(rho) != 1 || length(gamma) != 1) {
+  if (length(rho) != 1 || length(gamma) != 1) {
     stop("fh_weight: please input single numerical values of rho and gamma.")
   }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/maxcombo.R
 \name{maxcombo}
 \alias{maxcombo}
-\title{Maxcombo test}
+\title{MaxCombo test}
 \usage{
 maxcombo(
   data = cut_data_by_event(sim_pw_surv(n = 200), 150),
@@ -13,7 +13,7 @@ maxcombo(
 )
 }
 \arguments{
-\item{data}{a tte dataset}
+\item{data}{A TTE dataset.}
 
 \item{rho}{Numeric vector. Must be greater
 than or equal to zero. Must be the same length as \code{gamma}.}
@@ -34,9 +34,9 @@ A list containing the test method (\code{method}),
 parameters of this test method (\code{parameter}),
 point estimation of the treatment effect (\code{estimation}),
 standardized error of the treatment effect (\code{se}),
-Z-score of each test of the Maxcombo (\code{z}),
+Z-score of each test of the MaxCombo (\code{z}),
 p-values (\code{p_value})
-and the correlation matrix of each tests in Maxcombo (begin with \code{v})
+and the correlation matrix of each tests in MaxCombo (begin with \code{v})
 }
 \description{
 WARNING: This experimental function is a work-in-progress. The function

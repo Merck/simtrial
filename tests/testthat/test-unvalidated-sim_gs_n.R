@@ -29,7 +29,7 @@ test_that("Test 1: regular logrank test", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
@@ -58,7 +58,7 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 3: weighted logrank test by MB(3)", {
@@ -85,7 +85,7 @@ test_that("Test 3: weighted logrank test by MB(3)", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 4: weighted logrank test by early zero (6)", {
@@ -112,7 +112,7 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 5: RMST", {
@@ -154,7 +154,7 @@ test_that("Test 5: RMST", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 6: Milestone", {
@@ -208,7 +208,7 @@ test_that("Test 6: Milestone", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
@@ -236,7 +236,7 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("sim_gs_n() accepts different tests per cutting", {
@@ -268,7 +268,7 @@ test_that("sim_gs_n() accepts different tests per cutting", {
   #   event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
   # )
   # expect_equal(observed, expected)
-  expect_equal(1+1, 2)
+  expect_equal(1 + 1, 2)
 })
 
 test_that("sim_gs_n() requires a test for each cutting", {
