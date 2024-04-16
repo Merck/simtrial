@@ -105,11 +105,11 @@ treatment is favored.</p>
 Fleming-Harrington weighted logrank tests (<span class="citation">Harrington and Fleming (1982)</span>, <span class="citation">Fleming and Harrington (2011)</span>). Combination
 tests looking at a maximum of selected tests in this class have also
 been proposed; see <span class="citation">Lee (2007)</span>, <span class="citation">Roychoudhury et al. (2021)</span>, and <span class="citation">Lin et al. (2020)</span>. The Fleming-Harrington class
-is indexed by the parameters <span class="math inline">\(\rho\ge
-0\)</span> and <span class="math inline">\(\gamma\ge 0\)</span>. We will
-denote these as FH(<span class="math inline">\(\rho, \gamma\)</span>).
-This class includes the logrank test as FH(0, 0). Other tests of
-interest here include:</p>
+is indexed by the parameters <span class="math inline">\(\rho \geq
+0\)</span> and <span class="math inline">\(\gamma \geq 0\)</span>. We
+will denote these as FH(<span class="math inline">\(\rho,
+\gamma\)</span>). This class includes the logrank test as FH(0, 0).
+Other tests of interest here include:</p>
 <ul>
 <li>FH(0, 1): a test that down-weights early events</li>
 <li>FH(1, 0): a test that down-weights late events</li>
@@ -151,12 +151,13 @@ a sequential index of the simulations performed.</p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  timing_type <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Backend uses sequential processing.</span></span>
 <span><span class="co">#&gt; Loading required package: foreach</span></span>
 <span><span class="co">#&gt; Loading required package: future</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">x</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/fmt_number.html" class="external-link">fmt_number</a></span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ln_hr"</span>, <span class="st">"z"</span>, <span class="st">"duration"</span>, <span class="st">"v1"</span>, <span class="st">"v2"</span>, <span class="st">"v3"</span><span class="op">)</span>, decimals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div id="sncjrvketn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -618,7 +619,7 @@ a sequential index of the simulations performed.</p>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td headers="method" class="gt_row gt_left">Maxcombo</td>
+<td headers="method" class="gt_row gt_left">MaxCombo</td>
 <td headers="parameter" class="gt_row gt_left">FH(0, 0) + FH(0, 1) + FH(1, 1)</td>
 <td headers="estimation" class="gt_row gt_right">-</td>
 <td headers="se" class="gt_row gt_right">-</td>
@@ -634,7 +635,7 @@ a sequential index of the simulations performed.</p>
 <td headers="sim" class="gt_row gt_right">1</td>
 </tr>
 <tr>
-<td headers="method" class="gt_row gt_left">Maxcombo</td>
+<td headers="method" class="gt_row gt_left">MaxCombo</td>
 <td headers="parameter" class="gt_row gt_left">FH(0, 0) + FH(0, 1) + FH(1, 1)</td>
 <td headers="estimation" class="gt_row gt_right">-</td>
 <td headers="se" class="gt_row gt_right">-</td>
@@ -650,7 +651,7 @@ a sequential index of the simulations performed.</p>
 <td headers="sim" class="gt_row gt_right">1</td>
 </tr>
 <tr>
-<td headers="method" class="gt_row gt_left">Maxcombo</td>
+<td headers="method" class="gt_row gt_left">MaxCombo</td>
 <td headers="parameter" class="gt_row gt_left">FH(0, 0) + FH(0, 1) + FH(1, 1)</td>
 <td headers="estimation" class="gt_row gt_right">-</td>
 <td headers="se" class="gt_row gt_right">-</td>
@@ -679,8 +680,8 @@ a sequential index of the simulations performed.</p>
 <span></span>
 <span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">s</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">s</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/fmt_number.html" class="external-link">fmt_number</a></span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"enroll_time"</span>, <span class="st">"fail_time"</span>, <span class="st">"dropout_time"</span>, <span class="st">"cte"</span><span class="op">)</span>, decimals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div id="xptjyfsdiy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -1196,8 +1197,8 @@ after 75 events.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">75</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">x</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/fmt_number.html" class="external-link">fmt_number</a></span><span class="op">(</span>columns <span class="op">=</span> <span class="st">"tte"</span>, decimals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div id="dotvuqxgoe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -1699,7 +1700,7 @@ combination suggested in <span class="citation">Lin et al.
 <span></span>
 <span><span class="va">z</span></span>
 <span><span class="co">#&gt; $method</span></span>
-<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; [1] "MaxCombo"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parameter</span></span>
 <span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 1) + FH(1, 0) + FH(1, 1)"</span></span>
@@ -1720,7 +1721,7 @@ associated with FH(0, 0) and FH(1, 1) and then apply
 <span></span>
 <span><span class="va">z</span></span>
 <span><span class="co">#&gt; $method</span></span>
-<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; [1] "MaxCombo"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parameter</span></span>
 <span><span class="co">#&gt; [1] "FH(0, 1) + FH(1, 0)"</span></span>
@@ -1740,7 +1741,9 @@ format and show the transformation needed. In this case we use the small
 <code>aml</code> dataset from the survival package.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span><span class="va">aml</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">aml</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div id="fjmfihapvb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#fjmfihapvb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2227,10 +2230,15 @@ format and show the transformation needed. In this case we use the small
 <span>  tte <span class="op">=</span> <span class="va">time</span>,</span>
 <span>  event <span class="op">=</span> <span class="va">status</span>,</span>
 <span>  stratum <span class="op">=</span> <span class="st">"All"</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="st">"Maintained"</span> <span class="op">~</span> <span class="st">"experimental"</span>,</span>
-<span>                        <span class="va">x</span> <span class="op">==</span> <span class="st">"Nonmaintained"</span> <span class="op">~</span> <span class="st">"control"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  treatment <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">x</span> <span class="op">==</span> <span class="st">"Maintained"</span> <span class="op">~</span> <span class="st">"experimental"</span>,</span>
+<span>    <span class="va">x</span> <span class="op">==</span> <span class="st">"Nonmaintained"</span> <span class="op">~</span> <span class="st">"control"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div id="hnlzhihyit" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#hnlzhihyit table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2723,7 +2731,7 @@ and compute a <span class="math inline">\(p\)</span>-value.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $method</span></span>
-<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; [1] "MaxCombo"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parameter</span></span>
 <span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 1)"</span></span>
@@ -2751,7 +2759,8 @@ the <span class="math inline">\(\alpha=0.001\)</span> level.</p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  timing_type <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># MaxCombo power estimate for cutoff at max of targeted events, minimum follow-up</span></span>
 <span><span class="va">x</span> <span class="op">|&gt;</span></span>
@@ -2777,7 +2786,8 @@ with a smaller number of simulations.</p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  timing_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now we compute a <span class="math inline">\(p\)</span>-value
 separately for each cut type, first for targeted event count.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">

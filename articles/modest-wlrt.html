@@ -165,7 +165,7 @@ the original <span class="citation">Magirr and Burman (2019)</span> test
 and set the time until maximum weight <span class="math inline">\(\tau\)</span> with <code>delay = 6</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1395378</span></span></code></pre></div>
@@ -252,7 +252,7 @@ component tests, we have p-value of:</p>
 <span>  <span class="fu"><a href="../reference/maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span>
 <span><span class="co">#&gt; $method</span></span>
-<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; [1] "MaxCombo"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parameter</span></span>
 <span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 1) + FH(1, 1)"</span></span>
@@ -269,7 +269,7 @@ requires generating weights and then computing the test.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">FHwn</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span> </span>
+<span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.920727</span></span></code></pre></div>
@@ -281,7 +281,7 @@ have p-value of</p>
 <span>  <span class="fu"><a href="../reference/maxcombo.html">maxcombo</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span>
 <span><span class="co">#&gt; $method</span></span>
-<span><span class="co">#&gt; [1] "Maxcombo"</span></span>
+<span><span class="co">#&gt; [1] "MaxCombo"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $parameter</span></span>
 <span><span class="co">#&gt; [1] "FH(0, 0) + FH(0, 0.5) + FH(0.5, 0.5)"</span></span>
