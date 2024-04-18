@@ -294,6 +294,7 @@ sim_gs_n <- function(
 
       # Test
       ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
+      ans_1sim_new <- as.data.frame(ans_1sim_new)
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
