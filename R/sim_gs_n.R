@@ -294,7 +294,7 @@ sim_gs_n <- function(
 
       # Test
       ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
-      ans_1sim_new <- as.data.frame(ans_1sim_new)
+      ans_1sim_new <- convert_list_to_df_w_list_cols(ans_1sim_new)
       ans_1sim_new$analysis <- i_analysis
       ans_1sim_new$cut_date <- cut_date[i_analysis]
       ans_1sim_new$sim_id <- sim_id
@@ -422,4 +422,26 @@ multitest <- function(data, ...) {
     output[[i]] <- tests[[i]](data)
   }
   return(output)
+}
+
+# Convert a list to a one row data frame using list columns
+convert_list_to_df_w_list_cols <- function(x) {
+  stopifnot(is.list(x), !is.data.frame(x))
+
+  new_list <- vector(mode = "list", length = length(x))
+  names(new_list) <- names(x)
+
+  for (i in seq_along(x)) {
+    if (length(x[[i]]) > 1) {
+      new_list[[i]] <- I(list(x[[i]]))
+    } else {
+      new_list[i] <- x[i]
+    }
+  }
+
+  # Convert the list to a data frame with one row
+  df_w_list_cols <- do.call(data.frame, new_list)
+  stopifnot(nrow(df_w_list_cols) == 1)
+
+  return(df_w_list_cols)
 }
