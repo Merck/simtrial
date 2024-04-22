@@ -22,15 +22,15 @@
 #' arguments will change as we add additional features.
 #'
 #' @inheritParams sim_fixed_n
-#' @param test One or more test functions such as [wlr()], [maxcombo()], or
-#'   [rmst()]. If a single test function is provided, it will be applied at each
-#'   cut. Alternatively a list of functions created by [create_test()]. The list
-#'   form is experimental and currently limited. It only accepts one test per
-#'   cutting (in the future multiple tests may be accepted), and all the tests
-#'   must consistently return the same exact results (again this may be more
-#'   flexible in the future). Importantly, note that the simulated data set is
-#'   always passed as the first positional argument to each test function
-#'   provided.
+#' @param test One or more test functions such as [wlr()], [rmst()], or
+#'   [milestone()] ([maxcombo()] can only be applied by itself). If a single
+#'   test function is provided, it will be applied at each cut. Alternatively a
+#'   list of functions created by [create_test()]. The list form is experimental
+#'   and currently limited. It only accepts one test per cutting (in the future
+#'   multiple tests may be accepted), and all the tests must consistently return
+#'   the same exact results (again this may be more flexible in the future).
+#'   Importantly, note that the simulated data set is always passed as the first
+#'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
 #'   examples.
 #' @param seed Random seed.
@@ -196,45 +196,6 @@
 #'   rho = c(0, 0),
 #'   gamma = c(0, 0.5)
 #' )
-#'
-#' # Test 8: MaxCombo (WLR-FH(0,0.5) + milestone(10))
-#' # for all analyses
-#' \dontrun{
-#' sim_gs_n(
-#'   n_sim = 3,
-#'   sample_size = 400,
-#'   enroll_rate = enroll_rate,
-#'   fail_rate = fail_rate,
-#'   test = maxcombo(test1 = wlr, test2 = milestone),
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-#'   seed = 2024,
-#'   test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
-#'   test2_par = list(ms_time = 10)
-#' )
-#' }
-#'
-#' # Test 9: MaxCombo (WLR-FH(0,0) at IAs
-#' # and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
-#' \dontrun{
-#' sim_gs_n(
-#'   n_sim = 3,
-#'   sample_size = 400,
-#'   enroll_rate = enroll_rate,
-#'   fail_rate = fail_rate,
-#'   test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-#'   seed = 2024,
-#'   test_par = list(
-#'     ia1 = list(weight = fh(rho = 0, gamma = 0)),
-#'     ia2 = list(weight = fh(rho = 0, gamma = 0)),
-#'     ia3 = list(
-#'       test1_par = list(weight = fh(rho = 0, gamma = 0)),
-#'       test2_par = list(ms_time = 10),
-#'       test3_par = list(delay = 4, w_max = 2)
-#'     )
-#'   )
-#' )
-#' }
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
