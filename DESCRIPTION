@@ -46,8 +46,7 @@ Imports:
     mvtnorm,
     stats,
     survival,
-    utils,
-    bshazard
+    utils
 Suggests:
     Matrix,
     bshazard,
