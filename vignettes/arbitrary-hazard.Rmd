@@ -19,17 +19,24 @@ knitr::opts_chunk$set(
 
 ```{r, message=FALSE, warning=FALSE}
 library(simtrial)
-library(bshazard)
 library(ggplot2)
 library(dplyr)
 library(survival)
-set.seed(123)
+```
+
+This vignette uses the bshazard package.
+If it is not on CRAN, you can install it with
+
+```{r, eval=FALSE}
+remotes::install_github("cran/bshazard")
 ```
 
 We simulate a log-logistic distribution as an example of how to simulate a trial with an arbitrary distribution.
 We begin by showing hazard rates that can be used to approximate this distribution.
 
 ```{r}
+set.seed(123)
+
 dloglogis <- function(x, alpha = 1, beta = 4) {
   1 / (1 + (x / alpha)^beta)
 }
@@ -96,8 +103,35 @@ plot(fit, mark = "|")
 Finally, we plot the estimated hazard rate and its confidence interval as a function of time.
 We overlay the actual rates in red.
 
+```{r, echo=FALSE}
+fit <- readRDS("fit-bshazard.rds")
+
+plot.bshazard <- function(
+    x, conf.int = TRUE, overall = TRUE, col = 1, lwd = 1, lty = 1,
+    xlab = "Time", ylab = "Hazard rate", border = NA, col.fill = "lightgrey",
+    ...) {
+  plot(
+    x$time, x$hazard,
+    xlab = xlab, type = "l", ylab = ylab,
+    lwd = lwd, lty = lty, col = col, ...
+  )
+  polygon(
+    c(x$time, rev(x$time)), c(x$low, rev(x$up)),
+    col = col.fill, border = border, ...
+  )
+  lines(
+    x$time, x$hazard,
+    xlab = xlab, type = "l",
+    ylab = ylab, lwd = 2, lty = lty, col = col, ...
+  )
+}
+```
+
+```{r, eval=FALSE}
+fit <- bshazard::bshazard(Surv(tte, event) ~ 1, data = y, nk = 120)
+```
+
 ```{r}
-fit <- bshazard(Surv(tte, event) ~ 1, data = y, nk = 120)
 plot(fit, conf.int = TRUE, xlab = "Time", xlim = c(0, 3), ylim = c(0, 2.5), lwd = 2)
 lines(x = times, y = (xx |> mutate(Time = lag(cumsum(duration), default = 0)))$rate, col = 2)
 ```
