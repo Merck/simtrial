@@ -55,7 +55,7 @@ test_that("early_zero_weight() with stratified data", {
   output <- early_zero_weight(input, early_period = 2, fail_rate = fail_rate)
 
   observed <- output$weight
-  expected <- rep(c(0, 0.8, 0, 0.7), c(43L, 20L, 29L, 33L))
+  expected <- rep(c(0, log(0.8), 0, log(0.7)), c(43L, 20L, 29L, 33L))
   expect_equal(observed, expected)
 })
 
