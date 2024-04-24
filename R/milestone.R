@@ -23,13 +23,17 @@
 #'   - `event` - Event indicator.
 #'   - `treatment` - Grouping variable.
 #' @param ms_time Milestone analysis time.
-#'
+#' @param test_type Method to build the test statistics.
+#' There are 2 options:
+#'   - `"native"`: a native approach by dividing the KM survival difference by its standard derivations.
+#'   - `"log-log"`: a log-log transformation of the survival, see equation (3) of
+#'   Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
 #' @return A list frame containing:
-#' - `method` - The method, always `"milestone"`.
-#' - `parameter` - Milestone time point.
-#' - `estimation` - Survival difference between the experimental and control arm.
-#' - `se` - Standard error of the control and experimental arm.
-#' - `z` - Test statistics.
+#'   - `method` - The method, always `"milestone"`.
+#'   - `parameter` - Milestone time point.
+#'   - `estimation` - Survival difference between the experimental and control arm.
+#'   - `se` - Standard error of the control and experimental arm.
+#'   - `z` - Test statistics.
 #'
 #' @references
 #' Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
@@ -41,7 +45,11 @@
 #' @examples
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
-#'   milestone(10)
+#'   milestone(10, test_type = "log-log")
+#'
+#' sim_pw_surv(n = 200) |>
+#'   cut_data_by_event(150) |>
+#'   milestone(10, test_type = "native")
 milestone <- function(data, ms_time, test_type = c("log-log", "native")) {
 
   test_type <- match.arg(test_type)
