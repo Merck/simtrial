@@ -42,7 +42,10 @@
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
 #'   milestone(10)
-milestone <- function(data, ms_time) {
+milestone <- function(data, ms_time, test_type = c("log-log", "native")) {
+
+  test_type <- match.arg(test_type)
+
   # Fit into KM curves
   fit <- survfit(Surv(tte, event) ~ treatment, data = data)
   fit_res <- summary(fit, time = ms_time, extend = TRUE)
@@ -50,7 +53,7 @@ milestone <- function(data, ms_time) {
   # Survival difference
   surv_ctrl <- fit_res$surv[1]
   surv_exp <- fit_res$surv[2]
-  diff_survival <- surv_exp - surv_ctrl
+  surv_diff <- surv_exp - surv_ctrl
 
   # Indicator whether the std is NA or not
   var_ctrl <- fit_res$std.err[1]^2
@@ -63,19 +66,25 @@ milestone <- function(data, ms_time) {
   sigma2_exp <- var_exp / (surv_exp^2)
 
   # Calculate the test statistics
-  if (na_ctrl + na_exp == 2) {
-    z <- -Inf
-  } else {
-    z <- (log(-log(surv_exp)) - log(-log(surv_ctrl)))^2 /
-      (sigma2_exp / (log(surv_exp))^2 + sigma2_ctrl / (log(surv_ctrl))^2)
-  }
-
   ans <- list()
   ans$method <- "milestone"
   ans$parameter <- ms_time
-  ans$estimation <- diff_survival
-  ans$se <- fit_res$std.err
-  ans$z <- z
+
+  if (na_ctrl + na_exp == 2) {
+    z <- -Inf
+  } else {
+    if (test_type == "naive"){
+      z_numerator <- surv_diff
+      z_denominator <- surv_exp * sqrt(sigma2_exp) + surv_ctrl * sqrt(sigma2_ctrl)
+    } else if (test_type == "log-log") {
+      z_numerator <- log(-log(surv_exp)) - log(-log(surv_ctrl))
+      z_denominator <- sqrt(sigma2_exp) / log(surv_exp) + sqrt(sigma2_ctrl) / log(surv_ctrl)
+    }
+  }
+
+  ans$estimation <- z_numerator
+  ans$se <- z_denominator
+  ans$z <- z_numerator / z_denominator
 
   return(ans)
 }
