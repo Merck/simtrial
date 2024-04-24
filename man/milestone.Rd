@@ -4,7 +4,7 @@
 \alias{milestone}
 \title{Milestone test for two survival curves}
 \usage{
-milestone(data, ms_time, test_type = c("log-log", "native"))
+milestone(data, ms_time, test_type = c("log-log", "naive"))
 }
 \arguments{
 \item{data}{Data frame containing at least 3 columns:
@@ -45,7 +45,7 @@ sim_pw_surv(n = 200) |>
 
 sim_pw_surv(n = 200) |>
   cut_data_by_event(150) |>
-  milestone(10, test_type = "native")
+  milestone(10, test_type = "naive")
 }
 \references{
 Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).

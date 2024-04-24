@@ -50,8 +50,8 @@
 #'
 #' sim_pw_surv(n = 200) |>
 #'   cut_data_by_event(150) |>
-#'   milestone(10, test_type = "native")
-milestone <- function(data, ms_time, test_type = c("log-log", "native")) {
+#'   milestone(10, test_type = "naive")
+milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
 
   test_type <- match.arg(test_type)
 
