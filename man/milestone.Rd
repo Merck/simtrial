@@ -39,12 +39,13 @@ A list frame containing:
 Milestone test for two survival curves
 }
 \examples{
-sim_pw_surv(n = 200) |>
-  cut_data_by_event(150) |>
+cut_data <- sim_pw_surv(n = 200) |>
+  cut_data_by_event(150)
+
+cut_data |>
   milestone(10, test_type = "log-log")
 
-sim_pw_surv(n = 200) |>
-  cut_data_by_event(150) |>
+cut_data |>
   milestone(10, test_type = "naive")
 }
 \references{

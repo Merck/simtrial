@@ -44,12 +44,13 @@
 #' @export
 #'
 #' @examples
-#' sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(150) |>
+#' cut_data <- sim_pw_surv(n = 200) |>
+#'   cut_data_by_event(150)
+#'
+#' cut_data |>
 #'   milestone(10, test_type = "log-log")
 #'
-#' sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(150) |>
+#' cut_data |>
 #'   milestone(10, test_type = "naive")
 milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
 
