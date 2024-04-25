@@ -154,6 +154,6 @@ test_that("early_zero_weight() with stratified data when fail_rate is correctly 
     early_zero_weight(early_period = early_period, fail_rate = fail_rate)
 
   observed <- output$weight
-  expected <- if_else(output$stratum=='Biomarker-negative',if_else(output$tte<4,0,0.8),if_else(output$tte<3,0,0.7))
+  expected <- if_else(output$stratum=='Biomarker-negative',if_else(output$tte<4,0,log(0.8)),if_else(output$tte<3,0,log(0.7)))
   expect_equal(observed, expected)
 })
