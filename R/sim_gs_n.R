@@ -182,20 +182,6 @@
 #'   seed = 2024,
 #'   ms_time = 10
 #' )
-#'
-#' # Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
-#' # for all analyses
-#' sim_gs_n(
-#'   n_sim = 3,
-#'   sample_size = 400,
-#'   enroll_rate = enroll_rate,
-#'   fail_rate = fail_rate,
-#'   test = maxcombo,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-#'   seed = 2024,
-#'   rho = c(0, 0),
-#'   gamma = c(0, 0.5)
-#' )
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
