@@ -81,7 +81,7 @@
 #' # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #' #   minimum of 20 months follow-up.
 #' # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-#' ia1 <- create_cut(
+#' ia1_cut <- create_cut(
 #'   planned_calendar_time = 20,
 #'   target_event_overall = 100,
 #'   max_extension_for_target_event = 24,
@@ -95,7 +95,7 @@
 #' # - At least 250 events have occurred.
 #' # - At least 10 months after IA1.
 #' # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-#' ia2 <- create_cut(
+#' ia2_cut <- create_cut(
 #'   planned_calendar_time = 32,
 #'   target_event_overall = 200,
 #'   max_extension_for_target_event = 34,
@@ -106,82 +106,83 @@
 #' # The final analysis will occur at the later of the following 2 conditions:
 #' # - At least 45 months have passed since the start of the study.
 #' # - At least 300 events have occurred.
-#' fa <- create_cut(
+#' fa_cut <- create_cut(
 #'   planned_calendar_time = 45,
 #'   target_event_overall = 350
 #' )
 #'
-#' # Test 1: regular logrank test
+#' # Example 1: regular logrank test at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #'
-#' # Test 2: weighted logrank test by FH(0, 0.5)
+#' # Example 2: weighted logrank test by FH(0, 0.5) at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0.5)
 #' )
 #'
-#' # Test 3: weighted logrank test by MB(3)
+#' # Example 3: weighted logrank test by MB(3) at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   weight = mb(delay = 3)
 #' )
 #'
-#' # Test 4: weighted logrank test by early zero (6)
+#' # Example 4: weighted logrank test by early zero (6) at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = wlr,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   weight = early_zero(6)
 #' )
 #'
-#' # Test 5: RMST
+#' # Example 5: RMST at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = rmst,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   tau = 20
 #' )
 #'
-#' # Test 6: Milestone
+#' # Example 6: Milestone at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = milestone,
-#'   cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   seed = 2024,
 #'   ms_time = 10
 #' )
+#'
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
