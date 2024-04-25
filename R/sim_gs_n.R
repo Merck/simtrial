@@ -185,7 +185,7 @@
 #'
 #' # Example 7: WLR test at IA1 and IA2, and milestone test at FA
 #' ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
-#' ia2_test <- create_test(wlr, weight = mb(delay = 6, tau = Inf))
+#' ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
 #' fa_test <- create_test(milestone, ms_time = 10)
 #' \donttest{
 #' sim_gs_n(
