@@ -183,10 +183,33 @@
 #'   ms_time = 10
 #' )
 #'
-#' # Example 7: WLR test at IA1 and IA2, and milestone test at FA
+#' # Example 7: WLR with fh(0, 0.5) test at IA1,
+#' # WLR with mb(6, Inf) at IA2, and milestone test at FA
 #' ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 #' ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
 #' fa_test <- create_test(milestone, ms_time = 10)
+#' \donttest{
+#' sim_gs_n(
+#'   n_sim = 3,
+#'   sample_size = 400,
+#'   enroll_rate = enroll_rate,
+#'   fail_rate = fail_rate,
+#'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+#'   seed = 2024
+#' )
+#' }
+#'
+#' # Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.
+#' At IA2, we conduct 2 tests, LR and WLR with early zero (6).
+#' At FA, we conduct 2 tests, LR and milestone test.
+#' ia1_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+#'                  test2 = create_test(wlr, weight = fh(rho = 0, gamma = 0.5)),
+#'                  test3 = create_test(rmst, tau = 20))
+#' ia2_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+#'                  test2 = create_test(wlr, weight = early_zero(6)))
+#' fa_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+#'                  test3 = create_test(milestone, ms_time = 20))
 #' \donttest{
 #' sim_gs_n(
 #'   n_sim = 3,
