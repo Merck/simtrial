@@ -99,7 +99,6 @@ test_that("wlr() with MB weight on unstratified data", {
     expected <- c(expected,z)
   }
   expect_equal(observed, expected)
-  expect_equal(1+1, 2)
 })
 
 
