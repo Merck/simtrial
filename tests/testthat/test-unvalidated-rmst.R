@@ -28,29 +28,13 @@ test_that("formula method matches default method", {
     reference = "0"
   )
 
-  rmst_formula_1 <- rmst(
+  rmst_formula <- rmst(
     data = ex1_delayed_effect,
-    formula = month ~ evntd + trt,
+    formula = Surv(month, evntd) ~ trt,
     tau = 10,
     reference = "0"
   )
-  expect_equal(rmst_formula_1, rmst_default)
-
-  rmst_formula_2 <- rmst(
-    data = ex1_delayed_effect,
-    formula = survival::Surv(month | evntd) ~ trt,
-    tau = 10,
-    reference = "0"
-  )
-  expect_equal(rmst_formula_2, rmst_default)
-
-  rmst_formula_3 <- rmst(
-    data = ex1_delayed_effect,
-    formula = ~ survival::Surv(month, evntd, trt),
-    tau = 10,
-    reference = "0"
-  )
-  expect_equal(rmst_formula_3, rmst_default)
+  expect_equal(rmst_formula, rmst_default)
 })
 
 test_that("default and formula methods of rmst are pipeable", {
@@ -67,7 +51,7 @@ test_that("default and formula methods of rmst are pipeable", {
 
   rmst_formula_1 <- ex1_delayed_effect |>
     rmst(
-      formula = month ~ evntd + trt,
+      formula = Surv(month, evntd) ~ trt,
       tau = 10,
       reference = "0"
     )
@@ -82,6 +66,15 @@ test_that("formula argument throws error for bad input data", {
   expect_error(
     rmst_formula_1 <- rmst(
       data = ex1_delayed_effect,
+      formula = Surv(month) ~ trt,
+      tau = 10,
+      reference = "0"
+    ),
+    "The formula interface requires exactly 3 variables specified"
+  )
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
       formula = month ~ evntd,
       tau = 10,
       reference = "0"
@@ -90,6 +83,15 @@ test_that("formula argument throws error for bad input data", {
   )
 
   # formula with 4 variables
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = Surv(month, evntd) ~ trt + id,
+      tau = 10,
+      reference = "0"
+    ),
+    "The formula interface requires exactly 3 variables specified"
+  )
   expect_error(
     rmst_formula_1 <- rmst(
       data = ex1_delayed_effect,
@@ -110,5 +112,81 @@ test_that("formula argument throws error for bad input data", {
     ),
     'inherits(formula, "formula") is not TRUE',
     fixed = TRUE
+  )
+
+  # non-canonical formula
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = Surv(month | evntd) ~ trt,
+      tau = 10,
+      reference = "0"
+    ),
+    "Unable to identify a single tte variable"
+  )
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = ~ Surv(month, evntd, trt),
+      tau = 10,
+      reference = "0"
+    ),
+    "unused argument (trt)",
+    fixed = TRUE
+  )
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = month ~ evntd + trt,
+      tau = 10,
+      reference = "0"
+    ),
+    "Must use canonical formula syntax with Surv()"
+  )
+  expect_error(
+    rmst_formula_1 <- rmst(
+      data = ex1_delayed_effect,
+      formula = ~ month + evntd + trt,
+      tau = 10,
+      reference = "0"
+    ),
+    "Must use canonical formula syntax with Surv()"
+  )
+})
+
+test_that("parse_formula_rmst() properly parses the formula argument", {
+  expected <- c(
+    "var_label_tte" = "month",
+    "var_label_event" = "status",
+    "var_label_group" = "trt"
+  )
+
+  expect_identical(
+    parse_formula_rmst(formula = Surv(month, status) ~ trt),
+    expected
+  )
+
+  expect_identical(
+    parse_formula_rmst(formula = Surv(event = status, time = month) ~ trt),
+    expected
+  )
+
+
+  expect_identical(
+    parse_formula_rmst(formula = Surv(month, event = status) ~ trt),
+    expected
+  )
+
+  expect_identical(
+    parse_formula_rmst(formula = Surv(event = status, month) ~ trt),
+    expected
+  )
+
+  # Note: 4 variables is not currently allowed. This invalid formula would be
+  # caught upstream in rmst(). This test is just to show that
+  # parse_formula_rmst() can still parse it correctly regardless.
+  expect_identical(
+    parse_formula_rmst(formula = Surv(month, status) ~ trt + trt2),
+    expected
   )
 })
