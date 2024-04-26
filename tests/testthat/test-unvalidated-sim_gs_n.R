@@ -3,7 +3,7 @@
 
 # See helper-sim_gs_n.R for helper functions
 
-test_that("Test 1: regular logrank test", {
+test_that("regular logrank test", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -41,7 +41,7 @@ test_that("Test 1: regular logrank test", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
+test_that("weighted logrank test by FH(0, 0.5)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -79,7 +79,7 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 3: weighted logrank test by MB(3)", {
+test_that("weighted logrank test by MB(3)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -117,7 +117,7 @@ test_that("Test 3: weighted logrank test by MB(3)", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 4: weighted logrank test by early zero (6)", {
+test_that("weighted logrank test by early zero (6)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -155,7 +155,7 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 5: RMST", {
+test_that("RMST", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -193,7 +193,7 @@ test_that("Test 5: RMST", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 6: Milestone", {
+test_that("Milestone", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
@@ -237,7 +237,51 @@ test_that("Test 6: Milestone", {
   expect_equal(observed, expected)
 })
 
-test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
+test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and milestone test at FA", {
+  ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+  ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
+  fa_test <- create_test(milestone, ms_time = 10)
+
+  observed <- sim_gs_n(
+   n_sim = 3,
+   sample_size = 400,
+   enroll_rate = test_enroll_rate(),
+   fail_rate = test_fail_rate(),
+   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+   cut = test_cutting(),
+   seed = 2024
+  )
+  expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
+    method = rep(c("WLR", "WLR", "milestone"), 3),
+    parameter = rep(c("FH(rho=0, gamma=0.5)", "MB(delay = 6, max_weight = Inf)", "10"), 3),
+    estimate = c(
+      -16.934217242190208, -55.13395025199291, 0.1752731092436976,
+      -15.500239367897708, -44.437051762182506, 0.11738941400903585,
+      -12.664624037110103, -41.66249375734963, 0.1519773404060174
+    ),
+    se = I(list(
+      4.081359229309616, 11.636448672437368,
+      c(0.034952703615152854, 0.03484070894801079), 4.299539499761723,
+      11.272930548434758, c(0.035432630739150366, 0.034912158581439694),
+      4.02917790229253, 11.25721499206715,
+      c(0.03540131462139614, 0.034738243333119145)
+    )),
+    z = c(
+      -4.149161171743935, -4.738039225196407, 12.078380683791904,
+      -3.605092910242299, -3.9419254444313574, 5.457930240636103,
+      -3.1432278107909206, -3.7009592325196583, 9.054982526543846
+    )
+  )
+  class(expected$se) <- NULL # I() adds the class "AsIs"
+  expect_equal(observed, expected)
+})
+
+test_that("MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
