@@ -1,3 +1,8 @@
+library(dplyr)
+library(gsDesign2)
+library(tibble)
+
+
 test_that("early_zero_weight() with unstratified data", {
   set.seed(123456)
   early_period = 2
@@ -25,7 +30,7 @@ test_that("early_zero_weight() with stratified data when fail_rate is not provid
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
@@ -68,7 +73,7 @@ test_that("early_zero_weight() with stratified data when fail_rate is not correc
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
@@ -118,7 +123,7 @@ test_that("early_zero_weight() with stratified data when fail_rate is correctly 
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
