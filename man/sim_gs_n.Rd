@@ -223,8 +223,8 @@ sim_gs_n(
 }
 
 # Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.
-At IA2, we conduct 2 tests, LR and WLR with early zero (6).
-At FA, we conduct 2 tests, LR and milestone test.
+# At IA2, we conduct 2 tests, LR and WLR with early zero (6).
+# At FA, we conduct 2 tests, LR and milestone test.
 ia1_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
                  test2 = create_test(wlr, weight = fh(rho = 0, gamma = 0.5)),
                  test3 = create_test(rmst, tau = 20))
