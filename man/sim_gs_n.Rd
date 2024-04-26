@@ -219,6 +219,8 @@ sim_gs_n(
   seed = 2024
 )
 
+# WARNING: Multiple tests per cut will be enabled in a future version.
+#          Currently does not work.
 # Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.
 # At IA2, we conduct 2 tests, LR and WLR with early zero (6).
 # At FA, we conduct 2 tests, LR and milestone test.
@@ -229,7 +231,7 @@ ia2_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
                  test2 = create_test(wlr, weight = early_zero(6)))
 fa_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
                  test3 = create_test(milestone, ms_time = 20))
-\donttest{
+\dontrun{
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
