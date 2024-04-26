@@ -15,6 +15,11 @@ test_that("Test 1: regular logrank test", {
     weight = fh(rho = 0, gamma = 0)
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("WLR", 9L),
     parameter = rep("FH(rho=0, gamma=0)", 9L),
     estimate = c(
@@ -31,12 +36,7 @@ test_that("Test 1: regular logrank test", {
       -3.7486049782713247, -4.53034007934394, -4.316452743033609,
       -3.4771440155825752, -3.8631501353780324, -3.2777779731288317,
       -3.075862925191481, -3.619345457605645, -4.2225917786532925
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -53,6 +53,11 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
     weight = fh(rho = 0, gamma = 0.5)
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("WLR", 9L),
     parameter = rep("FH(rho=0, gamma=0.5)", 9L),
     estimate = c(
@@ -69,12 +74,7 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
       -4.149161171743935, -4.778107819550277, -4.2607297587160256,
       -3.605092910242299, -3.945081123231263, -2.919179640988388,
       -3.1432278107909206, -3.640458610667732, -4.243289152457
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -91,6 +91,11 @@ test_that("Test 3: weighted logrank test by MB(3)", {
     weight = mb(delay = 3)
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("WLR", 9L),
     parameter = rep("MB(delay = 3, max_weight = Inf)", 9L),
     estimate = c(
@@ -107,12 +112,7 @@ test_that("Test 3: weighted logrank test by MB(3)", {
       -3.797133894694147, -4.581330588107247, -4.3496437937060906,
       -3.5011312494121394, -3.886541892591609, -3.2792862684447983,
       -3.114079263266195, -3.6587146250230145, -4.2632793831797855
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -129,6 +129,11 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
     weight = early_zero(6)
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("WLR", 9L),
     parameter = rep("Xu 2017 with first 6 months of 0 weights", 9L),
     estimate = c(
@@ -145,12 +150,7 @@ test_that("Test 4: weighted logrank test by early zero (6)", {
       -4.552617167258777, -5.188572984743822, -4.686073828268738,
       -3.185533497487861, -3.5975030245947046, -2.786930008687834,
       -2.3673440974318556, -3.0630537456426414, -3.7816194091003705
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -167,6 +167,11 @@ test_that("Test 5: RMST", {
     tau = 20
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("RMST", 9L),
     parameter = rep(20, 9L),
     estimate = c(
@@ -183,12 +188,7 @@ test_that("Test 5: RMST", {
       3.7899815357169184, 3.991862864282945, 3.980100861311682, 3.474868814723485,
       3.2950209410683957, 3.2541151987300845, 2.9805344295194454,
       3.3009521580248022, 3.3504301652133
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -205,6 +205,11 @@ test_that("Test 6: Milestone", {
     ms_time = 10
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("milestone", 9L),
     parameter = rep(10, 9L),
     estimate = c(
@@ -227,12 +232,7 @@ test_that("Test 6: Milestone", {
       9.252619142383594, 12.078380683791904, 12.078380683791904, 5.565741269919053,
       5.457930240636103, 5.457930240636103, 9.051772787302813, 9.054982526543846,
       9.054982526543846
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -250,6 +250,11 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
     gamma = c(0, 0.5)
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("MaxCombo", 9L),
     parameter = rep("FH(0, 0) + FH(0, 0.5)", 9L),
     z = I(list(
@@ -267,12 +272,7 @@ test_that("Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
       2.6155386454673746e-05, 1.4330486162172917e-06, 1.247801863046849e-05,
       0.0002358380298724816, 6.130077643518028e-05, 0.0007667834024346343,
       0.001216230102102256, 0.00020471863687732128, 1.7249355113824194e-05
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -292,6 +292,11 @@ test_that("sim_gs_n() accepts different tests per cutting", {
     seed = 2024
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep("WLR", 9L),
     parameter = rep(c("FH(rho=0, gamma=0)", "FH(rho=0, gamma=0.5)", "FH(rho=0.5, gamma=0)"), 3),
     estimate = c(
@@ -308,12 +313,7 @@ test_that("sim_gs_n() accepts different tests per cutting", {
       -3.7486049782713247, -4.778107819550277, -4.189693884801371,
       -3.4771440155825752, -3.945081123231263, -3.438138809871842,
       -3.075862925191481, -3.640458610667732, -3.9489173860678495
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   expect_equal(observed, expected)
 })
@@ -353,6 +353,11 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
     seed = 2024
   )
   expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
+    n = rep(400L, 9L),
+    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
     method = rep(c("WLR", "RMST", "milestone"), 3),
     parameter = rep(c("FH(rho=0, gamma=0)", "20", "10"), 3),
     estimate = c(
@@ -371,12 +376,7 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
       -3.7486049782713247, 3.991862864282945, 12.078380683791904,
       -3.4771440155825752, 3.2950209410683957, 5.457930240636103,
       -3.075862925191481, 3.3009521580248022, 9.054982526543846
-    ),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
-    sim_id = rep(1:3, each = 3L),
-    n = rep(400L, 9L),
-    event = c(229, 295, 355, 241, 290, 350, 226, 282, 350)
+    )
   )
   class(expected$se) <- NULL # I() adds the class "AsIs"
   expect_equal(observed, expected)

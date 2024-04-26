@@ -280,12 +280,15 @@ sim_gs_n <- function(
 
       # Test
       ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
+      ans_1sim_new <- c(
+        sim_id = sim_id,
+        analysis = i_analysis,
+        cut_date = cut_date[i_analysis],
+        n = nrow(simu_data_cut),
+        event = sum(simu_data_cut$event),
+        ans_1sim_new
+      )
       ans_1sim_new <- convert_list_to_df_w_list_cols(ans_1sim_new)
-      ans_1sim_new$analysis <- i_analysis
-      ans_1sim_new$cut_date <- cut_date[i_analysis]
-      ans_1sim_new$sim_id <- sim_id
-      ans_1sim_new$n <- nrow(simu_data_cut)
-      ans_1sim_new$event <- sum(simu_data_cut$event)
 
       # rbind simulation results for all IA(s) and FA in 1 simulation
       ans_1sim <- rbind(ans_1sim, ans_1sim_new)
