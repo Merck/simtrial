@@ -35,7 +35,7 @@
 #'
 #' @return A list containing the test method (`method`),
 #' parameters of this test method (`parameter`),
-#' point estimation of the treatment effect (`estimation`),
+#' point estimate of the treatment effect (`estimate`),
 #' standardized error of the treatment effect (`se`),
 #' Z-score of each test of the MaxCombo (`z`),
 #' p-values (`p_value`)
@@ -107,10 +107,10 @@ maxcombo <- function(
 
     res$rho[i] <- rg_unique$rho[i]
     res$gamma[i] <- rg_unique$gamma[i]
-    res$estimation[i] <- weighted_o_minus_e_total
+    res$estimate[i] <- weighted_o_minus_e_total
     res$se[i] <- sqrt(weighted_var_total)
     res$var[i] <- weighted_var_total
-    res$z[i] <- res$estimation[i] / res$se[i]
+    res$z[i] <- res$estimate[i] / res$se[i]
   }
 
   # Merge back to full set of pairs ----
@@ -128,7 +128,7 @@ maxcombo <- function(
   temp <- data.frame(rho = rho, gamma = gamma)
   temp$x <- paste0("FH(", temp$rho, ", ", temp$gamma, ")")
   ans$parameter <- paste(temp$x, collapse = " + ")
-  ans$estimation <- NULL
+  ans$estimate <- NULL
   ans$se <- NULL
 
   # Get z statistics for input rho, gamma combinations

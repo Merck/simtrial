@@ -17,7 +17,7 @@ test_that("Test 1: regular logrank test", {
   expected <- data.frame(
     method = rep("WLR", 9L),
     parameter = rep("FH(rho=0, gamma=0)", 9L),
-    estimation = c(
+    estimate = c(
       -28.194825408790173, -38.32580538077858, -39.49229553865729,
       -26.84871111584948, -32.548237296118835, -30.06631062297029,
       -23.063020152157016, -30.16329862679027, -38.75506042018556
@@ -55,7 +55,7 @@ test_that("Test 2: weighted logrank test by FH(0, 0.5)", {
   expected <- data.frame(
     method = rep("WLR", 9L),
     parameter = rep("FH(rho=0, gamma=0.5)", 9L),
-    estimation = c(
+    estimate = c(
       -16.934217242190208, -24.448179085866208, -25.51076208491462,
       -15.500239367897708, -19.967690764549445, -17.5390556887186,
       -12.664624037110103, -18.05051250570102, -25.59217169575864
@@ -169,7 +169,7 @@ test_that("Test 5: RMST", {
   expected <- data.frame(
     method = rep("RMST", 9L),
     parameter = rep(20, 9L),
-    estimation = c(
+    estimate = c(
       2.8811516510432966, 2.8531309198097876, 2.834507997939104, 2.567389750892662,
       2.3996923551365086, 2.36833514283823, 2.287497785439662, 2.4481174776559786,
       2.478942232915438
@@ -207,7 +207,7 @@ test_that("Test 6: Milestone", {
   expected <- data.frame(
     method = rep("milestone", 9L),
     parameter = rep(10, 9L),
-    estimation = c(
+    estimate = c(
       0.16097092361893622, 0.1752731092436976, 0.1752731092436976,
       0.12045851966961263, 0.11738941400903585, 0.11738941400903585,
       0.15355822418246762, 0.1519773404060174, 0.1519773404060174
@@ -294,7 +294,7 @@ test_that("sim_gs_n() accepts different tests per cutting", {
   expected <- data.frame(
     method = rep("WLR", 9L),
     parameter = rep(c("FH(rho=0, gamma=0)", "FH(rho=0, gamma=0.5)", "FH(rho=0.5, gamma=0)"), 3),
-    estimation = c(
+    estimate = c(
       -28.194825408790173, -24.448179085866208, -28.98456223760244,
       -26.84871111584948, -19.967690764549445, -23.830324019953483,
       -23.063020152157016, -18.05051250570102, -27.319166131937404
@@ -355,7 +355,7 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   expected <- data.frame(
     method = rep(c("WLR", "RMST", "milestone"), 3),
     parameter = rep(c("FH(rho=0, gamma=0)", "20", "10"), 3),
-    estimation = c(
+    estimate = c(
       -28.194825408790173, 2.8531309198097876, 0.1752731092436976,
       -26.84871111584948, 2.3996923551365086, 0.11738941400903585,
       -23.063020152157016, 2.4481174776559786, 0.1519773404060174

@@ -209,7 +209,6 @@ sim_gs_n(
 ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
 fa_test <- create_test(milestone, ms_time = 10)
-\donttest{
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
@@ -219,8 +218,6 @@ sim_gs_n(
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024
 )
-\dontshow{\}) # examplesIf}
-}
 
 # Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.
 # At IA2, we conduct 2 tests, LR and WLR with early zero (6).
@@ -243,4 +240,5 @@ sim_gs_n(
   seed = 2024
 )
 }
+\dontshow{\}) # examplesIf}
 }

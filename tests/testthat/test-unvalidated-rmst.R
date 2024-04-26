@@ -12,7 +12,7 @@ test_that("rmst() snapshot test", {
     rmst_diff = 0.8650492799679741,
     z = 2.2178796367487963
   )
-  expect_equal(observed$estimation, expected$rmst_diff)
+  expect_equal(observed$estimate, expected$rmst_diff)
   expect_equal(observed$z, expected$z)
 })
 

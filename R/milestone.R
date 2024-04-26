@@ -32,7 +32,7 @@
 #' @return A list frame containing:
 #'   - `method` - The method, always `"milestone"`.
 #'   - `parameter` - Milestone time point.
-#'   - `estimation` - Survival difference between the experimental and control arm.
+#'   - `estimate` - Survival difference between the experimental and control arm.
 #'   - `se` - Standard error of the control and experimental arm.
 #'   - `z` - Test statistics.
 #'
@@ -92,7 +92,7 @@ milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
     }
   }
 
-  ans$estimation <- z_numerator
+  ans$estimate <- z_numerator
   ans$se <- z_denominator
   ans$z <- z_numerator / z_denominator
 
