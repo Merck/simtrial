@@ -1,21 +1,32 @@
+library(dplyr)
+library(gsDesign2)
+library(tibble)
+
+
 #### unstratified, FH (Fleming-Harrington) ----
 # Check value when Fleming-Harrington weight is used
 test_that("wlr() with FH weight on unstratified data", {
   # Example 1: Unstratified
   set.seed(123456)
   base <- sim_pw_surv(n = 200) |>
-    cut_data_by_event(125) #|>
-  output <- base |>
-    wlr(weight = fh(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
+    cut_data_by_event(125)
+  basec <- base |>
+    counting_process(arm = "experimental")
 
-  observed <- output$z
-  base <- base |> counting_process(arm = "experimental")
+  rho <- c(0, 0, 1, 1)
+  gamma <- c(0, 1, 0, 1)
+  observed <- c()
   expected <- c()
-  for (i in 1:length(observed)) {
-    base <- base |> mutate(weight=s^(output$rho[i])*(1-s)^(output$gamma[i]))
-    z <- sum(base$o_minus_e*base$weight)/sqrt(sum(base$weight^2*base$var_o_minus_e))
-    expected <- c(expected,z)
+  for (i in 1:length(rho)) {
+    output <- base |>
+      wlr(weight = fh(rho = rho[i], gamma = gamma[i]))
+    observed[i] <- output$z
+
+    basec <- basec |> mutate(weight=s^(rho[i])*(1-s)^(gamma[i]))
+    z <- sum(basec$o_minus_e*basec$weight)/sqrt(sum(basec$weight^2*basec$var_o_minus_e))
+    expected[i] <- z
   }
+
   expect_equal(observed, expected)
 })
 
@@ -34,7 +45,7 @@ test_that("wlr() with FH weight on stratified data", {
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
@@ -48,7 +59,6 @@ test_that("wlr() with FH weight on stratified data", {
     dropout_rate = 0.01
   )
   temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
-  set.seed(123456)
   base <- sim_pw_surv(
     n = n, # Sample size
     # Stratified design with prevalence ratio of 6:4
@@ -60,18 +70,23 @@ test_that("wlr() with FH weight on stratified data", {
     dropout_rate = temp$dropout_rate # Dropout rate
   ) |>
     cut_data_by_event(125)
+  basec <- base |>
+    counting_process(arm = "experimental")
 
-  output <- base |>
-    wlr(weight = fh(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1)))
-
-  observed <- output$z
-  base <- base |> counting_process(arm = "experimental")
+  rho <- c(0, 0, 1, 1)
+  gamma <- c(0, 1, 0, 1)
+  observed <- c()
   expected <- c()
-  for (i in 1:length(observed)) {
-    base <- base |> mutate(weight=s^(output$rho[i])*(1-s)^(output$gamma[i]))
-    z <- sum(base$o_minus_e*base$weight)/sqrt(sum(base$weight^2*base$var_o_minus_e))
-    expected <- c(expected,z)
+  for (i in 1:length(rho)) {
+    output <- base |>
+      wlr(weight = fh(rho = rho[i], gamma = gamma[i]))
+    observed[i] <- output$z
+
+    basec <- basec |> mutate(weight=s^(rho[i])*(1-s)^(gamma[i]))
+    z <- sum(basec$o_minus_e*basec$weight)/sqrt(sum(basec$weight^2*basec$var_o_minus_e))
+    expected[i] <- z
   }
+
   expect_equal(observed, expected)
 })
 
@@ -81,23 +96,25 @@ test_that("wlr() with FH weight on stratified data", {
 test_that("wlr() with MB weight on unstratified data", {
   # Example 1: Unstratified
   set.seed(123456)
-  delay <- 4
-  w_max <- 2
   base <- sim_pw_surv(n = 200) |>
     cut_data_by_event(125)
-  output <- base |>
-    wlr(weight = mb(delay = delay, w_max = w_max))
+  basec <- base |> counting_process(arm = "experimental")
 
-  observed <- output$z
-  base <- base |> counting_process(arm = "experimental")
-  base2 <- base |> filter(tte<=delay)
+  delay <- c(4,4,7,7)
+  w_max <- c(2,3,2,3)
+  observed <- c()
   expected <- c()
-  for (i in 1:length(observed)) {
-    wht <- base2 |> group_by(stratum) %>% summarise(mx = max(1/s)) |> mutate(mx = pmin(mx,w_max))
-    base <- base |> full_join(wht, by=c('stratum')) |> mutate(weight=pmin(1/s,mx))
-    z <- sum(base$o_minus_e*base$weight)/sqrt(sum(base$weight^2*base$var_o_minus_e))
-    expected <- c(expected,z)
+  for (i in 1:length(delay)) {
+    output <- base |>
+      wlr(weight = mb(delay = delay[i], w_max = w_max[i]))
+    observed[i] <- output$z
+
+    wht <- basec |> filter(tte<=delay[i]) |> group_by(stratum) |> summarise(mx = max(1/s)) |> mutate(mx = pmin(mx,w_max[i]))
+    tmp <- basec |> full_join(wht, by=c('stratum')) |> mutate(weight=pmin(1/s,mx))
+    z <- sum(tmp$o_minus_e*tmp$weight)/sqrt(sum(tmp$weight^2*tmp$var_o_minus_e))
+    expected[i] <- z
   }
+
   expect_equal(observed, expected)
 })
 
@@ -107,8 +124,6 @@ test_that("wlr() with MB weight on unstratified data", {
 test_that("wlr() with MB weight on stratified data", {
   # Example 2: Stratified
   set.seed(123456)
-  delay <- 4
-  w_max <- 2
   n <- 500
   # Two strata
   stratum <- c("Biomarker-positive", "Biomarker-negative")
@@ -118,7 +133,7 @@ test_that("wlr() with MB weight on stratified data", {
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
@@ -132,7 +147,6 @@ test_that("wlr() with MB weight on stratified data", {
     dropout_rate = 0.01
   )
   temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
-  set.seed(123456)
   base <- sim_pw_surv(
     n = n, # Sample size
     # Stratified design with prevalence ratio of 6:4
@@ -144,20 +158,23 @@ test_that("wlr() with MB weight on stratified data", {
     dropout_rate = temp$dropout_rate # Dropout rate
   ) |>
     cut_data_by_event(125)
+  basec <- base |> counting_process(arm = "experimental")
 
-  output <- base |>
-    wlr(weight = mb(delay = delay, w_max = w_max))
-
-  observed <- output$z
-  base <- base |> counting_process(arm = "experimental")
-  base2 <- base |> filter(tte<=delay)
+  delay <- c(4,4,7,7)
+  w_max <- c(2,3,2,3)
+  observed <- c()
   expected <- c()
-  for (i in 1:length(observed)) {
-    wht <- base2 |> group_by(stratum) %>% summarise(mx = max(1/s)) |> mutate(mx = pmin(mx,w_max))
-    base <- base |> full_join(wht, by=c('stratum')) |> mutate(weight=pmin(1/s,mx))
-    z <- sum(base$o_minus_e*base$weight)/sqrt(sum(base$weight^2*base$var_o_minus_e))
-    expected <- c(expected,z)
+  for (i in 1:length(delay)) {
+    output <- base |>
+      wlr(weight = mb(delay = delay[i], w_max = w_max[i]))
+    observed[i] <- output$z
+
+    wht <- basec |> filter(tte<=delay[i]) |> group_by(stratum) |> summarise(mx = max(1/s)) |> mutate(mx = pmin(mx,w_max[i]))
+    tmp <- basec |> full_join(wht, by=c('stratum')) |> mutate(weight=pmin(1/s,mx))
+    z <- sum(tmp$o_minus_e*tmp$weight)/sqrt(sum(tmp$weight^2*tmp$var_o_minus_e))
+    expected[i] <- z
   }
+
   expect_equal(observed, expected)
 })
 
@@ -167,19 +184,22 @@ test_that("wlr() with MB weight on stratified data", {
 test_that("wlr() with early_zero_weight on unstratified data", {
   # Example 1: Unstratified
   set.seed(123456)
-  early_period = 4
   base <- sim_pw_surv(n = 200) |>
     cut_data_by_event(125)
-  output <- base |>
-    wlr(weight = early_zero(early_period = early_period))
+  basec <- base |> counting_process(arm = "experimental")
 
-  observed <- output$z
-  # WLR using early_zero_weight yields the same results as directly removing the events happening earlier than `early_period`
-  base <- base |> counting_process(arm = "experimental") %>% filter(tte>=early_period)
+  early_period = c(2,4,6)
+  observed <- c()
   expected <- c()
-  for (i in 1:length(observed)) {
-    # base <- base |> mutate(weight=if_else(tte<early_period,0,1))
-    z <- sum(base$o_minus_e)/sqrt(sum(base$var_o_minus_e))
+  for (i in 1:length(early_period)) {
+    output <- base |>
+      wlr(weight = early_zero(early_period = early_period[i]))
+    observed[i] <- output$z
+
+    # WLR using early_zero_weight yields the same results as directly removing the events happening earlier than `early_period`
+    tmp <- basec |> filter(tte>=early_period[i])
+    # tmp <- basec |> mutate(weight=if_else(tte<early_period,0,1))
+    z <- sum(tmp$o_minus_e)/sqrt(sum(tmp$var_o_minus_e))
     expected <- c(expected,z)
   }
   expect_equal(observed, expected)
@@ -191,7 +211,6 @@ test_that("wlr() with early_zero_weight on unstratified data", {
 test_that("wlr() with early_zero_weight on stratified data", {
   # Example 2: Stratified
   set.seed(123456)
-  early_period = 4
   n <- 500
   # Two strata
   stratum <- c("Biomarker-positive", "Biomarker-negative")
@@ -201,7 +220,7 @@ test_that("wlr() with early_zero_weight on stratified data", {
     duration = c(2, 10, 2, 10),
     rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
   )
-  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)  #??
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
   # Failure rate
   med_pos <- 10 # Median of the biomarker positive population
   med_neg <- 8 # Median of the biomarker negative population
@@ -215,8 +234,7 @@ test_that("wlr() with early_zero_weight on stratified data", {
     dropout_rate = 0.01
   )
   temp <- to_sim_pw_surv(fail_rate) # Convert the failure rate
-  set.seed(123456)
-  x <- sim_pw_surv(
+  base <- sim_pw_surv(
     n = n, # Sample size
     # Stratified design with prevalence ratio of 6:4
     stratum = tibble(stratum = stratum, p = prevalence_ratio),
@@ -227,19 +245,18 @@ test_that("wlr() with early_zero_weight on stratified data", {
     dropout_rate = temp$dropout_rate # Dropout rate
   ) |>
     cut_data_by_event(125)
+  basec <- base |> counting_process(arm = "experimental")
 
+  early_period <- 2  #except being the input, not actually used
   output <- base |>
-    wlr(weight = early_zero(early_period = early_period))
-
+    wlr(weight = early_zero(early_period = early_period,fail_rate = fail_rate))
   observed <- output$z
-  # WLR using early_zero_weight yields the same results as directly removing the events happening earlier than `early_period`
-  base <- base |> counting_process(arm = "experimental") %>% filter(tte>=early_period)
-  expected <- c()
-  for (i in 1:length(observed)) {
-    # base <- base |> mutate(weight=if_else(tte<early_period,0,1))
-    z <- sum(base$o_minus_e)/sqrt(sum(base$var_o_minus_e))
-    expected <- c(expected,z)
-  }
+
+  tmp <- basec |> mutate(
+    weight = if_else(stratum=='Biomarker-negative',if_else(tte<4,0,log(0.8)),if_else(tte<3,0,log(0.7)))
+  )
+  z <- sum(tmp$o_minus_e*tmp$weight)/sqrt(sum(tmp$weight^2*tmp$var_o_minus_e))
+  expected<- z
+
   expect_equal(observed, expected)
 })
-
