@@ -51,7 +51,7 @@ early_zero_weight <- function(x, early_period = 4, fail_rate = NULL) {
 
     ans <- merge.data.table(ans, late_hr, by = "stratum", all.x = TRUE)
     ans <- merge.data.table(ans, delay_change_time, by = "stratum", all.x = TRUE)
-    ans[, weight := fifelse(tte < duration, 0, hr)]
+    ans[, weight := fifelse(tte < duration, 0, log(hr))]
   }
 
   setDF(ans)

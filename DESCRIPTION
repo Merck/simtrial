@@ -49,7 +49,6 @@ Imports:
     utils
 Suggests:
     Matrix,
-    bshazard,
     covr,
     dplyr,
     ggplot2,
