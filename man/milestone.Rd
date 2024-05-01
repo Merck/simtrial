@@ -4,7 +4,7 @@
 \alias{milestone}
 \title{Milestone test for two survival curves}
 \usage{
-milestone(data, ms_time)
+milestone(data, ms_time, test_type = c("log-log", "naive"))
 }
 \arguments{
 \item{data}{Data frame containing at least 3 columns:
@@ -15,6 +15,15 @@ milestone(data, ms_time)
 }}
 
 \item{ms_time}{Milestone analysis time.}
+
+\item{test_type}{Method to build the test statistics.
+There are 2 options:
+\itemize{
+\item \code{"native"}: a native approach by dividing the KM survival difference by its standard derivations,
+see equation (1) of Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
+\item \code{"log-log"}: a log-log transformation of the survival, see equation (3) of
+Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
+}}
 }
 \value{
 A list frame containing:
@@ -30,9 +39,14 @@ A list frame containing:
 Milestone test for two survival curves
 }
 \examples{
-sim_pw_surv(n = 200) |>
-  cut_data_by_event(150) |>
-  milestone(10)
+cut_data <- sim_pw_surv(n = 200) |>
+  cut_data_by_event(150)
+
+cut_data |>
+  milestone(10, test_type = "log-log")
+
+cut_data |>
+  milestone(10, test_type = "naive")
 }
 \references{
 Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).

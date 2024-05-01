@@ -23,13 +23,18 @@
 #'   - `event` - Event indicator.
 #'   - `treatment` - Grouping variable.
 #' @param ms_time Milestone analysis time.
-#'
+#' @param test_type Method to build the test statistics.
+#' There are 2 options:
+#'   - `"native"`: a native approach by dividing the KM survival difference by its standard derivations,
+#'   see equation (1) of Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
+#'   - `"log-log"`: a log-log transformation of the survival, see equation (3) of
+#'   Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
 #' @return A list frame containing:
-#' - `method` - The method, always `"milestone"`.
-#' - `parameter` - Milestone time point.
-#' - `estimation` - Survival difference between the experimental and control arm.
-#' - `se` - Standard error of the control and experimental arm.
-#' - `z` - Test statistics.
+#'   - `method` - The method, always `"milestone"`.
+#'   - `parameter` - Milestone time point.
+#'   - `estimation` - Survival difference between the experimental and control arm.
+#'   - `se` - Standard error of the control and experimental arm.
+#'   - `z` - Test statistics.
 #'
 #' @references
 #' Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
@@ -39,10 +44,18 @@
 #' @export
 #'
 #' @examples
-#' sim_pw_surv(n = 200) |>
-#'   cut_data_by_event(150) |>
-#'   milestone(10)
-milestone <- function(data, ms_time) {
+#' cut_data <- sim_pw_surv(n = 200) |>
+#'   cut_data_by_event(150)
+#'
+#' cut_data |>
+#'   milestone(10, test_type = "log-log")
+#'
+#' cut_data |>
+#'   milestone(10, test_type = "naive")
+milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
+
+  test_type <- match.arg(test_type)
+
   # Fit into KM curves
   fit <- survfit(Surv(tte, event) ~ treatment, data = data)
   fit_res <- summary(fit, time = ms_time, extend = TRUE)
@@ -50,7 +63,7 @@ milestone <- function(data, ms_time) {
   # Survival difference
   surv_ctrl <- fit_res$surv[1]
   surv_exp <- fit_res$surv[2]
-  diff_survival <- surv_exp - surv_ctrl
+  surv_diff <- surv_exp - surv_ctrl
 
   # Indicator whether the std is NA or not
   var_ctrl <- fit_res$std.err[1]^2
@@ -63,19 +76,25 @@ milestone <- function(data, ms_time) {
   sigma2_exp <- var_exp / (surv_exp^2)
 
   # Calculate the test statistics
-  if (na_ctrl + na_exp == 2) {
-    z <- -Inf
-  } else {
-    z <- (log(-log(surv_exp)) - log(-log(surv_ctrl)))^2 /
-      (sigma2_exp / (log(surv_exp))^2 + sigma2_ctrl / (log(surv_ctrl))^2)
-  }
-
   ans <- list()
   ans$method <- "milestone"
   ans$parameter <- ms_time
-  ans$estimation <- diff_survival
-  ans$se <- fit_res$std.err
-  ans$z <- z
+
+  if (na_ctrl + na_exp == 2) {
+    z <- -Inf
+  } else {
+    if (test_type == "naive"){
+      z_numerator <- surv_diff
+      z_denominator <- surv_exp * sqrt(sigma2_exp) + surv_ctrl * sqrt(sigma2_ctrl)
+    } else if (test_type == "log-log") {
+      z_numerator <- log(-log(surv_exp)) - log(-log(surv_ctrl))
+      z_denominator <- sqrt(sigma2_exp) / log(surv_exp) + sqrt(sigma2_ctrl) / log(surv_ctrl)
+    }
+  }
+
+  ans$estimation <- z_numerator
+  ans$se <- z_denominator
+  ans$z <- z_numerator / z_denominator
 
   return(ans)
 }
