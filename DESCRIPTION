@@ -1,12 +1,13 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.3.2.14
+Version: 0.4.0
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
-    person("Yilong", "Zhang", email = "elong0527@gmail.com", role =  c("aut")),
     person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role =  c("ctb","cre")),
+    person("John", "Blischak", role = c("ctb")),
     person("Nan", "Xiao", role = c("ctb")),
+    person("Yilong", "Zhang", role =  c("aut")),
     person("Jianxiao", "Yang", role = c("ctb")),
     person("Lili", "Ling", role = c("ctb")),
     person("Xintong", "Li", role = c("ctb")),
@@ -17,7 +18,6 @@ Authors@R: c(
     person("Heng", "Zhou", role = c("ctb")),
     person("Amin", "Shirazi", role = c("ctb")),
     person("Cole", "Manschot", role = c("ctb")),
-    person("John", "Blischak", role = c("ctb")),
     person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph")
     )
 Description: Provides some basic routines for simulating a
