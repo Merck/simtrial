@@ -7,7 +7,6 @@ test_that("multitest() is equivalent to running tests individually", {
   rmst_partial <- create_test(rmst, tau = 20)
   maxcombo_partial <- create_test(maxcombo, rho = c(0, 0), gamma = c(0, 0.5))
 
-  skip('skip')
   observed <- multitest(
     data = trial_data_cut,
     wlr = wlr_partial,
