@@ -156,29 +156,29 @@ test_that("formula argument throws error for bad input data", {
 
 test_that("parse_formula_rmst() properly parses the formula argument", {
   expected <- c(
-    "var_label_tte" = "month",
-    "var_label_event" = "status",
-    "var_label_group" = "trt"
+    "var_label_tte" = "tte",
+    "var_label_event" = "event",
+    "var_label_group" = "group"
   )
 
   expect_identical(
-    parse_formula_rmst(formula = Surv(month, status) ~ trt),
+    parse_formula_rmst(formula = Surv(tte, event) ~ group),
     expected
   )
 
   expect_identical(
-    parse_formula_rmst(formula = Surv(event = status, time = month) ~ trt),
+    parse_formula_rmst(formula = Surv(event = event, time = tte) ~ group),
     expected
   )
 
 
   expect_identical(
-    parse_formula_rmst(formula = Surv(month, event = status) ~ trt),
+    parse_formula_rmst(formula = Surv(tte, event = event) ~ group),
     expected
   )
 
   expect_identical(
-    parse_formula_rmst(formula = Surv(event = status, month) ~ trt),
+    parse_formula_rmst(formula = Surv(event = event, tte) ~ group),
     expected
   )
 
@@ -186,7 +186,7 @@ test_that("parse_formula_rmst() properly parses the formula argument", {
   # caught upstream in rmst(). This test is just to show that
   # parse_formula_rmst() can still parse it correctly regardless.
   expect_identical(
-    parse_formula_rmst(formula = Surv(month, status) ~ trt + trt2),
+    parse_formula_rmst(formula = Surv(tte, event) ~ group + group2),
     expected
   )
 })

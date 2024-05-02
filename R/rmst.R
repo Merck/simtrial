@@ -344,14 +344,14 @@ rmst_single_arm <- function(
 
 #' Parse the formula argument of rmst()
 #'
-#' The canonical syntax is `Surv(month, status) ~ trt)`
+#' The canonical syntax is `Surv(tte, event) ~ group)`
 #'
 #' @inheritParams rmst
 #'
 #' @examples
-#' parse_formula_rmst(formula = Surv(month, status) ~ trt)
+#' parse_formula_rmst(formula = Surv(tte, event) ~ group)
 #'
-#' parse_formula_rmst(formula = Surv(event = status, month) ~ trt)
+#' parse_formula_rmst(formula = Surv(event = event, tte) ~ group)
 #'
 #' @noRd
 parse_formula_rmst <- function(formula) {
