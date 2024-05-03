@@ -82,6 +82,7 @@ for data cutoff:
 }
 }
 \examples{
+\dontshow{if (rlang::is_installed("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 library(future)
 
@@ -119,4 +120,5 @@ plan("multisession", workers = 2)
 sim_fixed_n(n_sim = 10)
 plan("sequential")
 }
+\dontshow{\}) # examplesIf}
 }

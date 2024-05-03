@@ -19,7 +19,7 @@ A list of parameters of the zero early weighting function
 Zero early weighting function
 }
 \examples{
-library(dplyr)
+\dontshow{if (rlang::is_installed("gsDesign2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(gsDesign2)
 
 # Example 1: Unstratified ----
@@ -70,6 +70,7 @@ sim_pw_surv(
 ) |>
   cut_data_by_event(125) |>
   wlr(weight = early_zero(early_period = 2, fail_rate = fail_rate))
+\dontshow{\}) # examplesIf}
 }
 \references{
 Xu, Z., Zhen, B., Park, Y., & Zhu, B. (2017).

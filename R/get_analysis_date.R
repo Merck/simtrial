@@ -69,9 +69,8 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("gsDesign2")
 #' library(gsDesign2)
-#' library(simtrial)
 #'
 #' alpha <- 0.025
 #' ratio <- 3

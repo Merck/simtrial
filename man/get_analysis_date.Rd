@@ -79,8 +79,8 @@ dates determined solely by Condition 1, Condition 2, Condition 3,
 Condition 4 and Condition 5, respectively.
 }
 \examples{
+\dontshow{if (rlang::is_installed("gsDesign2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(gsDesign2)
-library(simtrial)
 
 alpha <- 0.025
 ratio <- 3
@@ -280,4 +280,5 @@ get_analysis_date(
   min_n_per_stratum = c(200, NA),
   min_followup = 12
 )
+\dontshow{\}) # examplesIf}
 }

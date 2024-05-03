@@ -73,7 +73,7 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("dplyr")
 #' library(dplyr)
 #' library(future)
 #'
