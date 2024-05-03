@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,13 @@
       <small>Source: <a href="https://github.com/Merck/simtrial/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1" id="simtrial-041">simtrial 0.4.1<a class="anchor" aria-label="anchor" href="#simtrial-041"></a></h2>
+<div class="section level3">
+<h3 id="improvements-0-4-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-4-1"></a></h3>
+<ul><li>Pass <code>noSuggests</code> checks by running code examples, tests, and vignettes conditionally if the <code>Suggests</code> dependencies are not installed (<a href="https://github.com/Merck/simtrial/issues/243" class="external-link">#243</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="simtrial-040">simtrial 0.4.0<a class="anchor" aria-label="anchor" href="#simtrial-040"></a></h2>
 <div class="section level3">
@@ -92,7 +99,7 @@
 <p>This release introduces significant changes to the API, improves simulation performance substantially, and adds new features and documentation.</p>
 <div class="section level3">
 <h3 id="significant-user-visible-changes-0-3-1">Significant user-visible changes<a class="anchor" aria-label="anchor" href="#significant-user-visible-changes-0-3-1"></a></h3>
-<ul><li>Complete overhaul of the API. Function and argument names now use snake case for consistency and readability. See the <a href="https://merck.github.io/simtrial/reference/">function reference</a> for the updated naming scheme. Detailed change history is available in the <a href="https://github.com/Merck/simtrial/pulls?q=is%3Apr+is%3Aclosed" class="external-link">merged pull requests</a> (thanks, <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>, <a href="https://github.com/lili-ling-msd" class="external-link">@lili-ling-msd</a>, and <a href="https://github.com/XintongLi2023" class="external-link">@XintongLi2023</a>).</li>
+<ul><li>Complete overhaul of the API. Function and argument names now use snake case for consistency and readability. See the <a href="https://merck.github.io/simtrial/reference/">function reference</a> for the updated naming scheme. Detailed change history is available in the merged pull requests (thanks, <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>, <a href="https://github.com/lili-ling-msd" class="external-link">@lili-ling-msd</a>, and <a href="https://github.com/XintongLi2023" class="external-link">@XintongLi2023</a>).</li>
 <li>Dataset names updated to snake case (thanks, <a href="https://github.com/nanxstats" class="external-link">@nanxstats</a>, <a href="https://github.com/Merck/simtrial/issues/164" class="external-link">#164</a>).</li>
 <li>The base pipe operator is now used throughout the package. The magrittr pipe is no longer re-exported (thanks, <a href="https://github.com/nanxstats" class="external-link">@nanxstats</a>, <a href="https://github.com/Merck/simtrial/issues/146" class="external-link">#146</a>).</li>
 </ul></div>
