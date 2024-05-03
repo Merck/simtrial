@@ -26,23 +26,22 @@
 #' @param var_label_event Column name of the event variable.
 #' @param var_label_group Column name of the grouping variable.
 #' @param formula (default: `NULL`) A formula that indicates the TTE, event, and
-#'   group variables (in that exact order; see Details below). This is an
-#'   alternative to specifying the variables as strings. If a formula is
-#'   provided, the values passed to `var_label_tte`, `var_label_event`, and
-#'   `var_label_group` are ignored.
+#'   group variables using the syntax `Surv(tte, event) ~ group)` (see Details
+#'   below for more information). This is an alternative to specifying the
+#'   variables as strings. If a formula is provided, the values passed to
+#'   `var_label_tte`, `var_label_event`, and `var_label_group` are ignored.
 #' @param reference A group label indicating the reference group.
 #' @param alpha Type I error.
 #'
 #' @details
-#' The argument `formula` is provided as a convenience to easily specify the TTE,
-#' event, and grouping variables. Note however that only the order of the three
-#' variables is actually used by the underlying function. Any functions applied
-#' in the formula are ignored, and thus should only be used for documenting your
-#' intent. For example, you can use the syntax from the survival package
-#' `Surv(tte | event) ~ group` to highlight the relation between the TTE and
-#' event variables, but the function `Surv()` is never actually executed.
-#' Importantly, you shouldn't apply any transformation functions such as `log()`
-#' since these will also be ignored.
+#' The argument `formula` is provided as a convenience to easily specify the
+#' TTE, event, and grouping variables using the syntax `Surv(tte, event) ~
+#' group)` ([Surv()] is from the \{survival\} package). You can also explicitly
+#' name the arguments passed to `Surv()`, for example the following is
+#' equivalent `Surv(event = event, time = tte) ~ group)`. Note however that the
+#' function `Surv()` is never actually executed. Similarly, any other functions
+#' applied in the formula are also ignored, thus you shouldn't apply any
+#' transformation functions such as `log()` since these will have no effect.
 #'
 #' @return The z statistics.
 #'
@@ -60,28 +59,9 @@
 #' )
 #'
 #' # Formula interface
-#' library("survival")
-#'
 #' rmst(
 #'   data = ex1_delayed_effect,
-#'   formula = Surv(month | evntd) ~ trt,
-#'   tau = 10,
-#'   reference = "0"
-#' )
-#'
-#' # alternative
-#' rmst(
-#'   data = ex1_delayed_effect,
-#'   formula = ~ Surv(month, evntd, trt),
-#'   tau = 10,
-#'   reference = "0"
-#' )
-#'
-#' # This example doesn't make statistical sense, but demonstrates that only the
-#' # order of the 3 variables actually matters
-#' rmst(
-#'   data = ex1_delayed_effect,
-#'   formula = month ~ evntd + trt,
+#'   formula = Surv(month, evntd) ~ trt,
 #'   tau = 10,
 #'   reference = "0"
 #' )
@@ -105,6 +85,11 @@ rmst <- function(
     var_label_tte <- variables[1]
     var_label_event <- variables[2]
     var_label_group <- variables[3]
+    # Properly parse the formula
+    variables_parsed <- parse_formula_rmst(formula)
+    var_label_tte <- variables_parsed["var_label_tte"]
+    var_label_event <- variables_parsed["var_label_event"]
+    var_label_group <- variables_parsed["var_label_group"]
   }
 
   res <- rmst_two_arm(
@@ -355,4 +340,57 @@ rmst_single_arm <- function(
   )
 
   return(ans)
+}
+
+#' Parse the formula argument of rmst()
+#'
+#' The canonical syntax is `Surv(tte, event) ~ group)`
+#'
+#' @inheritParams rmst
+#'
+#' @examples
+#' parse_formula_rmst(formula = Surv(tte, event) ~ group)
+#'
+#' parse_formula_rmst(formula = Surv(event = event, tte) ~ group)
+#'
+#' @noRd
+parse_formula_rmst <- function(formula) {
+  formula_terms <- stats::terms(formula)
+
+  var_label_group <- attr(formula_terms, "term.labels")[1]
+  if (length(var_label_group) != 1) {
+    stop(
+      "Unable to identify a single group variable. Received: '",
+      paste(var_label_group, collapse = " "), "'"
+    )
+  }
+
+  surv_call <- attr(formula_terms, "variables")[[2]]
+  if (is.symbol(surv_call)) {
+    stop("Must use canonical formula syntax with Surv()")
+  }
+  surv_call_match <- match.call(definition = function(time, event) {}, surv_call)
+
+  var_label_tte <- as.character(surv_call_match$time)
+  if (length(var_label_tte) != 1) {
+    stop(
+      "Unable to identify a single tte variable. Received: '",
+      paste(var_label_tte, collapse = " "), "'"
+    )
+  }
+  var_label_event <- as.character(surv_call_match$event)
+  if (length(var_label_event) != 1) {
+    stop(
+      "Unable to identify a single event variable. Received: '",
+      paste(var_label_event, collapse = " "), "'"
+    )
+  }
+
+  result <- c(
+    "var_label_tte" = var_label_tte,
+    "var_label_event" = var_label_event,
+    "var_label_group" = var_label_group
+  )
+
+  return(result)
 }

@@ -29,10 +29,10 @@ event or censor.}
 \item{var_label_group}{Column name of the grouping variable.}
 
 \item{formula}{(default: \code{NULL}) A formula that indicates the TTE, event, and
-group variables (in that exact order; see Details below). This is an
-alternative to specifying the variables as strings. If a formula is
-provided, the values passed to \code{var_label_tte}, \code{var_label_event}, and
-\code{var_label_group} are ignored.}
+group variables using the syntax \verb{Surv(tte, event) ~ group)} (see Details
+below for more information). This is an alternative to specifying the
+variables as strings. If a formula is provided, the values passed to
+\code{var_label_tte}, \code{var_label_event}, and \code{var_label_group} are ignored.}
 
 \item{reference}{A group label indicating the reference group.}
 
@@ -45,15 +45,13 @@ The z statistics.
 RMST difference of 2 arms
 }
 \details{
-The argument \code{formula} is provided as a convenience to easily specify the TTE,
-event, and grouping variables. Note however that only the order of the three
-variables is actually used by the underlying function. Any functions applied
-in the formula are ignored, and thus should only be used for documenting your
-intent. For example, you can use the syntax from the survival package
-\code{Surv(tte | event) ~ group} to highlight the relation between the TTE and
-event variables, but the function \code{Surv()} is never actually executed.
-Importantly, you shouldn't apply any transformation functions such as \code{log()}
-since these will also be ignored.
+The argument \code{formula} is provided as a convenience to easily specify the
+TTE, event, and grouping variables using the syntax \verb{Surv(tte, event) ~ group)} (\code{\link[=Surv]{Surv()}} is from the \{survival\} package). You can also explicitly
+name the arguments passed to \code{Surv()}, for example the following is
+equivalent \verb{Surv(event = event, time = tte) ~ group)}. Note however that the
+function \code{Surv()} is never actually executed. Similarly, any other functions
+applied in the formula are also ignored, thus you shouldn't apply any
+transformation functions such as \code{log()} since these will have no effect.
 }
 \examples{
 data(ex1_delayed_effect)
@@ -67,28 +65,9 @@ rmst(
 )
 
 # Formula interface
-library("survival")
-
 rmst(
   data = ex1_delayed_effect,
-  formula = Surv(month | evntd) ~ trt,
-  tau = 10,
-  reference = "0"
-)
-
-# alternative
-rmst(
-  data = ex1_delayed_effect,
-  formula = ~ Surv(month, evntd, trt),
-  tau = 10,
-  reference = "0"
-)
-
-# This example doesn't make statistical sense, but demonstrates that only the
-# order of the 3 variables actually matters
-rmst(
-  data = ex1_delayed_effect,
-  formula = month ~ evntd + trt,
+  formula = Surv(month, evntd) ~ trt,
   tau = 10,
   reference = "0"
 )
