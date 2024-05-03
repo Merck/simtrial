@@ -42,7 +42,7 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("gsDesign2")
 #' library(gsDesign2)
 #'
 #' # Parameters for enrollment

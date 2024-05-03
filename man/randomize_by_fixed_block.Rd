@@ -23,6 +23,7 @@ The final block will be a partial block if \code{n} is not an exact multiple
 of the block length.
 }
 \examples{
+\dontshow{if (rlang::is_installed("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 
 # Example 1
@@ -34,4 +35,5 @@ data.frame(x = 1:10) |> mutate(Treatment = randomize_by_fixed_block(block = c("A
 data.frame(stratum = c(rep("A", 10), rep("B", 10))) |>
   group_by(stratum) |>
   mutate(Treatment = randomize_by_fixed_block())
+\dontshow{\}) # examplesIf}
 }

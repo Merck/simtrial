@@ -93,8 +93,7 @@ mb <- function(delay = 4, w_max = Inf) {
 #' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
 #' @export
 #'
-#' @examples
-#' library(dplyr)
+#' @examplesIf rlang::is_installed("gsDesign2")
 #' library(gsDesign2)
 #'
 #' # Example 1: Unstratified ----
@@ -136,7 +135,7 @@ mb <- function(delay = 4, w_max = Inf) {
 #' sim_pw_surv(
 #'   n = n, # Sample size
 #'   # Stratified design with prevalence ratio of 6:4
-#'   stratum = tibble(stratum = stratum, p = prevalence_ratio),
+#'   stratum = data.frame(stratum = stratum, p = prevalence_ratio),
 #'   # Randomization ratio
 #'   block = c("control", "control", "experimental", "experimental"),
 #'   enroll_rate = enroll_rate, # Enrollment rate

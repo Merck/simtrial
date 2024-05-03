@@ -65,6 +65,7 @@ Default arguments are set up to allow very simple implementation of
 a non-proportional hazards assumption for an unstratified design.
 }
 \examples{
+\dontshow{if (rlang::is_installed("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 
 # Example 1
@@ -125,4 +126,5 @@ sim_pw_surv(
   fail_rate = fail_rate,
   dropout_rate = dropout_rate
 )
+\dontshow{\}) # examplesIf}
 }

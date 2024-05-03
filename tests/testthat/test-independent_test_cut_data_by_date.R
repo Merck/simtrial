@@ -11,6 +11,8 @@ test_that("x is a time-to-event data set", {
 })
 
 test_that("only patients recorded by cut_data_by_date are included", {
+  skip_if_not_installed("dplyr")
+
   x <- sim_pw_surv(n = 200)
   cut_date <- 10
   xcut <- cut_data_by_date(x, cut_date)
@@ -30,6 +32,8 @@ test_that("Time-to-event (TTE) is cut off at the cut_date", {
 })
 
 test_that("the event variable is calculated correctly", {
+  skip_if_not_installed("dplyr")
+
   x <- sim_pw_surv(n = 200)
   cut_date <- 10
   xcut <- cut_data_by_date(x, cut_date)

@@ -272,6 +272,8 @@ test_that("sim_gs_n() accepts different tests per cutting", {
 })
 
 test_that("sim_gs_n() requires a test for each cutting", {
+  skip_if_not_installed("gsDesign2")
+
   wlr_cut1 <- create_test(wlr, weight = fh(rho = 0, gamma = 0))
   wlr_cut2 <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 

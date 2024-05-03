@@ -13,6 +13,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+run <- if (rlang::is_installed(c("gt", "survRM2"))) TRUE else FALSE
+knitr::opts_chunk$set(eval = run)
 ```
 
 # Introduction

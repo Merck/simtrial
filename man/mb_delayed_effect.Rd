@@ -25,7 +25,6 @@ under the above scenario.
 }
 \examples{
 library(survival)
-library(dplyr)
 
 fit <- survfit(Surv(tte, event) ~ treatment, data = mb_delayed_effect)
 

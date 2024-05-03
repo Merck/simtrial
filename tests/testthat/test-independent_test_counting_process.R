@@ -1,4 +1,6 @@
 test_that("Counting Process Format without ties", {
+  skip_if_not_installed("dplyr")
+
   x <- data.frame(
     stratum = c(rep(1, 10), rep(2, 6)),
     treatment = rep(c(1, 1, 0, 0), 4),
@@ -18,6 +20,8 @@ test_that("Counting Process Format without ties", {
 })
 
 test_that("Counting Process Format with ties", {
+  skip_if_not_installed("dplyr")
+
   x <- data.frame(
     stratum = c(rep(1, 10), rep(2, 6)),
     treatment = rep(c(1, 1, 0, 0), 4),

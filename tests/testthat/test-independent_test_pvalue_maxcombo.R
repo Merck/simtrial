@@ -1,4 +1,7 @@
 test_that("the p-values correspond to pvalue_maxcombo", {
+  skip_if_not_installed("survMisc")
+  skip_if_not_installed("dplyr")
+
   set.seed(2022)
   # This part is double programming
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)

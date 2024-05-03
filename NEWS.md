@@ -1,3 +1,10 @@
+# simtrial 0.4.1
+
+## Improvements
+
+- Pass `noSuggests` checks by running code examples, tests, and vignettes
+  conditionally if the `Suggests` dependencies are not installed (#243).
+
 # simtrial 0.4.0
 
 ## New features
@@ -56,8 +63,7 @@ performance substantially, and adds new features and documentation.
 - Complete overhaul of the API. Function and argument names now use
   snake case for consistency and readability. See the
   [function reference](https://merck.github.io/simtrial/reference/)
-  for the updated naming scheme. Detailed change history is available in the
-  [merged pull requests](https://github.com/Merck/simtrial/pulls?q=is%3Apr+is%3Aclosed)
+  for the updated naming scheme. Detailed change history is available in the merged pull requests
   (thanks, @LittleBeannie, @lili-ling-msd, and @XintongLi2023).
 - Dataset names updated to snake case (thanks, @nanxstats, #164).
 - The base pipe operator is now used throughout the package.

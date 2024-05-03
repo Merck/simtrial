@@ -63,6 +63,7 @@ WARNING: This experimental function is a work-in-progress. The function
 arguments will change as we add additional features.
 }
 \examples{
+\dontshow{if (rlang::is_installed("gsDesign2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(gsDesign2)
 
 # Parameters for enrollment
@@ -255,4 +256,5 @@ sim_gs_n(
   )
 )
 }
+\dontshow{\}) # examplesIf}
 }

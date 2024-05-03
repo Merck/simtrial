@@ -45,6 +45,8 @@ test_that("functions that use data.table still return a data frame", {
 # and data.table. These tests ensure that data.table-enabled functions make a
 # copy instead of modifying the input object by reference
 test_that("functions that use data.table do not modify input data table", {
+  skip_if_not_installed("gsDesign2")
+
   # confirm that tests can detect a data table that is modified by reference
   modify_by_reference <- function(x) {
     data.table::setDT(x)

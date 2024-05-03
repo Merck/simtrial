@@ -15,6 +15,9 @@ knitr::opts_chunk$set(
   fig.width = 7.5,
   out.width = "100%"
 )
+
+run <- if (rlang::is_installed(c("dplyr", "ggplot2"))) TRUE else FALSE
+knitr::opts_chunk$set(eval = run)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
