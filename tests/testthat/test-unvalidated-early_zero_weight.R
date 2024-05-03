@@ -13,6 +13,8 @@ test_that("early_zero_weight() with unstratified data", {
 })
 
 test_that("early_zero_weight() with stratified data", {
+  skip_if_not_installed("gsDesign2")
+
   # Example 2: Stratified
   n <- 500
   # Two strata
@@ -60,6 +62,8 @@ test_that("early_zero_weight() with stratified data", {
 })
 
 test_that("early_zero_weight() fails with bad input", {
+  skip_if_not_installed("gsDesign2")
+
   # Example 2: Stratified
   n <- 500
   # Two strata

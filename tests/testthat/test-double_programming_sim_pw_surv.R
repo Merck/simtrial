@@ -1,5 +1,7 @@
 test_that("stratum percentage calculated from simulated dataset must be within
           the tolerance=0.002 of stratum in setup (0.4,0.6)", {
+  skip_if_not_installed("dplyr")
+
   res <- test_sim_pw_surv()
   expect_equal(
     object = c(
@@ -12,6 +14,8 @@ test_that("stratum percentage calculated from simulated dataset must be within
 
 test_that("block calculated from simulated dataset equals size of 4 with 1:1
           randomization, which is 2 for each arm", {
+  skip_if_not_installed("dplyr")
+
   res <- test_sim_pw_surv()
   expect_equal(object = res$bktest1, expected = rep(2, length(res$bktest1)))
   expect_equal(object = res$bktest2, expected = rep(2, length(res$bktest2)))
@@ -19,12 +23,16 @@ test_that("block calculated from simulated dataset equals size of 4 with 1:1
 
 test_that("fail_rate calculated from simulated dataset must be within the
           tolerance=0.1 of fail_rate in setting", {
+  skip_if_not_installed("dplyr")
+
   res <- test_sim_pw_surv()
   expect_equal(object = res$ratetest, expected = res$fail_rate$rate, tolerance = 0.1)
 })
 
 test_that("dropout_rate calculated from simulated dataset must be within
           the tolerance=0.0005 of dropout_rate=0.001 in setup", {
+  skip_if_not_installed("dplyr")
+
   res <- test_sim_pw_surv()
   duration <- 300
   drtest <- 0
@@ -36,6 +44,8 @@ test_that("dropout_rate calculated from simulated dataset must be within
 
 test_that("enroll_rate calculated from simulated dataset must be within
           the relative tolerance=0.05 of enroll_rate in setup", {
+  skip_if_not_installed("dplyr")
+
   res <- test_sim_pw_surv()
   duration <- 300
   entest <- 0
@@ -49,6 +59,8 @@ test_that("enroll_rate calculated from simulated dataset must be within
 })
 
 test_that("The actual number of events changes by changing total sample size", {
+  skip_if_not_installed("dplyr")
+
   res1 <- test_sim_pw_surv()
   res2 <- test_sim_pw_surv_2()
   expect_false(unique(res1$xevent$event == res2$zevent$event))

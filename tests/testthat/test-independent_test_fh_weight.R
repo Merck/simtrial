@@ -1,4 +1,6 @@
 test_that("the z values match with the correspondings in fh_weight", {
+  skip_if_not_installed("survMisc")
+
   set.seed(1234)
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"
@@ -27,6 +29,9 @@ test_that("the z values match with the correspondings in fh_weight", {
 })
 
 test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {
+  skip_if_not_installed("survMisc")
+  skip_if_not_installed("dplyr")
+
   set.seed(123)
   y <- sim_pw_surv(n = 300) |> cut_data_by_event(30)
   adjust.methods <- "asymp"

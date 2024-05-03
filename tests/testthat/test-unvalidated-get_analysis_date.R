@@ -1,16 +1,22 @@
 test_that("planned_calendar_time", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(simulated_data, planned_calendar_time = 24)
   expect_equal(observed, 24)
 })
 
 test_that("target_event_overall", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(simulated_data, target_event_overall = 300)
   expect_equal(observed, 25.6150577826303)
 })
 
 test_that("planned_calendar_time + target_event_overall", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -21,6 +27,8 @@ test_that("planned_calendar_time + target_event_overall", {
 })
 
 test_that("target_event_per_stratum", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -30,6 +38,8 @@ test_that("target_event_per_stratum", {
 })
 
 test_that("target_event_overall + target_event_per_stratum", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -40,6 +50,8 @@ test_that("target_event_overall + target_event_per_stratum", {
 })
 
 test_that("target_event_per_stratum + max_extension_for_target_event", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -50,6 +62,8 @@ test_that("target_event_per_stratum + max_extension_for_target_event", {
 })
 
 test_that("min_n_overall + min_followup", {
+  skip_if_not_installed("gsDesign2")
+
   res <- test_get_analysis_date()
   simulated_data <- res$simulated_data
   n <- res$n
@@ -62,6 +76,8 @@ test_that("min_n_overall + min_followup", {
 })
 
 test_that("min_n_per_stratum + min_followup", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -72,6 +88,8 @@ test_that("min_n_per_stratum + min_followup", {
 })
 
 test_that("min_n_per_stratum + min_followup (requirement for only one stratum)", {
+  skip_if_not_installed("gsDesign2")
+
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
@@ -82,6 +100,8 @@ test_that("min_n_per_stratum + min_followup (requirement for only one stratum)",
 })
 
 test_that("min_n_overall + min_n_per_stratum + min_followup", {
+  skip_if_not_installed("gsDesign2")
+
   res <- test_get_analysis_date()
   simulated_data <- res$simulated_data
   n <- res$n
@@ -95,6 +115,8 @@ test_that("min_n_overall + min_n_per_stratum + min_followup", {
 })
 
 test_that("get_analysis_date() fails early with bad input", {
+  skip_if_not_installed("gsDesign2")
+
   res <- test_get_analysis_date()
   simulated_data <- res$simulated_data
   n <- res$n
