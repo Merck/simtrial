@@ -19,7 +19,7 @@ A list of parameters of the zero early weighting function
 Zero early weighting function
 }
 \examples{
-\dontshow{if (rlang::is_installed("gsDesign2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("gsDesign2", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(gsDesign2)
 
 # Example 1: Unstratified ----

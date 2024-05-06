@@ -20,7 +20,7 @@ is never reached, the final \code{cte} at which an event occurs.
 Get date at which an event count is reached
 }
 \examples{
-\dontshow{if (rlang::is_installed("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 
 # Use default enrollment and calendar cut date

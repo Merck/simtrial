@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-run <- if (rlang::is_installed(c("dplyr", "ggplot2"))) TRUE else FALSE
+run <- requireNamespace("dplyr", quietly = TRUE) &&
+  requireNamespace("ggplot2", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 

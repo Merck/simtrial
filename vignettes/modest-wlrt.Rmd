@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- if (rlang::is_installed(c("dplyr"))) TRUE else FALSE
+run <- requireNamespace("dplyr", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 
