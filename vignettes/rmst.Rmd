@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- if (rlang::is_installed(c("gt", "survRM2"))) TRUE else FALSE
+run <- requireNamespace("gt", quietly = TRUE) &&
+  requireNamespace("survRM2", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 

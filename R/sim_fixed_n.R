@@ -73,7 +73,7 @@
 #'
 #' @export
 #'
-#' @examplesIf rlang::is_installed("dplyr")
+#' @examplesIf requireNamespace("dplyr", quietly = TRUE)
 #' library(dplyr)
 #' library(future)
 #'

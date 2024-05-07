@@ -93,7 +93,7 @@ mb <- function(delay = 4, w_max = Inf) {
 #' "Designing therapeutic cancer vaccine trials with delayed treatment effect."
 #' @export
 #'
-#' @examplesIf rlang::is_installed("gsDesign2")
+#' @examplesIf requireNamespace("gsDesign2", quietly = TRUE)
 #' library(gsDesign2)
 #'
 #' # Example 1: Unstratified ----

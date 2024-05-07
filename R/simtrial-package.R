@@ -24,7 +24,3 @@ NULL
 
 #' @importFrom Rcpp sourceCpp
 NULL
-
-# For safeguarding code examples and tests
-#' @importFrom rlang is_installed
-NULL

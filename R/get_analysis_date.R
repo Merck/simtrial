@@ -69,7 +69,7 @@
 #'
 #' @export
 #'
-#' @examplesIf rlang::is_installed("gsDesign2")
+#' @examplesIf requireNamespace("gsDesign2", quietly = TRUE)
 #' library(gsDesign2)
 #'
 #' alpha <- 0.025
