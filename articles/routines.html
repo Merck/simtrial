@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1881,18 +1881,18 @@ tests for you:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">temp_tbl</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Test 1"</span>, <span class="st">"Test 2"</span>, <span class="st">"Test 3"</span>, <span class="st">"Test 4"</span><span class="op">)</span></span>
 <span><span class="va">temp_tbl</span></span>
-<span><span class="co">#&gt;                        Test 1             Test 2             Test 3</span></span>
-<span><span class="co">#&gt; method                    WLR                WLR                WLR</span></span>
-<span><span class="co">#&gt; parameter  FH(rho=0, gamma=0) FH(rho=0, gamma=1) FH(rho=1, gamma=0)</span></span>
-<span><span class="co">#&gt; estimation  -14.9849475025986  -4.58833802802725  -10.3966094745713</span></span>
-<span><span class="co">#&gt; se           5.98116583796613   2.21990881849575   4.28272384915455</span></span>
-<span><span class="co">#&gt; z           -2.50535562941256  -2.06690382496719  -2.42756942561769</span></span>
-<span><span class="co">#&gt;                        Test 4</span></span>
-<span><span class="co">#&gt; method                    WLR</span></span>
-<span><span class="co">#&gt; parameter  FH(rho=1, gamma=1)</span></span>
-<span><span class="co">#&gt; estimation  -2.69994556253347</span></span>
-<span><span class="co">#&gt; se           1.13659961009608</span></span>
-<span><span class="co">#&gt; z           -2.37545881465262</span></span></code></pre></div>
+<span><span class="co">#&gt;                       Test 1             Test 2             Test 3</span></span>
+<span><span class="co">#&gt; method                   WLR                WLR                WLR</span></span>
+<span><span class="co">#&gt; parameter FH(rho=0, gamma=0) FH(rho=0, gamma=1) FH(rho=1, gamma=0)</span></span>
+<span><span class="co">#&gt; estimate   -14.9849475025986  -4.58833802802725  -10.3966094745713</span></span>
+<span><span class="co">#&gt; se          5.98116583796613   2.21990881849575   4.28272384915455</span></span>
+<span><span class="co">#&gt; z          -2.50535562941256  -2.06690382496719  -2.42756942561769</span></span>
+<span><span class="co">#&gt;                       Test 4</span></span>
+<span><span class="co">#&gt; method                   WLR</span></span>
+<span><span class="co">#&gt; parameter FH(rho=1, gamma=1)</span></span>
+<span><span class="co">#&gt; estimate   -2.69994556253347</span></span>
+<span><span class="co">#&gt; se          1.13659961009608</span></span>
+<span><span class="co">#&gt; z          -2.37545881465262</span></span></code></pre></div>
 <p>If we wanted to take the minimum of these for a MaxCombo test, we
 would first use <code>fh_weight()</code> to compute a correlation matrix
 for the above z-statistics as follows. Note that the ordering of
@@ -2413,7 +2413,7 @@ structure is meant to be simpler than for
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="method">method</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="parameter">parameter</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="estimation">estimation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="estimate">estimate</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="se">se</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="z">z</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="event">event</th>
@@ -2426,7 +2426,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-2.993631</td>
+<td headers="estimate" class="gt_row gt_right">-2.993631</td>
 <td headers="se" class="gt_row gt_right">5.496021</td>
 <td headers="z" class="gt_row gt_right">−0.54</td>
 <td headers="event" class="gt_row gt_right">121</td>
@@ -2438,7 +2438,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-34.168255</td>
+<td headers="estimate" class="gt_row gt_right">-34.168255</td>
 <td headers="se" class="gt_row gt_right">9.280556</td>
 <td headers="z" class="gt_row gt_right">−3.68</td>
 <td headers="event" class="gt_row gt_right">350</td>
@@ -2450,7 +2450,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-38.109119</td>
+<td headers="estimate" class="gt_row gt_right">-38.109119</td>
 <td headers="se" class="gt_row gt_right">9.562882</td>
 <td headers="z" class="gt_row gt_right">−3.99</td>
 <td headers="event" class="gt_row gt_right">375</td>
@@ -2462,7 +2462,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-34.168255</td>
+<td headers="estimate" class="gt_row gt_right">-34.168255</td>
 <td headers="se" class="gt_row gt_right">9.280556</td>
 <td headers="z" class="gt_row gt_right">−3.68</td>
 <td headers="event" class="gt_row gt_right">350</td>
@@ -2474,7 +2474,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-38.109119</td>
+<td headers="estimate" class="gt_row gt_right">-38.109119</td>
 <td headers="se" class="gt_row gt_right">9.562882</td>
 <td headers="z" class="gt_row gt_right">−3.99</td>
 <td headers="event" class="gt_row gt_right">375</td>
@@ -2486,7 +2486,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-17.318876</td>
+<td headers="estimate" class="gt_row gt_right">-17.318876</td>
 <td headers="se" class="gt_row gt_right">4.922279</td>
 <td headers="z" class="gt_row gt_right">−3.52</td>
 <td headers="event" class="gt_row gt_right">99</td>
@@ -2498,7 +2498,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-37.749178</td>
+<td headers="estimate" class="gt_row gt_right">-37.749178</td>
 <td headers="se" class="gt_row gt_right">9.190180</td>
 <td headers="z" class="gt_row gt_right">−4.11</td>
 <td headers="event" class="gt_row gt_right">350</td>
@@ -2510,7 +2510,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-38.404129</td>
+<td headers="estimate" class="gt_row gt_right">-38.404129</td>
 <td headers="se" class="gt_row gt_right">9.452228</td>
 <td headers="z" class="gt_row gt_right">−4.06</td>
 <td headers="event" class="gt_row gt_right">371</td>
@@ -2522,7 +2522,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-37.749178</td>
+<td headers="estimate" class="gt_row gt_right">-37.749178</td>
 <td headers="se" class="gt_row gt_right">9.190180</td>
 <td headers="z" class="gt_row gt_right">−4.11</td>
 <td headers="event" class="gt_row gt_right">350</td>
@@ -2534,7 +2534,7 @@ structure is meant to be simpler than for
 <tr>
 <td headers="method" class="gt_row gt_left">WLR</td>
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
-<td headers="estimation" class="gt_row gt_right">-38.404129</td>
+<td headers="estimate" class="gt_row gt_right">-38.404129</td>
 <td headers="se" class="gt_row gt_right">9.452228</td>
 <td headers="z" class="gt_row gt_right">−4.06</td>
 <td headers="event" class="gt_row gt_right">371</td>

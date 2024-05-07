@@ -12,7 +12,7 @@ arguments will change as we add additional features."><meta property="og:image" 
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,15 +104,15 @@ in each block.</p></dd>
 
 
 <dt>test</dt>
-<dd><p>One or more test functions such as <code><a href="wlr.html">wlr()</a></code>, <code><a href="maxcombo.html">maxcombo()</a></code>, or
-<code><a href="rmst.html">rmst()</a></code>. If a single test function is provided, it will be applied at each
-cut. Alternatively a list of functions created by <code><a href="create_test.html">create_test()</a></code>. The list
-form is experimental and currently limited. It only accepts one test per
-cutting (in the future multiple tests may be accepted), and all the tests
-must consistently return the same exact results (again this may be more
-flexible in the future). Importantly, note that the simulated data set is
-always passed as the first positional argument to each test function
-provided.</p></dd>
+<dd><p>One or more test functions such as <code><a href="wlr.html">wlr()</a></code>, <code><a href="rmst.html">rmst()</a></code>, or
+<code><a href="milestone.html">milestone()</a></code> (<code><a href="maxcombo.html">maxcombo()</a></code> can only be applied by itself). If a single
+test function is provided, it will be applied at each cut. Alternatively a
+list of functions created by <code><a href="create_test.html">create_test()</a></code>. The list form is experimental
+and currently limited. It only accepts one test per cutting (in the future
+multiple tests may be accepted), and all the tests must consistently return
+the same exact results (again this may be more flexible in the future).
+Importantly, note that the simulated data set is always passed as the first
+positional argument to each test function provided.</p></dd>
 
 
 <dt>cut</dt>
@@ -177,7 +177,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># - At least 20 months have elapsed after enrolling 200/400 subjects, with a</span></span></span>
 <span class="r-in"><span><span class="co">#   minimum of 20 months follow-up.</span></span></span>
 <span class="r-in"><span><span class="co"># However, if events accumulation is slow, we will wait for a maximum of 24 months.</span></span></span>
-<span class="r-in"><span><span class="va">ia1</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ia1_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  max_extension_for_target_event <span class="op">=</span> <span class="fl">24</span>,</span></span>
@@ -191,7 +191,7 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># - At least 250 events have occurred.</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 10 months after IA1.</span></span></span>
 <span class="r-in"><span><span class="co"># However, if events accumulation is slow, we will wait for a maximum of 34 months.</span></span></span>
-<span class="r-in"><span><span class="va">ia2</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ia2_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">32</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">200</span>,</span></span>
 <span class="r-in"><span>  max_extension_for_target_event <span class="op">=</span> <span class="fl">34</span>,</span></span>
@@ -202,273 +202,259 @@ z statistics or p-values.</p>
 <span class="r-in"><span><span class="co"># The final analysis will occur at the later of the following 2 conditions:</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 45 months have passed since the start of the study.</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 300 events have occurred.</span></span></span>
-<span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">fa_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">45</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">350</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 1: regular logrank test</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1: regular logrank test at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter            estimation se       z         analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -28.19483  7.521418 -3.748605 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -38.32581  8.459808 -4.53034  2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -39.4923   9.149248 -4.316453 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -26.84871  7.721484 -3.477144 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -32.54824  8.42531  -3.86315  2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -30.06631  9.172772 -3.277778 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -23.06302  7.498065 -3.075863 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -30.1633   8.33391  -3.619345 2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0)" -38.75506  9.178027 -4.222592 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event  estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1 24.00000 400   229 -28.19483</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2 32.00000 400   295 -38.32581</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0)        3 45.00000 400   355 -39.49230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2    WLR FH(rho=0, gamma=0)        1 24.00000 400   241 -26.84871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2    WLR FH(rho=0, gamma=0)        2 32.00000 400   290 -32.54824</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2    WLR FH(rho=0, gamma=0)        3 46.21933 400   350 -30.06631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3    WLR FH(rho=0, gamma=0)        1 24.00000 400   226 -23.06302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3    WLR FH(rho=0, gamma=0)        2 32.00000 400   282 -30.16330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3    WLR FH(rho=0, gamma=0)        3 50.86585 400   350 -38.75506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 7.521418 -3.748605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 8.459808 -4.530340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 9.149248 -4.316453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 7.721484 -3.477144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 8.425310 -3.863150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 9.172772 -3.277778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 7.498065 -3.075863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 8.333910 -3.619345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 9.178027 -4.222592</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 2: weighted logrank test by FH(0, 0.5)</span></span></span>
+<span class="r-in"><span><span class="co"># Example 2: weighted logrank test by FH(0, 0.5) at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter              estimation se       z        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -16.93422  4.081359 -4.149161</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -24.44818  5.116707 -4.778108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -25.51076  5.987416 -4.26073 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -15.50024  4.299539 -3.605093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -19.96769  5.061414 -3.945081</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -17.53906  6.008214 -2.91918 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -12.66462  4.029178 -3.143228</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -18.05051  4.958307 -3.640459</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "FH(rho=0, gamma=0.5)" -25.59217  6.031211 -4.243289</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              analysis cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1        24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2        32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3        50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method            parameter analysis cut_date   n event  estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0.5)        1 24.00000 400   229 -16.93422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0.5)        2 32.00000 400   295 -24.44818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0.5)        3 45.00000 400   355 -25.51076</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2    WLR FH(rho=0, gamma=0.5)        1 24.00000 400   241 -15.50024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2    WLR FH(rho=0, gamma=0.5)        2 32.00000 400   290 -19.96769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2    WLR FH(rho=0, gamma=0.5)        3 46.21933 400   350 -17.53906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3    WLR FH(rho=0, gamma=0.5)        1 24.00000 400   226 -12.66462</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3    WLR FH(rho=0, gamma=0.5)        2 32.00000 400   282 -18.05051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3    WLR FH(rho=0, gamma=0.5)        3 50.86585 400   350 -25.59217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4.081359 -4.149161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 5.116707 -4.778108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 5.987416 -4.260730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4.299539 -3.605093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5.061414 -3.945081</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 6.008214 -2.919180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 4.029178 -3.143228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 4.958307 -3.640459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 6.031211 -4.243289</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 3: weighted logrank test by MB(3)</span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: weighted logrank test by MB(3) at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter                         estimate  se      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -34.19243 9.004801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -46.74548 10.20347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -48.19085 11.07926</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -32.19277 9.194961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -39.18612 10.08251</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -36.14078 11.02093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -27.89564 8.957908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -36.66946 10.0225 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "MB(delay = 3, max_weight = Inf)" -47.28631 11.09153</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              z         analysis cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.797134 1        24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.581331 2        32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.349644 3        45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.501131 1        24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.886542 2        32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.279286 3        46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.114079 1        24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -3.658715 2        32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new -4.263279 3        50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method                       parameter analysis cut_date   n event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR MB(delay = 3, max_weight = Inf)        1 24.00000 400   229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR MB(delay = 3, max_weight = Inf)        2 32.00000 400   295</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR MB(delay = 3, max_weight = Inf)        3 45.00000 400   355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2    WLR MB(delay = 3, max_weight = Inf)        1 24.00000 400   241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2    WLR MB(delay = 3, max_weight = Inf)        2 32.00000 400   290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2    WLR MB(delay = 3, max_weight = Inf)        3 46.21933 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3    WLR MB(delay = 3, max_weight = Inf)        1 24.00000 400   226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3    WLR MB(delay = 3, max_weight = Inf)        2 32.00000 400   282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3    WLR MB(delay = 3, max_weight = Inf)        3 50.86585 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    estimate        se         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -34.19243  9.004801 -3.797134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -46.74548 10.203472 -4.581331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -48.19085 11.079263 -4.349644</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -32.19277  9.194961 -3.501131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -39.18612 10.082515 -3.886542</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -36.14078 11.020928 -3.279286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -27.89564  8.957908 -3.114079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -36.66946 10.022498 -3.658715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 -47.28631 11.091534 -4.263279</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 4: weighted logrank test by early zero (6)</span></span></span>
+<span class="r-in"><span><span class="co"># Example 4: weighted logrank test by early zero (6) at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter                                  estimate </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -21.99899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -32.12997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -33.29646</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -17.19941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -22.89893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -20.41701</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -11.77606</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -18.87634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "WLR"  "Xu 2017 with first 6 months of 0 weights" -27.4681 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              se       z         analysis cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 4.832164 -4.552617 1        24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.192449 -5.188573 2        32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.105407 -4.686074 3        45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 5.399223 -3.185533 1        24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.36523  -3.597503 2        32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.325985 -2.78693  3        46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 4.974376 -2.367344 1        24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 6.162588 -3.063054 2        32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 7.263581 -3.781619 3        50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method                                parameter analysis cut_date   n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR Xu 2017 with first 6 months of 0 weights        1 24.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR Xu 2017 with first 6 months of 0 weights        2 32.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR Xu 2017 with first 6 months of 0 weights        3 45.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2    WLR Xu 2017 with first 6 months of 0 weights        1 24.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2    WLR Xu 2017 with first 6 months of 0 weights        2 32.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2    WLR Xu 2017 with first 6 months of 0 weights        3 46.21933 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3    WLR Xu 2017 with first 6 months of 0 weights        1 24.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3    WLR Xu 2017 with first 6 months of 0 weights        2 32.00000 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3    WLR Xu 2017 with first 6 months of 0 weights        3 50.86585 400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   event  estimate       se         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   229 -21.99899 4.832164 -4.552617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   295 -32.12997 6.192449 -5.188573</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   355 -33.29646 7.105407 -4.686074</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   241 -17.19941 5.399223 -3.185533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   290 -22.89893 6.365230 -3.597503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   350 -20.41701 7.325985 -2.786930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   226 -11.77606 4.974376 -2.367344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   282 -18.87634 6.162588 -3.063054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   350 -27.46810 7.263581 -3.781619</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 5: RMST</span></span></span>
+<span class="r-in"><span><span class="co"># Example 5: RMST at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">rmst</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  tau <span class="op">=</span> <span class="fl">20</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method parameter estimation se        z        analysis cut_date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.881152   0.760202  3.789982 1        24      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.853131   0.7147367 3.991863 2        32      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.834508   0.7121699 3.980101 3        45      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.56739    0.7388451 3.474869 1        24      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.399692   0.7282783 3.295021 2        32      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.368335   0.727797  3.254115 3        46.21933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.287498   0.7674791 2.980534 1        24      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.448117   0.7416398 3.300952 2        32      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "RMST" 20        2.478942   0.7398877 3.35043  3        50.86585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method parameter analysis cut_date   n event estimate        se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1   RMST        20        1 24.00000 400   229 2.881152 0.7602020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1   RMST        20        2 32.00000 400   295 2.853131 0.7147367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1   RMST        20        3 45.00000 400   355 2.834508 0.7121699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2   RMST        20        1 24.00000 400   241 2.567390 0.7388451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2   RMST        20        2 32.00000 400   290 2.399692 0.7282783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2   RMST        20        3 46.21933 400   350 2.368335 0.7277970</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3   RMST        20        1 24.00000 400   226 2.287498 0.7674791</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3   RMST        20        2 32.00000 400   282 2.448117 0.7416398</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3   RMST        20        3 50.86585 400   350 2.478942 0.7398877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.789982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3.991863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3.980101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.474869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3.295021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3.254115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2.980534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 3.300952</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 3.350430</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 6: Milestone</span></span></span>
+<span class="r-in"><span><span class="co"># Example 6: Milestone at all 3 analyses</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="va">milestone</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  ms_time <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method      parameter estimation se         z        analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.4635636 -0.2151203 2.154904 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.5093608 -0.2066913 2.464355 2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.5093608 -0.2066913 2.464355 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.3605499 -0.2158065 1.670709 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.3487338 -0.2107879 1.65443  2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.3487338 -0.2107879 1.65443  3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.4643428 -0.217612  2.13381  1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.4593313 -0.2152211 2.13423  2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "milestone" 10        -0.4593313 -0.2152211 2.13423  3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id    method parameter analysis cut_date   n event   estimate         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 milestone        10        1 24.00000 400   229 -0.4635636 -0.2151203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1 milestone        10        2 32.00000 400   295 -0.5093608 -0.2066913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1 milestone        10        3 45.00000 400   355 -0.5093608 -0.2066913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2 milestone        10        1 24.00000 400   241 -0.3605499 -0.2158065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2 milestone        10        2 32.00000 400   290 -0.3487338 -0.2107879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2 milestone        10        3 46.21933 400   350 -0.3487338 -0.2107879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3 milestone        10        1 24.00000 400   226 -0.4643428 -0.2176120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3 milestone        10        2 32.00000 400   282 -0.4593313 -0.2152211</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3 milestone        10        3 50.86585 400   350 -0.4593313 -0.2152211</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.154904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.464355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2.464355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.670709</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.654430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.654430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2.133810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2.134230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 2.134230</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))</span></span></span>
-<span class="r-in"><span><span class="co"># for all analyses</span></span></span>
+<span class="r-in"><span><span class="co"># Example 7: WLR with fh(0, 0.5) test at IA1,</span></span></span>
+<span class="r-in"><span><span class="co"># WLR with mb(6, Inf) at IA2, and milestone test at FA</span></span></span>
+<span class="r-in"><span><span class="va">ia1_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ia2_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fa_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">milestone</span>, ms_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
-<span class="r-in"><span>  test <span class="op">=</span> <span class="va">maxcombo</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
-<span class="r-in"><span>  rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_test</span>, ia2 <span class="op">=</span> <span class="va">ia2_test</span>, fa <span class="op">=</span> <span class="va">fa_test</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              method     parameter               z         p_value      analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 2.615539e-05 1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.433049e-06 2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.247802e-05 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.000235838  1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 6.130078e-05 2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.0007667834 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.00121623   1       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 0.0002047186 2       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new "MaxCombo" "FH(0, 0) + FH(0, 0.5)" numeric,2 1.724936e-05 3       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              cut_date sim_id n   event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       1      400 229  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       1      400 295  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 45       1      400 355  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       2      400 241  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       2      400 290  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 46.21933 2      400 350  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 24       3      400 226  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 32       3      400 282  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ans_1sim_new 50.86585 3      400 350  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id    method                       parameter analysis cut_date   n event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1       WLR            FH(rho=0, gamma=0.5)        1 24.00000 400   229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1       WLR MB(delay = 6, max_weight = Inf)        2 32.00000 400   295</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1 milestone                              10        3 45.00000 400   355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2       WLR            FH(rho=0, gamma=0.5)        1 24.00000 400   241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2       WLR MB(delay = 6, max_weight = Inf)        2 32.00000 400   290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2 milestone                              10        3 46.21933 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3       WLR            FH(rho=0, gamma=0.5)        1 24.00000 400   226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3       WLR MB(delay = 6, max_weight = Inf)        2 32.00000 400   282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3 milestone                              10        3 50.86585 400   350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      estimate         se         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -16.9342172  4.0813592 -4.149161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -55.1339503 11.6364487 -4.738039</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  -0.5093608 -0.2066913  2.464355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -15.5002394  4.2995395 -3.605093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -44.4370518 11.2729305 -3.941925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  -0.3487338 -0.2107879  1.654430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -12.6646240  4.0291779 -3.143228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -41.6624938 11.2572150 -3.700959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  -0.4593313 -0.2152211  2.134230</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 8: MaxCombo (WLR-FH(0,0.5) + milestone(10))</span></span></span>
-<span class="r-in"><span><span class="co"># for all analyses</span></span></span>
+<span class="r-in"><span><span class="co"># WARNING: Multiple tests per cut will be enabled in a future version.</span></span></span>
+<span class="r-in"><span><span class="co">#          Currently does not work.</span></span></span>
+<span class="r-in"><span><span class="co"># Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.</span></span></span>
+<span class="r-in"><span><span class="co"># At IA2, we conduct 2 tests, LR and WLR with early zero (6).</span></span></span>
+<span class="r-in"><span><span class="co"># At FA, we conduct 2 tests, LR and milestone test.</span></span></span>
+<span class="r-in"><span><span class="va">ia1_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>test1 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 test2 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 test3 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">rmst</span>, tau <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ia2_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>test1 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 test2 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fa_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>test1 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">wlr</span>, weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 test3 <span class="op">=</span> <span class="fu"><a href="create_test.html">create_test</a></span><span class="op">(</span><span class="va">milestone</span>, ms_time <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
 <span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
 <span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
-<span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="maxcombo.html">maxcombo</a></span><span class="op">(</span>test1 <span class="op">=</span> <span class="va">wlr</span>, test2 <span class="op">=</span> <span class="va">milestone</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
-<span class="r-in"><span>  test1_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  test2_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ms_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test 9: MaxCombo (WLR-FH(0,0) at IAs</span></span></span>
-<span class="r-in"><span><span class="co"># and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">400</span>,</span></span>
-<span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">enroll_rate</span>,</span></span>
-<span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">fail_rate</span>,</span></span>
-<span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">wlr</span>, ia2 <span class="op">=</span> <span class="va">wlr</span>, fa <span class="op">=</span> <span class="va">maxcombo</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1</span>, ia2 <span class="op">=</span> <span class="va">ia2</span>, fa <span class="op">=</span> <span class="va">fa</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span>,</span></span>
-<span class="r-in"><span>  test_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    ia1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    ia2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    ia3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      test1_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      test2_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ms_time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      test3_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">4</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_test</span>, ia2 <span class="op">=</span> <span class="va">ia2_test</span>, fa <span class="op">=</span> <span class="va">fa_test</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">2024</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
