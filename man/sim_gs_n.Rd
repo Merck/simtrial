@@ -36,15 +36,15 @@ for experimental vs. control, and dropout rates by stratum and time period.}
 \item{block}{As in \code{\link[=sim_pw_surv]{sim_pw_surv()}}. Vector of treatments to be included
 in each block.}
 
-\item{test}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=maxcombo]{maxcombo()}}, or
-\code{\link[=rmst]{rmst()}}. If a single test function is provided, it will be applied at each
-cut. Alternatively a list of functions created by \code{\link[=create_test]{create_test()}}. The list
-form is experimental and currently limited. It only accepts one test per
-cutting (in the future multiple tests may be accepted), and all the tests
-must consistently return the same exact results (again this may be more
-flexible in the future). Importantly, note that the simulated data set is
-always passed as the first positional argument to each test function
-provided.}
+\item{test}{One or more test functions such as \code{\link[=wlr]{wlr()}}, \code{\link[=rmst]{rmst()}}, or
+\code{\link[=milestone]{milestone()}} (\code{\link[=maxcombo]{maxcombo()}} can only be applied by itself). If a single
+test function is provided, it will be applied at each cut. Alternatively a
+list of functions created by \code{\link[=create_test]{create_test()}}. The list form is experimental
+and currently limited. It only accepts one test per cutting (in the future
+multiple tests may be accepted), and all the tests must consistently return
+the same exact results (again this may be more flexible in the future).
+Importantly, note that the simulated data set is always passed as the first
+positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
 examples.}
@@ -102,7 +102,7 @@ ratio <- 1 # Randomization ratio (experimental:control)
 # - At least 20 months have elapsed after enrolling 200/400 subjects, with a
 #   minimum of 20 months follow-up.
 # However, if events accumulation is slow, we will wait for a maximum of 24 months.
-ia1 <- create_cut(
+ia1_cut <- create_cut(
   planned_calendar_time = 20,
   target_event_overall = 100,
   max_extension_for_target_event = 24,
@@ -116,7 +116,7 @@ ia1 <- create_cut(
 # - At least 250 events have occurred.
 # - At least 10 months after IA1.
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
-ia2 <- create_cut(
+ia2_cut <- create_cut(
   planned_calendar_time = 32,
   target_event_overall = 200,
   max_extension_for_target_event = 34,
@@ -127,133 +127,119 @@ ia2 <- create_cut(
 # The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study.
 # - At least 300 events have occurred.
-fa <- create_cut(
+fa_cut <- create_cut(
   planned_calendar_time = 45,
   target_event_overall = 350
 )
 
-# Test 1: regular logrank test
+# Example 1: regular logrank test at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = wlr,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0)
 )
 
-# Test 2: weighted logrank test by FH(0, 0.5)
+# Example 2: weighted logrank test by FH(0, 0.5) at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = wlr,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   weight = fh(rho = 0, gamma = 0.5)
 )
 
-# Test 3: weighted logrank test by MB(3)
+# Example 3: weighted logrank test by MB(3) at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = wlr,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   weight = mb(delay = 3)
 )
 
-# Test 4: weighted logrank test by early zero (6)
+# Example 4: weighted logrank test by early zero (6) at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = wlr,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   weight = early_zero(6)
 )
 
-# Test 5: RMST
+# Example 5: RMST at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = rmst,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   tau = 20
 )
 
-# Test 6: Milestone
+# Example 6: Milestone at all 3 analyses
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = milestone,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   seed = 2024,
   ms_time = 10
 )
 
-# Test 7: MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))
-# for all analyses
+# Example 7: WLR with fh(0, 0.5) test at IA1,
+# WLR with mb(6, Inf) at IA2, and milestone test at FA
+ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
+ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
+fa_test <- create_test(milestone, ms_time = 10)
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo,
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024,
-  rho = c(0, 0),
-  gamma = c(0, 0.5)
+  test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+  seed = 2024
 )
 
-# Test 8: MaxCombo (WLR-FH(0,0.5) + milestone(10))
-# for all analyses
+# WARNING: Multiple tests per cut will be enabled in a future version.
+#          Currently does not work.
+# Example 8: At IA1, we conduct 3 tests, LR, WLR with fh(0, 0.5), and RMST test.
+# At IA2, we conduct 2 tests, LR and WLR with early zero (6).
+# At FA, we conduct 2 tests, LR and milestone test.
+ia1_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+                 test2 = create_test(wlr, weight = fh(rho = 0, gamma = 0.5)),
+                 test3 = create_test(rmst, tau = 20))
+ia2_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+                 test2 = create_test(wlr, weight = early_zero(6)))
+fa_test <- list(test1 = create_test(wlr, weight = fh(rho = 0, gamma = 0)),
+                 test3 = create_test(milestone, ms_time = 20))
 \dontrun{
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
-  test = maxcombo(test1 = wlr, test2 = milestone),
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024,
-  test1_par = list(weight = fh(rho = 0, gamma = 0.5)),
-  test2_par = list(ms_time = 10)
-)
-}
-
-# Test 9: MaxCombo (WLR-FH(0,0) at IAs
-# and WLR-FH(0,0) + milestone(10) + WLR-MB(4,2) at FA)
-\dontrun{
-sim_gs_n(
-  n_sim = 3,
-  sample_size = 400,
-  enroll_rate = enroll_rate,
-  fail_rate = fail_rate,
-  test = list(ia1 = wlr, ia2 = wlr, fa = maxcombo),
-  cut = list(ia1 = ia1, ia2 = ia2, fa = fa),
-  seed = 2024,
-  test_par = list(
-    ia1 = list(weight = fh(rho = 0, gamma = 0)),
-    ia2 = list(weight = fh(rho = 0, gamma = 0)),
-    ia3 = list(
-      test1_par = list(weight = fh(rho = 0, gamma = 0)),
-      test2_par = list(ms_time = 10),
-      test3_par = list(delay = 4, w_max = 2)
-    )
-  )
+  test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+  seed = 2024
 )
 }
 \dontshow{\}) # examplesIf}

@@ -30,7 +30,7 @@ A list frame containing:
 \itemize{
 \item \code{method} - The method, always \code{"milestone"}.
 \item \code{parameter} - Milestone time point.
-\item \code{estimation} - Survival difference between the experimental and control arm.
+\item \code{estimate} - Survival difference between the experimental and control arm.
 \item \code{se} - Standard error of the control and experimental arm.
 \item \code{z} - Test statistics.
 }

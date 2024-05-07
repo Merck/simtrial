@@ -104,7 +104,7 @@ rmst <- function(
   ans <- list()
   ans$method <- "RMST"
   ans$parameter <- tau
-  ans$estimation <- res$rmst_diff$rmst_diff
+  ans$estimate <- res$rmst_diff$rmst_diff
   ans$se <- res$rmst_diff$std
   ans$z <- res$rmst_diff$rmst_diff / res$rmst_diff$std
 

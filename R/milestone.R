@@ -32,7 +32,7 @@
 #' @return A list frame containing:
 #'   - `method` - The method, always `"milestone"`.
 #'   - `parameter` - Milestone time point.
-#'   - `estimation` - Survival difference between the experimental and control arm.
+#'   - `estimate` - Survival difference between the experimental and control arm.
 #'   - `se` - Standard error of the control and experimental arm.
 #'   - `z` - Test statistics.
 #'
@@ -53,7 +53,6 @@
 #' cut_data |>
 #'   milestone(10, test_type = "naive")
 milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
-
   test_type <- match.arg(test_type)
 
   # Fit into KM curves
@@ -83,7 +82,7 @@ milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
   if (na_ctrl + na_exp == 2) {
     z <- -Inf
   } else {
-    if (test_type == "naive"){
+    if (test_type == "naive") {
       z_numerator <- surv_diff
       z_denominator <- surv_exp * sqrt(sigma2_exp) + surv_ctrl * sqrt(sigma2_ctrl)
     } else if (test_type == "log-log") {
@@ -92,7 +91,7 @@ milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
     }
   }
 
-  ans$estimation <- z_numerator
+  ans$estimate <- z_numerator
   ans$se <- z_denominator
   ans$z <- z_numerator / z_denominator
 

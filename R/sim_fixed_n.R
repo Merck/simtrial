@@ -377,7 +377,7 @@ sim_fixed_n <- function(
   return(results)
 }
 
-# Build a function to calculate test related statistics (e.g., z, estimation, se, etc.) and log-hr
+# Build a function to calculate test related statistics (e.g., z, estimate, se, etc.) and log-hr
 doAnalysis <- function(d, rho_gamma, n_stratum) {
   if (nrow(rho_gamma) == 1) {
     res <- d |>
@@ -386,7 +386,7 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
     ans <- data.frame(
       method = res$method,
       parameter = res$parameter,
-      estimation = res$estimation,
+      estimate = res$estimate,
       se = res$se,
       z = res$z
     )
@@ -397,7 +397,7 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
     ans <- data.frame(
       method = rep(res$method, nrow(rho_gamma)),
       parameter = rep(res$parameter, nrow(rho_gamma)),
-      estimation = rep("-", nrow(rho_gamma)),
+      estimate = rep("-", nrow(rho_gamma)),
       se = rep("-", nrow(rho_gamma)),
       z = res$z,
       p_value = rep(res$p_value, nrow(rho_gamma))

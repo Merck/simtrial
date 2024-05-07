@@ -27,7 +27,7 @@
 #'
 #' @return A list containing the test method (`method`),
 #' parameters of this test method (`parameter`),
-#' point estimation of the treatment effect (`estimation`),
+#' point estimate of the treatment effect (`estimate`),
 #' standardized error of the treatment effect (`se`),
 #' Z-score (`z`), p-values (`p_value`).
 #'
@@ -95,9 +95,9 @@ wlr <- function(data, weight, return_variance = FALSE) {
     x <- x |> fh_weight(rho = weight$rho, gamma = weight$gamma)
 
     ans$parameter <- paste0("FH(rho=", weight$rho, ", gamma=", weight$gamma, ")")
-    ans$estimation <- sum(x$weight * x$o_minus_e)
+    ans$estimate <- sum(x$weight * x$o_minus_e)
     ans$se <- sqrt(sum(x$weight^2 * x$var_o_minus_e))
-    ans$z <- ans$estimation / ans$se
+    ans$z <- ans$estimate / ans$se
   } else if (inherits(weight, "mb")) {
     x <- x |> mb_weight(delay = weight$delay, w_max = weight$w_max)
 

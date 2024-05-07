@@ -32,7 +32,7 @@ see details; Default: \code{FALSE}.}
 \value{
 A list containing the test method (\code{method}),
 parameters of this test method (\code{parameter}),
-point estimation of the treatment effect (\code{estimation}),
+point estimate of the treatment effect (\code{estimate}),
 standardized error of the treatment effect (\code{se}),
 Z-score of each test of the MaxCombo (\code{z}),
 p-values (\code{p_value})
