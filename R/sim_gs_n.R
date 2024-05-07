@@ -286,13 +286,16 @@ sim_gs_n <- function(
 
       # Test
       ans_1sim_new <- test[[i_analysis]](simu_data_cut, ...)
-      ans_1sim_new <- c(
-        sim_id = sim_id,
-        analysis = i_analysis,
-        cut_date = cut_date[i_analysis],
-        n = nrow(simu_data_cut),
-        event = sum(simu_data_cut$event),
-        ans_1sim_new
+      ans_1sim_new <- c(sim_id = sim_id, ans_1sim_new)
+      ans_1sim_new <- append(
+        x = ans_1sim_new,
+        values = c(
+          analysis = i_analysis,
+          cut_date = cut_date[i_analysis],
+          n = nrow(simu_data_cut),
+          event = sum(simu_data_cut$event)
+        ),
+        after = 3
       )
       ans_1sim_new <- convert_list_to_df_w_list_cols(ans_1sim_new)
 

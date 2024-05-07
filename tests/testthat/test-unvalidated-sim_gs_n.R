@@ -16,12 +16,12 @@ test_that("regular logrank test", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep("FH(rho=0, gamma=0)", 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("WLR", 9L),
-    parameter = rep("FH(rho=0, gamma=0)", 9L),
     estimate = c(
       -28.194825408790173, -38.32580538077858, -39.49229553865729,
       -26.84871111584948, -32.548237296118835, -30.06631062297029,
@@ -54,12 +54,12 @@ test_that("weighted logrank test by FH(0, 0.5)", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep("FH(rho=0, gamma=0.5)", 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("WLR", 9L),
-    parameter = rep("FH(rho=0, gamma=0.5)", 9L),
     estimate = c(
       -16.934217242190208, -24.448179085866208, -25.51076208491462,
       -15.500239367897708, -19.967690764549445, -17.5390556887186,
@@ -92,12 +92,12 @@ test_that("weighted logrank test by MB(3)", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep("MB(delay = 3, max_weight = Inf)", 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("WLR", 9L),
-    parameter = rep("MB(delay = 3, max_weight = Inf)", 9L),
     estimate = c(
       -34.1924345680359, -46.745479781695614, -48.190848712798775,
       -32.192766832733724, -39.186116293163025, -36.14077883676622,
@@ -130,12 +130,12 @@ test_that("weighted logrank test by early zero (6)", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep("Xu 2017 with first 6 months of 0 weights", 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("WLR", 9L),
-    parameter = rep("Xu 2017 with first 6 months of 0 weights", 9L),
     estimate = c(
       -21.998993527998245, -32.129973499986654, -33.29646365786535,
       -17.199406900467533, -22.89893308073689, -20.417006407588342,
@@ -168,12 +168,12 @@ test_that("RMST", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("RMST", 9L),
+    parameter = rep(20, 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("RMST", 9L),
-    parameter = rep(20, 9L),
     estimate = c(
       2.8811516510432966, 2.8531309198097876, 2.834507997939104, 2.567389750892662,
       2.3996923551365086, 2.36833514283823, 2.287497785439662, 2.4481174776559786,
@@ -207,12 +207,12 @@ test_that("Milestone", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("milestone", 9L),
+    parameter = rep(10, 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("milestone", 9L),
-    parameter = rep(10, 9L),
     estimate = c(
       0.16097092361893622, 0.1752731092436976, 0.1752731092436976,
       0.12045851966961263, 0.11738941400903585, 0.11738941400903585,
@@ -248,12 +248,12 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep(c("WLR", "WLR", "milestone"), 3),
+    parameter = rep(c("FH(rho=0, gamma=0.5)", "MB(delay = 6, max_weight = Inf)", "10"), 3),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep(c("WLR", "WLR", "milestone"), 3),
-    parameter = rep(c("FH(rho=0, gamma=0.5)", "MB(delay = 6, max_weight = Inf)", "10"), 3),
     estimate = c(
       -16.934217242190208, -55.13395025199291, 0.1752731092436976,
       -15.500239367897708, -44.437051762182506, 0.11738941400903585,
@@ -287,12 +287,12 @@ test_that("MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("MaxCombo", 9L),
+    parameter = rep("FH(0, 0) + FH(0, 0.5)", 9L),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("MaxCombo", 9L),
-    parameter = rep("FH(0, 0) + FH(0, 0.5)", 9L),
     z = I(list(
       c(-3.7486049782713247, -4.149161171743935),
       c(-4.53034007934394, -4.778107819550277),
@@ -329,12 +329,12 @@ test_that("sim_gs_n() accepts different tests per cutting", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep(c("FH(rho=0, gamma=0)", "FH(rho=0, gamma=0.5)", "FH(rho=0.5, gamma=0)"), 3),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep("WLR", 9L),
-    parameter = rep(c("FH(rho=0, gamma=0)", "FH(rho=0, gamma=0.5)", "FH(rho=0.5, gamma=0)"), 3),
     estimate = c(
       -28.194825408790173, -24.448179085866208, -28.98456223760244,
       -26.84871111584948, -19.967690764549445, -23.830324019953483,
@@ -390,12 +390,12 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
+    method = rep(c("WLR", "RMST", "milestone"), 3),
+    parameter = rep(c("FH(rho=0, gamma=0)", "20", "10"), 3),
     analysis = rep(1:3, 3),
     cut_date = c(24, 32, 45, 24, 32, 46.219327415802894, 24, 32, 50.86585486314699),
     n = rep(400L, 9L),
     event = c(229, 295, 355, 241, 290, 350, 226, 282, 350),
-    method = rep(c("WLR", "RMST", "milestone"), 3),
-    parameter = rep(c("FH(rho=0, gamma=0)", "20", "10"), 3),
     estimate = c(
       -28.194825408790173, 2.8531309198097876, 0.1752731092436976,
       -26.84871111584948, 2.3996923551365086, 0.11738941400903585,
