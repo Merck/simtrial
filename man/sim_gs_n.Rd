@@ -14,7 +14,6 @@ sim_gs_n(
   block = rep(c("experimental", "control"), 2),
   test = wlr,
   cut = NULL,
-  seed = 2024,
   ...
 )
 }
@@ -48,8 +47,6 @@ positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
 examples.}
-
-\item{seed}{Random seed.}
 
 \item{...}{Arguments passed to the test function(s) provided by the argument
 \code{test}.}
@@ -140,7 +137,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = fh(rho = 0, gamma = 0)
 )
 
@@ -152,7 +148,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = fh(rho = 0, gamma = 0.5)
 )
 
@@ -164,7 +159,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = mb(delay = 3)
 )
 
@@ -176,7 +170,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = early_zero(6)
 )
 
@@ -188,7 +181,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = rmst,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   tau = 20
 )
 
@@ -200,7 +192,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = milestone,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   ms_time = 10
 )
 
@@ -215,8 +206,7 @@ sim_gs_n(
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 )
 
 # WARNING: Multiple tests per cut will be enabled in a future version.
@@ -244,8 +234,7 @@ sim_gs_n(
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 )
 }
 \dontshow{\}) # examplesIf}

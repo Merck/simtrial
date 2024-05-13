@@ -33,7 +33,6 @@
 #'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
 #'   examples.
-#' @param seed Random seed.
 #' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `test`.
 #'
@@ -119,7 +118,6 @@
 #'   fail_rate = fail_rate,
 #'   test = wlr,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #'
@@ -131,7 +129,6 @@
 #'   fail_rate = fail_rate,
 #'   test = wlr,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   weight = fh(rho = 0, gamma = 0.5)
 #' )
 #'
@@ -143,7 +140,6 @@
 #'   fail_rate = fail_rate,
 #'   test = wlr,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   weight = mb(delay = 3)
 #' )
 #'
@@ -155,7 +151,6 @@
 #'   fail_rate = fail_rate,
 #'   test = wlr,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   weight = early_zero(6)
 #' )
 #'
@@ -167,7 +162,6 @@
 #'   fail_rate = fail_rate,
 #'   test = rmst,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   tau = 20
 #' )
 #'
@@ -179,7 +173,6 @@
 #'   fail_rate = fail_rate,
 #'   test = milestone,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024,
 #'   ms_time = 10
 #' )
 #'
@@ -194,8 +187,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
 #'
 #' # WARNING: Multiple tests per cut will be enabled in a future version.
@@ -223,8 +215,7 @@
 #'   enroll_rate = enroll_rate,
 #'   fail_rate = fail_rate,
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   seed = 2024
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
 #' }
 sim_gs_n <- function(
@@ -242,15 +233,29 @@ sim_gs_n <- function(
     block = rep(c("experimental", "control"), 2),
     test = wlr,
     cut = NULL,
-    seed = 2024,
     ...) {
   # Input checking
   # TODO
 
+  # parallel computation message for backends ----
+  if (!is(plan(), "sequential")) {
+    # future backend
+    message("Using ", nbrOfWorkers(), " cores with backend ", attr(plan("list")[[1]], "class")[2])
+  } else if (foreach::getDoParWorkers() > 1) {
+    message("Using ", foreach::getDoParWorkers(), " cores with backend ", foreach::getDoParName())
+    message("Warning: ")
+    message("doFuture may exhibit suboptimal performance when using a doParallel backend.")
+  } else {
+    message("Backend uses sequential processing.")
+  }
+
   # Simulate for `n_sim` times
-  ans <- NULL
-  for (sim_id in seq_len(n_sim)) {
-    set.seed(seed + sim_id)
+  ans <- foreach::foreach(
+    sim_id = seq_len(n_sim),
+    .combine = "rbind",
+    .errorhandling = "stop",
+    .options.future = list(seed = TRUE)
+  ) %dofuture% {
     # Generate data
     simu_data <- sim_pw_surv(
       n = sample_size,
@@ -265,7 +270,6 @@ sim_gs_n <- function(
     n_analysis <- length(cut)
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
-
     # Organize tests for each cutting
     if (is.function(test)) {
       test_single <- test
@@ -301,10 +305,12 @@ sim_gs_n <- function(
 
       # rbind simulation results for all IA(s) and FA in 1 simulation
       ans_1sim <- rbind(ans_1sim, ans_1sim_new)
+
     }
 
-    ans <- rbind(ans, ans_1sim)
+    ans_1sim
   }
+  # ans <- convert_list_to_df_w_list_cols(ans)
   return(ans)
 }
 
