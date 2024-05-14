@@ -310,7 +310,6 @@ sim_gs_n <- function(
 
     ans_1sim
   }
-  # ans <- convert_list_to_df_w_list_cols(ans)
   return(ans)
 }
 
