@@ -56,6 +56,12 @@ A data frame summarizing the simulation ID, analysis date,
 z statistics or p-values.
 }
 \description{
+This function uses the option "stop" for the error-handling behavior of the
+foreach loop. This will cause the entire function to stop when errors are
+encountered and return the first error encountered instead of returning
+errors for each individual simulation.
+}
+\details{
 WARNING: This experimental function is a work-in-progress. The function
 arguments will change as we add additional features.
 }
