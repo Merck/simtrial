@@ -257,6 +257,7 @@ sim_gs_n <- function(
   # Simulate for `n_sim` times
   ans <- foreach::foreach(
     sim_id = seq_len(n_sim),
+    test = test,
     .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
