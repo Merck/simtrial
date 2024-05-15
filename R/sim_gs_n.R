@@ -18,6 +18,11 @@
 
 #' Simulate group sequential designs with fixed sample size
 #'
+#' This function uses the option "stop" for the error-handling behavior of the
+#' foreach loop. This will cause the entire function to stop when errors are
+#' encountered and return the first error encountered instead of returning
+#' errors for each individual simulation.
+#'
 #' WARNING: This experimental function is a work-in-progress. The function
 #' arguments will change as we add additional features.
 #'
