@@ -222,6 +222,19 @@
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
+#'
+#' # Example 9: regular logrank test at all 3 analyses in parallel
+#' plan("multisession", workers = 2)
+#' sim_gs_n(
+#'   n_sim = 3,
+#'   sample_size = 400,
+#'   enroll_rate = enroll_rate,
+#'   fail_rate = fail_rate,
+#'   test = wlr,
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+#'   weight = fh(rho = 0, gamma = 0)
+#' )
+#' plan("sequential")
 #' }
 sim_gs_n <- function(
     n_sim = 1000,

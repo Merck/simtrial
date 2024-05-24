@@ -41,6 +41,47 @@ test_that("regular logrank test", {
   expect_equal(observed, expected)
 })
 
+test_that("regular logrank test parallel", {
+  set.seed(2024)
+  plan("multisession", workers = 2)
+  observed <- sim_gs_n(
+    n_sim = 3,
+    sample_size = 400,
+    enroll_rate = test_enroll_rate(),
+    fail_rate = test_fail_rate(),
+    test = wlr,
+    cut = test_cutting(),
+    weight = fh(rho = 0, gamma = 0)
+  )
+  plan("sequential")
+  expected <- data.frame(
+    sim_id = rep(1:3, each = 3L),
+    method = rep("WLR", 9L),
+    parameter = rep("FH(rho=0, gamma=0)", 9L),
+    analysis = rep(1:3, 3),
+    cut_date = c(24, 32, 45, 24, 32, 45, 24, 32, 45),
+    n = rep(400L, 9L),
+    event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
+    estimate = c(
+      -14.8967761757316, -22.6791676993923, -29.4104630799085,
+      -13.3530329578349, -17.9272135845997, -25.9789692783839,
+      -15.7016927028295, -22.7155477802184, -34.9030500614426
+    ),
+    se = c(
+      7.79986198971421, 8.70892718893558, 9.29168172400568,
+      7.65165409688827, 8.77164253357172, 9.41875140383468,
+      7.44263362582829, 8.42150520256931, 9.20559144909002
+    ),
+    z = c(
+      -1.90987689210094, -2.60412875287388, -3.16524650257064,
+      -1.74511717188905, -2.04376928448542, -2.75821795952773,
+      -2.10969577332675, -2.6973263370173,  -3.79150544041283
+    )
+  )
+  expect_equal(observed, expected)
+})
+
+
 test_that("weighted logrank test by FH(0, 0.5)", {
   set.seed(2024)
   observed <- sim_gs_n(
