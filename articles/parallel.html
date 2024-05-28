@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,6 +116,9 @@ parameters of the trial using different functions outlined in the
 documentation. This function now provides users the opportunity to
 implement their simulations using the previously described parallel
 backends to accelerate the computation.</p>
+<p>The function <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> which simulates group sequential
+designs under a fixed sample size also supports the use of user-defined
+backends to parallelize simulations in a similar manner.</p>
 </div>
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
@@ -210,8 +213,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.766   0.084   7.912</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.77 and the elapsed time is 7.91
+<span><span class="co">#&gt;  13.530   0.018   7.671</span></span></code></pre></div>
+<p>We can see that the CPU time is 13.53 and the elapsed time is 7.67
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -271,8 +274,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.418   0.006   7.770</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.42 and the elapsed time is 7.77
+<span><span class="co">#&gt;   0.386   0.008   7.480</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.39 and the elapsed time is 7.48
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
