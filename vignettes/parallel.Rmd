@@ -31,6 +31,8 @@ The function `sim_fixed_n()` provides a simulation workflow for a two-arm trial 
 We can vary the parameters of the trial using different functions outlined in the documentation.
 This function now provides users the opportunity to implement their simulations using the previously described parallel backends to accelerate the computation.
 
+The function `sim_gs_n()` which simulates group sequential designs under a fixed sample size also supports the use of user-defined backends to parallelize simulations in a similar manner. 
+
 ## Background
 
 Without specifying a backend, `sim_fixed_n()` will execute sequentially.
