@@ -252,7 +252,7 @@ sim_fixed_n <- function(
   results <- foreach::foreach(
     i = seq_len(n_sim),
     .combine = "rbind",
-    .errorhandling = "pass",
+    .errorhandling = "stop",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
     # Generate piecewise data ----
@@ -369,11 +369,9 @@ sim_fixed_n <- function(
 
     results_sim <- rbindlist(addit)
     results_sim[, sim := i]
-    setDF(results_sim)
-    results <- rbind(results, results_sim)
-    # return(results_sim)
+    results_sim
   }
-
+  setDF(results)
   return(results)
 }
 
