@@ -14,7 +14,6 @@ sim_gs_n(
   block = rep(c("experimental", "control"), 2),
   test = wlr,
   cut = NULL,
-  seed = 2024,
   ...
 )
 }
@@ -49,8 +48,6 @@ positional argument to each test function provided.}
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
 examples.}
 
-\item{seed}{Random seed.}
-
 \item{...}{Arguments passed to the test function(s) provided by the argument
 \code{test}.}
 }
@@ -59,6 +56,12 @@ A data frame summarizing the simulation ID, analysis date,
 z statistics or p-values.
 }
 \description{
+This function uses the option "stop" for the error-handling behavior of the
+foreach loop. This will cause the entire function to stop when errors are
+encountered and return the first error encountered instead of returning
+errors for each individual simulation.
+}
+\details{
 WARNING: This experimental function is a work-in-progress. The function
 arguments will change as we add additional features.
 }
@@ -140,7 +143,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = fh(rho = 0, gamma = 0)
 )
 
@@ -152,7 +154,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = fh(rho = 0, gamma = 0.5)
 )
 
@@ -164,7 +165,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = mb(delay = 3)
 )
 
@@ -176,7 +176,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = wlr,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   weight = early_zero(6)
 )
 
@@ -188,7 +187,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = rmst,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   tau = 20
 )
 
@@ -200,7 +198,6 @@ sim_gs_n(
   fail_rate = fail_rate,
   test = milestone,
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024,
   ms_time = 10
 )
 
@@ -215,8 +212,7 @@ sim_gs_n(
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 )
 
 # WARNING: Multiple tests per cut will be enabled in a future version.
@@ -244,9 +240,21 @@ sim_gs_n(
   enroll_rate = enroll_rate,
   fail_rate = fail_rate,
   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-  seed = 2024
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 )
+
+# Example 9: regular logrank test at all 3 analyses in parallel
+plan("multisession", workers = 2)
+sim_gs_n(
+  n_sim = 3,
+  sample_size = 400,
+  enroll_rate = enroll_rate,
+  fail_rate = fail_rate,
+  test = wlr,
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+  weight = fh(rho = 0, gamma = 0)
+)
+plan("sequential")
 }
 \dontshow{\}) # examplesIf}
 }

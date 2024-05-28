@@ -50,6 +50,7 @@ utils::globalVariables(
     "period",
     "rate",
     "s",
+    "sim_id",
     "status",
     "stratum",
     "time",
