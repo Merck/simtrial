@@ -18,6 +18,9 @@
 
 # These global variables are declared to eliminate associated R CMD check warnings.
 # There is no other identified functional impact of these global declarations.
+# However, only variables defined in this package should be added to the list.
+# If R CMD check warns about undefined global functions or variables that are
+# from another package, they need to be added to this package's NAMESPACE.
 
 utils::globalVariables(
   c(
@@ -43,7 +46,6 @@ utils::globalVariables(
     "n_event_tol",
     "n_risk_tol",
     "n_risk_trt",
-    "nbrOfWorkers",
     "o_minus_e",
     "one",
     "origin",
