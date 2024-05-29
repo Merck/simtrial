@@ -68,7 +68,7 @@
 #'
 #' @importFrom data.table ":=" rbindlist setDF
 #' @importFrom doFuture "%dofuture%"
-#' @importFrom future plan
+#' @importFrom future nbrOfWorkers plan
 #' @importFrom methods is
 #'
 #' @export
