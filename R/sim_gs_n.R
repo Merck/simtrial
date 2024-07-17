@@ -360,7 +360,7 @@ sim_gs_n <- function(
 #' # Cut the trial data
 #' cutting(trial_data)
 create_cut <- function(...) {
-  lapply(X = list(...), FUN = fo)
+  lapply(X = list(...), FUN = force)
   function(data) {
     get_analysis_date(data, ...)
   }
