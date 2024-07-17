@@ -271,6 +271,7 @@ sim_gs_n <- function(
   ans <- foreach::foreach(
     sim_id = seq_len(n_sim),
     test = replicate(n=n_sim, expr=test, simplify = FALSE),
+    cut = replicate(n=n_sim, expr=cut, simplify = FALSE),
     .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
