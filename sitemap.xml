@@ -1,147 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://merck.github.io/simtrial/404.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/arbitrary-hazard.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/maxcombo.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/modest-wlrt.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/parallel.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/rmst.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/routines.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/articles/workflow.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/check_args.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/counting_process.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/create_cut.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/create_test.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/cut_data_by_date.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/cut_data_by_event.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/early_zero.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex1_delayed_effect.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex2_delayed_effect.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex3_cure_with_ph.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex4_belly.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex5_widening.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/ex6_crossing.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/fh.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/fit_pwexp.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/get_analysis_date.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/get_cut_date_by_event.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/maxcombo.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/mb.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/mb_delayed_effect.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/milestone.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/multitest.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/rmst.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/rmst_single_arm.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/rmst_two_arm.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/rpwexp.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/rpwexp_enroll.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/sim_fixed_n.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/sim_gs_n.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/sim_pw_surv.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/simtrial-package.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/to_sim_pw_surv.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/simtrial/reference/wlr.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://merck.github.io/simtrial/404.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/LICENSE-text.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/arbitrary-hazard.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/index.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/maxcombo.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/modest-wlrt.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/parallel.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/rmst.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/routines.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/articles/workflow.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/authors.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/index.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/news/index.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/check_args.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/counting_process.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/create_cut.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/create_test.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/cut_data_by_date.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/cut_data_by_event.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/early_zero.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex1_delayed_effect.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex2_delayed_effect.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex3_cure_with_ph.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex4_belly.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex5_widening.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/ex6_crossing.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/fh.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/fit_pwexp.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/get_analysis_date.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/get_cut_date_by_event.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/index.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/maxcombo.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/mb.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/mb_delayed_effect.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/milestone.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/multitest.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/randomize_by_fixed_block.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/rmst.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/rmst_single_arm.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/rmst_two_arm.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/rpwexp.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/rpwexp_enroll.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/sim_fixed_n.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/sim_gs_n.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/sim_pw_surv.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/simtrial-package.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/to_sim_pw_surv.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/wlr.html</loc></url>
 </urlset>
+
