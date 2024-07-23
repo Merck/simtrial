@@ -114,12 +114,12 @@ Let $\text{RMST}_{1}(\tau)$ and $\text{RMST}_{2}(\tau)$ be the RMST of treatment
 $$
   \theta = \text{RMST}_1(\tau) - \text{RMST}_2(\tau).
 $$
-The expected value of $\theta$ is $E(\theta) = E[RMST_{1}(\tau)] - E[RMST_{2}(\tau)]$. If two treatment groups are independent, the variance of $\theta$ is
+The expected value of $\theta$ is $E(\theta) = E[\text{RMST}_{1}(\tau)] - E[\text{RMST}_{2}(\tau)]$. If two treatment groups are independent, the variance of $\theta$ is
 $$
   \text{Var}(\theta) = \sigma_{1}^{2} + \sigma_{2}^{2}
 $$
 
-Similarly, the $(1-\alpha)$ confidence interval for $\text{RMST}$ difference between 2 groups can be calculated as:
+Similarly, the $(1-\alpha)$ confidence interval for RMST difference between 2 groups can be calculated as:
 $$
   \left[
     \hat{\theta} - z_{\alpha/2}\sqrt{\hat{\sigma}_1^2 + \hat{\sigma}_2^2},
