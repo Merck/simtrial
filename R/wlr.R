@@ -88,9 +88,22 @@
 wlr <- function(data, weight, return_variance = FALSE) {
   x <- data |> counting_process(arm = "experimental")
 
+  # calculate the sample size and randomization ratio
+  n <- nrow(data)
+  ratio <- sum(data$treatment == "experimental") / sum(data$treatment == "control")
+  q_e <- ratio / (1 + ratio)
+  q_c <- 1 - q_e
+
+  # calculate the events of the 2 arms at time points which one or more events occurs
+  event_total <- -diff(c(n, x$n_risk_tol[x$weight > 0]))
+  event_e <- x$n_event_tol[x$weight > 0]
+  event_c <- event_total - event_e
+
+  # initialize the output
   ans <- list()
   ans$method <- "WLR"
 
+  # calculate z score
   if (inherits(weight, "fh")) {
     x <- x |> fh_weight(rho = weight$rho, gamma = weight$gamma)
 
@@ -113,5 +126,19 @@ wlr <- function(data, weight, return_variance = FALSE) {
     ans$se <- sqrt(sum(x$var_o_minus_e * x$weight^2))
     ans$z <- ans$estimate / ans$se
   }
+
+  # output info and info0
+  temp <- data.frame(event_total = event_total, event_e = event_e, event_c = event_c, weight = x$weight[x$weight > 0]) |>
+    dplyr::filter(weight > 0) |>
+    dplyr::mutate(info_total = event_total * q_c * q_e * weight,
+                  info_e = dplyr::case_when(event_e == 0 ~ 0,
+                                            event_e > 0  ~ 1 / event_e * weight),
+                  info_c = dplyr::case_when(event_c == 0 ~ 0,
+                                            event_c > 0  ~ 1 / event_c * weight)
+    ) |>
+    dplyr::summarize(info0 = sum(info_total), info = 1 / sum(info_e + info_c))
+  ans$info0 <- temp$info0
+  ans$info <- temp$info
+
   return(ans)
 }
