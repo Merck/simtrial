@@ -329,6 +329,12 @@ sim_gs_n <- function(
 
     ans_1sim
   }
+
+  test_method <- ans$method[ans$sim_id == 1]
+  if (all(substr(test_method, 1, 3) == "WLR")) {
+    class(ans) <- c("wlr", class(ans))
+  }
+
   return(ans)
 }
 
