@@ -56,6 +56,10 @@ reference:
     - create_test
     - multitest
 
+- title: "Summarize simulations"
+  contents:
+    - summary.wlr
+
 - title: "Randomization algorithms"
   contents:
     - randomize_by_fixed_block
