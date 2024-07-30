@@ -13,10 +13,6 @@
 \code{\link[gsDesign2:gs_power_ahr]{gsDesign2::gs_power_ahr()}}, \code{\link[gsDesign2:gs_design_wlr]{gsDesign2::gs_design_wlr()}}, or \link[gsDesign2:gs_power_wlr]{gsDesign2::gs_power_wlr}.}
 
 \item{...}{Additional parameters (not used).}
-
-\item{title}{Title of the gt table.}
-
-\item{subtitle}{Subtitle of the gt table.}
 }
 \value{
 A gt table

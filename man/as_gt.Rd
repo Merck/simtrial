@@ -3,11 +3,11 @@
 \name{as_gt}
 \alias{as_gt}
 \alias{as_gt.simtrial_gs_wlr}
-\title{Convert summary table of a fixed or group sequential design object to a gt object}
+\title{Convert summary table to a gt object}
 \usage{
 as_gt(x, ...)
 
-\method{as_gt}{simtrial_gs_wlr}(x, title = "Simulation results of WLR tests", subtitle, ...)
+\method{as_gt}{simtrial_gs_wlr}(x, title = "Summary of simulation results by WLR tests", subtitle, ...)
 }
 \arguments{
 \item{x}{A object returned by \code{\link[=summary]{summary()}}.}
@@ -24,9 +24,7 @@ A \code{gt_tbl} object.
 A gt table summarizing the simulation results.
 }
 \description{
-Convert summary table of a fixed or group sequential design object to a gt object
-
-Title
+Convert summary table to a gt object
 }
 \examples{
 library(gsDesign2)
