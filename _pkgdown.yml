@@ -58,7 +58,8 @@ reference:
 
 - title: "Summarize simulations"
   contents:
-    - summary.wlr
+    - summary.simtrial_gs_wlr
+    - as_gt.simtrial_gs_wlr
 
 - title: "Randomization algorithms"
   contents:
