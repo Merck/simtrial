@@ -86,21 +86,21 @@
 #'   summary(design = design,
 #'           title = "Comparison of simulation and asymptotic calculation",
 #'           subtitle = "WLR-FH(0, 0.5)")
-summary.wlr <- function(simulation,
+summary.wlr <- function(x,
                         design,
                         title,
                         subtitle,
                         ...) {
   # get the total number of analysis and simulations
   n_analysis <- nrow(design$analysis)
-  n_sim <- nrow(simulation) / n_analysis
+  n_sim <- nrow(x) / n_analysis
 
   # get the design type, 1-sided or 2-sided
   design_type <- ifelse(length(unique(design$bound$bound)) == 1, "one-sided", "two-sided")
 
   # add the futility and efficacy bounds to the simulation results
   if (design_type == "one-sided") {
-    sim_tbl <- simulation |>
+    sim_tbl <- x |>
       dplyr::left_join(
         design$bound |>
           dplyr::select(analysis, z, bound) |>
@@ -108,7 +108,7 @@ summary.wlr <- function(simulation,
       ) |>
       dplyr::mutate(cross_upper = -z >= upper_bound)
   } else {
-    sim_tbl <- simulation |>
+    sim_tbl <- x |>
       dplyr::left_join(
         design$bound |>
           dplyr::select(analysis, z, bound) |>
@@ -156,7 +156,7 @@ summary.wlr <- function(simulation,
   }
 
   # calculate the number of events and sample size
-  tbl_event <- simulation |>
+  tbl_event <- x |>
     dplyr::group_by(analysis) |>
     dplyr::summarize(sim_event = mean(event),
                      sim_n = mean(n)) |>
