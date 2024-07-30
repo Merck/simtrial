@@ -332,7 +332,8 @@ sim_gs_n <- function(
 
   test_method <- ans$method[ans$sim_id == 1]
   if (all(substr(test_method, 1, 3) == "WLR")) {
-    class(ans) <- c("wlr", class(ans))
+    class(ans) <- c("simtrial_gs_wlr", class(ans))
+    attr(ans, "method") <- unique(ans$parameter[ans$sim_id == 1])
   }
 
   return(ans)

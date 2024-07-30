@@ -82,15 +82,10 @@
 #'   weight = fh(rho = 0, gamma = 0.5))
 #'
 #' # Summarize simulations
-#' simulation |>
-#'   summary(design = design,
-#'           title = "Comparison of simulation and asymptotic calculation",
-#'           subtitle = "WLR-FH(0, 0.5)")
-summary.wlr <- function(object,
-                        design,
-                        title,
-                        subtitle,
-                        ...) {
+#' simulation |> summary(design = design)
+summary.simtrial_gs_wlr <- function(object,
+                                    design,
+                                    ...) {
   # get the total number of analysis and simulations
   n_analysis <- nrow(design$analysis)
   n_sim <- nrow(object) / n_analysis
@@ -176,26 +171,9 @@ summary.wlr <- function(object,
       dplyr::left_join(tbl_event)
   }
 
-  # build a gt table as return
-  ans <- ans |>
-    gt::gt() |>
-    gt::tab_spanner(label = "Events", columns = ends_with("_event")) |>
-    gt::tab_spanner(label = "N", columns = ends_with("_n")) |>
-    gt::tab_spanner(
-      label = "Probability of crossing efficacy bounds under H1",
-      columns = ends_with("_upper_prob"))
+  class(ans) <- c("simtrial_gs_wlr", class(ans))
+  attr(ans, "design_type") <- design_type
+  attr(ans, "method") <- attributes(object)$method
 
-  if (design_type == "two-sided") {
-    ans <- ans |> gt::tab_spanner(
-      label = "Probability of crossing futility bounds under H1",
-      columns = ends_with("_lower_prob"))
-  }
-
-  ans |>
-    gt::cols_label(
-      starts_with("asy") ~ "Asymptotic",
-      starts_with("sim") ~ "Simulated",
-      matches("analysis") ~ "Analysis") |>
-    gt::cols_move(columns = c(asy_n, sim_n), after = analysis) |>
-    gt::tab_header(title = title, subtitle = subtitle)
+  return(ans)
 }
