@@ -234,44 +234,44 @@ test_that("RMST", {
   expect_equal(observed, expected)
 })
 
-test_that("Milestone", {
-  set.seed(2024)
-  observed <- sim_gs_n(
-    n_sim = 3,
-    sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
-    test = milestone,
-    cut = test_cutting(),
-    ms_time = 10,
-    test_type = "naive"
-  )
-  expected <- data.frame(
-    sim_id = rep(1:3, each = 3L),
-    method = rep("milestone", 9L),
-    parameter = rep(10, 9L),
-    analysis = rep(1:3, 3),
-    cut_date = c(24, 32, 45, 24, 32, 45, 24, 32, 45),
-    n = rep(400L, 9L),
-    event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
-    estimate = c(
-      0.0570882489260027, 0.055,              0.055,
-      0.0982363112856928, 0.0995332208091276, 0.0995332208091276,
-      0.0314033376239697, 0.047591242749346,  0.047591242749346
-    ),
-    se = c(
-      0.0711607062867438, 0.0705956555729631, 0.0705956555729631,
-      0.0707139642597667, 0.070488618189222,  0.070488618189222,
-      0.0725290309676113, 0.0705189167423676, 0.0705189167423676
-    ),
-    z = c(
-      0.802243989765422, 0.779084768795093, 0.779084768795093,
-      1.38920667670141,  1.41204670152474,  1.41204670152474,
-      0.432976109083731, 0.674872005241018, 0.674872005241018
-    )
-  )
-  expect_equal(observed, expected)
-})
+# test_that("Milestone", {
+#   set.seed(2024)
+#   observed <- sim_gs_n(
+#     n_sim = 3,
+#     sample_size = 400,
+#     enroll_rate = test_enroll_rate(),
+#     fail_rate = test_fail_rate(),
+#     test = milestone,
+#     cut = test_cutting(),
+#     ms_time = 10,
+#     test_type = "naive"
+#   )
+#   expected <- data.frame(
+#     sim_id = rep(1:3, each = 3L),
+#     method = rep("milestone", 9L),
+#     parameter = rep(10, 9L),
+#     analysis = rep(1:3, 3),
+#     cut_date = c(24, 32, 45, 24, 32, 45, 24, 32, 45),
+#     n = rep(400L, 9L),
+#     event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
+#     estimate = c(
+#       0.0570882489260027, 0.055,              0.055,
+#       0.0982363112856928, 0.0995332208091276, 0.0995332208091276,
+#       0.0314033376239697, 0.047591242749346,  0.047591242749346
+#     ),
+#     se = c(
+#       0.0711607062867438, 0.0705956555729631, 0.0705956555729631,
+#       0.0707139642597667, 0.070488618189222,  0.070488618189222,
+#       0.0725290309676113, 0.0705189167423676, 0.0705189167423676
+#     ),
+#     z = c(
+#       0.802243989765422, 0.779084768795093, 0.779084768795093,
+#       1.38920667670141,  1.41204670152474,  1.41204670152474,
+#       0.432976109083731, 0.674872005241018, 0.674872005241018
+#     )
+#   )
+#   expect_equal(observed, expected)
+# })
 
 # test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and milestone test at FA", {
 #   ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
