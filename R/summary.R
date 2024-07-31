@@ -159,14 +159,18 @@ summary.simtrial_gs_wlr <- function(object,
 
   # combine all the information together
   if (design_type == "one-sided") {
-    ans <- tbl_asy_prob |>
-      dplyr::left_join(tbl_upper) |>
-      dplyr::left_join(tbl_event)
+    suppressMessages(
+      ans <- tbl_asy_prob |>
+        dplyr::left_join(tbl_upper) |>
+        dplyr::left_join(tbl_event)
+    )
   } else {
-    ans <- tbl_asy_prob |>
-      dplyr::left_join(tbl_upper) |>
-      dplyr::left_join(tbl_lower) |>
-      dplyr::left_join(tbl_event)
+    suppressMessages(
+      ans <- tbl_asy_prob |>
+        dplyr::left_join(tbl_upper) |>
+        dplyr::left_join(tbl_lower) |>
+        dplyr::left_join(tbl_event)
+    )
   }
 
   class(ans) <- c("simtrial_gs_wlr", class(ans))
