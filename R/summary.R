@@ -93,23 +93,27 @@ summary.simtrial_gs_wlr <- function(object,
 
   # add the futility and efficacy bounds to the simulation results
   if (design_type == "one-sided") {
-    sim_tbl <- object |>
-      dplyr::left_join(
-        design$bound |>
-          dplyr::select(analysis, z, bound) |>
-          dplyr::rename(upper_bound = z)
-      ) |>
-      dplyr::mutate(cross_upper = -z >= upper_bound)
+    suppressMessages(
+      sim_tbl <- object |>
+        dplyr::left_join(
+          design$bound |>
+            dplyr::select(analysis, z, bound) |>
+            dplyr::rename(upper_bound = z)
+        ) |>
+        dplyr::mutate(cross_upper = -z >= upper_bound)
+    )
   } else {
-    sim_tbl <- object |>
-      dplyr::left_join(
-        design$bound |>
-          dplyr::select(analysis, z, bound) |>
-          tidyr::pivot_wider(values_from = z, names_from = bound) |>
-          dplyr::rename(lower_bound = lower, upper_bound = upper)
-      ) |>
-      dplyr::mutate(cross_lower = -z <= lower_bound,
-                    cross_upper = -z >= upper_bound)
+    suppressMessages(
+      sim_tbl <- object |>
+        dplyr::left_join(
+          design$bound |>
+            dplyr::select(analysis, z, bound) |>
+            tidyr::pivot_wider(values_from = z, names_from = bound) |>
+            dplyr::rename(lower_bound = lower, upper_bound = upper)
+        ) |>
+        dplyr::mutate(cross_lower = -z <= lower_bound,
+                      cross_upper = -z >= upper_bound)
+    )
   }
 
   # calculate the prob of crossing efficacy bounds
@@ -149,14 +153,15 @@ summary.simtrial_gs_wlr <- function(object,
   }
 
   # calculate the number of events and sample size
-  tbl_event <- object |>
-    dplyr::group_by(analysis) |>
-    dplyr::summarize(sim_event = mean(event),
-                     sim_n = mean(n)) |>
-    dplyr::right_join(design$analysis |>
-                        dplyr::select(analysis, n, event) |>
-                        dplyr::rename(asy_n = n, asy_event = event))
-
+  suppressMessages(
+    tbl_event <- object |>
+      dplyr::group_by(analysis) |>
+      dplyr::summarize(sim_event = mean(event),
+                       sim_n = mean(n)) |>
+      dplyr::right_join(design$analysis |>
+                          dplyr::select(analysis, n, event) |>
+                          dplyr::rename(asy_n = n, asy_event = event))
+  )
   # combine all the information together
   if (design_type == "one-sided") {
     suppressMessages(
