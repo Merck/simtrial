@@ -19,7 +19,7 @@ as_gt(x, ...)
 \item{subtitle}{Subtitle of the gt table.}
 }
 \value{
-A \code{gt_tbl} object.
+A gt table.
 
 A gt table summarizing the simulation results.
 }

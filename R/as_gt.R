@@ -21,7 +21,7 @@
 #' @param x A summary object of a fixed or group sequential design.
 #' @param ... Additional arguments (not used).
 #'
-#' @return A `gt_tbl` object.
+#' @return A gt table.
 #'
 #' @export
 as_gt <- function(x, ...) {
