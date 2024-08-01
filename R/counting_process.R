@@ -143,5 +143,7 @@ counting_process <- function(x, arm) {
     n_risk_total^2 / (n_risk_total - 1)]
 
   setDF(ans)
+  class(ans) <- c("counting_process", class(ans))
+
   return(ans)
 }
