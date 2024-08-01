@@ -1,17 +1,86 @@
 # 2024-02-22: Converted `example("sim_gs_n")` to tests from commit 306de0d
 # https://github.com/Merck/simtrial/tree/306de0dbe380fdb1e906a59f34bf3871d3ee5312
 
-# See helper-sim_gs_n.R for helper functions
+# parameters for enrollment
+enroll_rampup_duration <- 4 # duration for enrollment ramp up
+enroll_duration <- 16 # total enrollment duration
+enroll_rate <- gsDesign2::define_enroll_rate(
+  duration = c(
+    enroll_rampup_duration,
+    enroll_duration - enroll_rampup_duration
+    ),
+  rate = c(10, 30)
+)
+
+
+# parameters for treatment effect
+delay_effect_duration <- 3 # delay treatment effect in months
+median_ctrl <- 9 # survival median of the control arm
+median_exp <- c(9, 14) # survival median of the experimental arm
+dropout_rate <- 0.001
+fail_rate <- gsDesign2::define_fail_rate(
+    duration = c(delay_effect_duration, 100),
+    fail_rate = log(2) / median_ctrl,
+    hr = median_ctrl / median_exp,
+    dropout_rate = dropout_rate
+)
+
+
+
+# other related parameters
+alpha <- 0.025 # type I error
+beta <- 0.1 # type II error
+ratio <- 1 # randomization ratio (exp:ctrl)
+# Define cuttings of 2 IAs and 1 FA
+# IA1
+# The 1st interim analysis will occur at the later of the following 3 conditions:
+# - At least 20 months have passed since the start of the study
+# - At least 100 events have occurred
+# - At least 20 months have elapsed after enrolling 200/400 subjects, with a
+#   minimum of 20 months follow-up
+# However, if events accumulation is slow, we will wait for a maximum of 24 months.
+ia1_cut <- create_cut(
+  planned_calendar_time = 20,
+  target_event_overall = 100,
+  max_extension_for_target_event = 24,
+  min_n_overall = 200,
+  min_followup = 20
+)
+
+# IA2
+# The 2nd interim analysis will occur at the later of the following 3 conditions:
+# - At least 32 months have passed since the start of the study
+# - At least 250 events have occurred
+# - At least 10 months after IA1
+# However, if events accumulation is slow, we will wait for a maximum of 34 months.
+ia2_cut <- create_cut(
+  planned_calendar_time = 32,
+  target_event_overall = 200,
+  max_extension_for_target_event = 34,
+  min_time_after_previous_analysis = 10
+)
+
+# FA
+# The final analysis will occur at the later of the following 2 conditions:
+# - At least 45 months have passed since the start of the study
+# - At least 300 events have occurred
+fa_cut <- create_cut(
+  planned_calendar_time = 45,
+  target_event_overall = 350
+)
+
+cut <- list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
+
 
 test_that("regular logrank test", {
   set.seed(2024)
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0)
   )
   expected <- data.frame(
@@ -47,10 +116,10 @@ test_that("regular logrank test parallel", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0)
   )
   plan("sequential")
@@ -87,10 +156,10 @@ test_that("weighted logrank test by FH(0, 0.5)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0.5)
   )
   expected <- data.frame(
@@ -125,10 +194,10 @@ test_that("weighted logrank test by MB(3)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = mb(delay = 3)
   )
   expected <- data.frame(
@@ -163,10 +232,10 @@ test_that("weighted logrank test by early zero (6)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = early_zero(6)
   )
   expected <- data.frame(
@@ -201,10 +270,10 @@ test_that("RMST", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = rmst,
-    cut = test_cutting(),
+    cut = cut,
     tau = 20
   )
   expected <- data.frame(
@@ -239,10 +308,10 @@ test_that("Milestone", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = milestone,
-    cut = test_cutting(),
+    cut = cut,
     ms_time = 10,
     test_type = "naive"
   )
@@ -282,10 +351,10 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-    cut = test_cutting()
+    cut = cut
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -319,10 +388,10 @@ test_that("MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = maxcombo,
-    cut = test_cutting(),
+    cut = cut,
     rho = c(0, 0),
     gamma = c(0, 0.5)
   )
@@ -363,10 +432,10 @@ test_that("sim_gs_n() accepts different tests per cutting", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(wlr_cut1, wlr_cut2, wlr_cut3),
-    cut = test_cutting()
+    cut = cut
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -406,10 +475,10 @@ test_that("sim_gs_n() requires a test for each cutting", {
     sim_gs_n(
       n_sim = 3,
       sample_size = 400,
-      enroll_rate = test_enroll_rate(),
-      fail_rate = test_fail_rate(),
+      enroll_rate = enroll_rate,
+      fail_rate = fail_rate,
       test = list(wlr_cut1, wlr_cut2),
-      cut = test_cutting()
+      cut = cut
     ),
     "If you want to run different tests at each cutting"
   )
@@ -424,10 +493,10 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(test_cut1, test_cut2, test_cut3),
-    cut = test_cutting()
+    cut = cut
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
