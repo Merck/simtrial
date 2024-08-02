@@ -90,34 +90,55 @@ as_gt <- function(x, ...) {
 #'   weight = simtrial::fh(rho = 0, gamma = 0.5))
 #'
 #' # Summarize simulations
-#' simulation |> summary(design = design) |> simtrial::as_gt()
+#' simulation |>
+#'  summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound) |>
+#'  simtrial::as_gt()
+#'
+#' # Summarize simulations and compare with the planned design
+#' simulation |>
+#'   summary(design = design) |>
+#'   simtrial::as_gt()
 as_gt.simtrial_gs_wlr <- function(x,
                                   title = "Summary of simulation results by WLR tests",
-                                  subtitle, ...){
-  # get the design type, either one-sided or two-sided
-  design_type <- attributes(x)$design_type
-  subtitle <- paste0("Weighted by ", attributes(x)$method)
-
-  # build a gt table as return
-  ans <- x |>
-    gt::gt() |>
-    gt::tab_spanner(label = "Events", columns = ends_with("_event")) |>
-    gt::tab_spanner(label = "N", columns = ends_with("_n")) |>
-    gt::tab_spanner(
-      label = "Probability of crossing efficacy bounds under H1",
-      columns = ends_with("_upper_prob"))
-
-  if (design_type == "two-sided") {
-    ans <- ans |> gt::tab_spanner(
-      label = "Probability of crossing futility bounds under H1",
-      columns = ends_with("_lower_prob"))
+                                  subtitle = NULL, ...){
+  # get the default subtitle
+  if (is.null(subtitle)) {
+    subtitle <- paste0("Weighted by ", attributes(x)$method)
   }
 
-  ans |>
-    gt::cols_label(
-      starts_with("asy") ~ "Asymptotic",
-      starts_with("sim") ~ "Simulated",
-      matches("analysis") ~ "Analysis") |>
-    gt::cols_move(columns = c(asy_n, sim_n), after = analysis) |>
-    gt::tab_header(title = title, subtitle = subtitle)
+  # if it is not compared with the design
+  if (attributes(x)$compare_with_design == "no") {
+    x |>
+      gt::gt() |>
+      gt::cols_label(sim_time = "Time", sim_n = "N", sim_event = "Event", sim_upper_prob = "Crossing probability") |>
+      gt::cols_move(columns = c(sim_time, sim_n, sim_event), after = analysis) |>
+      gt::tab_header(title = title, subtitle = subtitle)
+  } else {
+    # get the design type, either one-sided or two-sided
+    design_type <- attributes(x)$design_type
+
+    # build a gt table as return
+    ans <- x |>
+      gt::gt() |>
+      gt::tab_spanner(label = "Time", columns = ends_with("_time")) |>
+      gt::tab_spanner(label = "Events", columns = ends_with("_event")) |>
+      gt::tab_spanner(label = "N", columns = ends_with("_n")) |>
+      gt::tab_spanner(
+        label = "Probability of crossing efficacy bounds under H1",
+        columns = ends_with("_upper_prob"))
+
+    if (design_type == "two-sided") {
+      ans <- ans |> gt::tab_spanner(
+        label = "Probability of crossing futility bounds under H1",
+        columns = ends_with("_lower_prob"))
+    }
+
+    ans |>
+      gt::cols_label(
+        starts_with("asy") ~ "Asymptotic",
+        starts_with("sim") ~ "Simulated",
+        matches("analysis") ~ "Analysis") |>
+      gt::cols_move(columns = c(asy_time, sim_time, asy_n, sim_n, asy_event, sim_event), after = analysis) |>
+      gt::tab_header(title = title, subtitle = subtitle)
+  }
 }
