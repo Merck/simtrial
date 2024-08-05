@@ -7,7 +7,12 @@
 \usage{
 as_gt(x, ...)
 
-\method{as_gt}{simtrial_gs_wlr}(x, title = "Summary of simulation results by WLR tests", subtitle, ...)
+\method{as_gt}{simtrial_gs_wlr}(
+  x,
+  title = "Summary of simulation results by WLR tests",
+  subtitle = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A object returned by \code{\link[=summary]{summary()}}.}
@@ -78,5 +83,12 @@ simulation <- simtrial::sim_gs_n(
   weight = simtrial::fh(rho = 0, gamma = 0.5))
 
 # Summarize simulations
-simulation |> summary(design = design) |> simtrial::as_gt()
+simulation |>
+ summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound) |>
+ simtrial::as_gt()
+
+# Summarize simulations and compare with the planned design
+simulation |>
+  summary(design = design) |>
+  simtrial::as_gt()
 }
