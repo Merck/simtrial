@@ -36,7 +36,6 @@ utils::globalVariables(
     "dropout_rate",
     "dropout_time",
     "duration",
-    "ends_with",
     "enroll_time",
     "event",
     "eventCount",
