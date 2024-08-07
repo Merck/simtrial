@@ -8,7 +8,7 @@ test_that("functions that use data.table still return a data frame", {
     tte = 1:16,
     event = rep(c(0, 1), 8)
   )
-  expect_identical(class(counting_process(x, arm = 1)), class_expected)
+  expect_identical(class(counting_process(x, arm = 1)), c("counting_process", class_expected))
 
   # cut_data_by_date()
   x <- sim_pw_surv(n = 20)
@@ -21,7 +21,7 @@ test_that("functions that use data.table still return a data frame", {
   expect_identical(class(early_zero_weight(x, early_period = 2)), class_expected)
 
   # fh_weight()
-  expect_identical(class(fh_weight()), class_expected)
+  expect_identical(class(fh_weight()), c("counting_process", class_expected))
 
   # mb_weight()
   x <- sim_pw_surv()
