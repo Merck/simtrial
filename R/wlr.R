@@ -117,7 +117,7 @@ wlr <- function(data, weight, return_variance = FALSE) {
   ans$se <- sqrt(sum(x$var_o_minus_e * x$weight^2))
 
   # calculate z-score
-  ans$z <- ans$estimate / ans$se
+  ans$z <- -ans$estimate / ans$se
 
   # calculate the statistcial information
   x$event_ctrl <- x$event_total - x$event_trt
