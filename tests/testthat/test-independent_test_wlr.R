@@ -17,7 +17,7 @@ test_that("wlr() with FH weight on unstratified data", {
     observed[i] <- output$z
 
     basec <- basec |> dplyr::mutate(weight = s^(rho[i]) * (1 - s)^(gamma[i]))
-    z <- sum(basec$o_minus_e * basec$weight) / sqrt(sum(basec$weight^2 * basec$var_o_minus_e))
+    z <- -sum(basec$o_minus_e * basec$weight) / sqrt(sum(basec$weight^2 * basec$var_o_minus_e))
     expected[i] <- z
   }
 
@@ -74,7 +74,7 @@ test_that("wlr() with FH weight on stratified data", {
     observed[i] <- output$z
 
     basec <- basec |> dplyr::mutate(weight = s^(rho[i]) * (1 - s)^(gamma[i]))
-    z <- sum(basec$o_minus_e * basec$weight) / sqrt(sum(basec$weight^2 * basec$var_o_minus_e))
+    z <- -sum(basec$o_minus_e * basec$weight) / sqrt(sum(basec$weight^2 * basec$var_o_minus_e))
     expected[i] <- z
   }
 
@@ -106,7 +106,7 @@ test_that("wlr() with MB weight on unstratified data", {
     tmp <- basec |>
       dplyr::full_join(wht, by = c("stratum")) |>
       dplyr::mutate(weight = pmin(1 / s, mx))
-    z <- sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
+    z <- -sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
     expected[i] <- z
   }
 
@@ -170,7 +170,7 @@ test_that("wlr() with MB weight on stratified data", {
     tmp <- basec |>
       dplyr::full_join(wht, by = c("stratum")) |>
       dplyr::mutate(weight = pmin(1 / s, mx))
-    z <- sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
+    z <- -sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
     expected[i] <- z
   }
 
@@ -196,7 +196,7 @@ test_that("wlr() with early_zero_weight on unstratified data", {
     # WLR using early_zero_weight yields the same results as directly removing the events happening earlier than `early_period`
     tmp <- basec |> dplyr::filter(tte >= early_period[i])
     # tmp <- basec |> mutate(weight=if_else(tte<early_period,0,1))
-    z <- sum(tmp$o_minus_e) / sqrt(sum(tmp$var_o_minus_e))
+    z <- -sum(tmp$o_minus_e) / sqrt(sum(tmp$var_o_minus_e))
     expected <- c(expected, z)
   }
   expect_equal(observed, expected)
@@ -254,7 +254,7 @@ test_that("wlr() with early_zero_weight on stratified data", {
       dplyr::if_else(tte < 3, 0, log(0.7))
     )
   )
-  z <- sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
+  z <- -sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
   expected <- z
 
   expect_equal(observed, expected)
