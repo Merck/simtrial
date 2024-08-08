@@ -201,11 +201,13 @@ sim_gs_n(
   ms_time = 10
 )
 
+# Warning: this example will be executable when we add info info0 to the milestone test
 # Example 7: WLR with fh(0, 0.5) test at IA1,
 # WLR with mb(6, Inf) at IA2, and milestone test at FA
 ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
 fa_test <- create_test(milestone, ms_time = 10)
+\dontrun{
 sim_gs_n(
   n_sim = 3,
   sample_size = 400,
@@ -214,6 +216,7 @@ sim_gs_n(
   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 )
+}
 
 # WARNING: Multiple tests per cut will be enabled in a future version.
 #          Currently does not work.

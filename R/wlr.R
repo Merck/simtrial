@@ -77,8 +77,8 @@
 #' x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 #'
 #' # Example 1: WLR test with FH wights
-#' x |> wlr(weight = fh(rho = 0, gamma = 1))
-#' x |> wlr(weight = fh(rho = 0, gamma = 1), return_variance = TRUE)
+#' x |> wlr(weight = fh(rho = 0, gamma = 0.5))
+#' x |> wlr(weight = fh(rho = 0, gamma = 0.5), return_variance = TRUE)
 #'
 #' # Example 2: WLR test with MB wights
 #' x |> wlr(weight = mb(delay = 4, w_max = 2))
@@ -88,30 +88,43 @@
 wlr <- function(data, weight, return_variance = FALSE) {
   x <- data |> counting_process(arm = "experimental")
 
+  # calculate the sample size and randomization ratio
+  n <- nrow(data)
+  ratio <- sum(data$treatment == "experimental") / sum(data$treatment == "control")
+  q_e <- ratio / (1 + ratio)
+  q_c <- 1 - q_e
+
+  # initialize the output
   ans <- list()
   ans$method <- "WLR"
 
+  # calculate z score
   if (inherits(weight, "fh")) {
     x <- x |> fh_weight(rho = weight$rho, gamma = weight$gamma)
-
     ans$parameter <- paste0("FH(rho=", weight$rho, ", gamma=", weight$gamma, ")")
-    ans$estimate <- sum(x$weight * x$o_minus_e)
-    ans$se <- sqrt(sum(x$weight^2 * x$var_o_minus_e))
-    ans$z <- -ans$estimate / ans$se
   } else if (inherits(weight, "mb")) {
     x <- x |> mb_weight(delay = weight$delay, w_max = weight$w_max)
-
     ans$parameter <- paste0("MB(delay = ", weight$delay, ", max_weight = ", weight$w_max, ")")
-    ans$estimate <- sum(x$o_minus_e * x$mb_weight)
-    ans$se <- sqrt(sum(x$var_o_minus_e * x$mb_weight^2))
-    ans$z <- -ans$estimate / ans$se
   } else if (inherits(weight, "early_period")) {
     x <- x |> early_zero_weight(early_period = weight$early_period, fail_rate = weight$fail_rate)
-
     ans$parameter <- paste0("Xu 2017 with first ", round(weight$early_period, 4), " months of 0 weights")
-    ans$estimate <- sum(x$o_minus_e * x$weight)
-    ans$se <- sqrt(sum(x$var_o_minus_e * x$weight^2))
-    ans$z <- -ans$estimate / ans$se
   }
+
+  # calculate the treatment estimation
+  ans$estimate <- sum(x$o_minus_e * x$weight)
+
+  # calculate the se
+  ans$se <- sqrt(sum(x$var_o_minus_e * x$weight^2))
+
+  # calculate z-score
+  ans$z <- -ans$estimate / ans$se
+
+  # calculate the statistcial information
+  x$event_ctrl <- x$event_total - x$event_trt
+  weighted_event_trt <- sum(x$event_trt[x$event_trt > 0] * x$weight[x$event_trt > 0]^2)
+  weighted_event_ctrl <- sum(x$event_ctrl[x$event_ctrl > 0] * x$weight[x$event_ctrl > 0]^2)
+  ans$info <- (1 / weighted_event_trt + 1 / weighted_event_ctrl)^(-1)
+  ans$info0 <- sum(x$event_total * q_c * q_e * x$weight^2)
+
   return(ans)
 }
