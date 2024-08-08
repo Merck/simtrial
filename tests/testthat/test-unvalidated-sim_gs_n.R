@@ -32,7 +32,7 @@ test_that("regular logrank test", {
       7.65165409688827, 8.77164253357172, 9.41875140383468,
       7.44263362582829, 8.42150520256931, 9.20559144909002
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -2.60412875287388, -3.16524650257064,
       -1.74511717188905, -2.04376928448542, -2.75821795952773,
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
@@ -72,7 +72,7 @@ test_that("regular logrank test parallel", {
       7.65165409688827, 8.77164253357172, 9.41875140383468,
       7.44263362582829, 8.42150520256931, 9.20559144909002
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -2.60412875287388, -3.16524650257064,
       -1.74511717188905, -2.04376928448542, -2.75821795952773,
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
@@ -111,7 +111,7 @@ test_that("weighted logrank test by FH(0, 0.5)", {
       4.16899365283586, 5.47959154932447, 6.30461298220442,
       3.99084589541075, 5.03739766754931, 6.02201456006756
     ),
-    z = c(
+    z = -c(
       -2.66458078201881, -3.3806874072603,  -3.92175635211266,
       -2.02623570402444, -2.20592166700397, -3.0738816696815,
       -2.49558219632314, -3.13409592510117, -4.41558699606811
@@ -149,7 +149,7 @@ test_that("weighted logrank test by MB(3)", {
       9.23731341784668, 10.6834095617449, 11.5139237244706,
       8.93809056261512, 10.198207959654,  11.2011384564222
     ),
-    z = c(
+    z = -c(
       -2.03510248183433, -2.73134174616145, -3.29550865303709,
       -1.7741226211721,  -2.0697974767577,  -2.79564817629134,
       -2.22390628856832, -2.80614509607408, -3.91075103840314
@@ -187,7 +187,7 @@ test_that("weighted logrank test by early zero (6)", {
       6.66681774436398, 7.49784129646925, 4.65652183734504, 6.10017624419681,
       7.14376051256763
     ),
-    z = c(
+    z = -c(
       -2.68011063060906, -3.34839309011608, -3.92909103452473,
       -2.5307982058823,  -2.62371146889484, -3.4067888156998,
       -1.09806723640677, -1.98798012666056, -3.40360393955524
@@ -306,9 +306,9 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
       3.99084589541075,   11.6181044782549,   0.0705189167423676
     ),
     z = c(
-      -2.66458078201881, -2.96576494908061, 0.779084768795093,
-      -2.02623570402444, -2.14298279999738, 1.41204670152474,
-      -2.49558219632314, -2.81323027566226, 0.674872005241018
+      2.66458078201881, 2.96576494908061, 0.779084768795093,
+      2.02623570402444, 2.14298279999738, 1.41204670152474,
+      2.49558219632314, 2.81323027566226, 0.674872005241018
     )
   )
   expect_equal(observed, expected)
@@ -386,7 +386,7 @@ test_that("sim_gs_n() accepts different tests per cutting", {
       7.65165409688827, 5.47959154932447, 6.99748048599332,
       7.44263362582829, 5.03739766754931, 6.96263273237168
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -3.3806874072603,  -2.42755994459466,
       -1.74511717188905, -2.20592166700397, -2.34972724106162,
       -2.10969577332675, -3.13409592510117, -3.08198006391483
@@ -448,9 +448,9 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
       7.44263362582829,   0.739072978624375,  0.0705189167423676
     ),
     z = c(
-      -1.90987689210094, 1.40273642200249,  0.779084768795093,
-      -1.74511717188905, 1.82220407393879,  1.41204670152474,
-      -2.10969577332675, 1.80482023189919,  0.674872005241018
+      1.90987689210094, 1.40273642200249,  0.779084768795093,
+      1.74511717188905, 1.82220407393879,  1.41204670152474,
+      2.10969577332675, 1.80482023189919,  0.674872005241018
     )
   )
   expect_equal(observed, expected)
@@ -485,4 +485,75 @@ test_that("convert_list_to_df_w_list_cols() is robust to diverse input", {
     int_multi = I(list(1:10))
   )
   expect_equal(observed, expected)
+})
+
+test_that("create_cut() can accept variables as arguments", {
+  # https://github.com/Merck/simtrial/issues/260
+  ratio <- 1
+
+  enroll_rate <- gsDesign2::define_enroll_rate(duration = c(2, 2, 8),
+                                               rate = c(1, 2, 3))
+
+  fail_rate <- gsDesign2::define_fail_rate(duration = c(4, Inf),
+                                           fail_rate = log(2) / 12,
+                                           hr = c(1, .6),
+                                           dropout_rate = .001)
+
+  alpha <- 0.025
+  beta <- 0.1
+
+  upper <- gsDesign2::gs_spending_bound
+  upar <- list(sf = gsDesign::sfLDOF, total_spend = alpha)
+  test_upper <- rep(TRUE, 2)
+
+  lower <- gsDesign2::gs_spending_bound
+  lpar <- list(sf = gsDesign::sfLDOF, total_spend = beta)
+  test_lower <- c(TRUE, FALSE)
+  binding <- FALSE
+
+  info_frac = NULL
+  analysis_time = c(24, 36)
+
+  x <- gsDesign2::gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
+                                alpha = alpha, beta = beta, ratio = ratio,
+                                info_frac = info_frac, analysis_time = analysis_time,
+                                upper = upper, upar = upar, test_upper = test_upper,
+                                lower = lower, lpar = lpar, test_lower = test_lower,
+                                binding = binding) |> gsDesign2::to_integer()
+
+  ia_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[1])
+  fa_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[2])
+
+  # Must run the parallel version first for 2 reasons:
+  #
+  # 1. In order to reproduce the bug that inspired this test, the cutting
+  # functions must not have been evaluated prior to running them in parallel
+  #
+  # 2. In order to avoid an R CMD check NOTE about detritus in the temp
+  # directory, need to run `future::plan("sequential")` to shut down parallel
+  # cluster
+  # https://future.futureverse.org/articles/future-7-for-package-developers.html#making-sure-to-stop-parallel-workers
+  future::plan("multisession", workers = 2)
+  set.seed(1)
+  results_parallel <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  future::plan("sequential")
+  set.seed(1)
+  results_sequential <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  expect_equal(results_parallel, results_sequential)
 })
