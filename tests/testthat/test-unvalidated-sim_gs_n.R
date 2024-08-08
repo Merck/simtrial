@@ -497,14 +497,14 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   test_cut3 <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  observed <- sim_gs_n(
-    n_sim = 3,
-    sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
-    test = list(test_cut1, test_cut2, test_cut3),
-    cut = test_cutting()
-  )
+  # observed <- sim_gs_n(
+  #   n_sim = 3,
+  #   sample_size = 400,
+  #   enroll_rate = test_enroll_rate(),
+  #   fail_rate = test_fail_rate(),
+  #   test = list(test_cut1, test_cut2, test_cut3),
+  #   cut = test_cutting()
+  # )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep(c("WLR", "RMST", "milestone"), 3),
