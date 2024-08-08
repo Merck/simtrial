@@ -452,6 +452,7 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_test</span>, ia2 <span class="op">=</span> <span class="va">ia2_test</span>, fa <span class="op">=</span> <span class="va">fa_test</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 9: regular logrank test at all 3 analyses in parallel</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"multisession"</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
@@ -464,8 +465,28 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="va">ia1_cut</span>, ia2 <span class="op">=</span> <span class="va">ia2_cut</span>, fa <span class="op">=</span> <span class="va">fa_cut</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using 2 cores with backend multisession</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event   estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1       24 400   243  -8.214034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2       32 400   304 -17.213140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0)        3       45 400   354 -20.877501</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2    WLR FH(rho=0, gamma=0)        1       24 400   259 -23.598942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2    WLR FH(rho=0, gamma=0)        2       32 400   315 -24.300718</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2    WLR FH(rho=0, gamma=0)        3       45 400   363 -29.136121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3    WLR FH(rho=0, gamma=0)        1       24 400   242  -8.625253</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      3    WLR FH(rho=0, gamma=0)        2       32 400   311 -16.179327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      3    WLR FH(rho=0, gamma=0)        3       45 400   368 -20.646537</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se        z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 7.785096 1.055097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 8.690860 1.980603</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 9.327781 2.238207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 8.018639 2.943011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 8.818336 2.755703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 9.410491 3.096132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 7.773275 1.109603</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 8.798732 1.838825</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 9.487108 2.176273</span>
 <span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
