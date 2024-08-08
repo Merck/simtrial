@@ -486,3 +486,74 @@ test_that("convert_list_to_df_w_list_cols() is robust to diverse input", {
   )
   expect_equal(observed, expected)
 })
+
+test_that("create_cut() can accept variables as arguments", {
+  # https://github.com/Merck/simtrial/issues/260
+  ratio <- 1
+
+  enroll_rate <- gsDesign2::define_enroll_rate(duration = c(2, 2, 8),
+                                               rate = c(1, 2, 3))
+
+  fail_rate <- gsDesign2::define_fail_rate(duration = c(4, Inf),
+                                           fail_rate = log(2) / 12,
+                                           hr = c(1, .6),
+                                           dropout_rate = .001)
+
+  alpha <- 0.025
+  beta <- 0.1
+
+  upper <- gsDesign2::gs_spending_bound
+  upar <- list(sf = gsDesign::sfLDOF, total_spend = alpha)
+  test_upper <- rep(TRUE, 2)
+
+  lower <- gsDesign2::gs_spending_bound
+  lpar <- list(sf = gsDesign::sfLDOF, total_spend = beta)
+  test_lower <- c(TRUE, FALSE)
+  binding <- FALSE
+
+  info_frac = NULL
+  analysis_time = c(24, 36)
+
+  x <- gsDesign2::gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
+                                alpha = alpha, beta = beta, ratio = ratio,
+                                info_frac = info_frac, analysis_time = analysis_time,
+                                upper = upper, upar = upar, test_upper = test_upper,
+                                lower = lower, lpar = lpar, test_lower = test_lower,
+                                binding = binding) |> gsDesign2::to_integer()
+
+  ia_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[1])
+  fa_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[2])
+
+  # Must run the parallel version first for 2 reasons:
+  #
+  # 1. In order to reproduce the bug that inspired this test, the cutting
+  # functions must not have been evaluated prior to running them in parallel
+  #
+  # 2. In order to avoid an R CMD check NOTE about detritus in the temp
+  # directory, need to run `future::plan("sequential")` to shut down parallel
+  # cluster
+  # https://future.futureverse.org/articles/future-7-for-package-developers.html#making-sure-to-stop-parallel-workers
+  future::plan("multisession", workers = 2)
+  set.seed(1)
+  results_parallel <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  future::plan("sequential")
+  set.seed(1)
+  results_sequential <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  expect_equal(results_parallel, results_sequential)
+})
