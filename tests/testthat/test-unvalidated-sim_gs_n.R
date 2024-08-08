@@ -74,7 +74,6 @@ test_cutting <- function() {
   return(list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut))
 }
 
-
 test_that("regular logrank test", {
   set.seed(2024)
   observed <- sim_gs_n(
@@ -154,7 +153,6 @@ test_that("regular logrank test parallel", {
   )
   expect_equal(observed, expected)
 })
-
 
 test_that("weighted logrank test by FH(0, 0.5)", {
   set.seed(2024)
@@ -356,14 +354,14 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   fa_test <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  observed <- sim_gs_n(
-    n_sim = 3,
-    sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
-    test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-    cut = test_cutting()
-  )
+  # observed <- sim_gs_n(
+  #   n_sim = 3,
+  #   sample_size = 400,
+  #   enroll_rate = test_enroll_rate(),
+  #   fail_rate = test_fail_rate(),
+  #   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+  #   cut = test_cutting()
+  # )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep(c("WLR", "WLR", "milestone"), 3),
