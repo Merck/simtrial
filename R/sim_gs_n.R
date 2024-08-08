@@ -222,6 +222,7 @@
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
+#' }
 #'
 #' # Example 9: regular logrank test at all 3 analyses in parallel
 #' plan("multisession", workers = 2)
@@ -235,7 +236,6 @@
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #' plan("sequential")
-#' }
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
@@ -360,7 +360,9 @@ sim_gs_n <- function(
 #' # Cut the trial data
 #' cutting(trial_data)
 create_cut <- function(...) {
+  # Force evaluation of input arguments (required for parallel computing)
   lapply(X = list(...), FUN = force)
+
   function(data) {
     get_analysis_date(data, ...)
   }

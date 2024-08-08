@@ -63,5 +63,6 @@ Suggests:
     tidyr
 LinkingTo:
     Rcpp
+Remotes: Merck/gsDesign2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
