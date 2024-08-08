@@ -1894,13 +1894,13 @@ tests for you:</p>
 <span><span class="co">#&gt; parameter FH(rho=0, gamma=0) FH(rho=0, gamma=1) FH(rho=1, gamma=0)</span></span>
 <span><span class="co">#&gt; estimate   -14.9849475025986  -4.58833802802725  -10.3966094745713</span></span>
 <span><span class="co">#&gt; se          5.98116583796613   2.21990881849575   4.28272384915455</span></span>
-<span><span class="co">#&gt; z          -2.50535562941256  -2.06690382496719  -2.42756942561769</span></span>
+<span><span class="co">#&gt; z           2.50535562941256   2.06690382496719   2.42756942561769</span></span>
 <span><span class="co">#&gt;                       Test 4</span></span>
 <span><span class="co">#&gt; method                   WLR</span></span>
 <span><span class="co">#&gt; parameter FH(rho=1, gamma=1)</span></span>
 <span><span class="co">#&gt; estimate   -2.69994556253347</span></span>
 <span><span class="co">#&gt; se          1.13659961009608</span></span>
-<span><span class="co">#&gt; z          -2.37545881465262</span></span></code></pre></div>
+<span><span class="co">#&gt; z           2.37545881465262</span></span></code></pre></div>
 <p>If we wanted to take the minimum of these for a MaxCombo test, we
 would first use <code>fh_weight()</code> to compute a correlation matrix
 for the above z-statistics as follows. Note that the ordering of
@@ -2445,7 +2445,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-2.993631</td>
 <td headers="se" class="gt_row gt_right">5.496021</td>
-<td headers="z" class="gt_row gt_right">−0.54</td>
+<td headers="z" class="gt_row gt_right">0.54</td>
 <td headers="event" class="gt_row gt_right">121</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.10</td>
 <td headers="cut" class="gt_row gt_left">Planned duration</td>
@@ -2457,7 +2457,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-34.168255</td>
 <td headers="se" class="gt_row gt_right">9.280556</td>
-<td headers="z" class="gt_row gt_right">−3.68</td>
+<td headers="z" class="gt_row gt_right">3.68</td>
 <td headers="event" class="gt_row gt_right">350</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.40</td>
 <td headers="cut" class="gt_row gt_left">Targeted events</td>
@@ -2469,7 +2469,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-38.109119</td>
 <td headers="se" class="gt_row gt_right">9.562882</td>
-<td headers="z" class="gt_row gt_right">−3.99</td>
+<td headers="z" class="gt_row gt_right">3.99</td>
 <td headers="event" class="gt_row gt_right">375</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.41</td>
 <td headers="cut" class="gt_row gt_left">Minimum follow-up</td>
@@ -2481,7 +2481,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-34.168255</td>
 <td headers="se" class="gt_row gt_right">9.280556</td>
-<td headers="z" class="gt_row gt_right">−3.68</td>
+<td headers="z" class="gt_row gt_right">3.68</td>
 <td headers="event" class="gt_row gt_right">350</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.40</td>
 <td headers="cut" class="gt_row gt_left">Max(planned duration, event cut)</td>
@@ -2493,7 +2493,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-38.109119</td>
 <td headers="se" class="gt_row gt_right">9.562882</td>
-<td headers="z" class="gt_row gt_right">−3.99</td>
+<td headers="z" class="gt_row gt_right">3.99</td>
 <td headers="event" class="gt_row gt_right">375</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.41</td>
 <td headers="cut" class="gt_row gt_left">Max(min follow-up, event cut)</td>
@@ -2505,7 +2505,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-17.318876</td>
 <td headers="se" class="gt_row gt_right">4.922279</td>
-<td headers="z" class="gt_row gt_right">−3.52</td>
+<td headers="z" class="gt_row gt_right">3.52</td>
 <td headers="event" class="gt_row gt_right">99</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.73</td>
 <td headers="cut" class="gt_row gt_left">Planned duration</td>
@@ -2517,7 +2517,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-37.749178</td>
 <td headers="se" class="gt_row gt_right">9.190180</td>
-<td headers="z" class="gt_row gt_right">−4.11</td>
+<td headers="z" class="gt_row gt_right">4.11</td>
 <td headers="event" class="gt_row gt_right">350</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.44</td>
 <td headers="cut" class="gt_row gt_left">Targeted events</td>
@@ -2529,7 +2529,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-38.404129</td>
 <td headers="se" class="gt_row gt_right">9.452228</td>
-<td headers="z" class="gt_row gt_right">−4.06</td>
+<td headers="z" class="gt_row gt_right">4.06</td>
 <td headers="event" class="gt_row gt_right">371</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.42</td>
 <td headers="cut" class="gt_row gt_left">Minimum follow-up</td>
@@ -2541,7 +2541,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-37.749178</td>
 <td headers="se" class="gt_row gt_right">9.190180</td>
-<td headers="z" class="gt_row gt_right">−4.11</td>
+<td headers="z" class="gt_row gt_right">4.11</td>
 <td headers="event" class="gt_row gt_right">350</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.44</td>
 <td headers="cut" class="gt_row gt_left">Max(planned duration, event cut)</td>
@@ -2553,7 +2553,7 @@ structure is meant to be simpler than for
 <td headers="parameter" class="gt_row gt_left">FH(rho=0, gamma=0)</td>
 <td headers="estimate" class="gt_row gt_right">-38.404129</td>
 <td headers="se" class="gt_row gt_right">9.452228</td>
-<td headers="z" class="gt_row gt_right">−4.06</td>
+<td headers="z" class="gt_row gt_right">4.06</td>
 <td headers="event" class="gt_row gt_right">371</td>
 <td headers="ln_hr" class="gt_row gt_right">−0.42</td>
 <td headers="cut" class="gt_row gt_left">Max(min follow-up, event cut)</td>

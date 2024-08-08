@@ -153,18 +153,18 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: foreach</span>
 <span class="r-in"><span><span class="co"># Get power approximation</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">z</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.025</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: WLR with FH(0,1) ----</span></span></span>
 <span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span>n_sim <span class="op">=</span> <span class="fl">1</span>, timing_type <span class="op">=</span> <span class="fl">1</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   method          parameter  estimate      se         z event      ln_hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    WLR FH(rho=0, gamma=1) -1.608741 1.14817 -1.401136    90 -0.2204257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   method          parameter  estimate      se        z event      ln_hr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    WLR FH(rho=0, gamma=1) -1.608741 1.14817 1.401136    90 -0.2204257</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                cut duration sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Planned duration       30   1</span>
 <span class="r-in"><span><span class="co"># Get power approximation</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">z</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.025</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Example 3: MaxCombo, i.e., WLR-FH(0,0)+ WLR-FH(0,1)</span></span></span>
@@ -194,57 +194,57 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"multisession"</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span>n_sim <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using 2 cores with backend multisession</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    method          parameter   estimate       se          z event      ln_hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     WLR FH(rho=0, gamma=0)  -9.044800 5.213492 -1.7348832   109 -0.3342849</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     WLR FH(rho=0, gamma=0) -41.170785 9.229540 -4.4607622   350 -0.4793575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     WLR FH(rho=0, gamma=0) -41.444949 9.546994 -4.3411518   376 -0.4498374</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     WLR FH(rho=0, gamma=0) -41.170785 9.229540 -4.4607622   350 -0.4793575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     WLR FH(rho=0, gamma=0) -41.444949 9.546994 -4.3411518   376 -0.4498374</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     WLR FH(rho=0, gamma=0)  -5.248725 5.068148 -1.0356297   103 -0.2047494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     WLR FH(rho=0, gamma=0) -33.266167 9.245312 -3.5981660   350 -0.3873648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     WLR FH(rho=0, gamma=0) -35.663072 9.468334 -3.7665623   367 -0.3953215</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     WLR FH(rho=0, gamma=0) -33.266167 9.245312 -3.5981660   350 -0.3873648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    WLR FH(rho=0, gamma=0) -35.663072 9.468334 -3.7665623   367 -0.3953215</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    WLR FH(rho=0, gamma=0) -18.821290 4.838510 -3.8898935    95 -0.8181040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    WLR FH(rho=0, gamma=0) -55.442685 9.055033 -6.1228581   350 -0.6662357</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    WLR FH(rho=0, gamma=0) -55.753830 9.043216 -6.1652657   349 -0.6719858</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    WLR FH(rho=0, gamma=0) -55.442685 9.055033 -6.1228581   350 -0.6662357</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    WLR FH(rho=0, gamma=0) -55.442685 9.055033 -6.1228581   350 -0.6662357</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16    WLR FH(rho=0, gamma=0)  -3.064636 5.228765 -0.5861109   110 -0.1120785</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17    WLR FH(rho=0, gamma=0) -33.961737 9.264232 -3.6658988   350 -0.3939024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    WLR FH(rho=0, gamma=0) -34.607774 9.536543 -3.6289642   372 -0.3781111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    WLR FH(rho=0, gamma=0) -33.961737 9.264232 -3.6658988   350 -0.3939024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    WLR FH(rho=0, gamma=0) -34.607774 9.536543 -3.6289642   372 -0.3781111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21    WLR FH(rho=0, gamma=0) -13.960942 4.823458 -2.8943845    94 -0.6069906</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    WLR FH(rho=0, gamma=0) -37.851426 9.213540 -4.1082391   350 -0.4410650</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23    WLR FH(rho=0, gamma=0) -36.640901 9.184545 -3.9894083   348 -0.4296748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24    WLR FH(rho=0, gamma=0) -37.851426 9.213540 -4.1082391   350 -0.4410650</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25    WLR FH(rho=0, gamma=0) -37.851426 9.213540 -4.1082391   350 -0.4410650</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26    WLR FH(rho=0, gamma=0) -14.173675 5.030231 -2.8176983   103 -0.5638412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27    WLR FH(rho=0, gamma=0) -35.792430 9.171024 -3.9027737   350 -0.4227156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28    WLR FH(rho=0, gamma=0) -36.093884 9.190638 -3.9272445   351 -0.4245379</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29    WLR FH(rho=0, gamma=0) -35.792430 9.171024 -3.9027737   350 -0.4227156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30    WLR FH(rho=0, gamma=0) -36.093884 9.190638 -3.9272445   351 -0.4245379</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31    WLR FH(rho=0, gamma=0)  -4.479885 5.189040 -0.8633360   108 -0.1666295</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32    WLR FH(rho=0, gamma=0) -29.984429 9.309267 -3.2209226   350 -0.3453421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33    WLR FH(rho=0, gamma=0) -27.732193 9.152805 -3.0299119   338 -0.3305844</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34    WLR FH(rho=0, gamma=0) -29.984429 9.309267 -3.2209226   350 -0.3453421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35    WLR FH(rho=0, gamma=0) -29.984429 9.309267 -3.2209226   350 -0.3453421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36    WLR FH(rho=0, gamma=0)  -8.620094 5.553024 -1.5523243   124 -0.2803523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37    WLR FH(rho=0, gamma=0) -30.211007 9.300647 -3.2482694   350 -0.3478454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38    WLR FH(rho=0, gamma=0) -33.581256 9.516244 -3.5288351   367 -0.3690357</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39    WLR FH(rho=0, gamma=0) -30.211007 9.300647 -3.2482694   350 -0.3478454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40    WLR FH(rho=0, gamma=0) -33.581256 9.516244 -3.5288351   367 -0.3690357</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41    WLR FH(rho=0, gamma=0)  -3.955284 5.093447 -0.7765436   104 -0.1525416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42    WLR FH(rho=0, gamma=0) -26.670986 9.302656 -2.8670291   350 -0.3069406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43    WLR FH(rho=0, gamma=0) -26.342504 9.314768 -2.8280363   351 -0.3023229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44    WLR FH(rho=0, gamma=0) -26.670986 9.302656 -2.8670291   350 -0.3069406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45    WLR FH(rho=0, gamma=0) -26.342504 9.314768 -2.8280363   351 -0.3023229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46    WLR FH(rho=0, gamma=0)  -9.242625 5.104900 -1.8105400   106 -0.3551148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47    WLR FH(rho=0, gamma=0) -35.255531 9.270632 -3.8029263   350 -0.4077490</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48    WLR FH(rho=0, gamma=0) -36.706949 9.386743 -3.9105095   360 -0.4138911</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49    WLR FH(rho=0, gamma=0) -35.255531 9.270632 -3.8029263   350 -0.4077490</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50    WLR FH(rho=0, gamma=0) -36.706949 9.386743 -3.9105095   360 -0.4138911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    method          parameter   estimate       se         z event      ln_hr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     WLR FH(rho=0, gamma=0)  -9.044800 5.213492 1.7348832   109 -0.3342849</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     WLR FH(rho=0, gamma=0) -41.170785 9.229540 4.4607622   350 -0.4793575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     WLR FH(rho=0, gamma=0) -41.444949 9.546994 4.3411518   376 -0.4498374</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     WLR FH(rho=0, gamma=0) -41.170785 9.229540 4.4607622   350 -0.4793575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     WLR FH(rho=0, gamma=0) -41.444949 9.546994 4.3411518   376 -0.4498374</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     WLR FH(rho=0, gamma=0)  -5.248725 5.068148 1.0356297   103 -0.2047494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     WLR FH(rho=0, gamma=0) -33.266167 9.245312 3.5981660   350 -0.3873648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     WLR FH(rho=0, gamma=0) -35.663072 9.468334 3.7665623   367 -0.3953215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     WLR FH(rho=0, gamma=0) -33.266167 9.245312 3.5981660   350 -0.3873648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    WLR FH(rho=0, gamma=0) -35.663072 9.468334 3.7665623   367 -0.3953215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    WLR FH(rho=0, gamma=0) -18.821290 4.838510 3.8898935    95 -0.8181040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    WLR FH(rho=0, gamma=0) -55.442685 9.055033 6.1228581   350 -0.6662357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    WLR FH(rho=0, gamma=0) -55.753830 9.043216 6.1652657   349 -0.6719858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    WLR FH(rho=0, gamma=0) -55.442685 9.055033 6.1228581   350 -0.6662357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    WLR FH(rho=0, gamma=0) -55.442685 9.055033 6.1228581   350 -0.6662357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    WLR FH(rho=0, gamma=0)  -3.064636 5.228765 0.5861109   110 -0.1120785</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    WLR FH(rho=0, gamma=0) -33.961737 9.264232 3.6658988   350 -0.3939024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    WLR FH(rho=0, gamma=0) -34.607774 9.536543 3.6289642   372 -0.3781111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    WLR FH(rho=0, gamma=0) -33.961737 9.264232 3.6658988   350 -0.3939024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    WLR FH(rho=0, gamma=0) -34.607774 9.536543 3.6289642   372 -0.3781111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    WLR FH(rho=0, gamma=0) -13.960942 4.823458 2.8943845    94 -0.6069906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    WLR FH(rho=0, gamma=0) -37.851426 9.213540 4.1082391   350 -0.4410650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23    WLR FH(rho=0, gamma=0) -36.640901 9.184545 3.9894083   348 -0.4296748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    WLR FH(rho=0, gamma=0) -37.851426 9.213540 4.1082391   350 -0.4410650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25    WLR FH(rho=0, gamma=0) -37.851426 9.213540 4.1082391   350 -0.4410650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    WLR FH(rho=0, gamma=0) -14.173675 5.030231 2.8176983   103 -0.5638412</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27    WLR FH(rho=0, gamma=0) -35.792430 9.171024 3.9027737   350 -0.4227156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    WLR FH(rho=0, gamma=0) -36.093884 9.190638 3.9272445   351 -0.4245379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29    WLR FH(rho=0, gamma=0) -35.792430 9.171024 3.9027737   350 -0.4227156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    WLR FH(rho=0, gamma=0) -36.093884 9.190638 3.9272445   351 -0.4245379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    WLR FH(rho=0, gamma=0)  -4.479885 5.189040 0.8633360   108 -0.1666295</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    WLR FH(rho=0, gamma=0) -29.984429 9.309267 3.2209226   350 -0.3453421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33    WLR FH(rho=0, gamma=0) -27.732193 9.152805 3.0299119   338 -0.3305844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    WLR FH(rho=0, gamma=0) -29.984429 9.309267 3.2209226   350 -0.3453421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35    WLR FH(rho=0, gamma=0) -29.984429 9.309267 3.2209226   350 -0.3453421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36    WLR FH(rho=0, gamma=0)  -8.620094 5.553024 1.5523243   124 -0.2803523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37    WLR FH(rho=0, gamma=0) -30.211007 9.300647 3.2482694   350 -0.3478454</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38    WLR FH(rho=0, gamma=0) -33.581256 9.516244 3.5288351   367 -0.3690357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39    WLR FH(rho=0, gamma=0) -30.211007 9.300647 3.2482694   350 -0.3478454</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    WLR FH(rho=0, gamma=0) -33.581256 9.516244 3.5288351   367 -0.3690357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41    WLR FH(rho=0, gamma=0)  -3.955284 5.093447 0.7765436   104 -0.1525416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42    WLR FH(rho=0, gamma=0) -26.670986 9.302656 2.8670291   350 -0.3069406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43    WLR FH(rho=0, gamma=0) -26.342504 9.314768 2.8280363   351 -0.3023229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44    WLR FH(rho=0, gamma=0) -26.670986 9.302656 2.8670291   350 -0.3069406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45    WLR FH(rho=0, gamma=0) -26.342504 9.314768 2.8280363   351 -0.3023229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46    WLR FH(rho=0, gamma=0)  -9.242625 5.104900 1.8105400   106 -0.3551148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47    WLR FH(rho=0, gamma=0) -35.255531 9.270632 3.8029263   350 -0.4077490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48    WLR FH(rho=0, gamma=0) -36.706949 9.386743 3.9105095   360 -0.4138911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49    WLR FH(rho=0, gamma=0) -35.255531 9.270632 3.8029263   350 -0.4077490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50    WLR FH(rho=0, gamma=0) -36.706949 9.386743 3.9105095   360 -0.4138911</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 cut duration sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                  Planned duration 30.00000   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                   Targeted events 65.23187   1</span>

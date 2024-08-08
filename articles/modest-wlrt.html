@@ -149,7 +149,7 @@ and set the time until maximum weight <span class="math inline">\tau</span> with
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1395378</span></span></code></pre></div>
 <p>Now we set the maximum weight to be 2 as in <span class="citation">Magirr (2021)</span> and set the <code>delay=Inf</code>
 so that the maximum weight begins at the observed median of the observed
@@ -158,7 +158,7 @@ combined treatment Kaplan-Meier curve.</p>
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="cn">Inf</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1387672</span></span></code></pre></div>
 <p>Another way this can be done is with a generalized Fleming-Harrington
 test with</p>
@@ -252,7 +252,7 @@ requires generating weights and then computing the test.</p>
 <span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute p-value of modestly weighted logrank of Magirr-Burman</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">ZMB</span><span class="op">$</span><span class="va">z</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.920727</span></span></code></pre></div>
 <p>Finally, we consider weighted logrank tests with less down-weighting.
 Results are quite similar to the results with greater down-weighting. We

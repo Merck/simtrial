@@ -193,8 +193,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.410   0.029   7.603</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.41 and the elapsed time is 7.60
+<span><span class="co">#&gt;  13.559   0.066   7.778</span></span></code></pre></div>
+<p>We can see that the CPU time is 13.56 and the elapsed time is 7.78
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -252,8 +252,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.383   0.001   8.000</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.38 and the elapsed time is 8.00
+<span><span class="co">#&gt;   0.432   0.005   7.593</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.43 and the elapsed time is 7.59
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
@@ -288,7 +288,7 @@ commonly available, we will not execute the below code herein. Consider
 that you have two accessible nodes, each with three cores (shown in the
 diagram below).</p>
 <div class="figure" style="text-align: center">
-<img src="schema.png" alt="Available resource schematic." width="90%"><p class="caption">
+<img src="figures/schema.png" alt="Available resource schematic." width="90%"><p class="caption">
 Available resource schematic.
 </p>
 </div>
