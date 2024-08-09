@@ -36,7 +36,8 @@
 #' @details
 #' The argument `formula` is provided as a convenience to easily specify the
 #' TTE, event, and grouping variables using the syntax `Surv(tte, event) ~
-#' group)` ([Surv()] is from the \{survival\} package). You can also explicitly
+#' group)`. `Surv()` is from the \{survival\} package ([survival::Surv()]).
+#' You can also explicitly
 #' name the arguments passed to `Surv()`, for example the following is
 #' equivalent `Surv(event = event, time = tte) ~ group)`. Note however that the
 #' function `Surv()` is never actually executed. Similarly, any other functions
