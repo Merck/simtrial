@@ -193,8 +193,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.215   0.052   7.481</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.21 and the elapsed time is 7.48
+<span><span class="co">#&gt;  13.496   0.049   7.716</span></span></code></pre></div>
+<p>We can see that the CPU time is 13.50 and the elapsed time is 7.72
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -252,8 +252,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.362   0.013   7.630</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.36 and the elapsed time is 7.63
+<span><span class="co">#&gt;   0.417   0.001   7.745</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.42 and the elapsed time is 7.75
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we

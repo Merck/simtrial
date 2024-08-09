@@ -100,7 +100,8 @@ variables as strings. If a formula is provided, the values passed to
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The argument <code>formula</code> is provided as a convenience to easily specify the
-TTE, event, and grouping variables using the syntax <code>Surv(tte, event) ~ group)</code> (<code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv()</a></code> is from the {survival} package). You can also explicitly
+TTE, event, and grouping variables using the syntax <code>Surv(tte, event) ~ group)</code>. <code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv()</a></code> is from the {survival} package (<code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">survival::Surv()</a></code>).
+You can also explicitly
 name the arguments passed to <code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv()</a></code>, for example the following is
 equivalent <code>Surv(event = event, time = tte) ~ group)</code>. Note however that the
 function <code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv()</a></code> is never actually executed. Similarly, any other functions
