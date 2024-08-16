@@ -68,7 +68,7 @@ Group sequential design simulation flow:
 - Summarize across simulated trials.
 
 ```{r, echo=FALSE, fig.align="center", out.width="85%"}
-knitr::include_graphics("workflow.png")
+knitr::include_graphics("./figures/workflow.png")
 ```
 
 ```{r, echo=FALSE, eval=FALSE}

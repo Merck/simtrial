@@ -26,11 +26,11 @@ is at risk in both treatment group and control group.
 Other variables in this represent the following within each stratum at
 each time at which one or more events are observed:
 \itemize{
-\item \code{events}: Total number of events
-\item \code{n_event_tol}: Total number of events at treatment group
-\item \code{n_risk_tol}: Number of subjects at risk
+\item \code{event_total}: Total number of events
+\item \code{event_trt}: Total number of events at treatment group
+\item \code{n_risk_total}: Number of subjects at risk
 \item \code{n_risk_trt}: Number of subjects at risk in treatment group
-\item \code{S}: Left-continuous Kaplan-Meier survival estimate
+\item \code{s}: Left-continuous Kaplan-Meier survival estimate
 \item \code{o_minus_e}: In treatment group, observed number of events minus expected
 number of events. The expected number of events is estimated by assuming
 no treatment effect with hypergeometric distribution with parameters total

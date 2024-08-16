@@ -25,7 +25,7 @@ test_that("the z values match with the correspondings in fh_weight", {
   aa3 <- y |> wlr(weight = fh(rho = 1, gamma = 0))
   aa4 <- y |> wlr(weight = fh(rho = 1, gamma = 1))
 
-  expect_equal(c(z1[1], z1[7:9]), c(aa1$z, aa2$z, aa3$z, aa4$z), tolerance = 0.00001)
+  expect_equal(c(z1[1], z1[7:9]), -c(aa1$z, aa2$z, aa3$z, aa4$z), tolerance = 0.00001)
 })
 
 test_that("fh_weight calculated correct correlation value when input a sequence of rho and gamma", {

@@ -91,7 +91,7 @@ We begin with the default of `w_max=Inf` which corresponds to the original @Magi
 ZMB <- MBdelay |>
   wlr(weight = mb(delay = 6))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB$z)
+pnorm(ZMB$z, lower.tail = FALSE)
 ```
 
 Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` so that the maximum weight begins at the observed median of the observed combined treatment Kaplan-Meier curve.
@@ -100,7 +100,7 @@ Now we set the maximum weight to be 2 as in @Magirr2021 and set the `delay=Inf` 
 ZMB <- MBdelay |>
   wlr(weight = mb(delay = Inf, w_max = 2))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB$z)
+pnorm(ZMB$z, lower.tail = FALSE)
 ```
 
 Another way this can be done is with a generalized Fleming-Harrington test with
@@ -185,7 +185,7 @@ ZMB <- FHwn |>
   wlr(weight = mb(delay = 6, w_max = 2))
 
 # Compute p-value of modestly weighted logrank of Magirr-Burman
-pnorm(ZMB$z)
+pnorm(ZMB$z, lower.tail = FALSE)
 ```
 
 Finally, we consider weighted logrank tests with less down-weighting.

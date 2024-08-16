@@ -46,7 +46,8 @@ RMST difference of 2 arms
 }
 \details{
 The argument \code{formula} is provided as a convenience to easily specify the
-TTE, event, and grouping variables using the syntax \verb{Surv(tte, event) ~ group)} (\code{\link[=Surv]{Surv()}} is from the \{survival\} package). You can also explicitly
+TTE, event, and grouping variables using the syntax \verb{Surv(tte, event) ~ group)}. \code{Surv()} is from the \{survival\} package (\code{\link[survival:Surv]{survival::Surv()}}).
+You can also explicitly
 name the arguments passed to \code{Surv()}, for example the following is
 equivalent \verb{Surv(event = event, time = tte) ~ group)}. Note however that the
 function \code{Surv()} is never actually executed. Similarly, any other functions
