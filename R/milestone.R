@@ -84,10 +84,10 @@ milestone <- function(data, ms_time, test_type = c("log-log", "naive")) {
   } else {
     if (test_type == "naive") {
       z_numerator <- surv_diff
-      z_denominator <- surv_exp * sqrt(sigma2_exp) + surv_ctrl * sqrt(sigma2_ctrl)
+      z_denominator <- sqrt(surv_exp^2 * sigma2_exp + surv_ctrl^2 * sigma2_ctrl)
     } else if (test_type == "log-log") {
-      z_numerator <- log(-log(surv_exp)) - log(-log(surv_ctrl))
-      z_denominator <- sqrt(sigma2_exp) / log(surv_exp) + sqrt(sigma2_ctrl) / log(surv_ctrl)
+      z_numerator <- -(log(-log(surv_exp)) - log(-log(surv_ctrl)))
+      z_denominator <- sqrt(sigma2_exp / log(surv_exp)^2 + sigma2_ctrl / log(surv_ctrl)^2)
     }
   }
 
