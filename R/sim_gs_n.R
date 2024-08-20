@@ -44,6 +44,8 @@
 #' @return A data frame summarizing the simulation ID, analysis date,
 #'   z statistics or p-values.
 #'
+#' @importFrom data.table rbindlist setDF
+#'
 #' @export
 #'
 #' @examplesIf requireNamespace("gsDesign2", quietly = TRUE)
@@ -325,13 +327,15 @@ sim_gs_n <- function(
       )
       ans_1sim_new <- convert_list_to_df_w_list_cols(ans_1sim_new)
 
-      # rbind simulation results for all IA(s) and FA in 1 simulation
-      ans_1sim <- rbind(ans_1sim, ans_1sim_new)
+      # bind rows of simulation results for all IA(s) and FA in 1 simulation
+      ans_1sim_list <- list(ans_1sim, ans_1sim_new)
+      ans_1sim <- rbindlist(ans_1sim_list, use.names = TRUE, fill = TRUE)
 
     }
 
     ans_1sim
   }
+  setDF(ans)
   return(ans)
 }
 
