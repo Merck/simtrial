@@ -88,7 +88,7 @@ mb_weight <- function(x, delay = 4, w_max = Inf) {
   # Now merge max_weight back to stratified dataset
   ans <- merge.data.table(ans, x2, by = "stratum", all = TRUE)
   # Weight is min of max_weight and 1/S which will increase up to delay
-  ans[, mb_weight := pmin(max_weight, 1 / s)]
+  ans[, weight := pmin(max_weight, 1 / s)]
   ans[, max_weight := NULL]
 
   setDF(ans)
