@@ -12,7 +12,6 @@ enroll_rate <- gsDesign2::define_enroll_rate(
   rate = c(10, 30)
 )
 
-
 # parameters for treatment effect
 delay_effect_duration <- 3 # delay treatment effect in months
 median_ctrl <- 9 # survival median of the control arm
@@ -24,8 +23,6 @@ fail_rate <- gsDesign2::define_fail_rate(
     hr = median_ctrl / median_exp,
     dropout_rate = dropout_rate
 )
-
-
 
 # other related parameters
 alpha <- 0.025 # type I error
