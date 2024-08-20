@@ -348,14 +348,14 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   fa_test <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  # observed <- sim_gs_n(
-  #   n_sim = 3,
-  #   sample_size = 400,
-  #   enroll_rate = enroll_rate,
-  #   fail_rate = fail_rate,
-  #   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-  #   cut = cut
-  # )
+  observed <- sim_gs_n(
+    n_sim = 3,
+    sample_size = 400,
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
+    test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+    cut = cut
+  )
 
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -379,9 +379,17 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
       2.66458078201881, 2.96576494908061, 1.1017919,
       2.02623570402444, 2.14298279999738, 1.9969141,
       2.49558219632314, 2.81323027566226, 0.9543971
+    ),
+    info = c(
+      18.234728155604408, 154.73996276625465, NA, 17.323744020480003,
+      146.078846032117, NA, 15.524151518925096, 134.8967385215799, NA
+    ),
+    info0 = c(
+      18.97777882184863, 157.11581663819095, NA, 17.488976711530597,
+      146.64084968485673, NA, 15.969731304813632, 136.27941618722392, NA
     )
   )
-  # expect_equal(observed, expected)
+  expect_equal(observed, expected)
 })
 
 test_that("MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
@@ -502,15 +510,14 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   test_cut3 <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  # observed <- sim_gs_n(
-  #   n_sim = 3,
-  #   sample_size = 400,
-  #   enroll_rate = enroll_rate,
-  #   fail_rate = fail_rate,
-  #   test = list(test_cut1, test_cut2, test_cut3),
-  #   cut = cut
-  # )
-
+  observed <- sim_gs_n(
+    n_sim = 3,
+    sample_size = 400,
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
+    test = list(test_cut1, test_cut2, test_cut3),
+    cut = cut
+  )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep(c("WLR", "RMST", "milestone"), 3),
@@ -533,9 +540,14 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
       1.90987689210094, 1.40273642200249,  1.1017919,
       1.74511717188905, 1.82220407393879,  1.9969141,
       2.10969577332675, 1.80482023189919,  0.9543971
-    )
+    ),
+    info = c(
+      60.307377049180324, NA, NA, 58.365957446808515, NA,
+      NA, 54.738738738738746, NA, NA
+    ),
+    info0 = c(61, NA, NA, 58.75, NA, NA, 55.5, NA, NA)
   )
-  # expect_equal(observed, expected)
+  expect_equal(observed, expected)
 })
 
 test_that("convert_list_to_df_w_list_cols() is robust to diverse input", {
