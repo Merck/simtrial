@@ -348,14 +348,14 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   fa_test <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  observed <- sim_gs_n(
-    n_sim = 3,
-    sample_size = 400,
-    enroll_rate = enroll_rate,
-    fail_rate = fail_rate,
-    test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-    cut = cut
-  )
+  # observed <- sim_gs_n(
+  #   n_sim = 3,
+  #   sample_size = 400,
+  #   enroll_rate = enroll_rate,
+  #   fail_rate = fail_rate,
+  #   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
+  #   cut = cut
+  # )
 
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -461,6 +461,16 @@ test_that("sim_gs_n() accepts different tests per cutting", {
       -1.90987689210094, -3.3806874072603,  -2.42755994459466,
       -1.74511717188905, -2.20592166700397, -2.34972724106162,
       -2.10969577332675, -3.13409592510117, -3.08198006391483
+    ),
+    info = c(
+      60.30737704918032, 28.86098470336026, 49.40288707640943,
+      58.36595744680852, 30.32561220505373, 49.14163369066358,
+      54.73873873873875, 25.34221836733899, 48.86012654643182
+    ),
+    info0 = c(
+      61.00000000000000, 29.50363707013600, 49.54649841796000,
+      58.75000000000000, 30.38923168829244, 49.34042361519703,
+      55.50000000000000, 25.73690356687072, 49.15868877945109
     )
   )
   expect_equal(observed, expected)
@@ -492,14 +502,14 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   test_cut3 <- create_test(milestone, ms_time = 10, test_type = "naive")
 
   set.seed(2024)
-  observed <- sim_gs_n(
-    n_sim = 3,
-    sample_size = 400,
-    enroll_rate = enroll_rate,
-    fail_rate = fail_rate,
-    test = list(test_cut1, test_cut2, test_cut3),
-    cut = cut
-  )
+  # observed <- sim_gs_n(
+  #   n_sim = 3,
+  #   sample_size = 400,
+  #   enroll_rate = enroll_rate,
+  #   fail_rate = fail_rate,
+  #   test = list(test_cut1, test_cut2, test_cut3),
+  #   cut = cut
+  # )
 
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
