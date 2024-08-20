@@ -100,19 +100,14 @@ wlr <- function(data, weight, return_variance = FALSE) {
 
 #' @rdname wlr
 #' @export
-wlr.counting_process <- function(data, weight, return_variance = FALSE) {
-  wlr.default(data, weight, return_variance = FALSE)
+wlr.tte_data <- function(data, weight, return_variance = FALSE) {
+  x <- data |> counting_process(arm = "experimental")
+  wlr.counting_process(x, weight, return_variance = FALSE)
 }
 
 #' @rdname wlr
 #' @export
-wlr.tte_data <- function(data, weight, return_variance = FALSE) {
-  x <- data |> counting_process(arm = "experimental")
-  wlr.default(x, weight, return_variance = FALSE)
-}
-
-#' @export
-wlr.default <- function(data, weight, return_variance = FALSE) {
+wlr.counting_process <- function(data, weight, return_variance = FALSE) {
   x <- data
 
   # calculate the sample size and randomization ratio

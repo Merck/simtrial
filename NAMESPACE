@@ -3,7 +3,6 @@
 S3method(as_gt,simtrial_gs_wlr)
 S3method(summary,simtrial_gs_wlr)
 S3method(wlr,counting_process)
-S3method(wlr,default)
 S3method(wlr,tte_data)
 export(as_gt)
 export(counting_process)

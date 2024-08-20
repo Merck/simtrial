@@ -21,3 +21,8 @@ test_that("wlr() accepts tte_data and counting_process objects as input", {
 
   expect_equal(results_tte_data, results_counting_process)
 })
+
+test_that("wlr() rejects input object without proper class", {
+  x <- mtcars
+  expect_error(wlr(x), "no applicable method")
+})
