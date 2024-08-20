@@ -115,37 +115,49 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 1: WLR test with FH wights</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=0.5)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -6.606821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -10.39261</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.631434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.578534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.049702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.030433</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.706301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.185266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, return_variance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $parameter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=0.5)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -6.606821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -10.39261</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.631434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.578534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.049702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.030433</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.706301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.185266</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: WLR test with MB wights</span></span></span>
@@ -165,6 +177,12 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.733313</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 35.70777</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38.37037</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 3: WLR test with early zero wights</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span>early_period <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -182,6 +200,12 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.793281</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.75472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
