@@ -342,6 +342,8 @@ sim_gs_n <- function(
     attr(ans, "method") <- unique(ans$parameter[ans$sim_id == 1])
   }
 
+  setDF(ans)
+
   return(ans)
 }
 
