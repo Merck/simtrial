@@ -104,7 +104,8 @@ test_that("regular logrank test", {
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
     )
   )
-  expect_equal(observed, expected)
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("regular logrank test parallel", {
@@ -145,7 +146,8 @@ test_that("regular logrank test parallel", {
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
     )
   )
-  expect_equal(observed, expected)
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by FH(0, 0.5)", {
@@ -184,7 +186,8 @@ test_that("weighted logrank test by FH(0, 0.5)", {
       -2.49558219632314, -3.13409592510117, -4.41558699606811
     )
   )
-  expect_equal(observed, expected)
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by MB(3)", {
@@ -223,7 +226,8 @@ test_that("weighted logrank test by MB(3)", {
       -2.22390628856832, -2.80614509607408, -3.91075103840314
     )
   )
-  expect_equal(observed, expected)
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by early zero (6)", {
@@ -262,7 +266,8 @@ test_that("weighted logrank test by early zero (6)", {
       -1.09806723640677, -1.98798012666056, -3.40360393955524
     )
   )
-  expect_equal(observed, expected)
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("RMST", {
@@ -481,6 +486,8 @@ test_that("sim_gs_n() accepts different tests per cutting", {
       55.50000000000000, 25.73690356687072, 49.15868877945109
     )
   )
+  class(expected) <- c("simtrial_gs_wlr", class(expected))
+  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
   expect_equal(observed, expected)
 })
 

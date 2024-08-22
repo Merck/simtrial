@@ -56,6 +56,11 @@ reference:
     - create_test
     - multitest
 
+- title: "Summarize simulations"
+  contents:
+    - summary.simtrial_gs_wlr
+    - as_gt.simtrial_gs_wlr
+
 - title: "Randomization algorithms"
   contents:
     - randomize_by_fixed_block
