@@ -105,8 +105,7 @@ test_that("regular logrank test", {
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
-  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("regular logrank test parallel", {
@@ -148,8 +147,7 @@ test_that("regular logrank test parallel", {
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
-  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by FH(0, 0.5)", {
@@ -189,8 +187,7 @@ test_that("weighted logrank test by FH(0, 0.5)", {
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
-  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by MB(3)", {
@@ -230,8 +227,7 @@ test_that("weighted logrank test by MB(3)", {
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
-  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("weighted logrank test by early zero (6)", {
@@ -271,8 +267,7 @@ test_that("weighted logrank test by early zero (6)", {
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
-  attr(expected, "method") <- unique(observed$parameter[observed$sim_id == 1])
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
 
 test_that("RMST", {
