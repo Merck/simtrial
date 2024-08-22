@@ -44,6 +44,8 @@
 #' @return A data frame summarizing the simulation ID, analysis date,
 #'   z statistics or p-values.
 #'
+#' @importFrom data.table rbindlist setDF
+#'
 #' @export
 #'
 #' @examplesIf requireNamespace("gsDesign2", quietly = TRUE)
@@ -181,11 +183,13 @@
 #'   ms_time = 10
 #' )
 #'
+#' # Warning: this example will be executable when we add info info0 to the milestone test
 #' # Example 7: WLR with fh(0, 0.5) test at IA1,
 #' # WLR with mb(6, Inf) at IA2, and milestone test at FA
 #' ia1_test <- create_test(wlr, weight = fh(rho = 0, gamma = 0.5))
 #' ia2_test <- create_test(wlr, weight = mb(delay = 6, w_max = Inf))
 #' fa_test <- create_test(milestone, ms_time = 10)
+#' \dontrun{
 #' sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = 400,
@@ -194,6 +198,7 @@
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
+#' }
 #'
 #' # WARNING: Multiple tests per cut will be enabled in a future version.
 #' #          Currently does not work.
@@ -222,6 +227,7 @@
 #'   test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 #' )
+#' }
 #'
 #' # Example 9: regular logrank test at all 3 analyses in parallel
 #' plan("multisession", workers = 2)
@@ -235,7 +241,6 @@
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #' plan("sequential")
-#' }
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
@@ -322,8 +327,9 @@ sim_gs_n <- function(
       )
       ans_1sim_new <- convert_list_to_df_w_list_cols(ans_1sim_new)
 
-      # rbind simulation results for all IA(s) and FA in 1 simulation
-      ans_1sim <- rbind(ans_1sim, ans_1sim_new)
+      # bind rows of simulation results for all IA(s) and FA in 1 simulation
+      ans_1sim_list <- list(ans_1sim, ans_1sim_new)
+      ans_1sim <- rbindlist(ans_1sim_list, use.names = TRUE, fill = TRUE)
 
     }
 
@@ -367,7 +373,9 @@ sim_gs_n <- function(
 #' # Cut the trial data
 #' cutting(trial_data)
 create_cut <- function(...) {
+  # Force evaluation of input arguments (required for parallel computing)
   lapply(X = list(...), FUN = force)
+
   function(data) {
     get_analysis_date(data, ...)
   }

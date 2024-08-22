@@ -1,19 +1,85 @@
 # 2024-02-22: Converted `example("sim_gs_n")` to tests from commit 306de0d
 # https://github.com/Merck/simtrial/tree/306de0dbe380fdb1e906a59f34bf3871d3ee5312
 
-# See helper-sim_gs_n.R for helper functions
+# parameters for enrollment
+enroll_rampup_duration <- 4 # duration for enrollment ramp up
+enroll_duration <- 16 # total enrollment duration
+enroll_rate <- gsDesign2::define_enroll_rate(
+  duration = c(
+    enroll_rampup_duration,
+    enroll_duration - enroll_rampup_duration
+    ),
+  rate = c(10, 30)
+)
+
+# parameters for treatment effect
+delay_effect_duration <- 3 # delay treatment effect in months
+median_ctrl <- 9 # survival median of the control arm
+median_exp <- c(9, 14) # survival median of the experimental arm
+dropout_rate <- 0.001
+fail_rate <- gsDesign2::define_fail_rate(
+    duration = c(delay_effect_duration, 100),
+    fail_rate = log(2) / median_ctrl,
+    hr = median_ctrl / median_exp,
+    dropout_rate = dropout_rate
+)
+
+# other related parameters
+alpha <- 0.025 # type I error
+beta <- 0.1 # type II error
+ratio <- 1 # randomization ratio (exp:ctrl)
+# Define cuttings of 2 IAs and 1 FA
+# IA1
+# The 1st interim analysis will occur at the later of the following 3 conditions:
+# - At least 20 months have passed since the start of the study
+# - At least 100 events have occurred
+# - At least 20 months have elapsed after enrolling 200/400 subjects, with a
+#   minimum of 20 months follow-up
+# However, if events accumulation is slow, we will wait for a maximum of 24 months.
+ia1_cut <- create_cut(
+  planned_calendar_time = 20,
+  target_event_overall = 100,
+  max_extension_for_target_event = 24,
+  min_n_overall = 200,
+  min_followup = 20
+)
+
+# IA2
+# The 2nd interim analysis will occur at the later of the following 3 conditions:
+# - At least 32 months have passed since the start of the study
+# - At least 250 events have occurred
+# - At least 10 months after IA1
+# However, if events accumulation is slow, we will wait for a maximum of 34 months.
+ia2_cut <- create_cut(
+  planned_calendar_time = 32,
+  target_event_overall = 200,
+  max_extension_for_target_event = 34,
+  min_time_after_previous_analysis = 10
+)
+
+# FA
+# The final analysis will occur at the later of the following 2 conditions:
+# - At least 45 months have passed since the start of the study
+# - At least 300 events have occurred
+fa_cut <- create_cut(
+  planned_calendar_time = 45,
+  target_event_overall = 350
+)
+
+cut <- list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
 
 test_that("regular logrank test", {
   set.seed(2024)
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0)
-  )
+  ) |>
+    dplyr::select(-c(info, info0))
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep("WLR", 9L),
@@ -32,7 +98,7 @@ test_that("regular logrank test", {
       7.65165409688827, 8.77164253357172, 9.41875140383468,
       7.44263362582829, 8.42150520256931, 9.20559144909002
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -2.60412875287388, -3.16524650257064,
       -1.74511717188905, -2.04376928448542, -2.75821795952773,
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
@@ -49,12 +115,13 @@ test_that("regular logrank test parallel", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0)
-  )
+  ) |>
+    dplyr::select(-c(info, info0))
   plan("sequential")
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -74,7 +141,7 @@ test_that("regular logrank test parallel", {
       7.65165409688827, 8.77164253357172, 9.41875140383468,
       7.44263362582829, 8.42150520256931, 9.20559144909002
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -2.60412875287388, -3.16524650257064,
       -1.74511717188905, -2.04376928448542, -2.75821795952773,
       -2.10969577332675, -2.6973263370173,  -3.79150544041283
@@ -85,18 +152,18 @@ test_that("regular logrank test parallel", {
   expect_equal(observed, expected)
 })
 
-
 test_that("weighted logrank test by FH(0, 0.5)", {
   set.seed(2024)
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = fh(rho = 0, gamma = 0.5)
-  )
+  ) |>
+    dplyr::select(-c(info, info0))
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep("WLR", 9L),
@@ -115,7 +182,7 @@ test_that("weighted logrank test by FH(0, 0.5)", {
       4.16899365283586, 5.47959154932447, 6.30461298220442,
       3.99084589541075, 5.03739766754931, 6.02201456006756
     ),
-    z = c(
+    z = -c(
       -2.66458078201881, -3.3806874072603,  -3.92175635211266,
       -2.02623570402444, -2.20592166700397, -3.0738816696815,
       -2.49558219632314, -3.13409592510117, -4.41558699606811
@@ -131,12 +198,13 @@ test_that("weighted logrank test by MB(3)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = mb(delay = 3)
-  )
+  ) |>
+    dplyr::select(-c(info, info0))
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep("WLR", 9L),
@@ -155,7 +223,7 @@ test_that("weighted logrank test by MB(3)", {
       9.23731341784668, 10.6834095617449, 11.5139237244706,
       8.93809056261512, 10.198207959654,  11.2011384564222
     ),
-    z = c(
+    z = -c(
       -2.03510248183433, -2.73134174616145, -3.29550865303709,
       -1.7741226211721,  -2.0697974767577,  -2.79564817629134,
       -2.22390628856832, -2.80614509607408, -3.91075103840314
@@ -171,12 +239,13 @@ test_that("weighted logrank test by early zero (6)", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = wlr,
-    cut = test_cutting(),
+    cut = cut,
     weight = early_zero(6)
-  )
+  ) |>
+    dplyr::select(-c(info, info0))
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep("WLR", 9L),
@@ -195,7 +264,7 @@ test_that("weighted logrank test by early zero (6)", {
       6.66681774436398, 7.49784129646925, 4.65652183734504, 6.10017624419681,
       7.14376051256763
     ),
-    z = c(
+    z = -c(
       -2.68011063060906, -3.34839309011608, -3.92909103452473,
       -2.5307982058823,  -2.62371146889484, -3.4067888156998,
       -1.09806723640677, -1.98798012666056, -3.40360393955524
@@ -211,10 +280,10 @@ test_that("RMST", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = rmst,
-    cut = test_cutting(),
+    cut = cut,
     tau = 20
   )
   expected <- data.frame(
@@ -249,10 +318,10 @@ test_that("Milestone", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = milestone,
-    cut = test_cutting(),
+    cut = cut,
     ms_time = 10,
     test_type = "naive"
   )
@@ -265,19 +334,19 @@ test_that("Milestone", {
     n = rep(400L, 9L),
     event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
     estimate = c(
-      0.0570882489260027, 0.055,              0.055,
-      0.0982363112856928, 0.0995332208091276, 0.0995332208091276,
-      0.0314033376239697, 0.047591242749346,  0.047591242749346
+      0.0570882489260, 0.0550000000000, 0.0550000000000,
+      0.0982363112857, 0.0995332208091, 0.0995332208091,
+      0.0314033376240, 0.0475912427493, 0.0475912427493
     ),
     se = c(
-      0.0711607062867438, 0.0705956555729631, 0.0705956555729631,
-      0.0707139642597667, 0.070488618189222,  0.070488618189222,
-      0.0725290309676113, 0.0705189167423676, 0.0705189167423676
+      0.0503182801363, 0.0499186838769, 0.0499186838769,
+      0.0500025291675, 0.0498435166464, 0.0498435166464,
+      0.0512870375551, 0.0498652399931, 0.0498652399931
     ),
     z = c(
-      0.802243989765422, 0.779084768795093, 0.779084768795093,
-      1.38920667670141,  1.41204670152474,  1.41204670152474,
-      0.432976109083731, 0.674872005241018, 0.674872005241018
+      1.1345429289596, 1.1017918688652, 1.1017918688652,
+      1.9646268483073, 1.9969140924625, 1.9969140924625,
+      0.6123055477761, 0.9543971463075, 0.9543971463075
     )
   )
   expect_equal(observed, expected)
@@ -292,11 +361,12 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(ia1 = ia1_test, ia2 = ia2_test, fa = fa_test),
-    cut = test_cutting()
+    cut = cut
   )
+
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep(c("WLR", "WLR", "milestone"), 3),
@@ -306,19 +376,27 @@ test_that("WLR with fh(0, 0.5) test at IA1, WLR with mb(6, Inf) at IA2, and mile
     n = rep(400L, 9L),
     event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
     estimate = c(
-      -11.5775033174745,  -36.9093856541259,  0.055,
-      -8.44736378922731,  -25.8424460996795,  0.0995332208091276,
-      -9.95948396485636,  -32.6844032640339,  0.047591242749346
+      -11.5775033174745,  -36.9093856541259,  0.05500000,
+      -8.44736378922731,  -25.8424460996795,  0.09953322,
+      -9.95948396485636,  -32.6844032640339,  0.04759124
     ),
     se = c(
-      4.34496240294236,   12.4451486506265,   0.0705956555729631,
-      4.16899365283586,   12.0591010341806,   0.070488618189222,
-      3.99084589541075,   11.6181044782549,   0.0705189167423676
+      4.34496240294236,   12.4451486506265,   0.04991868,
+      4.16899365283586,   12.0591010341806,   0.04984352,
+      3.99084589541075,   11.6181044782549,   0.04986524
     ),
     z = c(
-      -2.66458078201881, -2.96576494908061, 0.779084768795093,
-      -2.02623570402444, -2.14298279999738, 1.41204670152474,
-      -2.49558219632314, -2.81323027566226, 0.674872005241018
+      2.66458078201881, 2.96576494908061, 1.1017919,
+      2.02623570402444, 2.14298279999738, 1.9969141,
+      2.49558219632314, 2.81323027566226, 0.9543971
+    ),
+    info = c(
+      18.234728155604408, 154.73996276625465, NA, 17.323744020480003,
+      146.078846032117, NA, 15.524151518925096, 134.8967385215799, NA
+    ),
+    info0 = c(
+      18.97777882184863, 157.11581663819095, NA, 17.488976711530597,
+      146.64084968485673, NA, 15.969731304813632, 136.27941618722392, NA
     )
   )
   expect_equal(observed, expected)
@@ -329,10 +407,10 @@ test_that("MaxCombo (WLR-FH(0,0) + WLR-FH(0, 0.5))", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = maxcombo,
-    cut = test_cutting(),
+    cut = cut,
     rho = c(0, 0),
     gamma = c(0, 0.5)
   )
@@ -373,11 +451,12 @@ test_that("sim_gs_n() accepts different tests per cutting", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(wlr_cut1, wlr_cut2, wlr_cut3),
-    cut = test_cutting()
+    cut = cut
   )
+
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
     method = rep("WLR", 9L),
@@ -396,10 +475,20 @@ test_that("sim_gs_n() accepts different tests per cutting", {
       7.65165409688827, 5.47959154932447, 6.99748048599332,
       7.44263362582829, 5.03739766754931, 6.96263273237168
     ),
-    z = c(
+    z = -c(
       -1.90987689210094, -3.3806874072603,  -2.42755994459466,
       -1.74511717188905, -2.20592166700397, -2.34972724106162,
       -2.10969577332675, -3.13409592510117, -3.08198006391483
+    ),
+    info = c(
+      60.30737704918032, 28.86098470336026, 49.40288707640943,
+      58.36595744680852, 30.32561220505373, 49.14163369066358,
+      54.73873873873875, 25.34221836733899, 48.86012654643182
+    ),
+    info0 = c(
+      61.00000000000000, 29.50363707013600, 49.54649841796000,
+      58.75000000000000, 30.38923168829244, 49.34042361519703,
+      55.50000000000000, 25.73690356687072, 49.15868877945109
     )
   )
   class(expected) <- c("simtrial_gs_wlr", class(expected))
@@ -418,10 +507,10 @@ test_that("sim_gs_n() requires a test for each cutting", {
     sim_gs_n(
       n_sim = 3,
       sample_size = 400,
-      enroll_rate = test_enroll_rate(),
-      fail_rate = test_fail_rate(),
+      enroll_rate = enroll_rate,
+      fail_rate = fail_rate,
       test = list(wlr_cut1, wlr_cut2),
-      cut = test_cutting()
+      cut = cut
     ),
     "If you want to run different tests at each cutting"
   )
@@ -436,10 +525,10 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
   observed <- sim_gs_n(
     n_sim = 3,
     sample_size = 400,
-    enroll_rate = test_enroll_rate(),
-    fail_rate = test_fail_rate(),
+    enroll_rate = enroll_rate,
+    fail_rate = fail_rate,
     test = list(test_cut1, test_cut2, test_cut3),
-    cut = test_cutting()
+    cut = cut
   )
   expected <- data.frame(
     sim_id = rep(1:3, each = 3L),
@@ -450,20 +539,25 @@ test_that("sim_gs_n() can combine wlr(), rmst(), and milestone() tests", {
     n = rep(400L, 9L),
     event = c(244, 307, 362, 235, 310, 361, 222, 286, 351),
     estimate = c(
-      -14.8967761757316,  1.03579407229687,   0.055,
-      -13.3530329578349,  1.34542683554887,   0.0995332208091276,
-      -15.7016927028295,  1.33389386467127,   0.047591242749346
+      -14.8967761757316,  1.03579407229687,   0.05500000,
+      -13.3530329578349,  1.34542683554887,   0.09953322,
+      -15.7016927028295,  1.33389386467127,   0.04759124
     ),
     se = c(
-      7.79986198971421,   0.738409622827227,  0.0705956555729631,
-      7.65165409688827,   0.738351348672298,  0.070488618189222,
-      7.44263362582829,   0.739072978624375,  0.0705189167423676
+      7.79986198971421,   0.738409622827227,  0.04991868,
+      7.65165409688827,   0.738351348672298,  0.04984352,
+      7.44263362582829,   0.739072978624375,  0.04986524
     ),
     z = c(
-      -1.90987689210094, 1.40273642200249,  0.779084768795093,
-      -1.74511717188905, 1.82220407393879,  1.41204670152474,
-      -2.10969577332675, 1.80482023189919,  0.674872005241018
-    )
+      1.90987689210094, 1.40273642200249,  1.1017919,
+      1.74511717188905, 1.82220407393879,  1.9969141,
+      2.10969577332675, 1.80482023189919,  0.9543971
+    ),
+    info = c(
+      60.307377049180324, NA, NA, 58.365957446808515, NA,
+      NA, 54.738738738738746, NA, NA
+    ),
+    info0 = c(61, NA, NA, 58.75, NA, NA, 55.5, NA, NA)
   )
   expect_equal(observed, expected)
 })
@@ -497,4 +591,75 @@ test_that("convert_list_to_df_w_list_cols() is robust to diverse input", {
     int_multi = I(list(1:10))
   )
   expect_equal(observed, expected)
+})
+
+test_that("create_cut() can accept variables as arguments", {
+  # https://github.com/Merck/simtrial/issues/260
+  ratio <- 1
+
+  enroll_rate <- gsDesign2::define_enroll_rate(duration = c(2, 2, 8),
+                                               rate = c(1, 2, 3))
+
+  fail_rate <- gsDesign2::define_fail_rate(duration = c(4, Inf),
+                                           fail_rate = log(2) / 12,
+                                           hr = c(1, .6),
+                                           dropout_rate = .001)
+
+  alpha <- 0.025
+  beta <- 0.1
+
+  upper <- gsDesign2::gs_spending_bound
+  upar <- list(sf = gsDesign::sfLDOF, total_spend = alpha)
+  test_upper <- rep(TRUE, 2)
+
+  lower <- gsDesign2::gs_spending_bound
+  lpar <- list(sf = gsDesign::sfLDOF, total_spend = beta)
+  test_lower <- c(TRUE, FALSE)
+  binding <- FALSE
+
+  info_frac = NULL
+  analysis_time = c(24, 36)
+
+  x <- gsDesign2::gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
+                                alpha = alpha, beta = beta, ratio = ratio,
+                                info_frac = info_frac, analysis_time = analysis_time,
+                                upper = upper, upar = upar, test_upper = test_upper,
+                                lower = lower, lpar = lpar, test_lower = test_lower,
+                                binding = binding) |> gsDesign2::to_integer()
+
+  ia_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[1])
+  fa_cut <- simtrial::create_cut(planned_calendar_time = x$analysis$time[2])
+
+  # Must run the parallel version first for 2 reasons:
+  #
+  # 1. In order to reproduce the bug that inspired this test, the cutting
+  # functions must not have been evaluated prior to running them in parallel
+  #
+  # 2. In order to avoid an R CMD check NOTE about detritus in the temp
+  # directory, need to run `future::plan("sequential")` to shut down parallel
+  # cluster
+  # https://future.futureverse.org/articles/future-7-for-package-developers.html#making-sure-to-stop-parallel-workers
+  future::plan("multisession", workers = 2)
+  set.seed(1)
+  results_parallel <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  future::plan("sequential")
+  set.seed(1)
+  results_sequential <- simtrial::sim_gs_n(
+    n_sim = 1e2,
+    sample_size = x$analysis$n[2],
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = simtrial::wlr,
+    cut = list(ia = ia_cut, fa = fa_cut),
+    weight = simtrial::fh(rho = 0, gamma = 0))
+
+  expect_equal(results_parallel, results_sequential)
 })

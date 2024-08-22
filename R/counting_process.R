@@ -44,11 +44,11 @@
 #' is at risk in both treatment group and control group.
 #' Other variables in this represent the following within each stratum at
 #' each time at which one or more events are observed:
-#' - `events`: Total number of events
-#' - `n_event_tol`: Total number of events at treatment group
-#' - `n_risk_tol`: Number of subjects at risk
+#' - `event_total`: Total number of events
+#' - `event_trt`: Total number of events at treatment group
+#' - `n_risk_total`: Number of subjects at risk
 #' - `n_risk_trt`: Number of subjects at risk in treatment group
-#' - `S`: Left-continuous Kaplan-Meier survival estimate
+#' - `s`: Left-continuous Kaplan-Meier survival estimate
 #' - `o_minus_e`: In treatment group, observed number of events minus expected
 #'   number of events. The expected number of events is estimated by assuming
 #'   no treatment effect with hypergeometric distribution with parameters total
@@ -97,11 +97,12 @@ counting_process <- function(x, arm) {
     stop("counting_process: event indicator must be 0 (censoring) or 1 (event).")
   }
 
+  # initilize the number of subjects at risk
   ans <- as.data.table(x)
   ans <- ans[order(tte, decreasing = TRUE), ]
   ans[, one := 1]
   ans[, `:=`(
-    n_risk_tol = cumsum(one),
+    n_risk_total = cumsum(one),
     n_risk_trt = cumsum(treatment == arm)
   ), by = "stratum"]
 
@@ -109,38 +110,40 @@ counting_process <- function(x, arm) {
   if (uniqueN(ans[, .(stratum, tte)]) < nrow(ans)) { # ties
     ans[, mtte := -tte]
     ans <- ans[, .(
-      events = sum(event),
-      n_event_tol = sum((treatment == arm) * event),
+      event_total = sum(event),
+      event_trt = sum((treatment == arm) * event),
       tte = tte[1],
-      n_risk_tol = max(n_risk_tol),
+      n_risk_total = max(n_risk_total),
       n_risk_trt = max(n_risk_trt)
     ), by = c("stratum", "mtte")]
     ans[, mtte := NULL]
   } else { # no ties
     ans <- ans[, .(
       stratum,
-      events = event,
-      n_event_tol = (treatment == arm) * event,
+      event_total = event,
+      event_trt = (treatment == arm) * event,
       tte,
-      n_risk_tol,
+      n_risk_total,
       n_risk_trt
     )]
   }
 
   # Keep calculation for observed time with at least one event,
   # at least one subject is at risk in both treatment group and control group.
-  ans <- ans[events > 0 & n_risk_tol - n_risk_trt > 0 & n_risk_trt > 0, ]
-  ans[, s := 1 - events / n_risk_tol]
+  ans <- ans[event_total > 0 & n_risk_total - n_risk_trt > 0 & n_risk_trt > 0, ]
+  ans[, s := 1 - event_total / n_risk_total]
   ans <- ans[order(stratum, tte), ]
   # Left continuous Kaplan-Meier Estimator
   ans[, s := c(1, cumprod(s)[-length(s)]), by = "stratum"]
   # Observed events minus Expected events in treatment group
-  ans[, o_minus_e := n_event_tol - n_risk_trt / n_risk_tol * events]
+  ans[, o_minus_e := event_trt - n_risk_trt / n_risk_total * event_total]
   # Variance of o_minus_e
-  ans[, var_o_minus_e := (n_risk_tol - n_risk_trt) *
-    n_risk_trt * events * (n_risk_tol - events) /
-    n_risk_tol^2 / (n_risk_tol - 1)]
+  ans[, var_o_minus_e := (n_risk_total - n_risk_trt) *
+    n_risk_trt * event_total * (n_risk_total - event_total) /
+    n_risk_total^2 / (n_risk_total - 1)]
 
   setDF(ans)
+  class(ans) <- c("counting_process", class(ans))
+
   return(ans)
 }

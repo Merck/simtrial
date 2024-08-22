@@ -220,7 +220,7 @@ Because these resources are not commonly available, we will not execute the belo
 Consider that you have two accessible nodes, each with three cores (shown in the diagram below).
 
 ```{r schema, echo=FALSE, fig.cap="Available resource schematic.", fig.align="center", out.width="90%"}
-knitr::include_graphics("schema.png")
+knitr::include_graphics("./figures/schema.png")
 ```
 
 Ideally, all available resources will be used when executing the simulations.
