@@ -75,19 +75,19 @@ as_gt <- function(x, ...) {
 #'   lpar = rep(-Inf, 3))
 #'
 #' # Define cuttings of 2 IAs and 1 FA
-#' ia1_cut <- simtrial::create_cut(target_event_overall = ceiling(design$analysis$event[1]))
-#' ia2_cut <- simtrial::create_cut(target_event_overall = ceiling(design$analysis$event[2]))
-#' fa_cut <- simtrial::create_cut(target_event_overall = ceiling(design$analysis$event[3]))
+#' ia1_cut <- create_cut(target_event_overall = ceiling(design$analysis$event[1]))
+#' ia2_cut <- create_cut(target_event_overall = ceiling(design$analysis$event[2]))
+#' fa_cut <- create_cut(target_event_overall = ceiling(design$analysis$event[3]))
 #'
 #' # Run simulations
-#' simulation <- simtrial::sim_gs_n(
+#' simulation <- sim_gs_n(
 #'   n_sim = 3,
 #'   sample_size = ceiling(design$analysis$n[3]),
 #'   enroll_rate = design$enroll_rate,
 #'   fail_rate = design$fail_rate,
-#'   test = simtrial::wlr,
+#'   test = wlr,
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
-#'   weight = simtrial::fh(rho = 0, gamma = 0.5))
+#'   weight = fh(rho = 0, gamma = 0.5))
 #'
 #' # Summarize simulations
 #' simulation |>
