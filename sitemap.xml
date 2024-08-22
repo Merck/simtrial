@@ -12,6 +12,7 @@
 <url><loc>https://merck.github.io/simtrial/authors.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/index.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/news/index.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/as_gt.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/check_args.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/counting_process.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/create_cut.html</loc></url>
@@ -45,6 +46,7 @@
 <url><loc>https://merck.github.io/simtrial/reference/sim_gs_n.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/sim_pw_surv.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/simtrial-package.html</loc></url>
+<url><loc>https://merck.github.io/simtrial/reference/summary.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/to_sim_pw_surv.html</loc></url>
 <url><loc>https://merck.github.io/simtrial/reference/wlr.html</loc></url>
 </urlset>
