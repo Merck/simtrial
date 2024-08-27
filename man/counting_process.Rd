@@ -54,7 +54,10 @@ The tie is handled by the Breslow's Method.
 
 The output produced by \code{\link[=counting_process]{counting_process()}} produces a
 counting process dataset grouped by stratum and sorted within stratum
-by increasing times where events occur.
+by increasing times where events occur. The object is assigned the class
+"counting_process". It also has the attributes "control" and "experimental",
+which are the totals of the control and experimental treatments,
+respectively, from the input time-to-event data.
 }
 \examples{
 # Example 1
