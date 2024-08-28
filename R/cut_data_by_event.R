@@ -36,5 +36,6 @@
 cut_data_by_event <- function(x, event) {
   cut_date <- get_cut_date_by_event(x, event)
   ans <- x |> cut_data_by_date(cut_date = cut_date)
+  class(ans) <- c("tte_data", class(ans))
   return(ans)
 }

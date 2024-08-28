@@ -12,7 +12,7 @@ test_that("functions that use data.table still return a data frame", {
 
   # cut_data_by_date()
   x <- sim_pw_surv(n = 20)
-  expect_identical(class(cut_data_by_date(x, 5)), class_expected)
+  expect_identical(class(cut_data_by_date(x, 5)), c("tte_data", class_expected))
 
   # early_zero_weight()
   x <- sim_pw_surv(n = 200)
