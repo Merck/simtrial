@@ -112,7 +112,7 @@ wlr.counting_process <- function(data, weight, return_variance = FALSE) {
 
   # calculate the sample size and randomization ratio
   n <- nrow(data)
-  ratio <- attr(data, "experimental") / attr(data, "control")
+  ratio <- attr(data, "n_exp") / attr(data, "n_ctrl")
   q_e <- ratio / (1 + ratio)
   q_c <- 1 - q_e
 

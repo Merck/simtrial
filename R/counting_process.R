@@ -65,7 +65,7 @@
 #' The output produced by [counting_process()] produces a
 #' counting process dataset grouped by stratum and sorted within stratum
 #' by increasing times where events occur. The object is assigned the class
-#' "counting_process". It also has the attributes "control" and "experimental",
+#' "counting_process". It also has the attributes "n_ctrl" and "n_exp",
 #' which are the totals of the control and experimental treatments,
 #' respectively, from the input time-to-event data.
 #'
@@ -149,8 +149,8 @@ counting_process <- function(x, arm) {
   class(ans) <- c("counting_process", class(ans))
   # Record number of control and experimental treatments, which is required for
   # downstream test function wlr()
-  attr(ans, "control") <- sum(x$treatment == "control")
-  attr(ans, "experimental") <- sum(x$treatment == "experimental")
+  attr(ans, "n_ctrl") <- sum(x$treatment == "control")
+  attr(ans, "n_exp") <- sum(x$treatment == "experimental")
 
   return(ans)
 }
