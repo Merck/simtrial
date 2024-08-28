@@ -15,7 +15,7 @@ sorted by stratum and TTE."><meta property="og:image" content="https://merck.git
 
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,10 @@ hypothesis)</p></li>
 <p>The tie is handled by the Breslow's Method.</p>
 <p>The output produced by <code>counting_process()</code> produces a
 counting process dataset grouped by stratum and sorted within stratum
-by increasing times where events occur.</p>
+by increasing times where events occur. The object is assigned the class
+"counting_process". It also has the attributes "n_ctrl" and "n_exp",
+which are the totals of the control and experimental treatments,
+respectively, from the input time-to-event data.</p>
     </div>
 
     <div class="section level2">
