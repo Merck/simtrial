@@ -147,10 +147,8 @@ counting_process <- function(x, arm) {
 
   setDF(ans)
   class(ans) <- c("counting_process", class(ans))
-  # Record number of control and experimental treatments, which is required for
-  # downstream test function wlr()
-  attr(ans, "n_ctrl") <- sum(x$treatment == "control")
-  attr(ans, "n_exp") <- sum(x$treatment == "experimental")
+
+  attr(ans, "ratio") <- attributes(x)$ratio
 
   return(ans)
 }
