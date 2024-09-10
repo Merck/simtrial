@@ -104,14 +104,18 @@ x |> wlr(weight = early_zero(early_period = 4))
 #      Example 2         #
 #  Use cumsum dataset    #
 # ---------------------- #
-x <- data.frame(treatment = c("experimental", "experimental", "control", "control"),
-                stratum = rep("All", 4),
-                tte = c(20, 30, 15, 25),
-                event = c(0, 1, 0, 1))
+x <- data.frame(treatment = ifelse(ex1_delayed_effect$trt == 1, "experimental", "control"),
+                stratum = rep("All", nrow(ex1_delayed_effect)),
+                tte = ex1_delayed_effect$month,
+                event = ex1_delayed_effect$evntd)
 class(x) <- c("tte_data", class(x))
 
 # Users can specify the randomization ratio to calculate the statistical information under H0
-x |> wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 1)
+x |> wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
+
+x |>
+  counting_process(arm = "experimental") |>
+  wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
 
 # If users don't provide the randomization ratio, we will calculate the emperical ratio
 x |> wlr(weight = fh(rho = 0, gamma = 0.5))
