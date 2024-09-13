@@ -25,7 +25,7 @@
 #' @param ... Additional parameters (not used).
 #'
 #' @rdname summary
-#' @return A tibble
+#' @return A data frame
 #' @export
 #'
 #' @examples
@@ -213,6 +213,7 @@ summary.simtrial_gs_wlr <- function(object,
     attr(ans, "design_type") <- design_type
   }
 
+  ans <- as.data.frame(ans)
   class(ans) <- c("simtrial_gs_wlr", class(ans))
   attr(ans, "method") <- attributes(object)$method
 

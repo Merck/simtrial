@@ -54,15 +54,15 @@ test_that("summary.simtrial_gs_wlr() returns consistent results", {
   # Summarize simulations
   observed <- simulation |>
     summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound)
-  expected <- tibble::tibble(
+  expected <- data.frame(
     analysis = c(1, 2, 3),
     sim_n = c(369.3333333333333, 505, 505),
     sim_event = c(97, 305, 405),
     sim_time = c(12.877359569828519, 24.990283397668506, 37.20491262038222),
-    sim_upper_prob = rep(NA_real_, 3L),
+    sim_upper_prob = rep(NA_real_, 3L)
   ) |>
     structure(
-      class = c("simtrial_gs_wlr", "tbl_df", "tbl", "data.frame"),
+      class = c("simtrial_gs_wlr", "data.frame"),
       compare_with_design = "no",
       method = "FH(rho=0, gamma=0.5)"
     )
@@ -70,7 +70,7 @@ test_that("summary.simtrial_gs_wlr() returns consistent results", {
 
   # Summarize simulation and compare with the planned design
   observed <- simulation |> summary(design = design)
-  expected <- tibble::tibble(
+  expected <- data.frame(
     analysis = c(1, 2, 3),
     asy_upper_prob = c(0.00014865936645545522, 0.5723215057363614, 0.9000000002116888),
     sim_upper_prob = rep(NA_real_, 3L),
@@ -79,10 +79,10 @@ test_that("summary.simtrial_gs_wlr() returns consistent results", {
     sim_time = c(12.877359569828519, 24.990283397668506, 37.20491262038222),
     asy_time = c(12, 24, 36),
     asy_n = c(353.04671034431556, 504.3524433490222, 504.3524433490222),
-    asy_event = c(96.77457617908364, 304.00996193840484, 404.14196474655887),
+    asy_event = c(96.77457617908364, 304.00996193840484, 404.14196474655887)
   ) |>
     structure(
-      class = c("simtrial_gs_wlr", "tbl_df", "tbl", "data.frame"),
+      class = c("simtrial_gs_wlr", "data.frame"),
       compare_with_design = "yes",
       design_type = "one-sided",
       method = "FH(rho=0, gamma=0.5)"
