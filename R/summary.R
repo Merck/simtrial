@@ -25,7 +25,7 @@
 #' @param ... Additional parameters (not used).
 #'
 #' @rdname summary
-#' @return A gt table
+#' @return A tibble
 #' @export
 #'
 #' @examples

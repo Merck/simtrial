@@ -17,7 +17,7 @@
 \item{...}{Additional parameters (not used).}
 }
 \value{
-A gt table
+A tibble
 }
 \description{
 Summary of group sequential simulations.
