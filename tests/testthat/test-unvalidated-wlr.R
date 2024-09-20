@@ -26,3 +26,14 @@ test_that("wlr() rejects input object without proper class", {
   x <- mtcars
   expect_error(wlr(x), "no applicable method")
 })
+
+test_that("wlr() uses argument ratio", {
+  x <- data.frame(treatment = ifelse(ex1_delayed_effect$trt == 1, "experimental", "control"),
+                 stratum = rep("All", nrow(ex1_delayed_effect)),
+                 tte = ex1_delayed_effect$month,
+                 event = ex1_delayed_effect$evntd)
+  class(x) <- c("tte_data", class(x))
+  wlr_w_ratio <- x |> wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
+  wlr_wo_ratio <- x |> wlr(weight = fh(rho = 0, gamma = 0.5))
+  expect_false(isTRUE(all.equal(wlr_w_ratio, wlr_wo_ratio)))
+})
