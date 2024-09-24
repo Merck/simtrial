@@ -131,7 +131,7 @@ summary.simtrial_gs_wlr <- function(object,
               dplyr::select(analysis, z, bound) |>
               dplyr::rename(upper_bound = z)
           ) |>
-          dplyr::mutate(cross_upper = -z >= upper_bound)
+          dplyr::mutate(cross_upper = z >= upper_bound)
       )
     } else {
       suppressMessages(
@@ -142,8 +142,8 @@ summary.simtrial_gs_wlr <- function(object,
               tidyr::pivot_wider(values_from = z, names_from = bound) |>
               dplyr::rename(lower_bound = lower, upper_bound = upper)
           ) |>
-          dplyr::mutate(cross_lower = -z <= lower_bound,
-                        cross_upper = -z >= upper_bound)
+          dplyr::mutate(cross_lower = z <= lower_bound,
+                        cross_upper = z >= upper_bound)
       )
     }
 
