@@ -103,7 +103,7 @@ summary.simtrial_gs_wlr <- function(object,
 
     ans2 <- object |>
       dplyr::left_join(data.frame(analysis = 1:n_analysis, upper_bound = bound)) |>
-      dplyr::mutate(cross_upper = -z >= upper_bound) |>
+      dplyr::mutate(cross_upper = z >= upper_bound) |>
       dplyr::filter(cross_upper == TRUE) |>
       dplyr::group_by(sim_id) |>
       dplyr::filter(dplyr::row_number() == 1) |>

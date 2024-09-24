@@ -59,7 +59,7 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for one-sided de
     sim_n = c(369.3333333333333, 505, 505),
     sim_event = c(97, 305, 405),
     sim_time = c(12.877359569828519, 24.990283397668506, 37.20491262038222),
-    sim_upper_prob = rep(NA_real_, 3L)
+    sim_upper_prob = c(NA, 1, NA)
   ) |>
     structure(
       class = c("simtrial_gs_wlr", "data.frame"),
@@ -149,7 +149,7 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for two-sided de
     sim_n = c(366.6666666666667, 535, 535),
     sim_event = c(103, 323, 429),
     sim_time = c(12.363838412468121, 24.374413483785986, 36.116791896100885),
-    sim_upper_prob = rep(NA_real_, 3L)
+    sim_upper_prob = c(NA, 0.6666666666666666, 1)
   ) |>
     structure(
       compare_with_design = "no",
