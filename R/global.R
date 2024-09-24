@@ -33,6 +33,7 @@ utils::globalVariables(
     "cte",
     "cross_lower",
     "cross_upper",
+    "cut_date",
     "dropout_rate",
     "dropout_time",
     "duration",

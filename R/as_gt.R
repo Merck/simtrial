@@ -120,17 +120,17 @@ as_gt.simtrial_gs_wlr <- function(x,
     # build a gt table as return
     ans <- x |>
       gt::gt() |>
-      gt::tab_spanner(label = "Time", columns = ends_with("_time")) |>
-      gt::tab_spanner(label = "Events", columns = ends_with("_event")) |>
-      gt::tab_spanner(label = "N", columns = ends_with("_n")) |>
+      gt::tab_spanner(label = "Time", columns = gt::ends_with("_time")) |>
+      gt::tab_spanner(label = "Events", columns = gt::ends_with("_event")) |>
+      gt::tab_spanner(label = "N", columns = gt::ends_with("_n")) |>
       gt::tab_spanner(
         label = "Probability of crossing efficacy bounds under H1",
-        columns = ends_with("_upper_prob"))
+        columns = gt::ends_with("_upper_prob"))
 
     if (design_type == "two-sided") {
       ans <- ans |> gt::tab_spanner(
         label = "Probability of crossing futility bounds under H1",
-        columns = ends_with("_lower_prob"))
+        columns = gt::ends_with("_lower_prob"))
     }
 
     ans |>
