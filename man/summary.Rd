@@ -17,7 +17,7 @@
 \item{...}{Additional parameters (not used).}
 }
 \value{
-A gt table
+A data frame
 }
 \description{
 Summary of group sequential simulations.
@@ -75,7 +75,8 @@ simulation <- sim_gs_n(
   weight = fh(rho = 0, gamma = 0.5))
 
 # Summarize simulations
-simulation |> summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound)
+bound <- gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound
+simulation |> summary(bound = bound)
 
 # Summarize simulation and compare with the planned design
 simulation |> summary(design = design)

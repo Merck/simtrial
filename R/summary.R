@@ -25,7 +25,7 @@
 #' @param ... Additional parameters (not used).
 #'
 #' @rdname summary
-#' @return A gt table
+#' @return A data frame
 #' @export
 #'
 #' @examples
@@ -81,7 +81,8 @@
 #'   weight = fh(rho = 0, gamma = 0.5))
 #'
 #' # Summarize simulations
-#' simulation |> summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound)
+#' bound <- gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound
+#' simulation |> summary(bound = bound)
 #'
 #' # Summarize simulation and compare with the planned design
 #' simulation |> summary(design = design)
@@ -102,7 +103,7 @@ summary.simtrial_gs_wlr <- function(object,
 
     ans2 <- object |>
       dplyr::left_join(data.frame(analysis = 1:n_analysis, upper_bound = bound)) |>
-      dplyr::mutate(cross_upper = -z >= upper_bound) |>
+      dplyr::mutate(cross_upper = z >= upper_bound) |>
       dplyr::filter(cross_upper == TRUE) |>
       dplyr::group_by(sim_id) |>
       dplyr::filter(dplyr::row_number() == 1) |>
@@ -213,6 +214,7 @@ summary.simtrial_gs_wlr <- function(object,
     attr(ans, "design_type") <- design_type
   }
 
+  ans <- as.data.frame(ans)
   class(ans) <- c("simtrial_gs_wlr", class(ans))
   attr(ans, "method") <- attributes(object)$method
 
