@@ -26,6 +26,9 @@
 #'
 #' @rdname summary
 #' @return A data frame
+#'
+#' @importFrom data.table ":=" .N .SD as.data.table dcast merge.data.table
+#'
 #' @export
 #'
 #' @examples
@@ -94,120 +97,103 @@ summary.simtrial_gs_wlr <- function(object,
   n_analysis <- nrow(object[object$sim_id == 1, ])
   n_sim <- nrow(object) / n_analysis
 
+  object <- as.data.table(object)
   # if the design input is NULL
   # then simply output the simulated n, event, power
   if (is.null(design)) {
-    ans1 <- object |>
-      dplyr::group_by(analysis) |>
-      dplyr::summarize(sim_n = mean(n), sim_event = mean(event), sim_time = mean(cut_date))
+    ans1 <- object[,
+                   .(
+                     sim_n = mean(n),
+                     sim_event = mean(event),
+                     sim_time = mean(cut_date)
+                   ),
+                   by = "analysis"]
 
-    ans2 <- object |>
-      dplyr::left_join(data.frame(analysis = 1:n_analysis, upper_bound = bound)) |>
-      dplyr::mutate(cross_upper = z >= upper_bound) |>
-      dplyr::filter(cross_upper == TRUE) |>
-      dplyr::group_by(sim_id) |>
-      dplyr::filter(dplyr::row_number() == 1) |>
-      dplyr::ungroup() |>
-      dplyr::group_by(analysis) |>
-      dplyr::summarize(n_cross_upper = dplyr::n()) |>
-      dplyr::mutate(sim_upper_prob = cumsum(n_cross_upper) / n_sim) |>
-      dplyr::select(analysis, sim_upper_prob)
+    bound_dt <- data.table(analysis = 1:n_analysis, upper_bound = bound)
+    ans2 <- merge.data.table(object, bound_dt, all.x = TRUE, sort = FALSE)
+    ans2[, cross_upper := z >= upper_bound]
+    ans2 <- ans2[cross_upper == TRUE, ]
+    ans2 <- ans2[, .SD[1], by = "sim_id"]
+    ans2 <- ans2[, .(n_cross_upper = .N), by = "analysis"]
+    ans2 <- ans2[order(analysis),
+                 .(analysis, sim_upper_prob = cumsum(n_cross_upper) / n_sim)]
 
-    suppressMessages(
-      ans <- ans1 |> dplyr::left_join(ans2)
-    )
+    ans <- merge.data.table(ans1, ans2, all.x = TRUE)
 
     attr(ans, "compare_with_design") <- "no"
   } else {
     # get the design type, 1-sided or 2-sided
-    design_type <- ifelse(length(unique(design$bound$bound)) == 1, "one-sided", "two-sided")
+    design_type <- if(length(unique(design$bound$bound)) == 1) "one-sided" else "two-sided"
 
     # add the futility and efficacy bounds to the simulation results
     if (design_type == "one-sided") {
-      suppressMessages(
-        sim_tbl <- object |>
-          dplyr::left_join(
-            design$bound |>
-              dplyr::select(analysis, z, bound) |>
-              dplyr::rename(upper_bound = z)
-          ) |>
-          dplyr::mutate(cross_upper = z >= upper_bound)
-      )
+      bound_dt <- as.data.table(design$bound)
+      bound_dt <- bound_dt[, .(analysis, upper_bound = z, bound)]
+      sim_tbl <- merge.data.table(object, bound_dt, all.x = TRUE, sort = FALSE)
+      sim_tbl[, cross_upper := z >= upper_bound]
     } else {
-      suppressMessages(
-        sim_tbl <- object |>
-          dplyr::left_join(
-            design$bound |>
-              dplyr::select(analysis, z, bound) |>
-              tidyr::pivot_wider(values_from = z, names_from = bound) |>
-              dplyr::rename(lower_bound = lower, upper_bound = upper)
-          ) |>
-          dplyr::mutate(cross_lower = z <= lower_bound,
-                        cross_upper = z >= upper_bound)
-      )
+      bound_dt <- as.data.table(design$bound)
+      bound_dt <- dcast(bound_dt, analysis ~ bound, value.var = "z")
+      bound_dt <- bound_dt[, .(analysis, lower_bound = lower, upper_bound = upper)]
+
+      sim_tbl <- merge.data.table(object, bound_dt, all.x = TRUE, sort = FALSE)
+      sim_tbl[, cross_lower := z <= lower_bound]
+      sim_tbl[, cross_upper := z >= upper_bound]
     }
 
     # calculate the prob of crossing efficacy bounds
-    tbl_upper <- sim_tbl |>
-      dplyr::filter(cross_upper == TRUE) |>
-      dplyr::group_by(sim_id) |>
-      dplyr::filter(dplyr::row_number() == 1) |>
-      dplyr::ungroup() |>
-      dplyr::group_by(analysis) |>
-      dplyr::summarize(n_cross_upper = dplyr::n()) |>
-      dplyr::mutate(sim_upper_prob = cumsum(n_cross_upper) / n_sim) |>
-      dplyr::select(analysis, sim_upper_prob)
+    tbl_upper <- sim_tbl[cross_upper == TRUE, ]
+    tbl_upper <- tbl_upper[, .SD[1], by = "sim_id"]
+    tbl_upper <- tbl_upper[, .(n_cross_upper = .N), by = "analysis"]
+    tbl_upper <- tbl_upper[order(analysis),
+                           .(analysis, sim_upper_prob = cumsum(n_cross_upper) / n_sim)]
 
     # calculate the prob of crossing futility bounds
     if (design_type == "two-sided") {
-      tbl_lower <- sim_tbl |>
-        dplyr::filter(cross_lower == TRUE) |>
-        dplyr::group_by(sim_id) |>
-        dplyr::filter(dplyr::row_number() == 1) |>
-        dplyr::ungroup() |>
-        dplyr::group_by(analysis) |>
-        dplyr::summarize(n_cross_lower = dplyr::n()) |>
-        dplyr::mutate(sim_lower_prob = cumsum(n_cross_lower) / n_sim) |>
-        dplyr::select(analysis, sim_lower_prob)
+      tbl_lower <- sim_tbl[cross_lower == TRUE, ]
+      tbl_lower <- tbl_lower[, .SD[1], by = "sim_id"]
+      tbl_lower <- tbl_lower[, .(n_cross_lower = .N), by = "analysis"]
+      tbl_lower <- tbl_lower[order(analysis),
+                             .(analysis, sim_lower_prob = cumsum(n_cross_lower) / n_sim)]
     }
 
     # combining prob of crossing efficacy and futility bounds under H1
     if (design_type == "one-sided") {
-      tbl_asy_prob <- design$bound |>
-        dplyr::select(analysis, probability) |>
-        dplyr::rename(asy_upper_prob = probability)
+      tbl_asy_prob <- as.data.table(design$bound)
+      tbl_asy_prob <- tbl_asy_prob[, .(analysis, asy_upper_prob = probability)]
     } else {
-      tbl_asy_prob <- design$bound |>
-        dplyr::select(analysis, bound, probability) |>
-        tidyr::pivot_wider(values_from = probability, names_from = bound) |>
-        dplyr::rename(asy_upper_prob = upper, asy_lower_prob = lower)
+      tbl_asy_prob <- as.data.table(design$bound)
+      tbl_asy_prob <- dcast(tbl_asy_prob, analysis ~ bound, value.var = "probability")
+      tbl_asy_prob <- tbl_asy_prob[, .(analysis, asy_upper_prob = upper, asy_lower_prob = lower)]
     }
 
     # calculate the number of analysis time, events and sample size
-    suppressMessages(
-      tbl_event <- object |>
-        dplyr::group_by(analysis) |>
-        dplyr::summarize(sim_event = mean(event),
-                         sim_n = mean(n),
-                         sim_time = mean(cut_date)) |>
-        dplyr::right_join(design$analysis |>
-                            dplyr::select(analysis, time, n, event) |>
-                            dplyr::rename(asy_time = time, asy_n = n, asy_event = event))
-    )
+    tbl_event <- object[,
+                        .(
+                          sim_event = mean(event),
+                          sim_n = mean(n),
+                          sim_time = mean(cut_date)
+                        ),
+                        by = "analysis"]
+    analysis_dt <- as.data.table(design$analysis)
+    analysis_dt <- analysis_dt[,
+                               .(
+                                 analysis,
+                                 asy_time = time,
+                                 asy_n = n,
+                                 asy_event = event
+                               )]
+    tbl_event <- merge.data.table(tbl_event, analysis_dt, all.y = TRUE, sort = FALSE)
     # combine all the information together
     if (design_type == "one-sided") {
-      suppressMessages(
-        ans <- tbl_asy_prob |>
-          dplyr::left_join(tbl_upper) |>
-          dplyr::left_join(tbl_event)
-      )
+      ans <- tbl_asy_prob |>
+        merge.data.table(tbl_upper, all.x = TRUE, sort = FALSE) |>
+        merge.data.table(tbl_event, all.x = TRUE, sort = FALSE)
     } else {
-      suppressMessages(
-        ans <- tbl_asy_prob |>
-          dplyr::left_join(tbl_upper) |>
-          dplyr::left_join(tbl_lower) |>
-          dplyr::left_join(tbl_event)
-      )
+      ans <- tbl_asy_prob |>
+        merge.data.table(tbl_upper, all.x = TRUE, sort = FALSE) |>
+        merge.data.table(tbl_lower, all.x = TRUE, sort = FALSE) |>
+        merge.data.table(tbl_event, all.x = TRUE, sort = FALSE)
     }
 
     attr(ans, "compare_with_design") <- "yes"
