@@ -142,3 +142,16 @@ as_gt.simtrial_gs_wlr <- function(x,
       gt::tab_header(title = title, subtitle = subtitle)
   }
 }
+
+# Only purpose of the methods below is to fix S3 redirection when simtrial is
+# loaded after gsDesign2, which masks the as_gt() generic from gsDesign2
+
+#' @export
+as_gt.fixed_design <- function(x, ...) {
+  gsDesign2:::as_gt.fixed_design(x, ...)
+}
+
+#' @export
+as_gt.gs_design <- function(x, ...) {
+  gsDesign2:::as_gt.gs_design(x, ...)
+}
