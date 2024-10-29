@@ -27,7 +27,7 @@
 
 ## Tests 
 
-- Regression tests of `summary` is added (#282, thanks to @jdblischak).
+- Regression tests of `summary()` is added (#282, thanks to @jdblischak).
 
 # simtrial 0.4.1
 
