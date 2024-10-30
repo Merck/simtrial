@@ -10,7 +10,7 @@
 
 ## Computational Improvements
 
-- The source code of `summary()` is rewrite from `tibble` or `data.fram`e to `data.table`, which is optimized to use as little memory as possible by avoiding making unnecessary temporary copies of data frames. This results in code that is more efficient in both time and memory use. (#289, thanks to @jdblischak).
+- The source code of `summary()` is rewritten from `tibble` or `data.frame` to `data.table`, which is optimized to use as little memory as possible by avoiding making unnecessary temporary copies of data frames. This results in code that is more efficient in both time and memory use. (#289, thanks to @jdblischak).
 - The `sim_fixed_n()` function has been updated to allow parallel simulations (#249, #252, #253, #262, thanks to @cmansch and @jdblischak).
 
 ## Bug fixes
