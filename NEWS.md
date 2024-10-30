@@ -17,7 +17,7 @@
 
 - Fixed the bug of cut functions in parallel (#261, thanks to @cmansch).
 
-# Coding Improvements
+## Coding Improvements
 
 - The `wlr()` function is enhanced to S3 generic to accept both counting process and time-to-event data as its input (#276, #277, thanks to @jdblischak).
 
