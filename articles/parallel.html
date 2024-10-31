@@ -63,7 +63,7 @@
 Nan Xiao</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/main/vignettes/parallel.Rmd" class="external-link"><code>vignettes/parallel.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/v0.4.2/vignettes/parallel.Rmd" class="external-link"><code>vignettes/parallel.Rmd</code></a></small>
       <div class="d-none name"><code>parallel.Rmd</code></div>
     </div>
 
@@ -193,8 +193,8 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.658   0.049   7.807</span></span></code></pre></div>
-<p>We can see that the CPU time is 13.66 and the elapsed time is 7.81
+<span><span class="co">#&gt;  13.591   0.077   7.790</span></span></code></pre></div>
+<p>We can see that the CPU time is 13.59 and the elapsed time is 7.79
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
@@ -252,8 +252,8 @@ simulations across the available cores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.404   0.009   7.404</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.40 and the elapsed time is 7.40
+<span><span class="co">#&gt;   0.378   0.005   7.384</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.38 and the elapsed time is 7.38
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
