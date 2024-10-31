@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,38 @@
       <small>Source: <a href="https://github.com/Merck/simtrial/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.2" id="simtrial-042">simtrial 0.4.2<a class="anchor" aria-label="anchor" href="#simtrial-042"></a></h2>
+<div class="section level3">
+<h3 id="statistcial-improvements-0-4-2">Statistcial Improvements<a class="anchor" aria-label="anchor" href="#statistcial-improvements-0-4-2"></a></h3>
+<ul><li>Summary function of <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> is available (<a href="https://github.com/Merck/simtrial/issues/268" class="external-link">#268</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>The denominator of the milestone test Z-score is corrected (<a href="https://github.com/Merck/simtrial/issues/270" class="external-link">#270</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>Statistical information is added as output of <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> (<a href="https://github.com/Merck/simtrial/issues/273" class="external-link">#273</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>The randomization ratio is built as an attribute of <code><a href="../reference/sim_pw_surv.html">sim_pw_surv()</a></code> and passed into the <code><a href="../reference/wlr.html">wlr()</a></code> test (<a href="https://github.com/Merck/simtrial/issues/281" class="external-link">#281</a>, <a href="https://github.com/Merck/simtrial/issues/285" class="external-link">#285</a> thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a> and <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+<li>The sign of the Z-score is unified to positive numbers (<a href="https://github.com/Merck/simtrial/issues/272" class="external-link">#272</a>, <a href="https://github.com/Merck/simtrial/issues/286" class="external-link">#286</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a> and <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="computational-improvements-0-4-2">Computational Improvements<a class="anchor" aria-label="anchor" href="#computational-improvements-0-4-2"></a></h3>
+<ul><li>The source code of <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> is rewritten from <code>tibble</code> or <code>data.frame</code> to <code>data.table</code>, which is optimized to use as little memory as possible by avoiding making unnecessary temporary copies of data frames. This results in code that is more efficient in both time and memory use. (<a href="https://github.com/Merck/simtrial/issues/289" class="external-link">#289</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+<li>The <code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> function has been updated to allow parallel simulations (<a href="https://github.com/Merck/simtrial/issues/249" class="external-link">#249</a>, <a href="https://github.com/Merck/simtrial/issues/252" class="external-link">#252</a>, <a href="https://github.com/Merck/simtrial/issues/253" class="external-link">#253</a>, <a href="https://github.com/Merck/simtrial/issues/262" class="external-link">#262</a>, thanks to <a href="https://github.com/cmansch" class="external-link">@cmansch</a> and <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-4-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-2"></a></h3>
+<ul><li>Fixed the bug of cut functions in parallel (<a href="https://github.com/Merck/simtrial/issues/261" class="external-link">#261</a>, thanks to <a href="https://github.com/cmansch" class="external-link">@cmansch</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="coding-improvements-0-4-2">Coding Improvements<a class="anchor" aria-label="anchor" href="#coding-improvements-0-4-2"></a></h3>
+<ul><li>The <code><a href="../reference/wlr.html">wlr()</a></code> function is enhanced to S3 generic to accept both counting process and time-to-event data as its input (<a href="https://github.com/Merck/simtrial/issues/276" class="external-link">#276</a>, <a href="https://github.com/Merck/simtrial/issues/277" class="external-link">#277</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-4-2">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-4-2"></a></h3>
+<ul><li>Use KaTeX for pkgdown math rendering (<a href="https://github.com/Merck/simtrial/issues/263" class="external-link">#263</a>, thanks to <a href="https://github.com/nanxstats" class="external-link">@nanxstats</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="tests-0-4-2">Tests<a class="anchor" aria-label="anchor" href="#tests-0-4-2"></a></h3>
+<ul><li>Regression tests of <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> is added (<a href="https://github.com/Merck/simtrial/issues/282" class="external-link">#282</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="simtrial-041">simtrial 0.4.1<a class="anchor" aria-label="anchor" href="#simtrial-041"></a></h2><p class="text-muted">CRAN release: 2024-05-03</p>
 <div class="section level3">
