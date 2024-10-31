@@ -1,3 +1,34 @@
+# simtrial 0.4.2
+
+## Statistcial Improvements
+
+- Summary function of `sim_gs_n()` is available (#268, thanks to @LittleBeannie).
+- The denominator of the milestone test Z-score is corrected (#270, thanks to @LittleBeannie).
+- Statistical information is added as output of `sim_gs_n()` (#273, thanks to @LittleBeannie).
+- The randomization ratio is built as an attribute of `sim_pw_surv()` and passed into the `wlr()` test (#281, #285 thanks to @LittleBeannie and @jdblischak).
+- The sign of the Z-score is unified to positive numbers (#272, #286, thanks to @LittleBeannie and @jdblischak).
+
+## Computational Improvements
+
+- The source code of `summary()` is rewritten from `tibble` or `data.frame` to `data.table`, which is optimized to use as little memory as possible by avoiding making unnecessary temporary copies of data frames. This results in code that is more efficient in both time and memory use. (#289, thanks to @jdblischak).
+- The `sim_fixed_n()` function has been updated to allow parallel simulations (#249, #252, #253, #262, thanks to @cmansch and @jdblischak).
+
+## Bug fixes
+
+- Fixed the bug of cut functions in parallel (#261, thanks to @cmansch).
+
+## Coding Improvements
+
+- The `wlr()` function is enhanced to S3 generic to accept both counting process and time-to-event data as its input (#276, #277, thanks to @jdblischak).
+
+## Documentation
+
+- Use KaTeX for pkgdown math rendering  (#263, thanks to @nanxstats).
+
+## Tests 
+
+- Regression tests of `summary()` is added (#282, thanks to @jdblischak).
+
 # simtrial 0.4.1
 
 ## Improvements
