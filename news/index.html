@@ -29,13 +29,13 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/Merck/simtrial/blob/v0.4.2/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/Merck/simtrial/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.2" id="simtrial-042">simtrial 0.4.2<a class="anchor" aria-label="anchor" href="#simtrial-042"></a></h2>
 <div class="section level3">
-<h3 id="statistcial-improvements-0-4-2">Statistcial Improvements<a class="anchor" aria-label="anchor" href="#statistcial-improvements-0-4-2"></a></h3>
+<h3 id="statistical-improvements-0-4-2">Statistical improvements<a class="anchor" aria-label="anchor" href="#statistical-improvements-0-4-2"></a></h3>
 <ul><li>Summary function of <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> is available (<a href="https://github.com/Merck/simtrial/issues/268" class="external-link">#268</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
 <li>The denominator of the milestone test Z-score is corrected (<a href="https://github.com/Merck/simtrial/issues/270" class="external-link">#270</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
 <li>Statistical information is added as output of <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> (<a href="https://github.com/Merck/simtrial/issues/273" class="external-link">#273</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
@@ -43,7 +43,7 @@
 <li>The sign of the Z-score is unified to positive numbers (<a href="https://github.com/Merck/simtrial/issues/272" class="external-link">#272</a>, <a href="https://github.com/Merck/simtrial/issues/286" class="external-link">#286</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a> and <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="computational-improvements-0-4-2">Computational Improvements<a class="anchor" aria-label="anchor" href="#computational-improvements-0-4-2"></a></h3>
+<h3 id="computational-improvements-0-4-2">Computational improvements<a class="anchor" aria-label="anchor" href="#computational-improvements-0-4-2"></a></h3>
 <ul><li>The source code of <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> is rewritten from <code>tibble</code> or <code>data.frame</code> to <code>data.table</code>, which is optimized to use as little memory as possible by avoiding making unnecessary temporary copies of data frames. This results in code that is more efficient in both time and memory use. (<a href="https://github.com/Merck/simtrial/issues/289" class="external-link">#289</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
 <li>The <code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> function has been updated to allow parallel simulations (<a href="https://github.com/Merck/simtrial/issues/249" class="external-link">#249</a>, <a href="https://github.com/Merck/simtrial/issues/252" class="external-link">#252</a>, <a href="https://github.com/Merck/simtrial/issues/253" class="external-link">#253</a>, <a href="https://github.com/Merck/simtrial/issues/262" class="external-link">#262</a>, thanks to <a href="https://github.com/cmansch" class="external-link">@cmansch</a> and <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
 </ul></div>
@@ -52,7 +52,7 @@
 <ul><li>Fixed the bug of cut functions in parallel (<a href="https://github.com/Merck/simtrial/issues/261" class="external-link">#261</a>, thanks to <a href="https://github.com/cmansch" class="external-link">@cmansch</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="coding-improvements-0-4-2">Coding Improvements<a class="anchor" aria-label="anchor" href="#coding-improvements-0-4-2"></a></h3>
+<h3 id="coding-improvements-0-4-2">Coding improvements<a class="anchor" aria-label="anchor" href="#coding-improvements-0-4-2"></a></h3>
 <ul><li>The <code><a href="../reference/wlr.html">wlr()</a></code> function is enhanced to S3 generic to accept both counting process and time-to-event data as its input (<a href="https://github.com/Merck/simtrial/issues/276" class="external-link">#276</a>, <a href="https://github.com/Merck/simtrial/issues/277" class="external-link">#277</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
 </ul></div>
 <div class="section level3">
