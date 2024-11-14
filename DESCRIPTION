@@ -46,7 +46,8 @@ Imports:
     mvtnorm,
     stats,
     survival,
-    utils
+    utils,
+    gsDesign2 (>= 1.1.3)
 Suggests:
     Matrix,
     covr,
