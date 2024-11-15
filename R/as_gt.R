@@ -148,10 +148,12 @@ as_gt.simtrial_gs_wlr <- function(x,
 
 #' @export
 as_gt.fixed_design <- function(x, ...) {
-  gsDesign2:::as_gt.fixed_design(x, ...)
+  f <- utils::getFromNamespace("as_gt.fixed_design", "gsDesign2")
+  f(x, ...)
 }
 
 #' @export
 as_gt.gs_design <- function(x, ...) {
-  gsDesign2:::as_gt.gs_design(x, ...)
+  f <- utils::getFromNamespace("as_gt.gs_design", "gsDesign2")
+  f(x, ...)
 }
