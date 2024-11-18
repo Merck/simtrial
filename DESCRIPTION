@@ -46,7 +46,8 @@ Imports:
     mvtnorm,
     stats,
     survival,
-    utils
+    utils,
+    gsDesign2 (>= 1.1.3)
 Suggests:
     Matrix,
     covr,
@@ -63,6 +64,5 @@ Suggests:
     tidyr
 LinkingTo:
     Rcpp
-Remotes: Merck/gsDesign2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
