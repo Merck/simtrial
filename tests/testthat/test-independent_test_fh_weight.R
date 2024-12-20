@@ -11,7 +11,7 @@ test_that("the z values match with the correspondings in fh_weight", {
   max <- TRUE
   alpha <- 0.025
   data.anal <- data.frame(cbind(y$tte, y$event, y$treatment))
-  fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
   survMisc::comp(fit, p = sapply(wt, function(x) x[1]), q = sapply(wt, function(x) x[2])) |>
@@ -42,7 +42,7 @@ test_that("fh_weight calculated correct correlation value when input a sequence 
   max <- TRUE
   alpha <- 0.025
   data.anal <- data.frame(cbind(y$tte, y$event, y$treatment))
-  fit <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing
   survMisc::comp(fit, p = sapply(wt, function(x) x[1]), q = sapply(wt, function(x) x[2])) |>
@@ -70,7 +70,7 @@ test_that("fh_weight calculated correct correlation value when input a sequence 
   d1 <- data.frame(do.call(rbind, wt2))
   wt3 <- unique(wt2)
   d2 <- data.frame(do.call(rbind, wt3))
-  fit2 <- survMisc::ten(survival::Surv(y$tte, y$event) ~ y$treatment, data = y)
+  fit2 <- survMisc::ten(Surv(y$tte, y$event) ~ y$treatment, data = y)
 
   # Testing (for calculating the covariances)
   survMisc::comp(fit2, p = sapply(wt3, function(x) x[1]), q = sapply(wt3, function(x) x[2])) |>
