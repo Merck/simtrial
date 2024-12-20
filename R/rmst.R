@@ -280,7 +280,7 @@ rmst_single_arm <- function(
   stopifnot(0 <= alpha & alpha <= 1)
 
   # Fit a single Kaplan-Meier curve
-  fit <- survival::survfit(survival::Surv(time_var, event_var) ~ 1)
+  fit <- survival::survfit(Surv(time_var, event_var) ~ 1)
 
   # Extract survival probability, number of event, number at risk,
   # and number of censored along with observed time from the fitted model
