@@ -70,6 +70,7 @@
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future nbrOfWorkers plan
 #' @importFrom methods is
+#' @importFrom survival strata Surv
 #'
 #' @export
 #'

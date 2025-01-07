@@ -45,7 +45,7 @@ Imports:
     methods,
     mvtnorm,
     stats,
-    survival (>= 3.8),
+    survival,
     utils
 Suggests:
     Matrix,

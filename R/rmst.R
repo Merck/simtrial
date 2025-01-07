@@ -126,6 +126,7 @@ rmst <- function(
 #' - `rmst_diff`: the calculation results of RMST differences.
 #'
 #' @importFrom data.table setDF rbindlist
+#' @importFrom survival Surv
 #' @keywords internal
 #'
 #' @examples
