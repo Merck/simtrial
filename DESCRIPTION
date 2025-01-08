@@ -46,14 +46,14 @@ Imports:
     mvtnorm,
     stats,
     survival,
-    utils,
-    gsDesign2 (>= 1.1.3)
+    utils
 Suggests:
     Matrix,
     covr,
     dplyr,
     ggplot2,
     gsDesign,
+    gsDesign2 (>= 1.1.3),
     gt,
     knitr,
     rmarkdown,
