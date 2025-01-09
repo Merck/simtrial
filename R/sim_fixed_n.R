@@ -70,6 +70,7 @@
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future nbrOfWorkers plan
 #' @importFrom methods is
+#' @importFrom survival strata Surv
 #'
 #' @export
 #'
@@ -405,12 +406,12 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
 
   event <- sum(d$event)
   if (n_stratum > 1) {
-    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients
+    ln_hr <- survival::coxph(Surv(tte, event) ~ (treatment == "experimental") + strata(stratum), data = d)$coefficients
     ln_hr <- as.numeric(ln_hr)
     ans$event <- rep(event, nrow(rho_gamma))
     ans$ln_hr <- rep(ln_hr, nrow(rho_gamma))
   } else {
-    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+    ln_hr <- survival::coxph(Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
     ln_hr <- as.numeric(ln_hr)
     ans$event <- event
     ans$ln_hr <- ln_hr
