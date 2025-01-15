@@ -1,0 +1,203 @@
+---
+title: "Custom Group Sequential Design Simulations: Crafting from Scratch"
+author: "Yujie Zhao and Keaven Anderson"
+output: rmarkdown::html_vignette
+bibliography: simtrial.bib
+vignette: >
+  %\VignetteIndexEntry{Custom Group Sequential Design Simulations: Crafting from Scratch}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(gsDesign2)
+library(simtrial)
+library(dplyr)
+library(tibble)
+library(gt)
+library(doFuture)
+library(doRNG)
+library(tictoc)
+
+set.seed(2025)
+```
+
+
+The vignette [Simulate Group Sequential Designs with Ease via sim_gs_n](https://merck.github.io/simtrial/articles/sim_gs_design_simple.html) introduces the simulation of group sequential designs using `sim_gs_n()`. This function offers a simple and straightforward method for conducting rapid simulations with just a single function call.
+
+If users are interested in more complex scenarios such as the ones listed below, we recommend simulating from scratch rather than directly using `sim_gs_n()`:
+
+- Comparing different cutoffs.
+- Evaluating various testing methods.
+- Conducting distinct analyses for each test.
+- Analyzing different dropout rates in the control and experimental groups.
+- Testing by the MaxCombo method.
+
+The parameters setup to scratch a group sequential simulation is very similar to Step 1 of the vignette [Simulate Group Sequential Designs with Ease via sim_gs_n](https://merck.github.io/simtrial/articles/sim_gs_design_simple.html). To shorten the length of this vignette, we will use the same design characteristics and cutting method.
+
+```{r}
+n_sim <- 1e4
+stratum <- data.frame(stratum = "All", p = 1)
+block <- rep(c("experimental", "control"), 2)
+enroll_rate <- data.frame(stratum = "All", rate = 1, duration = 12)
+fail_rate <- data.frame(stratum = "All",
+                        duration = c(3, Inf), fail_rate = log(2) / 10, 
+                        hr = c(1, 0.6), dropout_rate = 0.001)
+
+x <- gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
+                   analysis_time = c(12, 24, 36), alpha = 0.025, beta = 0.1,
+                   upper = gs_spending_bound, lower = gs_b,
+                   upar = list(sf = gsDesign::sfLDOF, total_spend = 0.025),
+                   lpar = rep(-Inf, 3)) |> to_integer()
+
+sample_size <- x$analysis$n |> max()
+event <- x$analysis$event
+eff_bound <- x$bound$z[x$bound$bound == "upper"]
+
+ia1_cut <- create_cut(target_event_overall = event[1])
+ia2_cut <- create_cut(target_event_overall = event[2])
+fa_cut <- create_cut(target_event_overall = event[3])
+
+cut <- list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
+```
+
+```{r}
+cat("The total sample size is ", sample_size, ". \n")
+cat("The number of events at IA1, IA2 and FA are ", event, ". \n")
+cat("The efficacy bounds at IA1, IA2 and FA are", eff_bound, ". \n")
+```
+
+The process of simulating group sequential designs from scratch is very similar to that of fixed designs. The key difference is that group sequential designs require multiple analyses. For each analysis, the data cutting and testing adhere to the same procedures as Steps 1 to 3 described in the [fixed design vignette](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html). Therefore, we will omit these steps and jump to Step 4 of building a function `one_sim()` for 1 single simulation, which includes data generation, multiple cuttings and testings. 
+Instead of running just a single test, we conduct multiple tests for comparison.
+
+```{r}
+one_sim <- function(sim_id = 1, 
+                    # arguments from Step 1: design characteristic
+                    n, stratum, enroll_rate, fail_rate, dropout_rate, block, 
+                    # arguments from Step 2: cutting method
+                    cut,
+                    # arguments from Step 3: testing method
+                    fh, mb, xu, rmst, ms, mc
+                    ) {
+  
+    # Step 1: simulate time-to-event data
+    uncut_data <- sim_pw_surv(
+      n = n,
+      stratum = stratum,
+      block = block,
+      enroll_rate = enroll_rate,
+      fail_rate = fail_rate,
+      dropout_rate = dropout_rate) 
+    
+    # Step 2: Cut data -- !! this is different from the fixed design due to multiple analyses
+    n_analysis <- length(cut)
+    cut_date <- rep(-1, n_analysis)
+    cut_data <- list()
+    for (i in 1:n_analysis) {
+      cut_date[i] <- cut[[i]](uncut_data)
+      cut_data[[i]] <- uncut_data |> cut_data_by_date(cut_date[i])
+    }
+    
+    # Step 3: Run multiple tests -- !! this is different from the fixed design due to multiple analyses
+    sim_res <- NULL
+    for (i in 1:n_analysis) {
+      sim_res_lr <- cut_data[[i]] |> wlr(weight = fh(rho = 0, gamma = 0))
+      sim_res_fh <- cut_data[[i]] |> wlr(weight = fh(rho = fh$rho, gamma = fh$gamma))
+      sim_res_mb <- cut_data[[i]] |> wlr(weight = mb(delay = mb$delay, w_max = mb$w_max))
+      sim_res_xu <- cut_data[[i]] |> wlr(weight = early_zero(early_period = xu$early_period))
+      sim_res_rmst <- cut_data[[i]] |> rmst(tau = rmst$tau)
+      sim_res_ms <- cut_data[[i]] |> milestone(ms_time = ms$ms_time)
+      sim_res_mc <- cut_data[[i]] |> maxcombo(rho = mc$rho, gamma = mc$gamma)
+      
+      sim_res_new <- tribble(
+        ~`Sim ID`, ~Analysis, ~Method, ~Parameter, ~Z, ~Estimate, ~SE, ~`P value`,
+        sim_id, i, sim_res_lr$method, sim_res_lr$parameter, sim_res_lr$z, sim_res_lr$estimate, sim_res_lr$se, pnorm(-sim_res_lr$z),
+        sim_id, i, sim_res_fh$method, sim_res_fh$parameter, sim_res_fh$z, sim_res_fh$estimate, sim_res_fh$se, pnorm(-sim_res_fh$z),
+        sim_id, i, sim_res_mb$method, sim_res_mb$parameter, sim_res_mb$z, sim_res_mb$estimate, sim_res_mb$se, pnorm(-sim_res_mb$z),
+        sim_id, i, sim_res_xu$method, sim_res_xu$parameter, sim_res_xu$z, sim_res_xu$estimate, sim_res_xu$se, pnorm(-sim_res_xu$z),
+        sim_id, i, sim_res_rmst$method, sim_res_rmst$parameter|> as.character(), sim_res_rmst$z, sim_res_rmst$estimate, sim_res_rmst$se, pnorm(-sim_res_rmst$z),
+        sim_id, i, sim_res_ms$method, sim_res_ms$parameter |> as.character(), sim_res_ms$z, sim_res_ms$estimate, sim_res_ms$se, pnorm(-sim_res_ms$z),
+        sim_id, i, sim_res_mc$method, sim_res_mc$parameter, NA, NA, NA, sim_res_mc$p_value) 
+      
+      sim_res <- rbind(sim_res, sim_res_new)
+    }
+    
+    return(sim_res)
+}
+```
+
+Then we run `one_sim()` `r n_sim` times via parallel computation. 
+
+```{r}
+tic()
+registerDoFuture()
+registerDoRNG()
+plan("multisession", workers = 24)
+set.seed(2025)
+
+ans <- foreach(
+  sim_id = seq_len(n_sim),
+  .combine = "rbind",
+  .errorhandling = "stop"
+  ) %dorng% {
+    ans_new <- one_sim(
+      sim_id = sim_id, 
+      # arguments from Step 1: design characteristic
+      n = sample_size, stratum = stratum, enroll_rate = enroll_rate, 
+      fail_rate = to_sim_pw_surv(fail_rate)$fail_rate, 
+      dropout_rate = to_sim_pw_surv(fail_rate)$dropout_rate, 
+      block = block, 
+      # arguments from Step 2； cutting method
+      cut = cut,
+      # arguments from Step 3； testing method
+      fh = list(rho = 0, gamma = 0.5), 
+      mb = list(delay = Inf, w_max = 2), 
+      xu = list(early_period = 3), 
+      rmst = list(tau = 7), 
+      ms = list(ms_time = 10), 
+      mc = list(rho = c(0, 0), gamma = c(0, 0.5))
+      )
+                              
+    ans_new
+  }
+
+plan("sequential")
+toc()
+```
+
+The output of `sim_gs_n` is a data frame with one row per simulation per analysis per testing method. 
+```{r}
+ans |> head() |> gt() |> tab_header("Overview Each Simulation results")
+```
+
+Finally, using the `r n_sim` parallel simulations provided above, users can summarize the simulated power and compare it across different testing methods with some data manipulation using `dplyr`. 
+
+- For weighted logrank test, RMST test, and milestone test, we compare the Z-score of each analysis with their asymptotic efficacy boundaries obtained from the asymptotic design object `x`, i.e., `x$bound$z[x$bound$bound == "upper"]`.
+- The MaxCombo test is different from the tests mentioned above because it does not provide a Z-score. Instead, we compare its p-values with the planned alpha spending, i.e., `gsDesign::sfLDOF(alpha = 0.025, t = x$analysis$info_frac0)$spend`.
+
+```{r, message=FALSE}
+ans_non_mc <- ans |>
+  filter(Method != "MaxCombo") |>
+  left_join(x$bound |> select(analysis, bound, z) |> rename(eff_bound = z, Analysis = analysis)) |>
+  group_by(Analysis, Method, Parameter) %>% 
+  summarise(`Simulated power` = mean(Z > eff_bound)) |>
+  ungroup()
+
+ans_mc <- ans |>
+  filter(Method == "MaxCombo") |>
+  left_join(data.frame(analysis = 1:3, alpha_spend = gsDesign::sfLDOF(alpha = 0.025, t = x$analysis$info_frac0)$spend) |> rename(Analysis = analysis)) |>
+  group_by(Analysis) |>
+  summarize(`Simulated power` = mean(`P value` < alpha_spend), Method = "MaxCombo", Parameter = "FH(0, 0) + FH(0, 0.5)") |>
+  ungroup()
+
+ans_non_mc |>
+  union(ans_mc) |>
+  left_join(tibble(Analysis = 1:3, 
+                   `Asymptotic power of logrank` = x$bound$probability[x$bound$bound == "upper"])) |>
+  arrange(Analysis, Method) |>
+  gt() |>
+  tab_header(paste0("Summary from ", n_sim, " simulations")) |>
+  fmt_number(columns = 4:5, decimals = 4)
+```
+
+
+## References
