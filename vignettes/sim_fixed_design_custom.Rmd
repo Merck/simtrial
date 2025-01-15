@@ -277,12 +277,12 @@ one_sim <- function(sim_id = 1,
 }
 ```
 
-After that, we will execute `one_sim()` multiple times using parallel computation. The following lines of code takes 24 works to run 100 simulations. 
+After that, we will execute `one_sim()` multiple times using parallel computation. The following lines of code takes 4 works to run 100 simulations. 
 ```{r}
 tic()
 registerDoFuture()
 registerDoRNG()
-plan("multisession", workers = 24)
+plan("multisession", workers = 4)
 set.seed(2025)
 
 ans <- foreach(

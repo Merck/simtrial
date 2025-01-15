@@ -131,7 +131,7 @@ Then we run `one_sim()` `r n_sim` times via parallel computation.
 tic()
 registerDoFuture()
 registerDoRNG()
-plan("multisession", workers = 24)
+plan("multisession", workers = 4)
 set.seed(2025)
 
 ans <- foreach(
