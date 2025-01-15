@@ -60,7 +60,9 @@ Suggests:
     survMisc,
     survRM2,
     testthat,
-    tidyr
+    tidyr,
+    doRNG,
+    tictoc
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
