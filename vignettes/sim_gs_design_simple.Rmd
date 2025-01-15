@@ -1,0 +1,136 @@
+---
+title: "Simulate Group Sequential Designs with Ease via sim_gs_n"
+author: "Yujie Zhao and Keaven Anderson"
+output: rmarkdown::html_vignette
+bibliography: simtrial.bib
+vignette: >
+  %\VignetteIndexEntry{Simulate Group Sequential Designs with Ease via sim_gs_n}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(gsDesign2)
+library(simtrial)
+library(dplyr)
+library(gt)
+
+set.seed(2025)
+```
+
+The `sim_gs_n()` function simulates group sequential designs with fixed sample size and multiple analyses. There are many advantages of calling `sim_gs_n()` directly.
+
+- It is simple, which allows for a single function call to perform thousands of simulations.
+- It allows for a variety of testing methods, such as (weighted) logrank test, RMST test, and milestone test, via the `test = ...` argument.
+- It automatically implements a parallel computation backend, allowing users to achieve shorter running times.
+- It enables flexible data cutting methods for analyses, specifically: (1) planned calendar time, (2) targeted events, (3) maximum time extension to reach targeted events, (4) planned minimum time after the previous analysis, (5) minimal follow-up time after specified enrollment fraction, along with various combinations, using the `cut = ...` argument.
+
+The process for simulating via `sim_gs_n()` is outlined in Steps 1 to 3 below.
+
+If people are interested in more complicated simulations, please refer to the vignette [Custom Group Sequential Design Simulations: Crafting from Scratch](https://merck.github.io/simtrial/articles/sim_gs_design_custom.html).
+
+# Step 1: Define design paramaters
+
+To run simulations for a group sequential design, several design characteristics are required. The following lines of code create an unstratified 2-arm trial with equal randomization. Enrollment will last for 12 months at a consistent enrollment rate. The median for the control arm is 10 months, with a delayed effect during the first 3 months followed by a hazard ratio of 0.6 thereafter. Additionally, there is a dropout rate of 0.001 over time. The set up of these parameters follows a similar way as in the vignette [Simulate Fixed Designs with Ease via sim_fixed_n](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.html).The total sample size is calculated for 90\% power and the simulation is repeated 100 times. 
+
+```{r}
+n_sim <- 100
+stratum <- data.frame(stratum = "All", p = 1)
+block <- rep(c("experimental", "control"), 2)
+enroll_rate <- data.frame(stratum = "All", rate = 1, duration = 12)
+fail_rate <- data.frame(stratum = "All",
+                        duration = c(3, Inf), fail_rate = log(2) / 10, 
+                        hr = c(1, 0.6), dropout_rate = 0.001)
+
+x <- gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
+                   analysis_time = c(12, 24, 36), alpha = 0.025, beta = 0.1,
+                   upper = gs_spending_bound, lower = gs_b,
+                   upar = list(sf = gsDesign::sfLDOF, total_spend = 0.025),
+                   lpar = rep(-Inf, 3)) |> to_integer()
+
+sample_size <- x$analysis$n |> max()
+event <- x$analysis$event
+eff_bound <- x$bound$z[x$bound$bound == "upper"]
+```
+
+```{r}
+cat("The total sample size is ", sample_size, ". \n")
+cat("The number of events at IA1, IA2 and FA are ", event, ". \n")
+cat("The efficacy bounds at IA1, IA2 and FA are", eff_bound, ". \n")
+```
+
+In addition to the above parameters, there are couple of more parameters required for a group sequential design. One required parameter is the testing method. The following lines of code generate a modestly weighted logrank test. Users can change these to other tests of interest. For example, Fleming-Harrington(0, 0.5) weighted logrank test by  `test <- wlr` and `weight <- fh(0, 0.5)`. More testing methods are available at [reference page of `simtrial`](https://merck.github.io/simtrial/reference/index.html#compute-p-values-test-statistics).
+```{r}
+test <- wlr
+weight <- mb(delay = Inf, w_max = 2)
+```
+
+The final step in constructing a group sequential design is setting the cutting method for each analysis. The `create_cut()` function includes 5 conditions for the cutoff: (1) planned calendar time, (2) targeted events, (3) maximum time extension to reach targeted events, (4) planned minimum time after the previous analysis, (5) minimal follow-up time after specified enrollment fraction. More details and examples are available at the [help page](https://merck.github.io/simtrial/reference/get_analysis_date.html).
+
+A straightforward method for cutting analyses is based on events. For instance, the following lines of code assume there will be 2 interim analyses and 1 final analysis cut when `r event` events occur. **In this event-driven approach, there is no need to update the efficacy boundary.**
+
+```{r}
+ia1_cut <- create_cut(target_event_overall = event[1])
+ia2_cut <- create_cut(target_event_overall = event[2])
+fa_cut <- create_cut(target_event_overall = event[3])
+
+cut <- list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
+```
+
+Users can set more complex cutting. For example, 
+
+- The first interim analysis occurs at 20 months, provided there are at least 100 events, which arrives later. However, if the target number of events is not reached, we will wait a maximum of 24 months.
+- The second interim analysis takes place at 32 months and requires at least 200 events, which arrives later. Additionally, this interim analysis will be scheduled at least 10 months after the first interim analysis.
+- The final analysis is set for 45 months and needs to have 350 events, which arrives later.
+
+**Please keep in mind that if the cut is not event-driven, boundary updates are necessary.** You can find more information about [the boundary updates in the boundary update vignette](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.html). In this vignette, we use the event-driven cut for illustrative purposes.
+
+```{r, eval=FALSE}
+ia1_cut <- create_cut(
+  planned_calendar_time = 20, target_event_overall = 100,
+  max_extension_for_target_event = 24)
+
+ia2_cut <- create_cut(
+  planned_calendar_time = 32,
+  target_event_overall = 200,
+  min_time_after_previous_analysis = 10)
+
+fa_cut <- create_cut(
+  planned_calendar_time = 45,
+  target_event_overall = 350)
+
+cut <- list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut)
+```
+
+# Step 2: Run `sim_gs_n()`
+
+Now that we have set up the design characteristics in Step 1, we can proceed to run `sim_gs_n()` for `r n_sim` simulations. This function automatically utilizes a parallel computing backend, which helps reduce the running time.
+
+```{r, message=FALSE}
+sim_res <- sim_gs_n(
+  n_sim = n_sim,
+  sample_size = sample_size, stratum = stratum, block = block,
+  enroll_rate = enroll_rate, fail_rate = fail_rate,
+  test = test, weight = weight, cut = cut)
+```
+
+The output of `sim_gs_n` is a data frame with one row per simulation per analysis. 
+```{r}
+sim_res |> head() |> gt() |> tab_header("Overview Each Simulation results")
+```
+
+# Step 3: Summarize simulations
+
+With the `r n_sim` simulations provided, users can summarize the simulated power and compare it to the target power of 90\% using some `dplyr` data manipulation.
+```{r, message=FALSE}
+sim_res |>
+  left_join(data.frame(analysis = 1:3, eff_bound = eff_bound)) |>
+  group_by(analysis) |>
+  summarize(`Simulated power` = mean(z >= eff_bound)) |>
+  ungroup() |>
+  mutate(`Asymptotic power` = x$bound$probability[x$bound$bound == "upper"]) |>
+  gt() |>
+  tab_header("Summary of 100 simulations") |> 
+  fmt_number(columns = 2:3, decimals = 4)
+```
+
+## References
