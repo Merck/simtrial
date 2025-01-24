@@ -92,6 +92,7 @@ articles:
   - maxcombo
   - rmst
   - parallel
+  - discrepancy-between-simtrial-and-survival
 - title: "NPH distribution approximations"
   contents:
   - arbitrary-hazard
