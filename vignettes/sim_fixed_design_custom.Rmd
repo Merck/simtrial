@@ -15,8 +15,6 @@ library(dplyr)
 library(tibble)
 library(gt)
 library(doFuture)
-library(doRNG)
-library(tictoc)
 
 set.seed(2025)
 ```
@@ -279,17 +277,14 @@ one_sim <- function(sim_id = 1,
 
 After that, we will execute `one_sim()` multiple times using parallel computation. The following lines of code takes 4 works to run 100 simulations. 
 ```{r}
-tic()
-registerDoFuture()
-registerDoRNG()
-plan("multisession", workers = 4)
 set.seed(2025)
 
 ans <- foreach(
   sim_id = seq_len(n_sim),
   .combine = "rbind",
-  .errorhandling = "stop"
-  ) %dorng% {
+  .errorhandling = "stop",
+  .options.future = list(seed = TRUE)
+  ) %dofuture% {
     ans_new <- one_sim(
       sim_id = sim_id, 
       # arguments from Step 1: design characteristic
@@ -315,7 +310,6 @@ ans <- foreach(
   }
 
 plan("sequential")
-toc()
 ```
 
 The output from the parallel computation resembles the output of `sim_fix_n()` described in the vignette [Simulate Fixed Designs with Ease via sim_fixed_n](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.html). Each row in the output corresponds to the simulation results for each testing method per each repeation. 
