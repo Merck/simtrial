@@ -1,9 +1,10 @@
 ---
 title: "Note on potential discrepancies between simtrial and survdiff"
-format: 
-  html:
-    self-contained: true
-    code-fold: true
+author: "Larry Leon"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Note on potential discrepancies between simtrial and survdiff}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ## Overview
