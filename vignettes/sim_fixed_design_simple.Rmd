@@ -14,29 +14,33 @@ library(simtrial)
 library(dplyr)
 library(gt)
 
-set.seed(2025)
+set.seed(2027)
 ```
 
 The `sim_fixed_n()` function simulates a two-arm trial with a single endpoint, accounting for time-varying enrollment, hazard ratios, and failure and dropout rates. 
 
-There are many advantages of calling `sim_fixed_n()` directly.
+While there are limitations, there are advantages of calling `sim_fixed_n()` directly:
 
-- It is simple, which allows for a single function call to perform thousands of simulations.
-- It automatically implements a parallel computation backend, allowing users to achieve shorter running times.
-- It offers up to 5 options for determining the data cutoff through the `timing_type` parameter, allowing for flexibility in cuttings
+- It is simple, which allows for a single function call to perform an arbitrary number of simulations.
+- It automatically implements a parallel computating backend to reduce running time.
+- It offers up to 5 options for determining the data cutoff for analysis through the `timing_type` parameter.
 
 If people are interested in more complicated simulations, please refer to the vignette [Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html).
 
 The process for simulating via `sim_fixed_n()` is outlined in Steps 1 to 3 below.
 
-# Step 1: Define design paramaters
+# Step 1: Define design parameters
 
-To run simulations for a fixed design, several design characteristics are required. The following lines of code create an unstratified 2-arm trial with equal randomization. The total sample size is set to 500, with a target event count of 300 and a total study duration of 36 months. The simulation is repeated 100 times. Enrollment will last for 12 months at a consistent enrollment rate. The median for the control arm is 10 months, with a delayed effect during the first 3 months followed by a hazard ratio of 0.7 thereafter. Additionally, there is a dropout rate of 0.001 over time.
+To run simulations for a fixed design, several design characteristics may be used. 
+Depending on the data cutoff for analysis option, different inputs may be required.
+The following lines of code specify an unstratified 2-arm trial with equal randomization. 
+The simulation is repeated 2 times. 
+Enrollment is targeted to last for 12 months at a constant enrollment rate. 
+The median for the control arm is 10 months, with a delayed effect during the first 3 months followed by a hazard ratio of 0.7 thereafter. 
+There is an exponential dropout rate of 0.001 over time.
 
 ```{r}
 n_sim <- 100
-sample_size <- 500
-target_event <- 300
 total_duration <- 36
 stratum <- data.frame(stratum = "All", p = 1)
 block <- rep(c("experimental", "control"), 2)
@@ -47,12 +51,23 @@ fail_rate <- data.frame(stratum = "All",
                         hr = c(1, 0.6), dropout_rate = 0.001)
 ```
 
-Besides specifying the design characteristics mentioned above, users also have the option to set these characteristics based on an asymptotic design (`x`). The following design computes the sample size for 85\% power. In this approach, users can obtain the sample size and targeted events from the output of `x`, specifically by using `sample_size <- x$analysis$n` and `target_event <- x$analysis$event`.
+We specify sample size and targeted event count based on the `fixed_design_ahr()` function and the above options.
+The following design computes the sample size and targeted event counts for 85\% power. 
+In this approach, users can obtain the sample size and targeted events from the output of `x`, specifically by using `sample_size <- x$analysis$n` and `target_event <- x$analysis$event`.
+
 ```{r}
 x <- fixed_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate, 
                       alpha = 0.025, power = 0.85, ratio = 1, 
                       study_duration = total_duration) |> to_integer()
+x |> summary() |> gt() |> 
+  tab_header(title = "Sample Size and Targeted Events Based on AHR Method", 
+             subtitle = "Fixed Design with 85% Power, One-sided 2.5% Type I error") |>
+  fmt_number(columns = c(4, 5, 7), decimals = 2)
+```
 
+Now we set the targeted sample size and event count from the above.
+
+```{r}
 sample_size <- x$analysis$n
 target_event <- x$analysis$event
 ```
@@ -62,41 +77,87 @@ target_event <- x$analysis$event
 
 Now that we have set up the design characteristics in Step 1, we can proceed to run `sim_fix_n()` for our simulations. This function automatically utilizes a parallel computing backend, which helps reduce the running time.
 
-The `timing_type` argument can take values of `1`, `2`, `3`, `4`, `5`, or any combination of these as a vector. Each number corresponds to a specific cutoff:
-  + `timing_type = 1`: Uses the planned study duration.
-  + `timing_type = 2`: The planned minimum follow-up after enrollment is complete.
-  + `timing_type = 3`: Reflects the planned minimum follow-up period after enrollment completion.
-  + `timing_type = 4`: The maximum of planned study duration and targeted event count cuts (i.e., using `timing_type = 1` and `timing_type = 2` together).
-  + `timing_type = 5`: The maximum of targeted event count and minimum follow-up cuts  (i.e., using `timing_type = 2` and `timing_type = 3` together).
+The `timing_type` specifies one or more of the following cutoffs for setting the time for analysis:
 
-The `rho_gamma` argument is a data frame containing the variables `rho` and `gamma`, both of which should be greater than or equal to zero, to specify one Fleming-Harrington weighted log-rank test per row. For instance, setting `rho = 0 and gamma = 0` gives you the standard unweighted log-rank test, while `rho = 0 and gamma = 0.5` provides the weighted Fleming-Harrington (0, 0.5) log-rank test. If you're interested in tests other than the Fleming-Harrington weighted log-rank test, please refer to the vignette [Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html).
+  + `timing_type = 1`: The planned study duration.
+  + `timing_type = 2`: The time until target event count has been observed.
+  + `timing_type = 3`: The planned minimum follow-up period after enrollment completion.
+  + `timing_type = 4`: The maximum of planned study duration and time to observe the targeted event count (i.e., using `timing_type = 1` and `timing_type = 2` together).
+  + `timing_type = 5`: The maximum of time to observe the targeted event count and minimum follow-up following enrollment completion  (i.e., using `timing_type = 2` and `timing_type = 3` together).
+
+The `rho_gamma` argument is a data frame containing the variables `rho` and `gamma`, both of which should be greater than or equal to zero, to specify one Fleming-Harrington weighted log-rank test per row. 
+For instance, setting `rho = 0` and `gamma = 0` yields the standard unweighted log-rank test, while `rho = 0 and gamma = 0.5` provides the weighted Fleming-Harrington (0, 0.5) log-rank test. 
+If you are interested in tests other than the Fleming-Harrington weighted log-rank test, please refer to the vignette [Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html).
 
 ```{r, message=FALSE}
 sim_res <- sim_fixed_n(
-  n_sim = n_sim,
-  sample_size = sample_size, block = block, stratum = stratum,
-  target_event = target_event, total_duration = total_duration,
-  enroll_rate = enroll_rate, fail_rate = fail_rate,
-  timing_type = 1:5, rho_gamma = data.frame(rho = 0, gamma = 0))
+  n_sim = 2, # only use 2 simulations for initial run
+  sample_size = sample_size, 
+  block = block, 
+  stratum = stratum,
+  target_event = target_event, 
+  total_duration = total_duration,
+  enroll_rate = enroll_rate, 
+  fail_rate = fail_rate,
+  timing_type = 1:5, 
+  rho_gamma = data.frame(rho = 0, gamma = 0))
 ```
 
-The output of `sim_fixed_n` is a data frame with one row per simulated dataset per cutoff specified in `timing_type`, per test statistic specified in `rho_gamma`. 
+The output of `sim_fixed_n` is a data frame with one row per simulated dataset per cutoff specified in `timing_type`, per test statistic specified in `rho_gamma`.
+Here we have just run 2 simulated trials and see how the different cutoffs vary for the 2 trial instances.
+
 ```{r}
-sim_res |> head() |> gt() |> tab_header("Overview Each Simulation Results")
+sim_res |> gt() |> tab_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
+  fmt_number(columns = c(4, 5, 7), decimals = 2)
 ```
 
 # Step 3: Summarize simulations
 
-With the `r n_sim` simulations provided, users can summarize the simulated power and compare it to the target power of 85\% using some `dplyr` data manipulation.
+Now we run `r n_sim` simulated trials and summarize the results by how data is cutoff for analysis.
+
+```{r, message=FALSE}
+sim_res <- sim_fixed_n(
+  n_sim = n_sim,
+  sample_size = sample_size, 
+  block = block, stratum = stratum,
+  target_event = target_event, 
+  total_duration = total_duration,
+  enroll_rate = enroll_rate, 
+  fail_rate = fail_rate,
+  timing_type = 1:5, 
+  rho_gamma = data.frame(rho = 0, gamma = 0))
+```
+
+
+With the `r n_sim` simulations provided, users can summarize the simulated power and compare it to the targeted 85\% power.
+There are various interesting findings here:
+
+- When using any cutoff other than the planned study duration, the time until study completion is, on average, longer than the planned study duration.
+- The simulated power and number of events when data are cut at the planned study duration appears to be lower than targeted, suggesting the asymptotic sample size method may not be working as expected.
+- The other cutoffs appear to produce the desired power, but take longer on average than the planned study duration to reach the analysis cutoff.
+
 ```{r}
 sim_res |>
   group_by(cut) |>
-  summarize(`Simulated Power` = mean(z > qnorm(1 - 0.025))) |>
+  summarize(`Simulated Power` = mean(z > qnorm(1 - 0.025)), 
+            `Mean events` = mean(event),
+            `Mean duration` = mean(duration)) |>
   mutate(`Sample size` = sample_size,
-         `Targeted event` = target_event) |>
+         `Targeted events` = target_event) |>
   gt() |>
-  tab_header(title = "Summary of 100 simulations by 5 different cuts",
-             subtitle = "Tested by logrank")
+  tab_header(title = "Summary of 100 simulations by 5 different analysis cutoff methods",
+             subtitle = "Tested by logrank") |>
+  fmt_number(columns = c(2:4), decimals = 2)
 ```
 
-## References
+We can also do things like summarize distribution of event counts at the planned study duration.
+We can see the targeted event count is never achieved by the targeted time.
+
+```{r, fig.width = 6}
+hist(sim_res$event[sim_res$cut == "Planned duration"], 
+     breaks = 10,
+     main = "Distribution of Event Counts at Planned Study Duration",
+     xlab = "Event Count at Targeted Trial Duration")
+```
+
+
