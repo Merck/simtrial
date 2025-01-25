@@ -65,11 +65,12 @@ x |> summary() |> gt() |>
   fmt_number(columns = c(4, 5, 7), decimals = 2)
 ```
 
-Now we set the targeted sample size and event count from the above.
+Now we set the derived targeted sample size, enrollment rate, and event count from the above.
 
 ```{r}
 sample_size <- x$analysis$n
 target_event <- x$analysis$event
+enroll_rate <- x$enroll_rate
 ```
 
 
@@ -130,11 +131,7 @@ sim_res <- sim_fixed_n(
 
 
 With the `r n_sim` simulations provided, users can summarize the simulated power and compare it to the targeted 85\% power.
-There are various interesting findings here:
-
-- When using any cutoff other than the planned study duration, the time until study completion is, on average, longer than the planned study duration.
-- The simulated power and number of events when data are cut at the planned study duration appears to be lower than targeted, suggesting the asymptotic sample size method may not be working as expected.
-- The other cutoffs appear to produce the desired power, but take longer on average than the planned study duration to reach the analysis cutoff.
+All cutoff methods approximate the targeted power well and have a similar average duration and mean number of events.
 
 ```{r}
 sim_res |>
@@ -151,7 +148,7 @@ sim_res |>
 ```
 
 We can also do things like summarize distribution of event counts at the planned study duration.
-We can see the targeted event count is never achieved by the targeted time.
+We can see the event count varies a fair amount.
 
 ```{r, fig.width = 6}
 hist(sim_res$event[sim_res$cut == "Planned duration"], 
@@ -160,4 +157,12 @@ hist(sim_res$event[sim_res$cut == "Planned duration"],
      xlab = "Event Count at Targeted Trial Duration")
 ```
 
+We also evaluate the distribution of the trial duration when analysis is performed when the targeted events are achieved.
 
+
+
+```{r, fig.width = 6}
+plot(density(sim_res$duration[sim_res$cut == "Targeted events"]), 
+     main = "Trial Duration Smoothed Density",
+     xlab = "Trial duration when Targeted Event Count is Observed")
+```
