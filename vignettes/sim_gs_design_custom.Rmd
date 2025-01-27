@@ -126,6 +126,9 @@ one_sim <- function(sim_id = 1,
 Then we run `one_sim()` `r n_sim` times via parallel computation. 
 
 ```{r}
+set.seed(2025)
+plan("multisession", workers = 2)
+
 ans <- foreach(
   sim_id = seq_len(n_sim),
   .combine = "rbind",
@@ -152,6 +155,8 @@ ans <- foreach(
                               
     ans_new
   }
+
+plan("sequential")
 ```
 
 The output of `sim_gs_n` is a data frame with one row per simulation per analysis per testing method. 
