@@ -108,7 +108,9 @@ The output of `sim_fixed_n` is a data frame with one row per simulated dataset p
 Here we have just run 2 simulated trials and see how the different cutoffs vary for the 2 trial instances.
 
 ```{r}
-sim_res |> gt() |> tab_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
+sim_res |>
+  gt() |>
+  tab_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
   fmt_number(columns = c(4, 5, 7), decimals = 2)
 ```
 
@@ -128,7 +130,6 @@ sim_res <- sim_fixed_n(
   timing_type = 1:5, 
   rho_gamma = data.frame(rho = 0, gamma = 0))
 ```
-
 
 With the `r n_sim` simulations provided, users can summarize the simulated power and compare it to the targeted 85\% power.
 All cutoff methods approximate the targeted power well and have a similar average duration and mean number of events.
@@ -158,8 +159,6 @@ hist(sim_res$event[sim_res$cut == "Planned duration"],
 ```
 
 We also evaluate the distribution of the trial duration when analysis is performed when the targeted events are achieved.
-
-
 
 ```{r, fig.width = 6}
 plot(density(sim_res$duration[sim_res$cut == "Targeted events"]), 
