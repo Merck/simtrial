@@ -15,44 +15,46 @@ library(gsDesign2)
 library(dplyr)
 library(tibble)
 library(gt)
-#library(ggplot2)
-#library(cowplot)
 library(simtrial)
 library(tidyr)
-#library(future.batchtools)
-#library(doFuture)
-#library(foreach)
-
-#library(tictoc)
-
 library(survival)
-
-
 ```
 
-In the **survival** (base R) package the log-rank and Cox estimation procedures apply (by default) a correction to "fix" roundoff errors.   These are implemented with the *timefix* option (by default *timefix = TRUE*) via the *aeqSurv* function.   
-However in the **simtrial** package (and also **Hmisc**) such a correction is not implemented;  Consequently, there can be discrepancies between **simtrial** and base R *survival* (*survdiff*, *coxph*, and *survfit*).
+In the survival (base R) package, the log-rank and Cox estimation procedures
+apply (by default) a correction to "fix" roundoff errors.
+These are implemented with the `timefix` option (by default `timefix = TRUE`)
+via the `aeqSurv()` function.
+However, in the simtrial package, (and also Hmisc), such a correction is not
+implemented; Consequently, there can be discrepancies between simtrial and
+base R survival (`survdiff()`, `coxph()`, and `survfit()`).
 
-For details on the *aeqSurv* function see [Therneau, 2016](https://cran.r-project.org/web/packages/survival/vignettes/tiedtimes.pdf) and [R documentation, version 3.803](https://www.rdocumentation.org/packages/survival/versions/3.8-3/topics/aeqSurv)
+For details on the `aeqSurv()` function, see [Therneau,
+2016](https://cran.r-project.org/package=survival/vignettes/tiedtimes.pdf) and
+the `?aeqSurv` function documentation.
 
-In the following we describe a simulation scenario where a discrepancy is generated and illustrate how discrepancies can be resolved (if desired) by pre-processing survival times with *aeqSurv* and thus replicating *survdiff* and *coxph* default calculations.
+In the following, we describe a simulation scenario where a discrepancy is
+generated and illustrate how discrepancies can be resolved (if desired) by
+pre-processing survival times with `aeqSurv()` and thus replicating `survdiff()`
+and `coxph()` default calculations.
 
-In the simulated dataset two observations are generated:
+In the simulated dataset, two observations are generated:
 
--   Observation $i=464$ with survival time $Y=0.306132722582$
--   Observation $i=516$ with survival time $Y=0.306132604679$
--   Per "aeqSurv" these times are tied and set to $Y=0.306132604679$
--   The log-rank and Cox estimates can therefore differ between other approaches without the "timefix" correction
-
+- Observation $i=464$ with survival time $Y=0.306132722582$.
+- Observation $i=516$ with survival time $Y=0.306132604679$.
+- Per `aeqSurv()`, these times are tied and set to $Y=0.306132604679$.
+- The log-rank and Cox estimates can therefore differ between other approaches
+  without the "timefix" correction.
 
 ## Scenario definitions
 
-We define various true data generating model scenarios and convert for use in **gsDesign2**.  Here we are using a single scenario where discrepancies were found.   This is just for illustration to inform the user of **simtrial** that discrepancies can occur and how to resolve via *aeqSurv*, if desired.
-
+We define various true data generating model scenarios and convert for use in
+gsDesign2. Here, we are using a single scenario where discrepancies were found.
+This is just for illustration to inform the user of simtrial that discrepancies
+can occur and how to resolve via `aeqSurv()`, if desired.
 
 ```{r}
 survival_at_24_months <- 0.35
-hr <- log(.35)/log(.25)
+hr <- log(.35) / log(.25)
 control_median <- 12
 control_rate <- c(log(2) / control_median, (log(.25) - log(.2)) / 12)
 
@@ -79,32 +81,32 @@ scenarios <- tribble(
   5,         "Weak null",     0,       0,         1,
   5,         "Weak null",     1,       24,        .25,
   5,         "Weak null",     2,       12,        .2,
-  6,         "Strong null",   0,       0,         1,         
+  6,         "Strong null",   0,       0,         1,
   6,         "Strong null",   1,       3,         exp(-3 * control_rate[1] * 1.5),
   6,         "Strong null",   2,       3,         exp(-6 * control_rate[1]),
   6,         "Strong null",   3,       18,        .25,
   6,         "Strong null",   4,       12,        .2,
-  )
+)
 # scenarios |> gt()
 ```
 
-
 ```{r}
-fr <- 
-  scenarios |>
-    group_by(Scenario) |>
+fr <- scenarios |>
+  group_by(Scenario) |>
   #  filter(Scenario == 2) |>
-    mutate(Month = cumsum(duration),
-           x_rate = -(log(Survival) - log(lag(Survival, default = 1))) / 
-           duration, 
-           rate = ifelse(Month > 24, control_rate[2], control_rate[1]),
-           hr = x_rate / rate) |>
-    select(-x_rate) |>
-    filter(Period > 0, Scenario > 0) |> ungroup()
-#fr |> gt() |> fmt_number(columns = everything(), decimals = 2)
+  mutate(
+    Month = cumsum(duration),
+    x_rate = -(log(Survival) - log(lag(Survival, default = 1))) /
+      duration,
+    rate = ifelse(Month > 24, control_rate[2], control_rate[1]),
+    hr = x_rate / rate
+  ) |>
+  select(-x_rate) |>
+  filter(Period > 0, Scenario > 0) |>
+  ungroup()
+# fr |> gt() |> fmt_number(columns = everything(), decimals = 2)
 
-fr <- fr |> mutate(fail_rate = rate, dropout_rate =0.001, stratum = "All")
-
+fr <- fr |> mutate(fail_rate = rate, dropout_rate = 0.001, stratum = "All")
 
 # MWLR
 mwlr <- fixed_design_mb(
@@ -115,86 +117,93 @@ mwlr <- fixed_design_mb(
   study_duration = 36
 ) |> to_integer()
 
-
 er <- mwlr$enroll_rate
-
 ```
 
-# A scenario that generates a discrepancy 
-
+## A scenario that generates a discrepancy
 
 ```{r}
-
 set.seed(3219)
 
-dgm <- fr[c(14:17),]
+dgm <- fr[c(14:17), ]
 
-fail_rate <- data.frame(stratum = rep("All", 2 * nrow(dgm)),
-                          period = rep(dgm$Period, 2),
-                          treatment = c(rep("control", nrow(dgm)), 
-                                        rep("experimental", nrow(dgm))),
-                          duration = rep(dgm$duration, 2),
-                          rate = c(dgm$rate, dgm$rate * dgm$hr)
-                         )
-    
+fail_rate <- data.frame(
+  stratum = rep("All", 2 * nrow(dgm)),
+  period = rep(dgm$Period, 2),
+  treatment = c(
+    rep("control", nrow(dgm)),
+    rep("experimental", nrow(dgm))
+  ),
+  duration = rep(dgm$duration, 2),
+  rate = c(dgm$rate, dgm$rate * dgm$hr)
+)
+
 dgm$stratum <- "All"
 # Constant dropout rate for both treatment arms and all scenarios
-dropout_rate <- data.frame(stratum = rep("All", 2), 
-                           period = rep(1, 2),
-                           treatment = c("control", "experimental"),
-                           duration = rep(100, 2),
-                           rate = rep(.001, 2)
-                          )
+dropout_rate <- data.frame(
+  stratum = rep("All", 2),
+  period = rep(1, 2),
+  treatment = c("control", "experimental"),
+  duration = rep(100, 2),
+  rate = rep(.001, 2)
+)
 ```
 
-
-Simulated dataset with discrepancy between logrank test of *wlr* (**simtrial**) and *survdiff* (also compare to score test of *coxph* [same as survdiff with default *timefix=TRUE*])
+Simulated dataset with discrepancy between logrank test of `simtrial::wlr()`
+and `survdiff()` (also compare to score test of `coxph()` [same as `survdiff()`
+with default `timefix = TRUE`]).
 
 ```{r}
-
 ss <- 395
 
-set.seed(8316951+ss*1000)  
-  
+set.seed(8316951 + ss * 1000)
+
 # Generate a dataset
-dat <- sim_pw_surv(n = 698, enroll_rate = er,
-fail_rate = fail_rate, dropout_rate = dropout_rate)
+dat <- sim_pw_surv(
+  n = 698,
+  enroll_rate = er,
+  fail_rate = fail_rate,
+  dropout_rate = dropout_rate
+)
 
 analysis_data <- cut_data_by_date(dat, 36)
 
 dfa <- analysis_data
 
-dfa$treat <- ifelse(dfa$treatment=="experimental",1,0)
+dfa$treat <- ifelse(dfa$treatment == "experimental", 1, 0)
 
-z1 <- dfa |>  wlr(weight=fh(rho=0,gamma=0))
+z1 <- dfa |> wlr(weight = fh(rho = 0, gamma = 0))
 
-check <- survdiff(Surv(tte,event)~ treat, data=dfa)
+check <- survdiff(Surv(tte, event) ~ treat, data = dfa)
 
-# Note, for coxph use 
-#cph.score <- summary(coxph(Surv(tte,event)~ treat, data=dfa, control=coxph.control(timefix=TRUE)))$sctest
+# Note, for `coxph()`, use
+# cph.score <- summary(coxph(Surv(tte, event) ~ treat, data = dfa, control = coxph.control(timefix = TRUE)))$sctest
 
-cat("Log-rank wlr() vs survdiff()",c(z1$z^2,check$chisq),"\n")
+cat("Log-rank wlr() vs survdiff()", c(z1$z^2, check$chisq), "\n")
 ```
 
-Verify that *timefix=FALSE* in *coxph* agrees with *wlr* 
+Verify that `timefix = FALSE` in `coxph()` agrees with `wlr()`:
 
 ```{r}
-cph.score <- summary(coxph(Surv(tte,event)~ treat, data=dfa, control=coxph.control(timefix=FALSE)))$sctest
-cat("Log-rank wlr() vs Cox score z^2",c(z1$z^2,cph.score["test"]),"\n")
+cph.score <- summary(coxph(
+  Surv(tte, event) ~ treat,
+  data = dfa,
+  control = coxph.control(timefix = FALSE)
+))$sctest
+cat("Log-rank wlr() vs Cox score z^2", c(z1$z^2, cph.score["test"]), "\n")
 ```
 
+Pre-processing survival times with `aeqSurv()` to implement `timefix = TRUE` procedure.
 
-Pre-processing survival times with *aeqSurv* to implement *timefix=TRUE* procedure.  
-
-Verify *wlr* and *survdiff* now agree.
+Verify `wlr()` and `survdiff()` now agree.
 
 ```{r}
-Y <- dfa[,"tte"]
-Delta <- dfa[,"event"]
+Y <- dfa[, "tte"]
+Delta <- dfa[, "event"]
 
-tfixed <- aeqSurv(Surv(Y,Delta))
-Y<- tfixed[,"time"]
-Delta <- tfixed[,"status"]
+tfixed <- aeqSurv(Surv(Y, Delta))
+Y <- tfixed[, "time"]
+Delta <- tfixed[, "status"]
 # Use aeqSurv version
 dfa$tte2 <- Y
 dfa$event2 <- Delta
@@ -203,72 +212,65 @@ dfa$event2 <- Delta
 dfa2 <- dfa
 dfa2$tte <- dfa2$tte2
 dfa2$event <- dfa2$event2
-z1new <- dfa2 |>  wlr(weight=fh(rho=0,gamma=0))
-cat("Log-rank wlr() with timefix vs survdiff() z^2",c(z1new$z^2,check$chisq),"\n")
-
+z1new <- dfa2 |> wlr(weight = fh(rho = 0, gamma = 0))
+cat("Log-rank wlr() with timefix vs survdiff() z^2", c(z1new$z^2, check$chisq), "\n")
 ```
 
-
-Where do they differ (tte2 are times after *aeqSurv*) ?
+Where do they differ (`tte2` are times after `aeqSurv()`)?
 
 ```{r}
+dfa <- dfa[order(dfa$tte2), ]
 
-dfa <- dfa[order(dfa$tte2),]
-
-id <- seq(1,nrow(dfa))
+id <- seq(1, nrow(dfa))
 
 diff <- exp(dfa$tte) - exp(dfa$tte2)
-id_diff <- which(abs(diff)>0)
+id_diff <- which(abs(diff) > 0)
 
-tolook <- seq(id_diff-2,id_diff+2)
+tolook <- seq(id_diff - 2, id_diff + 2)
 
-dfcheck <-  dfa[tolook,c("tte","tte2","event","event2","treatment")]
-print(dfcheck,digits=12)
+dfcheck <- dfa[tolook, c("tte", "tte2", "event", "event2", "treatment")]
+print(dfcheck, digits = 12)
 ```
 
+Verify `coxph()` (default) and `coxph()` with `aeqSurv()` pre-processing
+(using `tte2` as outcome and setting `timefix = FALSE`) are identical:
 
-
-
-Verify *coxph* (default) and *coxph* with aeqSurv pre-processing (using tte2 as outcome and setting *timefix=FALSE*) are identical:
-
-Also note that here ties do not have impact because in separate arms
+Also note that here ties do not have impact because in separate arms.
 
 ```{r}
 # Check Cox with ties
-cox_breslow <- summary(coxph(Surv(tte,event)~treatment,data=dfa,ties="breslow"))$conf.int
-cox_efron <- summary(coxph(Surv(tte,event)~treatment,data=dfa,ties="efron"))$conf.int
-cat("Cox Breslow and Efron hr (tte, timefix=TRUE):",c(cox_breslow[1],cox_efron[1]),"\n")
+cox_breslow <- summary(coxph(Surv(tte, event) ~ treatment, data = dfa, ties = "breslow"))$conf.int
+cox_efron <- summary(coxph(Surv(tte, event) ~ treatment, data = dfa, ties = "efron"))$conf.int
+cat("Cox Breslow and Efron hr (tte, timefix=TRUE):", c(cox_breslow[1], cox_efron[1]), "\n")
 
 # Here ties do not have impact because in separate arms
-cox_breslow <- summary(coxph(Surv(tte2,event2)~treatment,data=dfa,ties="breslow", control=coxph.control(timefix=FALSE)))$conf.int
-cox_efron <- summary(coxph(Surv(tte2,event2)~treatment,data=dfa,ties="efron", control=coxph.control(timefix=FALSE)))$conf.int
-cat("Cox Breslow and Efron hr (tte2, timefix=FALSE):",c(cox_breslow[1],cox_efron[1]),"\n")
+cox_breslow <- summary(coxph(Surv(tte2, event2) ~ treatment, data = dfa, ties = "breslow", control = coxph.control(timefix = FALSE)))$conf.int
+cox_efron <- summary(coxph(Surv(tte2, event2) ~ treatment, data = dfa, ties = "efron", control = coxph.control(timefix = FALSE)))$conf.int
+cat("Cox Breslow and Efron hr (tte2, timefix=FALSE):", c(cox_breslow[1], cox_efron[1]), "\n")
 ```
 
-**So here there is a difference between tte and tte2 times, but there is not an impact of ties for Cox between *breslow* and *efron* because the ties (single tie in tte2) are in separate arms**.
+**So here there is a difference between `tte` and `tte2` times, but there is
+not an impact of ties for Cox between `"breslow"` and `"efron"` because the ties
+(single tie in `tte2`) are in separate arms**.
 
-Lastly, artificially change treatment so that two observations are tied within the same treatment arm which generates difference between *breslow* and *efron* options for ties:
-
+Lastly, artificially change treatment so that two observations are tied within
+the same treatment arm which generates difference between `"breslow"` and
+`"efron"` options for `ties`:
 
 ```{r}
-# Create tie within treatment arm by changing treatment 
+# Create tie within treatment arm by changing treatment
 dfa3 <- dfa
-dfa3[19,"treat"]  <- 1.0
+dfa3[19, "treat"] <- 1.0
 
-cox_breslow <- summary(coxph(Surv(tte,event)~treat, data=dfa3,ties="breslow", control=coxph.control(timefix=TRUE)))$conf.int
-cox_efron <- summary(coxph(Surv(tte,event)~treat, data=dfa3,ties="efron", control=coxph.control(timefix=TRUE)))$conf.int
-cat("Cox Breslow and Efron hr (tte, timefix=TRUE)=",c(cox_breslow[1],cox_efron[1]),"\n")
-
+cox_breslow <- summary(coxph(Surv(tte, event) ~ treat, data = dfa3, ties = "breslow", control = coxph.control(timefix = TRUE)))$conf.int
+cox_efron <- summary(coxph(Surv(tte, event) ~ treat, data = dfa3, ties = "efron", control = coxph.control(timefix = TRUE)))$conf.int
+cat("Cox Breslow and Efron hr (tte, timefix=TRUE)=", c(cox_breslow[1], cox_efron[1]), "\n")
 ```
-
 
 Same as
 
 ```{r}
-
-cox_breslow <- summary(coxph(Surv(tte2,event2)~treat, data=dfa3,ties="breslow", control=coxph.control(timefix=FALSE)))$conf.int
-cox_efron <- summary(coxph(Surv(tte2,event2)~treat, data=dfa3,ties="efron", control=coxph.control(timefix=FALSE)))$conf.int
-cat("Cox Breslow and Efron hr (tte2, timefix=FALSE)=",c(cox_breslow[1],cox_efron[1]),"\n")
-
+cox_breslow <- summary(coxph(Surv(tte2, event2) ~ treat, data = dfa3, ties = "breslow", control = coxph.control(timefix = FALSE)))$conf.int
+cox_efron <- summary(coxph(Surv(tte2, event2) ~ treat, data = dfa3, ties = "efron", control = coxph.control(timefix = FALSE)))$conf.int
+cat("Cox Breslow and Efron hr (tte2, timefix=FALSE)=", c(cox_breslow[1], cox_efron[1]), "\n")
 ```
-
