@@ -42,14 +42,14 @@
 #'   to specify one Fleming-Harrington weighted logrank test per row.
 #'
 #' @details
-#' `timing_type` has up to 5 elements indicating different options
-#' for data cutoff:
-#' - `1`: Uses the planned study duration.
-#' - `2`: The time the targeted event count is achieved.
+#' `timing_type` has up to 5 options indicating different options
+#' for data cutoff for analysis:
+#' - `1`: The planned study duration.
+#' - `2`: The time the targeted event count is observed.
 #' - `3`: The planned minimum follow-up after enrollment is complete.
-#' - `4`: The maximum of planned study duration and targeted event count cuts
+#' - `4`: The maximum of planned study duration and time until observing the targeted event count
 #'   (1 and 2).
-#' - `5`: The maximum of targeted event count and minimum follow-up cuts
+#' - `5`: The maximum of time until observing the targeted event count and minimum follow-up after enrollment completion.
 #'   (2 and 3).
 #'
 #' @return
