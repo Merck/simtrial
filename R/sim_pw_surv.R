@@ -45,13 +45,13 @@
 #'   note that treatments need to be the same as input in block.
 #'
 #' @return A data frame with the following variables for each observation:
-#' - `stratum`.
+#' - `stratum`: Stratum for the observation.
 #' - `enroll_time`: Enrollment time for the observation.
-#' - `Treatment`: Treatment group; this will be one of the values
+#' - `treatment`: Treatment group; this will be one of the values
 #'   in the input `block`.
 #' - `fail_time`: Failure time generated using [rpwexp()].
 #' - `dropout_time`: Dropout time generated using [rpwexp()].
-#' - `cte`: Calendar time of enrollment plot the minimum of
+#' - `cte`: Calendar time of enrollment plus the minimum of
 #'   failure time and dropout time.
 #' - `fail`: Indicator that `cte` was set using failure time;
 #'   i.e., 1 is a failure, 0 is a dropout.
