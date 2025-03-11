@@ -125,13 +125,13 @@ note that treatments need to be the same as input in block.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with the following variables for each observation:</p><ul><li><p><code>stratum</code>.</p></li>
+    <p>A data frame with the following variables for each observation:</p><ul><li><p><code>stratum</code>: Stratum for the observation.</p></li>
 <li><p><code>enroll_time</code>: Enrollment time for the observation.</p></li>
-<li><p><code>Treatment</code>: Treatment group; this will be one of the values
+<li><p><code>treatment</code>: Treatment group; this will be one of the values
 in the input <code>block</code>.</p></li>
 <li><p><code>fail_time</code>: Failure time generated using <code><a href="rpwexp.html">rpwexp()</a></code>.</p></li>
 <li><p><code>dropout_time</code>: Dropout time generated using <code><a href="rpwexp.html">rpwexp()</a></code>.</p></li>
-<li><p><code>cte</code>: Calendar time of enrollment plot the minimum of
+<li><p><code>cte</code>: Calendar time of enrollment plus the minimum of
 failure time and dropout time.</p></li>
 <li><p><code>fail</code>: Indicator that <code>cte</code> was set using failure time;
 i.e., 1 is a failure, 0 is a dropout.</p></li>
