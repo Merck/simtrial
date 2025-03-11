@@ -36,13 +36,13 @@ note that treatments need to be the same as input in block.}
 \value{
 A data frame with the following variables for each observation:
 \itemize{
-\item \code{stratum}.
+\item \code{stratum}: Stratum for the observation.
 \item \code{enroll_time}: Enrollment time for the observation.
-\item \code{Treatment}: Treatment group; this will be one of the values
+\item \code{treatment}: Treatment group; this will be one of the values
 in the input \code{block}.
 \item \code{fail_time}: Failure time generated using \code{\link[=rpwexp]{rpwexp()}}.
 \item \code{dropout_time}: Dropout time generated using \code{\link[=rpwexp]{rpwexp()}}.
-\item \code{cte}: Calendar time of enrollment plot the minimum of
+\item \code{cte}: Calendar time of enrollment plus the minimum of
 failure time and dropout time.
 \item \code{fail}: Indicator that \code{cte} was set using failure time;
 i.e., 1 is a failure, 0 is a dropout.
