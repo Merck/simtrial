@@ -23,7 +23,9 @@ If length(n) > 1, the length is taken to be the number required.}
 \item{stratum}{A data frame with stratum specified in \code{stratum},
 probability (incidence) of each stratum in \code{p}.}
 
-\item{block}{Vector of treatments to be included in each block.}
+\item{block}{Vector of treatments to be included in each block. Also used to
+calculate the attribute "ratio" (for more details see the section Value
+below).}
 
 \item{enroll_rate}{Enrollment rates; see details and examples.}
 
@@ -47,6 +49,10 @@ failure time and dropout time.
 \item \code{fail}: Indicator that \code{cte} was set using failure time;
 i.e., 1 is a failure, 0 is a dropout.
 }
+
+The data frame also has the attribute "ratio", which is calculated as the
+number of "experimental" treatments divided by the number of "control"
+treatments from the input argument \code{block}.
 }
 \description{
 \code{sim_pw_surv()} enables simulation of a clinical trial with
