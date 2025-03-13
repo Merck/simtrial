@@ -106,7 +106,9 @@ probability (incidence) of each stratum in <code>p</code>.</p></dd>
 
 
 <dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
-<dd><p>Vector of treatments to be included in each block.</p></dd>
+<dd><p>Vector of treatments to be included in each block. Also used to
+calculate the attribute "ratio" (for more details see the section Value
+below).</p></dd>
 
 
 <dt id="arg-enroll-rate">enroll_rate<a class="anchor" aria-label="anchor" href="#arg-enroll-rate"></a></dt>
@@ -135,7 +137,10 @@ in the input <code>block</code>.</p></li>
 failure time and dropout time.</p></li>
 <li><p><code>fail</code>: Indicator that <code>cte</code> was set using failure time;
 i.e., 1 is a failure, 0 is a dropout.</p></li>
-</ul></div>
+</ul><p>The data frame also has the attribute "ratio", which is calculated as the
+number of "experimental" treatments divided by the number of "control"
+treatments from the input argument <code>block</code>.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
