@@ -147,7 +147,7 @@ three_arm_fail_rate <- data.frame(
            log(2) / c(10, 10 / .6)))
 
 three_arm_dropout_rate <- data.frame(
-  stratum = rep(c("control", "low-dose", "high-dose")),
+  stratum = "All",
   period = c(1, 1, 1), 
   treatment = c("control", "low-dose", "high-dose"),
   duration = rep(Inf, 3), 
