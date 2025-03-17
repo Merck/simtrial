@@ -12,7 +12,6 @@ vignette: >
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
-library(tibble)
 library(gt)
 library(doFuture)
 
