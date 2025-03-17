@@ -312,7 +312,7 @@ one_sim <- function(sim_id = 1,
 }
 ```
 
-After that, we will execute `one_sim()` multiple times using parallel computation. The following lines of code takes 2 works to run 100 simulations. 
+After that, we will execute `one_sim()` multiple times using parallel computation. The following lines of code uses 2 workers to run 100 simulations. 
 ```{r}
 set.seed(2025)
 
