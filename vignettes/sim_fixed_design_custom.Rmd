@@ -125,13 +125,6 @@ uncut_data_c <- sim_pw_surv(n = n,
                             )
 ```
 
-
-For illustration purposes, we will focus on scenario b) for the following discussion.
-
-```{r}
-uncut_data <- uncut_data_b
-```
-
 ## Scenario d) Multi-arm designs
 
 Suppose you wish to have 3 arms: control, low-dose and high-dose. The following code assumes the control arm has a median survival time of 10 months, the low-dose arm has a median survival time of 12 months, and the high-dose arm has a median survival time of 14 months. The hazard ratio for the low-dose arm is 0.8, and the hazard ratio for the high-dose arm is 0.6. The dropout rate is 0.001 for all arms.
@@ -141,55 +134,38 @@ We begin by setting up enrollment, failure and dropout rates.
 
 ```{r}
 enroll_rate <- define_enroll_rate(rate = 12, duration = n / 12)
-multiarm_fail_rate <- data.frame(
-  stratum = c(rep("Control", 2), rep("Low-dose", 2), rep("High-dose", 2)),
-  period = rep(c(1, 2), 3), 
-  treatment = rep(c("control", "experimental", "experimental"), 2),
-  duration = c(Inf, 3, Inf, Inf, 3, Inf), 
-  rate = c(# failure rate of biomarker positive subjects: control arm, exp arm period 1, exp arm period 2
-           log(2) / 10, log(2) /10, log(2) / 10 * 0.6,
-           # failure rate of biomarker negative subjects: control arm, exp arm period 1, exp arm period 2
-           log(2) / 8, log(2) /8, log(2) / 8 * 0.8)
-  )
 
-stratified_dropout_rate <- data.frame(
-  stratum = rep(c("Biomarker positive", "Biomarker negative"), each = 2),
-  period = c(1, 1, 1, 1), 
-  treatment = c("control", "experimental", "control", "experimental"),
-  duration = rep(Inf, 4), 
-  rate = rep(0.001, 4)
-  )
-```
-
-
-```{r}
 three_arm_fail_rate <- data.frame(
   stratum = "All",
-  period = rep(c(1, 2), 3), 
-  treatment = c("Control", "Control", "Low-dose", "Low-dose", "High-dose", "High-dose"),
-  duration = c(Inf, 3, Inf, Inf, 3, Inf), 
+  period = c(1, 1, 2, 1, 2), 
+  treatment = c("control", "low-dose", "low-dose", "high-dose", "high-dose"),
+  duration = c(Inf, 3, Inf, 3, Inf), 
   rate = c(# failure rate of control arm: period 1, period 2
-           log(2) / c(10, 10),
+           log(2) / 10,
            # failure rate of low-dose arm: period 1, period 2
            log(2) / c(10, 10 / .8),
            # failure rate of high-dose arm: period 1, period 2
-           log(2) / c(10, 10 / .6)
-           )
-  )
+           log(2) / c(10, 10 / .6)))
+
 three_arm_dropout_rate <- data.frame(
-  stratum = rep(c("Control", "Low-dose", "High-dose")),
+  stratum = rep(c("control", "low-dose", "high-dose")),
   period = c(1, 1, 1), 
-  treatment = c("Control", "Low-dose", "High-dose"),
+  treatment = c("control", "low-dose", "high-dose"),
   duration = rep(Inf, 3), 
-  rate = rep(0.001, 3)
-  )
+  rate = rep(0.001, 3))
+
 uncut_data_d <- sim_pw_surv(n = n,
                             stratum = data.frame(stratum = "All"),
-                            block = c(rep("Control", 3), rep("Low-dose", 2), rep("High-dose", 2)),
+                            block = c(rep("control", 3), rep("low-dose", 2), rep("high-dose", 2)),
                             enroll_rate = enroll_rate,
                             fail_rate = three_arm_fail_rate,
-                            dropout_rate = three_arm_dropout_rate
-                            )
+                            dropout_rate = three_arm_dropout_rate)
+```
+
+For illustration purposes, we will focus on scenario b) for the following discussion.
+
+```{r}
+uncut_data <- uncut_data_b
 ```
 
 # Step 2: Cut data
