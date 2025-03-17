@@ -86,11 +86,14 @@ articles:
   contents:
   - workflow
   - routines
-- title: "Simulations with NPH tests"
+- title: "Testing methods"
   contents:
   - modest-wlrt
   - maxcombo
   - rmst
+- title: "Simulate fixed/group sequential designs"
+  contents:
+  - sim_gs_design_custom
   - parallel
   - discrepancy-between-simtrial-and-survival
 - title: "NPH distribution approximations"
