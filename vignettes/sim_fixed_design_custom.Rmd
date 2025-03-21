@@ -213,9 +213,9 @@ cut_data |> head() |> gt() |> tab_header(paste0("An Overview of TTE data Cut at 
 
 # Step 3: Run tests
 
-The `simtrial` package provides many options for testing methods, including (weighted) logrank tests, RMST test, milestone test, and MaxComboi test, see the [Section "Compute p-values/test statistics" at the pkgdown reference page] (https://merck.github.io/simtrial/reference/index.html#compute-p-values-test-statistics).
+The simtrial package provides many options for testing methods, including (weighted) logrank tests, RMST test, milestone test, and MaxComboi test, see the [Section "Compute p-values/test statistics" at the pkgdown reference page] (https://merck.github.io/simtrial/reference/index.html#compute-p-values-test-statistics).
 
-The following code lists all possible tests available in `simtrial`. Users can select one of the tests listed above or combine the testing results to make comparisons across tests. For demonstration purposes, we will aggregate all tests together.
+The following code lists all possible tests available in simtrial. Users can select one of the tests listed above or combine the testing results to make comparisons across tests. For demonstration purposes, we will aggregate all tests together.
 ```{r}
 # Logrank test
 sim_res_lr <- cut_data |> wlr(weight = fh(rho = 0, gamma = 0))
