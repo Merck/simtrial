@@ -9,8 +9,11 @@ articles:
   parallel: parallel.html
   rmst: rmst.html
   routines: routines.html
+  sim_fixed_design_custom: sim_fixed_design_custom.html
+  sim_fixed_design_simple: sim_fixed_design_simple.html
+  sim_gs_design_simple: sim_gs_design_simple.html
   workflow: workflow.html
-last_built: 2025-03-13T20:41Z
+last_built: 2025-03-21T17:05Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles
