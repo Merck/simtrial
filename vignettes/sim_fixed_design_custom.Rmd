@@ -14,7 +14,7 @@ library(simtrial)
 library(dplyr)
 library(gt)
 library(doFuture)
-
+library(tibble)
 set.seed(2025)
 ```
 The vignette [Simulate Fixed Designs with Ease via sim_fixed_n](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.html) presents fixed design simulations using a single function call, `sim_fixed_n()`. It offers a simple and straightforward process for running simulations quickly.
