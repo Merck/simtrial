@@ -276,7 +276,6 @@ sim_gs_n <- function(
   ans <- foreach::foreach(
     sim_id = seq_len(n_sim),
     test = replicate(n=n_sim, expr=test, simplify = FALSE),
-    .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
@@ -336,6 +335,7 @@ sim_gs_n <- function(
     ans_1sim
   }
 
+  ans <- rbindlist(ans)
   setDF(ans)
 
   test_method <- ans$method[ans$sim_id == 1]

@@ -319,7 +319,6 @@ set.seed(2025)
 plan("multisession", workers = 2)
 ans <- foreach(
   sim_id = seq_len(n_sim),
-  .combine = "rbind",
   .errorhandling = "stop",
   .options.future = list(seed = TRUE)
   ) %dofuture% {
@@ -346,6 +345,8 @@ ans <- foreach(
                               
     ans_new
   }
+
+ans <- data.table::rbindlist(ans)
 
 plan("sequential")
 ```
