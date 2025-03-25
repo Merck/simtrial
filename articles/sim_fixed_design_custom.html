@@ -1996,7 +1996,6 @@ to run 100 simulations.</p>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"multisession"</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span></span>
 <span>  sim_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">n_sim</span><span class="op">)</span>,</span>
-<span>  .combine <span class="op">=</span> <span class="st">"rbind"</span>,</span>
 <span>  .errorhandling <span class="op">=</span> <span class="st">"stop"</span>,</span>
 <span>  .options.future <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://doFuture.futureverse.org/reference/grapes-dofuture-grapes.html" class="external-link">%dofuture%</a></span> <span class="op">{</span></span>
@@ -2023,6 +2022,8 @@ to run 100 simulations.</p>
 <span>                              </span>
 <span>    <span class="va">ans_new</span></span>
 <span>  <span class="op">}</span></span>
+<span></span>
+<span><span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">ans</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
 <p>The output from the parallel computation resembles the output of
