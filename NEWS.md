@@ -1,3 +1,11 @@
+# simtrial 0.4.2.9000
+
+## Speed improvements
+
+- Optimize parallel simulation speed in `sim_fixed_n()` and `sim_gs_n()` by
+  replacing `foreach(.combine = "rbind")` with manual data frame combination
+  (@nanxstats, #318).
+
 # simtrial 0.4.2
 
 ## Statistical improvements
