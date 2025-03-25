@@ -252,7 +252,6 @@ sim_fixed_n <- function(
   # parallel computation start ----
   results <- foreach::foreach(
     i = seq_len(n_sim),
-    .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
@@ -372,6 +371,7 @@ sim_fixed_n <- function(
     results_sim[, sim := i]
     results_sim
   }
+  results <- rbindlist(results)
   setDF(results)
   return(results)
 }
