@@ -31,7 +31,7 @@ The function `sim_fixed_n()` provides a simulation workflow for a two-arm trial 
 We can vary the parameters of the trial using different functions outlined in the documentation.
 This function now provides users the opportunity to implement their simulations using the previously described parallel backends to accelerate the computation.
 
-The function `sim_gs_n()` which simulates group sequential designs under a fixed sample size also supports the use of user-defined backends to parallelize simulations in a similar manner. 
+The function `sim_gs_n()` which simulates group sequential designs under a fixed sample size also supports the use of user-defined backends to parallelize simulations in a similar manner.
 
 ## Background
 
@@ -134,15 +134,27 @@ As you may have anticipated, we see that for a lower number of events, enrollmen
 over that of enrollment 1, which is
 `r sprintf("%.1f", mean(seq_result1$duration))`.
 
-We also see that there is a distinction between the duration of the study under the proposed enrollment strategies.
-
-```{r sequential-display-results, eval=FALSE, echo=FALSE}
-seq_result1 |>
-  head(5) |>
-  kable(digits = 2)
-seq_result2 |>
-  head(5) |>
-  kable(digits = 2)
+```{r sequential-display-duration, echo=FALSE, fig.height=4, fig.width=6, fig.align="center"}
+duration_min <- min(seq_result1$duration, seq_result2$duration)
+duration_max <- max(seq_result1$duration, seq_result2$duration)
+hist(
+  x = seq_result1$duration,
+  col = palette()[4],
+  main = "Duration by enrollment strategy",
+  xlab = "Duration",
+  xlim = c(duration_min, duration_max),
+  ylab = "Number of simulations",
+  ylim = c(0, n_sim / 3)
+)
+hist(seq_result2$duration, col = palette()[7], add = TRUE)
+abline(v = mean(seq_result1$duration), lwd = 2, lty = "dashed")
+abline(v = mean(seq_result2$duration), lwd = 2, lty = "dashed")
+legend(
+  "top",
+  legend = c("Enrollment 1", "Enrollment 2"),
+  col = c(palette()[4], palette()[7]),
+  lty = c(1, 1)
+)
 ```
 
 ## Setting up a parallel backend
@@ -203,9 +215,9 @@ plan(sequential)
 
 We can also verify that the simulation results are identical because of setting a seed and that the backend type will not affect the results. Below, it is clear that the results from our sequential and multisession backends match completely.
 
-```{r compare-results, eval=FALSE}
-sum(seq_result1 != par_result1)
-sum(seq_result2 != par_result2)
+```{r compare-results}
+all.equal(seq_result1, par_result1)
+all.equal(seq_result2, par_result2)
 ```
 
 *Note:* A parallel implementation may not always be faster than a serial implementation.
