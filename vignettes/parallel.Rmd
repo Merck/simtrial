@@ -90,7 +90,12 @@ Naively, we can execute these simulations sequentially.
 We set the target of a total enrollment of 3000 individuals with the trial ending after observing 700 events.
 We use `timing_type = 2` to return the correct trial duration.
 
+*Note:* We manually set the number of threads to be used by {data.table} operations to 1.
+This is purely for the sake of comparing the runtime to the parallel run performed later in this vignette.
+If you were running simulations sequentially, you would want {data.table} to take advantage of parallel processing.
+
 ```{r confirm-sequential}
+data.table::setDTthreads(threads = 1)
 set.seed(1)
 
 n_sim <- 200
@@ -159,8 +164,8 @@ legend(
 
 ## Setting up a parallel backend
 
-If we instead, wanted to run more simulations for each enrollment, we can expect the time to run our simulations to increase.
-As we vary and increase the number of parameter inputs that we consider, we expect the simulation process to continue to increase in duration.
+If we increased the number of simulations for each enrollment, we can expect the time to run our simulations to increase.
+Furthermore, as we vary and increase the number of parameter inputs that we consider, we expect the simulation process to continue to increase in duration.
 To help combat the growing computational burden, we can run these simulations in parallel using the `multisession` backend available to us in `plan()`.
 
 We can adjust the default number of cores with the function `parallelly::availableCores()`.
@@ -174,6 +179,8 @@ plan(multisession, workers = 2)
 ## Execution in parallel
 
 Once we have configured the backend details, we can execute the same code as before to automatically distribute the `n_sim` simulations across the available cores.
+
+*Note:* We do not have to worry about setting `data.table::setDTthreads(threads = 1)` for the parallel processes spawned by `sim_fixed_n()` below because {data.table} "automatically switches to single threaded mode upon fork" (from `?data.table::setDTthreads`).
 
 ```{r confirm-multisession}
 set.seed(1)
