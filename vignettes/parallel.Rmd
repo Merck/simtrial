@@ -181,6 +181,13 @@ plan(multisession, workers = 2)
 Once we have configured the backend details, we can execute the same code as before to automatically distribute the `n_sim` simulations across the available cores.
 
 *Note:* We do not have to worry about setting `data.table::setDTthreads(threads = 1)` for the parallel processes spawned by `sim_fixed_n()` below because {data.table} "automatically switches to single threaded mode upon fork" (from `?data.table::setDTthreads`).
+[^parallel-dt-caveats]
+
+[^parallel-dt-caveats]:
+This can get complex quick.
+The behavior of parallel computing is affected by your operating system (e.g. Windows) and editor (e.g. RStudio).
+If you need to perform accurate benchmarking, you will need to do your own due diligence.
+We recommend adding `data.table::setDTthreads(threads = 1)` to your `~/.Rprofile` to have the best chance of preventing {data.table} multithreading from affecting your benchmarking results.
 
 ```{r confirm-multisession}
 set.seed(1)
