@@ -166,9 +166,9 @@ Once we have configured the backend details, we can execute the same code as bef
 ```{r confirm-multisession}
 set.seed(1)
 
-start_sequential <- proc.time()
+start_parallel <- proc.time()
 
-seq_result1m <- sim_fixed_n(
+par_result1 <- sim_fixed_n(
   n_sim = n_sim,
   sample_size = 3000,
   target_event = 700,
@@ -176,7 +176,7 @@ seq_result1m <- sim_fixed_n(
   timing_type = 2 # Time until targeted event count achieved
 )
 
-seq_result2m <- sim_fixed_n(
+par_result2 <- sim_fixed_n(
   n_sim = n_sim,
   sample_size = 3000,
   target_event = 700,
@@ -184,14 +184,14 @@ seq_result2m <- sim_fixed_n(
   timing_type = 2 # Time until targeted event count achieved
 )
 
-duration_sequential <- proc.time() - start_sequential
+duration_parallel <- proc.time() - start_parallel
 ```
 
 ```{r time-parallel}
-print(duration_sequential)
+print(duration_parallel)
 ```
 
-We can see that the CPU time is `r sprintf("%.2f", duration_sequential[[1]])` and the elapsed time is `r sprintf("%.2f", duration_sequential[[3]])` seconds.
+We can see that the CPU time is `r sprintf("%.2f", duration_parallel[[1]])` and the elapsed time is `r sprintf("%.2f", duration_parallel[[3]])` seconds.
 The user time here appears to be drastically reduced because of how R keeps track of time; the time used by the parent process and not the children processes are reported for the user time.
 Therefore, we compare the elapsed time to see the real-world impact of the parallelization.
 
@@ -204,8 +204,8 @@ plan(sequential)
 We can also verify that the simulation results are identical because of setting a seed and that the backend type will not affect the results. Below, it is clear that the results from our sequential and multisession backends match completely.
 
 ```{r compare-results, eval=FALSE}
-sum(seq_result1 != seq_result1m)
-sum(seq_result2 != seq_result2m)
+sum(seq_result1 != par_result1)
+sum(seq_result2 != par_result2)
 ```
 
 *Note:* A parallel implementation may not always be faster than a serial implementation.
@@ -258,7 +258,7 @@ set.seed(1)
 
 enroll_rates <- list(enroll_rate1, enroll_rate2)
 
-seq_resultc <- foreach::foreach(
+nested_result <- foreach::foreach(
   i = 1:2,
   .combine = "list",
   .options.future = list(seed = TRUE)
