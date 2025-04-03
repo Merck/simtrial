@@ -157,8 +157,14 @@ these enrollments.</p>
 target of a total enrollment of 3000 individuals with the trial ending
 after observing 700 events. We use <code>timing_type = 2</code> to
 return the correct trial duration.</p>
+<p><em>Note:</em> We manually set the number of threads to be used by
+{data.table} operations to 1. This is purely for the sake of comparing
+the runtime to the parallel run performed later in this vignette. If you
+were running simulations sequentially, you would want {data.table} to
+take advantage of parallel processing.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span>threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_sim</span> <span class="op">&lt;-</span> <span class="fl">200</span></span>
 <span></span>
@@ -193,25 +199,24 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  14.190   0.062   8.203</span></span></code></pre></div>
-<p>We can see that the CPU time is 14.19 and the elapsed time is 8.20
+<span><span class="co">#&gt;   8.006   0.060   8.066</span></span></code></pre></div>
+<p>We can see that the CPU time is 8.01 and the elapsed time is 8.07
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
 enrollment 1, which is 131.2.</p>
-<p>We also see that there is a distinction between the duration of the
-study under the proposed enrollment strategies.</p>
+<p><img src="parallel_files/figure-html/sequential-display-duration-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="setting-up-a-parallel-backend">Setting up a parallel backend<a class="anchor" aria-label="anchor" href="#setting-up-a-parallel-backend"></a>
 </h2>
-<p>If we instead, wanted to run more simulations for each enrollment, we
-can expect the time to run our simulations to increase. As we vary and
-increase the number of parameter inputs that we consider, we expect the
-simulation process to continue to increase in duration. To help combat
-the growing computational burden, we can run these simulations in
-parallel using the <code>multisession</code> backend available to us in
-<code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code>.</p>
+<p>If we increased the number of simulations for each enrollment, we can
+expect the time to run our simulations to increase. Furthermore, as we
+vary and increase the number of parameter inputs that we consider, we
+expect the simulation process to continue to increase in duration. To
+help combat the growing computational burden, we can run these
+simulations in parallel using the <code>multisession</code> backend
+available to us in <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code>.</p>
 <p>We can adjust the default number of cores with the function
 <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">parallelly::availableCores()</a></code>. The multisession backend will
 automatically use all available cores by default, but here we will use
@@ -225,12 +230,23 @@ two. To initialize our backend, we change our plan.</p>
 <p>Once we have configured the backend details, we can execute the same
 code as before to automatically distribute the <code>n_sim</code>
 simulations across the available cores.</p>
+<p><em>Note:</em> We do not have to worry about setting
+<code>data.table::setDTthreads(threads = 1)</code> for the parallel
+processes spawned by <code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> below because
+{data.table} “automatically switches to single threaded mode upon fork”
+(from <code><a href="https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">?data.table::setDTthreads</a></code>). <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This can get complex quick. The behavior of parallel
+computing is affected by your operating system (e.g. Windows) and editor
+(e.g. RStudio). If you need to perform accurate benchmarking, you will
+need to do your own due diligence. We recommend adding
+&lt;code&gt;data.table::setDTthreads(threads = 1)&lt;/code&gt; to your
+&lt;code&gt;~/.Rprofile&lt;/code&gt; to have the best chance of preventing
+{data.table} multithreading from affecting your benchmarking results.&lt;/p&gt;"><sup>1</sup></a></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">start_sequential</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">start_parallel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">seq_result1m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
+<span><span class="va">par_result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="va">n_sim</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="fl">3000</span>,</span>
 <span>  target_event <span class="op">=</span> <span class="fl">700</span>,</span>
@@ -239,7 +255,7 @@ simulations across the available cores.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using 2 cores with backend multisession</span></span>
 <span></span>
-<span><span class="va">seq_result2m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
+<span><span class="va">par_result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_fixed_n.html">sim_fixed_n</a></span><span class="op">(</span></span>
 <span>  n_sim <span class="op">=</span> <span class="va">n_sim</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="fl">3000</span>,</span>
 <span>  target_event <span class="op">=</span> <span class="fl">700</span>,</span>
@@ -248,12 +264,12 @@ simulations across the available cores.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using 2 cores with backend multisession</span></span>
 <span></span>
-<span><span class="va">duration_sequential</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">start_sequential</span></span></code></pre></div>
+<span><span class="va">duration_parallel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">start_parallel</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_parallel</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.392   0.012   7.472</span></span></code></pre></div>
-<p>We can see that the CPU time is 0.39 and the elapsed time is 7.47
+<span><span class="co">#&gt;   0.377   0.006   7.753</span></span></code></pre></div>
+<p>We can see that the CPU time is 0.38 and the elapsed time is 7.75
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
@@ -268,8 +284,10 @@ of setting a seed and that the backend type will not affect the results.
 Below, it is clear that the results from our sequential and multisession
 backends match completely.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">seq_result1</span> <span class="op">!=</span> <span class="va">seq_result1m</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">seq_result2</span> <span class="op">!=</span> <span class="va">seq_result2m</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">seq_result1</span>, <span class="va">par_result1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">seq_result2</span>, <span class="va">par_result2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p><em>Note:</em> A parallel implementation may not always be faster
 than a serial implementation. If there is substantial overhead
 associated with executing in parallel, sequential evaluation may be
@@ -334,7 +352,7 @@ before.</p>
 <span></span>
 <span><span class="va">enroll_rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">enroll_rate1</span>, <span class="va">enroll_rate2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">seq_resultc</span> <span class="op">&lt;-</span> <span class="fu">foreach</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span></span>
+<span><span class="va">nested_result</span> <span class="op">&lt;-</span> <span class="fu">foreach</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span></span>
 <span>  i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
 <span>  .combine <span class="op">=</span> <span class="st">"list"</span>,</span>
 <span>  .options.future <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -353,6 +371,7 @@ resources.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
