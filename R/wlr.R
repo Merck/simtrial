@@ -120,7 +120,6 @@
 #'                 stratum = rep("All", nrow(ex1_delayed_effect)),
 #'                 tte = ex1_delayed_effect$month,
 #'                 event = ex1_delayed_effect$evntd)
-#' class(x) <- c("tte_data", class(x))
 #'
 #' # Users can specify the randomization ratio to calculate the statistical information under H0
 #' x |> wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
@@ -138,6 +137,18 @@
 wlr <- function(data, weight, return_variance = FALSE, ratio = NULL) {
   UseMethod("wlr", data)
 }
+
+#' @rdname wlr
+#' @export
+wlr.default <- function(data, weight, return_variance = FALSE, ratio = NULL) {
+
+  if (!all(c("tte", "event", "stratum", "treatment") %in% colnames(data))) {
+    stop('Input must have the columns "tte", "event", "stratum", and "treatment"')
+  }
+
+  wlr.tte_data(data = data, weight = weight, return_variance = return_variance, ratio = ratio)
+}
+
 
 #' @rdname wlr
 #' @export

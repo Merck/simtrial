@@ -2,11 +2,14 @@
 % Please edit documentation in R/wlr.R
 \name{wlr}
 \alias{wlr}
+\alias{wlr.default}
 \alias{wlr.tte_data}
 \alias{wlr.counting_process}
 \title{Weighted logrank test}
 \usage{
 wlr(data, weight, return_variance = FALSE, ratio = NULL)
+
+\method{wlr}{default}(data, weight, return_variance = FALSE, ratio = NULL)
 
 \method{wlr}{tte_data}(data, weight, return_variance = FALSE, ratio = NULL)
 
@@ -126,7 +129,6 @@ x <- data.frame(treatment = ifelse(ex1_delayed_effect$trt == 1, "experimental", 
                 stratum = rep("All", nrow(ex1_delayed_effect)),
                 tte = ex1_delayed_effect$month,
                 event = ex1_delayed_effect$evntd)
-class(x) <- c("tte_data", class(x))
 
 # Users can specify the randomization ratio to calculate the statistical information under H0
 x |> wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
