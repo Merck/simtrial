@@ -50,3 +50,11 @@ test_that("wlr() uses argument ratio", {
   wlr_wo_ratio <- x |> wlr(weight = fh(rho = 0, gamma = 0.5))
   expect_false(isTRUE(all.equal(wlr_w_ratio, wlr_wo_ratio)))
 })
+
+test_that("cut_data_by_date() and cut_data_by_event() return the same classes", {
+  x <- sim_pw_surv(n = 300)
+  data_by_event <- cut_data_by_event(x, 100)
+  data_by_date <- cut_data_by_date(x, cut_date = 300)
+
+  expect_identical(class(data_by_event), class(data_by_date))
+})
