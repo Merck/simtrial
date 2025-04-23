@@ -38,6 +38,15 @@
 #'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
 #'   examples.
+#' @param original_design A design object from the gsDesign2 package, which is required when users
+#' want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.
+#' @param ia_alpha_spending Spend alpha at interim analysis based on
+#' - `"min_planned_actual"`: the minimal of planned and actual alpha spending.
+#' - `"actual"`: the actual alpha spending.
+#' @param fa_alpha_spending If targeted final event count is not achieved (under-running at final analysis),
+#' specify how to do final spending. Generally, this should be specified in analysis plan.
+#' - `"info_frac"` = spend final alpha according to final information fraction
+#' - `"full_alpha"` = spend full alpha at final analysis.
 #' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `test`.
 #'
@@ -241,6 +250,19 @@
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #' plan("sequential")
+#'
+#' # Example 10: group sequential design with updated bounds
+#' x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
+#' sim_gs_n(
+#'   n_sim = 3,
+#'   sample_size = max(x$analysis$n),
+#'   enroll_rate = x$enroll_rate,
+#'   fail_rate = x$fail_rate,
+#'   test = wlr,
+#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+#'   weight = fh(rho = 0, gamma = 0),
+#'   original_design = x
+#' )
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
@@ -256,9 +278,14 @@ sim_gs_n <- function(
     block = rep(c("experimental", "control"), 2),
     test = wlr,
     cut = NULL,
+    original_design = NULL,
+    ia_alpha_spending = c("min_planned_actual", "actual"),
+    fa_alpha_spending = c("full_alpha", "info_frac"),
     ...) {
   # Input checking
   # TODO
+  ia_alpha_spending <- match.arg(ia_alpha_spending)
+  fa_alpha_spending <- match.arg(fa_alpha_spending)
 
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
@@ -293,6 +320,7 @@ sim_gs_n <- function(
     n_analysis <- length(cut)
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
+    event_tbl <- NULL
     # Organize tests for each cutting
     if (is.function(test)) {
       test_single <- test
@@ -330,6 +358,50 @@ sim_gs_n <- function(
       ans_1sim_list <- list(ans_1sim, ans_1sim_new)
       ans_1sim <- rbindlist(ans_1sim_list, use.names = TRUE, fill = TRUE)
 
+      # Get event counts per piecewise interval
+      if (!is.null(original_design)){
+        pw_event <- sapply(cumsum(original_design$fail_rate$duration),
+                           function(threshold) {sum(simu_data_cut$tte < threshold)})
+        event_tbl_new <- data.frame(analysis = rep(i_analysis, length(pw_event)),
+                                    event = diff(c(0, pw_event)))
+        event_tbl_list <- list(event_tbl, event_tbl_new)
+        event_tbl <- rbindlist(event_tbl_list, use.names = TRUE, fill = TRUE)
+      }
+    }
+
+    # Add planned and updated bounds
+    if (!is.null(original_design)){
+      # Add planned bounds
+      planed_upper_bound <- original_design$z[original_design$bound == "upper"]
+      planed_lower_bound <- original_design$z[original_design$bound == "lower"]
+      ans_1sim <- ans_1sim |> mutate(planed_upper_bound = planed_upper_bound,
+                                     planed_lower_bound = planed_lower_bound)
+
+      # Calculate ustime and lstime
+      obs_event <- (event_tbl |> group_by(analysis) |> summarize(x = sum(event)))$x
+      plan_event <- original_design$analysis$event
+      if (ia_alpha_spending == "actual" && fa_alpha_spending == "info_frac"){
+        ustime <- obs_event / plan_event[n_analysis]
+      } else if (ia_alpha_spending == "actual" && fa_alpha_spending == "full_alpha"){
+        ustime <- obs_event / last(plan_event)
+        ustime[n_analysis] <- 1
+      } else if (ia_alpha_spending == "min_planned_actual" && fa_alpha_spending == "info_frac") {
+        ustime <- pmin(obs_event, plan_event) / plan_event[n_analysis]
+      } else {
+        ustime <- pmin(obs_event, plan_event) / plan_event[n_analysis]
+        ustime[n_analysis] <- 1
+      }
+      lstime <- ustime
+
+      # Add updated bounds
+      updated_design <- gsDesign2::gs_update_ahr(x = original_design,
+                                                 alpha = original_design$input$alpha,
+                                                 ustime = ustime, lstime = lstime,
+                                                 event_tbl = event_tbl)$bound
+      updated_upper_bound <- updated_design$z[updated_design$bound == "upper"]
+      updated_lower_bound <- updated_design$z[updated_design$bound == "lower"]
+      ans_1sim <- ans_1sim |> mutate(updated_upper_bound = updated_upper_bound,
+                                     updated_lower_bound = updated_lower_bound)
     }
 
     ans_1sim
