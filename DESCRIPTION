@@ -62,7 +62,7 @@ Suggests:
     tibble,
     tidyr
 Remotes:
-    Merck/gsDesign2 (>= 1.1.3.4),
+    Merck/gsDesign2
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
