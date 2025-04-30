@@ -259,7 +259,9 @@
 #'   enroll_rate = x$enroll_rate,
 #'   fail_rate = x$fail_rate,
 #'   test = wlr,
-#'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+#'   cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+#'              ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+#'              fa = create_cut(planned_calendar_time = x$analysis$time[3])),
 #'   weight = fh(rho = 0, gamma = 0),
 #'   original_design = x
 #' )
@@ -360,8 +362,13 @@ sim_gs_n <- function(
 
       # Get event counts per piecewise interval
       if (!is.null(original_design)){
-        pw_event <- sapply(cumsum(original_design$fail_rate$duration),
-                           function(threshold) {sum(simu_data_cut$tte < threshold)})
+        # Get the study duration
+        study_duration <- max(original_design$analysis$time)
+
+        # Get the change point of the piecewise HR, ended by study duration
+        fr_chg_pt <- pmin(cumsum(original_design$fail_rate$duration), study_duration)
+        pw_event <- sapply(fr_chg_pt,
+                           function(threshold) {simu_data_cut |> dplyr::filter(tte <= threshold, event == 1) |> nrow()})
         event_tbl_new <- data.frame(analysis = rep(i_analysis, length(pw_event)),
                                     event = diff(c(0, pw_event)))
         event_tbl <- rbind(event_tbl, event_tbl_new)
@@ -371,8 +378,8 @@ sim_gs_n <- function(
     # Add planned and updated bounds
     if (!is.null(original_design)){
       # Add planned bounds
-      planed_upper_bound <- original_design$z[original_design$bound$bound == "upper"]
-      planed_lower_bound <- original_design$z[original_design$bound$bound == "lower"]
+      planed_upper_bound <- original_design$bound$z[original_design$bound$bound == "upper"]
+      planed_lower_bound <- original_design$bound$z[original_design$bound$bound == "lower"]
       ans_1sim$planed_upper_bound <- planed_upper_bound
       ans_1sim$planed_lower_bound <- planed_lower_bound
 
@@ -395,10 +402,11 @@ sim_gs_n <- function(
       # Add updated bounds
       updated_design <- gsDesign2::gs_update_ahr(x = original_design,
                                                  alpha = original_design$input$alpha,
-                                                 ustime = ustime, lstime = lstime,
-                                                 event_tbl = event_tbl)$bound
-      updated_upper_bound <- updated_design$z[updated_design$bound$bound == "upper"]
-      updated_lower_bound <- updated_design$z[updated_design$bound$bound == "lower"]
+                                                 ustime = ustime,
+                                                 lstime = if(all(original_design$bound$bound == "upper")){NULL}else{lstime},
+                                                 event_tbl = event_tbl)
+      updated_upper_bound <- updated_design$bound$z[updated_design$bound$bound == "upper"]
+      updated_lower_bound <- updated_design$bound$z[updated_design$bound$bound == "lower"]
       ans_1sim$updated_upper_bound <- updated_upper_bound
       ans_1sim$updated_lower_bound <- updated_lower_bound
     }
