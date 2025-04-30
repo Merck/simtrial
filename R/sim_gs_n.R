@@ -371,8 +371,8 @@ sim_gs_n <- function(
     # Add planned and updated bounds
     if (!is.null(original_design)){
       # Add planned bounds
-      planed_upper_bound <- original_design$z[original_design$bound == "upper"]
-      planed_lower_bound <- original_design$z[original_design$bound == "lower"]
+      planed_upper_bound <- original_design$z[original_design$bound$bound == "upper"]
+      planed_lower_bound <- original_design$z[original_design$bound$bound == "lower"]
       ans_1sim$planed_upper_bound <- planed_upper_bound
       ans_1sim$planed_lower_bound <- planed_lower_bound
 
@@ -397,8 +397,8 @@ sim_gs_n <- function(
                                                  alpha = original_design$input$alpha,
                                                  ustime = ustime, lstime = lstime,
                                                  event_tbl = event_tbl)$bound
-      updated_upper_bound <- updated_design$z[updated_design$bound == "upper"]
-      updated_lower_bound <- updated_design$z[updated_design$bound == "lower"]
+      updated_upper_bound <- updated_design$z[updated_design$bound$bound == "upper"]
+      updated_lower_bound <- updated_design$z[updated_design$bound$bound == "lower"]
       ans_1sim$updated_upper_bound <- updated_upper_bound
       ans_1sim$updated_lower_bound <- updated_lower_bound
     }
