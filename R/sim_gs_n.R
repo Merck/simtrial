@@ -377,7 +377,7 @@ sim_gs_n <- function(
       ans_1sim$planed_lower_bound <- planed_lower_bound
 
       # Calculate ustime and lstime
-      obs_event <- (event_tbl |> group_by(analysis) |> summarize(x = sum(event)))$x
+      obs_event <- (event_tbl |> dplyr::group_by(analysis) |> dplyr::summarize(x = sum(event)))$x
       plan_event <- original_design$analysis$event
       if (ia_alpha_spending == "actual" && fa_alpha_spending == "info_frac"){
         ustime <- obs_event / plan_event[n_analysis]
