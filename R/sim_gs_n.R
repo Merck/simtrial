@@ -364,8 +364,7 @@ sim_gs_n <- function(
                            function(threshold) {sum(simu_data_cut$tte < threshold)})
         event_tbl_new <- data.frame(analysis = rep(i_analysis, length(pw_event)),
                                     event = diff(c(0, pw_event)))
-        event_tbl_list <- list(event_tbl, event_tbl_new)
-        event_tbl <- rbindlist(event_tbl_list, use.names = TRUE, fill = TRUE)
+        event_tbl <- rbind(event_tbl, event_tbl_new)
       }
     }
 
@@ -374,8 +373,8 @@ sim_gs_n <- function(
       # Add planned bounds
       planed_upper_bound <- original_design$z[original_design$bound == "upper"]
       planed_lower_bound <- original_design$z[original_design$bound == "lower"]
-      ans_1sim <- ans_1sim |> mutate(planed_upper_bound = planed_upper_bound,
-                                     planed_lower_bound = planed_lower_bound)
+      ans_1sim$planed_upper_bound <- planed_upper_bound
+      ans_1sim$planed_lower_bound <- planed_lower_bound
 
       # Calculate ustime and lstime
       obs_event <- (event_tbl |> group_by(analysis) |> summarize(x = sum(event)))$x
@@ -400,8 +399,8 @@ sim_gs_n <- function(
                                                  event_tbl = event_tbl)$bound
       updated_upper_bound <- updated_design$z[updated_design$bound == "upper"]
       updated_lower_bound <- updated_design$z[updated_design$bound == "lower"]
-      ans_1sim <- ans_1sim |> mutate(updated_upper_bound = updated_upper_bound,
-                                     updated_lower_bound = updated_lower_bound)
+      ans_1sim$updated_upper_bound <- updated_upper_bound
+      ans_1sim$updated_lower_bound <- updated_lower_bound
     }
 
     ans_1sim
