@@ -14,6 +14,9 @@ sim_gs_n(
   block = rep(c("experimental", "control"), 2),
   test = wlr,
   cut = NULL,
+  original_design = NULL,
+  ia_alpha_spending = c("min_planned_actual", "actual"),
+  fa_alpha_spending = c("full_alpha", "info_frac"),
   ...
 )
 }
@@ -47,6 +50,22 @@ positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
 examples.}
+
+\item{original_design}{A design object from the gsDesign2 package, which is required when users
+want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.}
+
+\item{ia_alpha_spending}{Spend alpha at interim analysis based on
+\itemize{
+\item \code{"min_planned_actual"}: the minimal of planned and actual alpha spending.
+\item \code{"actual"}: the actual alpha spending.
+}}
+
+\item{fa_alpha_spending}{If targeted final event count is not achieved (under-running at final analysis),
+specify how to do final spending. Generally, this should be specified in analysis plan.
+\itemize{
+\item \code{"info_frac"} = spend final alpha according to final information fraction
+\item \code{"full_alpha"} = spend full alpha at final analysis.
+}}
 
 \item{...}{Arguments passed to the test function(s) provided by the argument
 \code{test}.}
@@ -259,5 +278,18 @@ sim_gs_n(
   weight = fh(rho = 0, gamma = 0)
 )
 plan("sequential")
+
+# Example 10: group sequential design with updated bounds
+x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
+sim_gs_n(
+  n_sim = 3,
+  sample_size = max(x$analysis$n),
+  enroll_rate = x$enroll_rate,
+  fail_rate = x$fail_rate,
+  test = wlr,
+  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+  weight = fh(rho = 0, gamma = 0),
+  original_design = x
+)
 \dontshow{\}) # examplesIf}
 }
