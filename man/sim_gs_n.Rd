@@ -287,7 +287,9 @@ sim_gs_n(
   enroll_rate = x$enroll_rate,
   fail_rate = x$fail_rate,
   test = wlr,
-  cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
+  cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+             ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+             fa = create_cut(planned_calendar_time = x$analysis$time[3])),
   weight = fh(rho = 0, gamma = 0),
   original_design = x
 )
