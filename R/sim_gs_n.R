@@ -289,6 +289,13 @@ sim_gs_n <- function(
   ia_alpha_spending <- match.arg(ia_alpha_spending)
   fa_alpha_spending <- match.arg(fa_alpha_spending)
 
+  additional_args <- list(...)
+  weight <- if("weight" %in% names(additional_args)) {additional_args$weight}
+  is_logrank <- identical(test, wlr) && identical(weight, fh(rho = 0, gamma = 0))
+  if (!is.null(original_design) && !is_logrank){
+    message("The updated bound is currently only provided for logrank test.")
+  }
+
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
     # future backend
@@ -361,7 +368,7 @@ sim_gs_n <- function(
       ans_1sim <- rbindlist(ans_1sim_list, use.names = TRUE, fill = TRUE)
 
       # Get event counts per piecewise interval
-      if (!is.null(original_design)){
+      if (!is.null(original_design) && is_logrank){
         # Get the study duration
         study_duration <- max(original_design$analysis$time)
 
@@ -376,7 +383,7 @@ sim_gs_n <- function(
     }
 
     # Add planned and updated bounds
-    if (!is.null(original_design)){
+    if (!is.null(original_design) && is_logrank){
       # Add planned bounds
       planed_upper_bound <- original_design$bound$z[original_design$bound$bound == "upper"]
       planed_lower_bound <- original_design$bound$z[original_design$bound$bound == "lower"]
