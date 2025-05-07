@@ -14,7 +14,7 @@ template:
     navbar-light-active-color: "#fff"
     dropdown-link-hover-color: "#fff"
     dropdown-link-hover-bg: "#00857c"
-  math-rendering: "katex"
+  math-rendering: "mathjax"
 
 footer:
   structure:
