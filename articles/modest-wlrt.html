@@ -6,18 +6,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Using the Magirr-Burman weights for testing • simtrial</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><link href="../deps/KaTex-0.16.10/katex.min.css" rel="stylesheet">
-<script src="../deps/KaTex-0.16.10/katex.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Using the Magirr-Burman weights for testing">
 </head>
 <body>
@@ -139,12 +143,12 @@ experimental treatment, black for control):</p>
 <p>Next, we consider the <span class="citation">Magirr (2021)</span>
 extension of the modestly weighted logrank test (MWLRT) of <span class="citation">Magirr and Burman (2019)</span> where we have weights
 as follows:</p>
-<p><span class="math display">w(t, \tau, w_{\max}) =
-\min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).</span></p>
+<p><span class="math display">\[w(t, \tau, w_{\max}) =
+\min\left(w_{\max},\left(\frac{1}{S(\min(t,\tau))}\right)\right).\]</span></p>
 <p>This requires generating weights and then computing the test. We
 begin with the default of <code>w_max=Inf</code> which corresponds to
 the original <span class="citation">Magirr and Burman (2019)</span> test
-and set the time until maximum weight <span class="math inline">\tau</span> with <code>delay = 6</code>.</p>
+and set the time until maximum weight <span class="math inline">\(\tau\)</span> with <code>delay = 6</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ZMB</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/wlr.html">wlr</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="../reference/mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
@@ -162,9 +166,10 @@ combined treatment Kaplan-Meier curve.</p>
 <span><span class="co">#&gt; [1] 0.1387672</span></span></code></pre></div>
 <p>Another way this can be done is with a generalized Fleming-Harrington
 test with</p>
-<p><span class="math display">w(t; \rho, \gamma, w_{\max})=
-\min((1-F(t))^\rho F(t)^\gamma, w_{\max})).</span></p>
-<p>and let <span class="math inline">\gamma=0, \rho = -1/2.</span></p>
+<p><span class="math display">\[w(t; \rho, \gamma, w_{\max})=
+\min((1-F(t))^\rho F(t)^\gamma, w_{\max})).\]</span></p>
+<p>and let <span class="math inline">\(\gamma=0, \rho =
+-1/2.\)</span></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w_max</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span><span class="va">Z_modified_FH</span> <span class="op">&lt;-</span> <span class="va">MBdelay</span> <span class="op">|&gt;</span></span>
@@ -312,7 +317,7 @@ Meta-Analysis.”</span> <em>JAMA Oncology</em>.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Keaven Anderson, Yujie Zhao, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p>Developed by Keaven Anderson, Yujie Zhao, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
