@@ -41,12 +41,12 @@
 #' @param original_design A design object from the gsDesign2 package, which is required when users
 #' want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.
 #' @param ia_alpha_spending Spend alpha at interim analysis based on
-#' - `"min_planned_actual"`: the minimal of planned and actual alpha spending.
-#' - `"actual"`: the actual alpha spending.
+#'   - `"min_planned_actual"`: the minimal of planned and actual alpha spending.
+#'   - `"actual"`: the actual alpha spending.
 #' @param fa_alpha_spending If targeted final event count is not achieved (under-running at final analysis),
 #' specify how to do final spending. Generally, this should be specified in analysis plan.
-#' - `"info_frac"` = spend final alpha according to final information fraction
-#' - `"full_alpha"` = spend full alpha at final analysis.
+#'   - `"info_frac"` = spend final alpha according to final information fraction
+#'   - `"full_alpha"` = spend full alpha at final analysis.
 #' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `test`.
 #'
@@ -254,7 +254,7 @@
 #' # Example 10: group sequential design with updated bounds
 #' x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
 #' sim_gs_n(
-#'   n_sim = 3,
+#'   n_sim = 1,
 #'   sample_size = max(x$analysis$n),
 #'   enroll_rate = x$enroll_rate,
 #'   fail_rate = x$fail_rate,

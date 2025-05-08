@@ -282,7 +282,7 @@ plan("sequential")
 # Example 10: group sequential design with updated bounds
 x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
 sim_gs_n(
-  n_sim = 3,
+  n_sim = 1,
   sample_size = max(x$analysis$n),
   enroll_rate = x$enroll_rate,
   fail_rate = x$fail_rate,
