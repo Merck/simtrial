@@ -18,7 +18,8 @@ Authors@R: c(
     person("Heng", "Zhou", role = c("ctb")),
     person("Amin", "Shirazi", role = c("ctb")),
     person("Cole", "Manschot", role = c("ctb")),
-    person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph")
+    person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph",
+           comment = c(ROR = "02891sr49"))
     )
 Description: Provides some basic routines for simulating a
     clinical trial. The primary intent is to provide some tools to
