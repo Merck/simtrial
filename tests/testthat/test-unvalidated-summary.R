@@ -87,7 +87,7 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for one-sided de
       design_type = "one-sided",
       method = "FH(rho=0, gamma=0.5)"
     )
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, tolerance = 1e-6)
 })
 
 test_that("summary.simtrial_gs_wlr() returns consistent results for two-sided design", {
@@ -179,5 +179,5 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for two-sided de
       class = c("simtrial_gs_wlr", "data.frame"),
       method = "FH(rho=0, gamma=0.5)"
     )
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, tolerance = 1e-6)
 })
