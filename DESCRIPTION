@@ -54,7 +54,7 @@ Suggests:
     dplyr,
     ggplot2,
     gsDesign,
-    gsDesign2(>= 1.1.3.4),
+    gsDesign2 (>= 1.1.3.4),
     gt,
     knitr,
     rmarkdown,
