@@ -392,6 +392,7 @@ sim_gs_n <- function(
 
       # Calculate ustime and lstime
       obs_event <- with(event_tbl, tapply(event, analysis, sum, simplify = TRUE))
+      obs_event <- as.numeric(obs_event)
       plan_event <- original_design$analysis$event
       if (ia_alpha_spending == "actual" && fa_alpha_spending == "info_frac"){
         ustime <- obs_event / plan_event[n_analysis]
