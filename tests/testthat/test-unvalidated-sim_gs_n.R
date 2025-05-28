@@ -694,7 +694,7 @@ test_that("Updating bounds changes the simulation results", {
     original_design = x
   )
 
-  expect_equivalent(run1, run2[, colnames(run1)])
+  expect_equal(run1, run2[, colnames(run1)], ignore_attr = TRUE)
 
   expected <- data.frame(
     planed_upper_bound = c(3.870248012128966, 2.3566552618098884, 2.009757742407378),
@@ -704,5 +704,5 @@ test_that("Updating bounds changes the simulation results", {
   )
   observed <- run2[, c("planed_upper_bound", "planed_lower_bound",
                        "updated_upper_bound", "updated_lower_bound")]
-  expect_equivalent(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })
