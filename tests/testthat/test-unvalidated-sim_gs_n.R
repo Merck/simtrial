@@ -1,6 +1,8 @@
 # 2024-02-22: Converted `example("sim_gs_n")` to tests from commit 306de0d
 # https://github.com/Merck/simtrial/tree/306de0dbe380fdb1e906a59f34bf3871d3ee5312
 
+skip_if_not_installed("gsDesign2")
+
 # parameters for enrollment
 enroll_rampup_duration <- 4 # duration for enrollment ramp up
 enroll_duration <- 16 # total enrollment duration
@@ -657,4 +659,50 @@ test_that("create_cut() can accept variables as arguments", {
     weight = simtrial::fh(rho = 0, gamma = 0))
 
   expect_equal(results_parallel, results_sequential)
+})
+
+test_that("Updating bounds changes the simulation results", {
+  x <- gsDesign2::gs_design_ahr(analysis_time = 1:3*12) |>
+    gsDesign2::to_integer()
+
+  # No boundary updates
+  set.seed(1)
+  run1 <- sim_gs_n(
+    n_sim = 1,
+    sample_size = max(x$analysis$n),
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = wlr,
+    cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+               ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+               fa = create_cut(planned_calendar_time = x$analysis$time[3])),
+    weight = fh(rho = 0, gamma = 0)
+  )
+
+  # With boundary updates
+  set.seed(1)
+  run2 <- sim_gs_n(
+    n_sim = 1,
+    sample_size = max(x$analysis$n),
+    enroll_rate = x$enroll_rate,
+    fail_rate = x$fail_rate,
+    test = wlr,
+    cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+               ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+               fa = create_cut(planned_calendar_time = x$analysis$time[3])),
+    weight = fh(rho = 0, gamma = 0),
+    original_design = x
+  )
+
+  expect_equal(run1, run2[, colnames(run1)], ignore_attr = TRUE)
+
+  expected <- data.frame(
+    planed_upper_bound = c(3.870248012128966, 2.3566552618098884, 2.009757742407378),
+    planed_lower_bound = c(-1.705270817327003, 0.9601286375623664, 2.004752252887608),
+    updated_upper_bound = c(3.870248012128966, 2.3867954048423474, 2.0074221828251764),
+    updated_lower_bound = c(-1.6671962217546439, 0.9631736579151768, 2.1126105535696467)
+  )
+  observed <- run2[, c("planed_upper_bound", "planed_lower_bound",
+                       "updated_upper_bound", "updated_lower_bound")]
+  expect_equal(observed, expected, ignore_attr = TRUE)
 })

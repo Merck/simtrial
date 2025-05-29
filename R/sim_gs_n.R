@@ -375,7 +375,7 @@ sim_gs_n <- function(
         # Get the change point of the piecewise HR, ended by study duration
         fr_chg_pt <- pmin(cumsum(original_design$fail_rate$duration), study_duration)
         pw_event <- sapply(fr_chg_pt,
-                           function(threshold) {simu_data_cut |> dplyr::filter(tte <= threshold, event == 1) |> nrow()})
+                           function(threshold) {simu_data_cut |> subset(tte <= threshold & event == 1) |> nrow()})
         event_tbl_new <- data.frame(analysis = rep(i_analysis, length(pw_event)),
                                     event = diff(c(0, pw_event)))
         event_tbl <- rbind(event_tbl, event_tbl_new)
@@ -391,7 +391,8 @@ sim_gs_n <- function(
       ans_1sim$planed_lower_bound <- planed_lower_bound
 
       # Calculate ustime and lstime
-      obs_event <- (event_tbl |> dplyr::group_by(analysis) |> dplyr::summarize(x = sum(event)))$x
+      obs_event <- with(event_tbl, tapply(event, analysis, sum, simplify = TRUE))
+      obs_event <- as.numeric(obs_event)
       plan_event <- original_design$analysis$event
       if (ia_alpha_spending == "actual" && fa_alpha_spending == "info_frac"){
         ustime <- obs_event / plan_event[n_analysis]

@@ -54,13 +54,13 @@ Suggests:
     dplyr,
     ggplot2,
     gsDesign,
-    gsDesign2(>= 1.1.3.4),
+    gsDesign2 (>= 1.1.3.4),
     gt,
     knitr,
     rmarkdown,
     survMisc,
     survRM2,
-    testthat,
+    testthat (>= 3.0.0),
     tibble,
     tidyr
 Remotes:
@@ -69,3 +69,4 @@ LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Config/testthat/edition: 3
