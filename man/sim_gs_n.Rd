@@ -165,6 +165,7 @@ sim_gs_n(
   weight = fh(rho = 0, gamma = 0)
 )
 
+\donttest{
 # Example 2: weighted logrank test by FH(0, 0.5) at all 3 analyses
 sim_gs_n(
   n_sim = 3,
@@ -219,6 +220,7 @@ sim_gs_n(
   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
   ms_time = 10
 )
+}
 
 # Warning: this example will be executable when we add info info0 to the milestone test
 # Example 7: WLR with fh(0, 0.5) test at IA1,
@@ -266,6 +268,7 @@ sim_gs_n(
 )
 }
 
+\donttest{
 # Example 9: regular logrank test at all 3 analyses in parallel
 plan("multisession", workers = 2)
 sim_gs_n(
@@ -293,5 +296,6 @@ sim_gs_n(
   weight = fh(rho = 0, gamma = 0),
   original_design = x
 )
+}
 \dontshow{\}) # examplesIf}
 }
