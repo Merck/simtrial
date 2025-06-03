@@ -18,6 +18,7 @@ Authors@R: c(
     person("Heng", "Zhou", role = c("ctb")),
     person("Amin", "Shirazi", role = c("ctb")),
     person("Cole", "Manschot", role = c("ctb")),
+    person("Larry", "Leon", role = c("ctb")),
     person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph",
            comment = c(ROR = "02891sr49"))
     )
@@ -63,8 +64,6 @@ Suggests:
     testthat (>= 3.0.0),
     tibble,
     tidyr
-Remotes:
-    Merck/gsDesign2
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
