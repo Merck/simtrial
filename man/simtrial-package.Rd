@@ -42,6 +42,7 @@ Other contributors:
   \item Heng Zhou [contributor]
   \item Amin Shirazi [contributor]
   \item Cole Manschot [contributor]
+  \item Larry Leon [contributor]
   \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates (02891sr49) [copyright holder]
 }
 
