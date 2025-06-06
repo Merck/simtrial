@@ -88,7 +88,7 @@ The `timing_type` specifies one or more of the following cutoffs for setting the
 
 The `rho_gamma` argument is a data frame containing the variables `rho` and `gamma`, both of which should be greater than or equal to zero, to specify one Fleming-Harrington weighted log-rank test per row. 
 For instance, setting `rho = 0` and `gamma = 0` yields the standard unweighted log-rank test, while `rho = 0 and gamma = 0.5` provides the weighted Fleming-Harrington (0, 0.5) log-rank test. 
-If you are interested in tests other than the Fleming-Harrington weighted log-rank test, please refer to the vignette [Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html).
+If you are interested in tests other than the Fleming-Harrington weighted log-rank test, please refer to the vignette "Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up".
 
 ```{r, message=FALSE}
 sim_res <- sim_fixed_n(
