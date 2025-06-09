@@ -23,7 +23,6 @@ via a single function call of `sim_fixed_n()` and `sim_gs_n()` or from the groun
 - Optimize parallel simulation speed in `sim_fixed_n()` and `sim_gs_n()` by
   replacing `foreach(.combine = "rbind")` with manual data frame combination
   (#318, thanks to @nanxstats).
-- Install latest `future` to fix Windows CI (#327, #330, thanks to @jdblischak).
 
 # simtrial 0.4.2
 
