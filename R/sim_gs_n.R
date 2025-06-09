@@ -409,8 +409,8 @@ sim_gs_n <- function(
     if (!is.null(original_design) && is_logrank){
       # Add planned bounds
       ans_1sim <- ans_1sim |>
-        left_join(original_design$bound |> filter(bound == "upper") |> select(analysis, z) |> rename(planed_upper_bound = z)) |>
-        left_join(original_design$bound |> filter(bound == "lower") |> select(analysis, z) |> rename(planed_lower_bound = z))
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(planed_upper_bound = z)) |>
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(planed_lower_bound = z))
 
 
       # Calculate ustime and lstime
@@ -438,8 +438,8 @@ sim_gs_n <- function(
                                                  event_tbl = event_tbl)
 
       ans_1sim <- ans_1sim |>
-        left_join(updated_design$bound |> filter(bound == "upper") |> select(analysis, z) |> rename(updated_upper_bound = z)) |>
-        left_join(updated_design$bound |> filter(bound == "lower") |> select(analysis, z) |> rename(updated_lower_bound = z))
+        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(updated_upper_bound = z)) |>
+        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(updated_lower_bound = z))
     }
 
     ans_1sim
