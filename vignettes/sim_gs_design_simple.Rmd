@@ -26,8 +26,6 @@ The `sim_gs_n()` function simulates group sequential designs with fixed sample s
 
 The process for simulating via `sim_gs_n()` is outlined in Steps 1 to 3 below.
 
-For those interested in more complicated simulations should refer to the vignette [Custom Group Sequential Design Simulations: Crafting from Scratch](https://merck.github.io/simtrial/articles/sim_gs_design_custom.html).
-
 # Step 1: Define design paramaters
 
 To run simulations for a group sequential design, several design characteristics are required. 
