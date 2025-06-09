@@ -20,17 +20,17 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com} [contributor]
+\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com}
 
 Authors:
 \itemize{
   \item Keaven Anderson \email{keaven_anderson@merck.com}
+  \item John Blischak
   \item Yilong Zhang
 }
 
 Other contributors:
 \itemize{
-  \item John Blischak [contributor]
   \item Nan Xiao [contributor]
   \item Jianxiao Yang [contributor]
   \item Lili Ling [contributor]
