@@ -2025,9 +2025,11 @@ to run 100 simulations.</p>
 <span>      <span class="op">)</span></span>
 <span>                              </span>
 <span>    <span class="va">ans_new</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span><span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">ans</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: foreach</span></span>
+<span><span class="co">## Loading required package: foreach</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">ans</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
 <p>The output from the parallel computation resembles the output of
@@ -2035,7 +2037,7 @@ to run 100 simulations.</p>
 Fixed Designs with Ease via sim_fixed_n</a>. Each row in the output
 corresponds to the simulation results for each testing method per each
 repeation.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ans</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html" class="external-link">tab_header</a></span><span class="op">(</span><span class="st">"Overview Each Simulation results"</span><span class="op">)</span></span></code></pre></div>
 <div id="dzawjmqldw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#dzawjmqldw table {
@@ -2568,7 +2570,7 @@ summarize the simulated power and compare it across different testing
 methods with some data manipulation using <code>dplyr</code>. Please
 note that the power calculation for the MaxCombo test differs from the
 other tests, as it does not report a Z-score.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ans_non_mc</span> <span class="op">&lt;-</span> <span class="va">ans</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Method</span> <span class="op">!=</span> <span class="st">"MaxCombo"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Method</span>, <span class="va">Parameter</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
