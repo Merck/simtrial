@@ -53,7 +53,7 @@
 #' @return A data frame summarizing the simulation ID, analysis date,
 #'   z statistics or p-values.
 #'
-#' @importFrom data.table rbindlist setDF
+#' @importFrom data.table as.data.table dcast rbindlist setcolorder setDF setnames
 #'
 #' @export
 #'
@@ -408,10 +408,13 @@ sim_gs_n <- function(
     # Add planned and updated bounds
     if (!is.null(original_design) && is_logrank){
       # Add planned bounds
-      ans_1sim <- ans_1sim |>
-        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(planed_upper_bound = z)) |>
-        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(planed_lower_bound = z))
-
+      planned_bounds <- as.data.table(original_design$bound)
+      planned_bounds <- dcast(planned_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
+      setnames(planned_bounds, c("analysis", "planned_lower_bound", "planned_upper_bound"))
+      # workaround for the fact that merge() moves the "by" column to be first
+      final_column_order <- union(colnames(ans_1sim), colnames(planned_bounds))
+      ans_1sim <- merge(ans_1sim, planned_bounds, all.x = TRUE, sort = FALSE)
+      setcolorder(ans_1sim, final_column_order)
 
       # Calculate ustime and lstime
       obs_event <- with(event_tbl, tapply(event, analysis, sum, simplify = TRUE))
@@ -437,9 +440,13 @@ sim_gs_n <- function(
                                                  lstime = if(all(original_design$bound$bound == "upper")){NULL}else{lstime},
                                                  event_tbl = event_tbl)
 
-      ans_1sim <- ans_1sim |>
-        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(updated_upper_bound = z)) |>
-        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(updated_lower_bound = z))
+      updated_bounds <- as.data.table(updated_design$bound)
+      updated_bounds <- dcast(updated_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
+      setnames(updated_bounds, c("analysis", "updated_lower_bound", "updated_upper_bound"))
+      # workaround for the fact that merge() moves the "by" column to be first
+      final_column_order <- union(colnames(ans_1sim), colnames(updated_bounds))
+      ans_1sim <- merge(ans_1sim, updated_bounds, all.x = TRUE, sort = FALSE)
+      setcolorder(ans_1sim, final_column_order)
     }
 
     ans_1sim
