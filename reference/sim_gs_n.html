@@ -517,22 +517,18 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  original_design <span class="op">=</span> <span class="va">x</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event    estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1 12.00002 465   104  -0.8459267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2 23.99062 524   225 -15.9597192</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0)        3 35.93242 524   316 -27.9915737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z     info info0 planed_upper_bound planed_lower_bound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 5.097032 0.1659646 26.00000 26.00           3.870248         -1.7052708</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 7.491968 2.1302438 55.55556 56.25           2.356655          0.9601286</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 8.859699 3.1594273 77.85759 79.00           2.009758          2.0047523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   updated_upper_bound updated_lower_bound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            3.870248          -1.8066671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2            2.436919           0.6719051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            1.998230           1.9121319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z     info info0 planned_lower_bound planned_upper_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 5.097032 0.1659646 26.00000 26.00          -1.7052708            3.870248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 7.491968 2.1302438 55.55556 56.25           0.9601286            2.356655</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 8.859699 3.1594273 77.85759 79.00           2.0047523            2.009758</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   updated_lower_bound updated_upper_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          -1.8066671            3.870248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           0.6719051            2.436919</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           1.9121319            1.998230</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 11: group sequential design with updated bounds -- efficacy &amp; futility</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/gs_design_ahr.html" class="external-link">gs_design_ahr</a></span><span class="op">(</span></span></span>
@@ -553,22 +549,18 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  original_design <span class="op">=</span> <span class="va">x</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event   estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1 11.95079 429   100  -2.927875</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2 23.95510 496   233 -29.446542</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0)        3 35.96078 496   311 -43.227998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z     info info0 planed_upper_bound planed_lower_bound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4.994437 0.5862272 24.91000 25.00                 NA          -2.319759</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 7.597118 3.8760147 55.87983 58.25           2.358356                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 8.729142 4.9521474 75.13826 77.75           2.009328                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   updated_upper_bound updated_lower_bound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 Inf           -2.145926</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2            2.358356                -Inf</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            2.007167                -Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z     info info0 planned_lower_bound planned_upper_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4.994437 0.5862272 24.91000 25.00           -2.319759                  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 7.597118 3.8760147 55.87983 58.25                  NA            2.358356</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 8.729142 4.9521474 75.13826 77.75                  NA            2.009328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   updated_lower_bound updated_upper_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           -2.145926                 Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                -Inf            2.358356</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                -Inf            2.007167</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
