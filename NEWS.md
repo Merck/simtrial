@@ -1,4 +1,4 @@
-# simtrial 0.4.3
+# simtrial 1.0.0
 
 ## Statistical improvements
 
