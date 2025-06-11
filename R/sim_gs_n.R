@@ -254,8 +254,27 @@
 #' )
 #' plan("sequential")
 #'
-#' # Example 10: group sequential design with updated bounds
+#' # Example 10: group sequential design with updated bounds -- efficacy only
 #' x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
+#' sim_gs_n(
+#'   n_sim = 1,
+#'   sample_size = max(x$analysis$n),
+#'   enroll_rate = x$enroll_rate,
+#'   fail_rate = x$fail_rate,
+#'   test = wlr,
+#'   cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+#'              ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+#'              fa = create_cut(planned_calendar_time = x$analysis$time[3])),
+#'   weight = fh(rho = 0, gamma = 0),
+#'   original_design = x
+#' )
+#'
+#' # Example 11: group sequential design with updated bounds -- efficacy & futility
+#' x <- gs_design_ahr(
+#'  alpha = 0.025, beta = 0.1, analysis_time = 1:3*12,
+#'  upper = gs_spending_bound, upar = list(sf = gsDesign::sfLDOF, total_spend = 0.025),
+#'  lower = gs_spending_bound, lpar = list(sf = gsDesign::sfHSD, param = -4, total_spend = 0.01),
+#'  test_upper = c(FALSE, TRUE, TRUE), test_lower = c(TRUE, FALSE, FALSE)) |> to_integer()
 #' sim_gs_n(
 #'   n_sim = 1,
 #'   sample_size = max(x$analysis$n),
@@ -389,10 +408,10 @@ sim_gs_n <- function(
     # Add planned and updated bounds
     if (!is.null(original_design) && is_logrank){
       # Add planned bounds
-      planed_upper_bound <- original_design$bound$z[original_design$bound$bound == "upper"]
-      planed_lower_bound <- original_design$bound$z[original_design$bound$bound == "lower"]
-      ans_1sim$planed_upper_bound <- planed_upper_bound
-      ans_1sim$planed_lower_bound <- planed_lower_bound
+      ans_1sim <- ans_1sim |>
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(planed_upper_bound = z)) |>
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(planed_lower_bound = z))
+
 
       # Calculate ustime and lstime
       obs_event <- with(event_tbl, tapply(event, analysis, sum, simplify = TRUE))
@@ -417,10 +436,10 @@ sim_gs_n <- function(
                                                  ustime = ustime,
                                                  lstime = if(all(original_design$bound$bound == "upper")){NULL}else{lstime},
                                                  event_tbl = event_tbl)
-      updated_upper_bound <- updated_design$bound$z[updated_design$bound$bound == "upper"]
-      updated_lower_bound <- updated_design$bound$z[updated_design$bound$bound == "lower"]
-      ans_1sim$updated_upper_bound <- updated_upper_bound
-      ans_1sim$updated_lower_bound <- updated_lower_bound
+
+      ans_1sim <- ans_1sim |>
+        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(updated_upper_bound = z)) |>
+        dplyr::left_join(updated_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(updated_lower_bound = z))
     }
 
     ans_1sim
