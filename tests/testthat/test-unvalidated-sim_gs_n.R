@@ -702,7 +702,7 @@ test_that("Updating bounds changes the simulation results", {
     updated_upper_bound = c(3.870248012128966, 2.3867954048423474, 2.0074221828251764),
     updated_lower_bound = c(-1.6671962217546439, 0.9631736579151768, 2.1126105535696467)
   )
-  observed <- run2[, c("planed_upper_bound", "planed_lower_bound",
+  observed <- run2[, c("planned_upper_bound", "planned_lower_bound",
                        "updated_upper_bound", "updated_lower_bound")]
   expect_equal(observed, expected, ignore_attr = TRUE)
 })

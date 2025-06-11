@@ -409,8 +409,8 @@ sim_gs_n <- function(
     if (!is.null(original_design) && is_logrank){
       # Add planned bounds
       ans_1sim <- ans_1sim |>
-        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(planed_upper_bound = z)) |>
-        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(planed_lower_bound = z))
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "upper") |> dplyr::select(analysis, z) |> dplyr::rename(planned_upper_bound = z)) |>
+        dplyr::left_join(original_design$bound |> dplyr::filter(bound == "lower") |> dplyr::select(analysis, z) |> dplyr::rename(planned_lower_bound = z))
 
 
       # Calculate ustime and lstime
