@@ -502,7 +502,7 @@ arguments will change as we add additional features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9 9.286413 1.51441180 87.39714 87.50</span>
 <span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 10: group sequential design with updated bounds</span></span></span>
+<span class="r-in"><span><span class="co"># Example 10: group sequential design with updated bounds -- efficacy only</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/gs_design_ahr.html" class="external-link">gs_design_ahr</a></span><span class="op">(</span>analysis_time <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">*</span><span class="fl">12</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/to_integer.html" class="external-link">to_integer</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">1</span>,</span></span>
@@ -517,6 +517,10 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  original_design <span class="op">=</span> <span class="va">x</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event    estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1 12.00002 465   104  -0.8459267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2 23.99062 524   225 -15.9597192</span>
@@ -529,6 +533,42 @@ arguments will change as we add additional features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            3.870248          -1.8066671</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            2.436919           0.6719051</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3            1.998230           1.9121319</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 11: group sequential design with updated bounds -- efficacy &amp; futility</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/gs_design_ahr.html" class="external-link">gs_design_ahr</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span> alpha <span class="op">=</span> <span class="fl">0.025</span>, beta <span class="op">=</span> <span class="fl">0.1</span>, analysis_time <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">*</span><span class="fl">12</span>,</span></span>
+<span class="r-in"><span> upper <span class="op">=</span> <span class="va">gs_spending_bound</span>, upar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="fu">gsDesign</span><span class="fu">::</span><span class="va"><a href="https://keaven.github.io/gsDesign/reference/sfLDOF.html" class="external-link">sfLDOF</a></span>, total_spend <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> lower <span class="op">=</span> <span class="va">gs_spending_bound</span>, lpar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="fu">gsDesign</span><span class="fu">::</span><span class="va"><a href="https://keaven.github.io/gsDesign/reference/sfHSD.html" class="external-link">sfHSD</a></span>, param <span class="op">=</span> <span class="op">-</span><span class="fl">4</span>, total_spend <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> test_upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>, test_lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://merck.github.io/gsDesign2/reference/to_integer.html" class="external-link">to_integer</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sim_gs_n</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">analysis</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">enroll_rate</span>,</span></span>
+<span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">fail_rate</span>,</span></span>
+<span class="r-in"><span>  test <span class="op">=</span> <span class="va">wlr</span>,</span></span>
+<span class="r-in"><span>  cut <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ia1 <span class="op">=</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span>planned_calendar_time <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">analysis</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             ia2 <span class="op">=</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span>planned_calendar_time <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">analysis</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             fa <span class="op">=</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span>planned_calendar_time <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">analysis</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  original_design <span class="op">=</span> <span class="va">x</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(analysis)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event   estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1 11.95079 429   100  -2.927875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2 23.95510 496   233 -29.446542</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1    WLR FH(rho=0, gamma=0)        3 35.96078 496   311 -43.227998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         se         z     info info0 planed_upper_bound planed_lower_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4.994437 0.5862272 24.91000 25.00                 NA          -2.319759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 7.597118 3.8760147 55.87983 58.25           2.358356                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 8.729142 4.9521474 75.13826 77.75           2.009328                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   updated_upper_bound updated_lower_bound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 Inf           -2.145926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2            2.358356                -Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            2.007167                -Inf</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
