@@ -44,13 +44,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: Install {parallelly} 1.44.0 for macOS
-        if: runner.os == 'macOS'
-        shell: Rscript {0}
-        run: |
-          install.packages("remotes")
-          remotes::install_version("parallelly", "1.44.0", upgrade = FALSE)
-
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
