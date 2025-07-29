@@ -39,7 +39,7 @@ over time."><meta property="og:image" content="https://merck.github.io/simtrial/
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Simulation of fixed sample size design for time-to-event endpoint</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/v1.0.0/R/sim_fixed_n.R" class="external-link"><code>R/sim_fixed_n.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/main/R/sim_fixed_n.R" class="external-link"><code>R/sim_fixed_n.R</code></a></small>
       <div class="d-none name"><code>sim_fixed_n.Rd</code></div>
     </div>
 
@@ -158,8 +158,8 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-in"><span><span class="co"># Example 2: WLR with FH(0,1) ----</span></span></span>
 <span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span>n_sim <span class="op">=</span> <span class="fl">1</span>, timing_type <span class="op">=</span> <span class="fl">1</span>, rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   method          parameter  estimate      se        z event      ln_hr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    WLR FH(rho=0, gamma=1) -1.608741 1.14817 1.401136    90 -0.2204257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   method          parameter    estimate       se          z event      ln_hr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    WLR FH(rho=0, gamma=1) -0.03587586 1.351219 0.02655074   103 -0.1042096</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                cut duration sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Planned duration       30   1</span>
 <span class="r-in"><span><span class="co"># Get power approximation</span></span></span>

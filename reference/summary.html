@@ -35,7 +35,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summary of group sequential simulations.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/v1.0.0/R/summary.R" class="external-link"><code>R/summary.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/main/R/summary.R" class="external-link"><code>R/summary.R</code></a></small>
       <div class="d-none name"><code>summary.Rd</code></div>
     </div>
 
@@ -133,16 +133,16 @@
 <span class="r-in"><span><span class="va">bound</span> <span class="op">&lt;-</span> <span class="fu">gsDesign</span><span class="fu">::</span><span class="fu"><a href="https://keaven.github.io/gsDesign/reference/gsDesign.html" class="external-link">gsDesign</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">3</span>, test.type <span class="op">=</span> <span class="fl">1</span>, sfu <span class="op">=</span> <span class="fu">gsDesign</span><span class="fu">::</span><span class="va"><a href="https://keaven.github.io/gsDesign/reference/sfLDOF.html" class="external-link">sfLDOF</a></span><span class="op">)</span><span class="op">$</span><span class="va">upper</span><span class="op">$</span><span class="va">bound</span></span></span>
 <span class="r-in"><span><span class="va">simulation</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span>bound <span class="op">=</span> <span class="va">bound</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   analysis    sim_n sim_event sim_time sim_upper_prob</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1 351.3333        97 11.96200             NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2 505.0000       305 23.88249      0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3 505.0000       405 34.55674      1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1 356.6667        97 11.87400             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2 505.0000       305 24.66698              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3 505.0000       405 37.58585             NA</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Summarize simulation and compare with the planned design</span></span></span>
 <span class="r-in"><span><span class="va">simulation</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   analysis asy_upper_prob sim_upper_prob sim_event    sim_n sim_time asy_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1   0.0001486592             NA        97 351.3333 11.96200       12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2   0.5723210881      0.3333333       305 505.0000 23.88249       24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3   0.8999997572      1.0000000       405 505.0000 34.55674       36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1   0.0001486592             NA        97 356.6667 11.87400       12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2   0.5723210881              1       305 505.0000 24.66698       24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3   0.8999997572             NA       405 505.0000 37.58585       36</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      asy_n asy_event</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 353.0464  96.77449</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 504.3520 304.00970</span>
