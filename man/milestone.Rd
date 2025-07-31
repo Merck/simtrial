@@ -19,7 +19,7 @@ milestone(data, ms_time, test_type = c("log-log", "naive"))
 \item{test_type}{Method to build the test statistics.
 There are 2 options:
 \itemize{
-\item \code{"native"}: a native approach by dividing the KM survival difference by its standard derivations,
+\item \code{"naive"}: a naive approach by dividing the KM survival difference by its standard derivations,
 see equation (1) of Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).
 \item \code{"log-log"}: a log-log transformation of the survival, see equation (3) of
 Klein, J. P., Logan, B., Harhoff, M., & Andersen, P. K. (2007).

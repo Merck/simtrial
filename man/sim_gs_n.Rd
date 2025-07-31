@@ -135,7 +135,7 @@ ia1_cut <- create_cut(
 # IA2
 # The 2nd interim analysis will occur at the later of the following 3 conditions:
 # - At least 32 months have passed since the start of the study.
-# - At least 250 events have occurred.
+# - At least 200 events have occurred.
 # - At least 10 months after IA1.
 # However, if events accumulation is slow, we will wait for a maximum of 34 months.
 ia2_cut <- create_cut(
@@ -148,7 +148,7 @@ ia2_cut <- create_cut(
 # FA
 # The final analysis will occur at the later of the following 2 conditions:
 # - At least 45 months have passed since the start of the study.
-# - At least 300 events have occurred.
+# - At least 350 events have occurred.
 fa_cut <- create_cut(
   planned_calendar_time = 45,
   target_event_overall = 350
