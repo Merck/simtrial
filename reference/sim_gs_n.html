@@ -206,7 +206,7 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span><span class="co"># IA2</span></span></span>
 <span class="r-in"><span><span class="co"># The 2nd interim analysis will occur at the later of the following 3 conditions:</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 32 months have passed since the start of the study.</span></span></span>
-<span class="r-in"><span><span class="co"># - At least 250 events have occurred.</span></span></span>
+<span class="r-in"><span><span class="co"># - At least 200 events have occurred.</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 10 months after IA1.</span></span></span>
 <span class="r-in"><span><span class="co"># However, if events accumulation is slow, we will wait for a maximum of 34 months.</span></span></span>
 <span class="r-in"><span><span class="va">ia2_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
@@ -219,7 +219,7 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span><span class="co"># FA</span></span></span>
 <span class="r-in"><span><span class="co"># The final analysis will occur at the later of the following 2 conditions:</span></span></span>
 <span class="r-in"><span><span class="co"># - At least 45 months have passed since the start of the study.</span></span></span>
-<span class="r-in"><span><span class="co"># - At least 300 events have occurred.</span></span></span>
+<span class="r-in"><span><span class="co"># - At least 350 events have occurred.</span></span></span>
 <span class="r-in"><span><span class="va">fa_cut</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_cut.html">create_cut</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">45</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">350</span></span></span>
@@ -478,8 +478,6 @@ arguments will change as we add additional features.</p>
 <span class="r-in"><span>  weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using 2 cores with backend multisession</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: foreach</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: foreach</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sim_id method          parameter analysis cut_date   n event   estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      1    WLR FH(rho=0, gamma=0)        1       24 400   243  -8.214034</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      1    WLR FH(rho=0, gamma=0)        2       32 400   304 -17.213140</span>
