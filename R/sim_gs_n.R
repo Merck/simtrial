@@ -1,4 +1,4 @@
-#  Copyright (c) 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  Copyright (c) 2025 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
 #  All rights reserved.
 #
 #  This file is part of the simtrial program.
@@ -38,13 +38,22 @@
 #'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
 #'   examples.
+#' @param original_design A design object from the gsDesign2 package, which is required when users
+#' want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.
+#' @param ia_alpha_spending Spend alpha at interim analysis based on
+#'   - `"min_planned_actual"`: the minimal of planned and actual alpha spending.
+#'   - `"actual"`: the actual alpha spending.
+#' @param fa_alpha_spending If targeted final event count is not achieved (under-running at final analysis),
+#' specify how to do final spending. Generally, this should be specified in analysis plan.
+#'   - `"info_frac"` = spend final alpha according to final information fraction
+#'   - `"full_alpha"` = spend full alpha at final analysis.
 #' @param ... Arguments passed to the test function(s) provided by the argument
 #'   `test`.
 #'
 #' @return A data frame summarizing the simulation ID, analysis date,
 #'   z statistics or p-values.
 #'
-#' @importFrom data.table rbindlist setDF
+#' @importFrom data.table as.data.table dcast rbindlist setcolorder setDF setnames
 #'
 #' @export
 #'
@@ -98,7 +107,7 @@
 #' # IA2
 #' # The 2nd interim analysis will occur at the later of the following 3 conditions:
 #' # - At least 32 months have passed since the start of the study.
-#' # - At least 250 events have occurred.
+#' # - At least 200 events have occurred.
 #' # - At least 10 months after IA1.
 #' # However, if events accumulation is slow, we will wait for a maximum of 34 months.
 #' ia2_cut <- create_cut(
@@ -111,7 +120,7 @@
 #' # FA
 #' # The final analysis will occur at the later of the following 2 conditions:
 #' # - At least 45 months have passed since the start of the study.
-#' # - At least 300 events have occurred.
+#' # - At least 350 events have occurred.
 #' fa_cut <- create_cut(
 #'   planned_calendar_time = 45,
 #'   target_event_overall = 350
@@ -128,6 +137,7 @@
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #'
+#' \donttest{
 #' # Example 2: weighted logrank test by FH(0, 0.5) at all 3 analyses
 #' sim_gs_n(
 #'   n_sim = 3,
@@ -182,6 +192,7 @@
 #'   cut = list(ia1 = ia1_cut, ia2 = ia2_cut, fa = fa_cut),
 #'   ms_time = 10
 #' )
+#' }
 #'
 #' # Warning: this example will be executable when we add info info0 to the milestone test
 #' # Example 7: WLR with fh(0, 0.5) test at IA1,
@@ -229,6 +240,7 @@
 #' )
 #' }
 #'
+#' \donttest{
 #' # Example 9: regular logrank test at all 3 analyses in parallel
 #' plan("multisession", workers = 2)
 #' sim_gs_n(
@@ -241,6 +253,41 @@
 #'   weight = fh(rho = 0, gamma = 0)
 #' )
 #' plan("sequential")
+#'
+#' # Example 10: group sequential design with updated bounds -- efficacy only
+#' x <- gs_design_ahr(analysis_time = 1:3*12) |> to_integer()
+#' sim_gs_n(
+#'   n_sim = 1,
+#'   sample_size = max(x$analysis$n),
+#'   enroll_rate = x$enroll_rate,
+#'   fail_rate = x$fail_rate,
+#'   test = wlr,
+#'   cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+#'              ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+#'              fa = create_cut(planned_calendar_time = x$analysis$time[3])),
+#'   weight = fh(rho = 0, gamma = 0),
+#'   original_design = x
+#' )
+#'
+#' # Example 11: group sequential design with updated bounds -- efficacy & futility
+#' x <- gs_design_ahr(
+#'  alpha = 0.025, beta = 0.1, analysis_time = 1:3*12,
+#'  upper = gs_spending_bound, upar = list(sf = gsDesign::sfLDOF, total_spend = 0.025),
+#'  lower = gs_spending_bound, lpar = list(sf = gsDesign::sfHSD, param = -4, total_spend = 0.01),
+#'  test_upper = c(FALSE, TRUE, TRUE), test_lower = c(TRUE, FALSE, FALSE)) |> to_integer()
+#' sim_gs_n(
+#'   n_sim = 1,
+#'   sample_size = max(x$analysis$n),
+#'   enroll_rate = x$enroll_rate,
+#'   fail_rate = x$fail_rate,
+#'   test = wlr,
+#'   cut = list(ia1 = create_cut(planned_calendar_time = x$analysis$time[1]),
+#'              ia2 = create_cut(planned_calendar_time = x$analysis$time[2]),
+#'              fa = create_cut(planned_calendar_time = x$analysis$time[3])),
+#'   weight = fh(rho = 0, gamma = 0),
+#'   original_design = x
+#' )
+#' }
 sim_gs_n <- function(
     n_sim = 1000,
     sample_size = 500,
@@ -256,9 +303,21 @@ sim_gs_n <- function(
     block = rep(c("experimental", "control"), 2),
     test = wlr,
     cut = NULL,
+    original_design = NULL,
+    ia_alpha_spending = c("min_planned_actual", "actual"),
+    fa_alpha_spending = c("full_alpha", "info_frac"),
     ...) {
   # Input checking
   # TODO
+  ia_alpha_spending <- match.arg(ia_alpha_spending)
+  fa_alpha_spending <- match.arg(fa_alpha_spending)
+
+  additional_args <- list(...)
+  weight <- if("weight" %in% names(additional_args)) {additional_args$weight}
+  is_logrank <- identical(test, wlr) && identical(weight, fh(rho = 0, gamma = 0))
+  if (!is.null(original_design) && !is_logrank){
+    message("The updated bound is currently only provided for logrank test.")
+  }
 
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
@@ -276,7 +335,6 @@ sim_gs_n <- function(
   ans <- foreach::foreach(
     sim_id = seq_len(n_sim),
     test = replicate(n=n_sim, expr=test, simplify = FALSE),
-    .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
@@ -294,6 +352,7 @@ sim_gs_n <- function(
     n_analysis <- length(cut)
     cut_date <- rep(-100, n_analysis)
     ans_1sim <- NULL
+    event_tbl <- NULL
     # Organize tests for each cutting
     if (is.function(test)) {
       test_single <- test
@@ -331,11 +390,69 @@ sim_gs_n <- function(
       ans_1sim_list <- list(ans_1sim, ans_1sim_new)
       ans_1sim <- rbindlist(ans_1sim_list, use.names = TRUE, fill = TRUE)
 
+      # Get event counts per piecewise interval
+      if (!is.null(original_design) && is_logrank){
+        # Get the study duration
+        study_duration <- max(original_design$analysis$time)
+
+        # Get the change point of the piecewise HR, ended by study duration
+        fr_chg_pt <- pmin(cumsum(original_design$fail_rate$duration), study_duration)
+        pw_event <- sapply(fr_chg_pt,
+                           function(threshold) {simu_data_cut |> subset(tte <= threshold & event == 1) |> nrow()})
+        event_tbl_new <- data.frame(analysis = rep(i_analysis, length(pw_event)),
+                                    event = diff(c(0, pw_event)))
+        event_tbl <- rbind(event_tbl, event_tbl_new)
+      }
+    }
+
+    # Add planned and updated bounds
+    if (!is.null(original_design) && is_logrank){
+      # Add planned bounds
+      planned_bounds <- as.data.table(original_design$bound)
+      planned_bounds <- dcast(planned_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
+      setnames(planned_bounds, c("analysis", "planned_lower_bound", "planned_upper_bound"))
+      # workaround for the fact that merge() moves the "by" column to be first
+      final_column_order <- union(colnames(ans_1sim), colnames(planned_bounds))
+      ans_1sim <- merge(ans_1sim, planned_bounds, all.x = TRUE, sort = FALSE)
+      setcolorder(ans_1sim, final_column_order)
+
+      # Calculate ustime and lstime
+      obs_event <- with(event_tbl, tapply(event, analysis, sum, simplify = TRUE))
+      obs_event <- as.numeric(obs_event)
+      plan_event <- original_design$analysis$event
+      if (ia_alpha_spending == "actual" && fa_alpha_spending == "info_frac"){
+        ustime <- obs_event / plan_event[n_analysis]
+      } else if (ia_alpha_spending == "actual" && fa_alpha_spending == "full_alpha"){
+        ustime <- obs_event / last(plan_event)
+        ustime[n_analysis] <- 1
+      } else if (ia_alpha_spending == "min_planned_actual" && fa_alpha_spending == "info_frac") {
+        ustime <- pmin(obs_event, plan_event) / plan_event[n_analysis]
+      } else {
+        ustime <- pmin(obs_event, plan_event) / plan_event[n_analysis]
+        ustime[n_analysis] <- 1
+      }
+      lstime <- ustime
+
+      # Add updated bounds
+      updated_design <- gsDesign2::gs_update_ahr(x = original_design,
+                                                 alpha = original_design$input$alpha,
+                                                 ustime = ustime,
+                                                 lstime = if(all(original_design$bound$bound == "upper")){NULL}else{lstime},
+                                                 event_tbl = event_tbl)
+
+      updated_bounds <- as.data.table(updated_design$bound)
+      updated_bounds <- dcast(updated_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
+      setnames(updated_bounds, c("analysis", "updated_lower_bound", "updated_upper_bound"))
+      # workaround for the fact that merge() moves the "by" column to be first
+      final_column_order <- union(colnames(ans_1sim), colnames(updated_bounds))
+      ans_1sim <- merge(ans_1sim, updated_bounds, all.x = TRUE, sort = FALSE)
+      setcolorder(ans_1sim, final_column_order)
     }
 
     ans_1sim
   }
 
+  ans <- rbindlist(ans)
   setDF(ans)
 
   test_method <- ans$method[ans$sim_id == 1]

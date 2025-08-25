@@ -1,4 +1,4 @@
-#  Copyright (c) 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+#  Copyright (c) 2025 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
 #  All rights reserved.
 #
 #  This file is part of the simtrial program.
@@ -70,6 +70,7 @@
 #' @importFrom doFuture "%dofuture%"
 #' @importFrom future nbrOfWorkers plan
 #' @importFrom methods is
+#' @importFrom survival strata Surv
 #'
 #' @export
 #'
@@ -251,7 +252,6 @@ sim_fixed_n <- function(
   # parallel computation start ----
   results <- foreach::foreach(
     i = seq_len(n_sim),
-    .combine = "rbind",
     .errorhandling = "stop",
     .options.future = list(seed = TRUE)
   ) %dofuture% {
@@ -371,6 +371,7 @@ sim_fixed_n <- function(
     results_sim[, sim := i]
     results_sim
   }
+  results <- rbindlist(results)
   setDF(results)
   return(results)
 }
@@ -405,12 +406,12 @@ doAnalysis <- function(d, rho_gamma, n_stratum) {
 
   event <- sum(d$event)
   if (n_stratum > 1) {
-    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental") + survival::strata(stratum), data = d)$coefficients
+    ln_hr <- survival::coxph(Surv(tte, event) ~ (treatment == "experimental") + strata(stratum), data = d)$coefficients
     ln_hr <- as.numeric(ln_hr)
     ans$event <- rep(event, nrow(rho_gamma))
     ans$ln_hr <- rep(ln_hr, nrow(rho_gamma))
   } else {
-    ln_hr <- survival::coxph(survival::Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
+    ln_hr <- survival::coxph(Surv(tte, event) ~ (treatment == "experimental"), data = d)$coefficients
     ln_hr <- as.numeric(ln_hr)
     ans$event <- event
     ans$ln_hr <- ln_hr

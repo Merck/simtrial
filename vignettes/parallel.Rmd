@@ -31,7 +31,7 @@ The function `sim_fixed_n()` provides a simulation workflow for a two-arm trial 
 We can vary the parameters of the trial using different functions outlined in the documentation.
 This function now provides users the opportunity to implement their simulations using the previously described parallel backends to accelerate the computation.
 
-The function `sim_gs_n()` which simulates group sequential designs under a fixed sample size also supports the use of user-defined backends to parallelize simulations in a similar manner. 
+The function `sim_gs_n()` which simulates group sequential designs under a fixed sample size also supports the use of user-defined backends to parallelize simulations in a similar manner.
 
 ## Background
 
@@ -90,7 +90,12 @@ Naively, we can execute these simulations sequentially.
 We set the target of a total enrollment of 3000 individuals with the trial ending after observing 700 events.
 We use `timing_type = 2` to return the correct trial duration.
 
+*Note:* We manually set the number of threads to be used by {data.table} operations to 1.
+This is purely for the sake of comparing the runtime to the parallel run performed later in this vignette.
+If you were running simulations sequentially, you would want {data.table} to take advantage of parallel processing.
+
 ```{r confirm-sequential}
+data.table::setDTthreads(threads = 1)
 set.seed(1)
 
 n_sim <- 200
@@ -134,21 +139,33 @@ As you may have anticipated, we see that for a lower number of events, enrollmen
 over that of enrollment 1, which is
 `r sprintf("%.1f", mean(seq_result1$duration))`.
 
-We also see that there is a distinction between the duration of the study under the proposed enrollment strategies.
-
-```{r sequential-display-results, eval=FALSE, echo=FALSE}
-seq_result1 |>
-  head(5) |>
-  kable(digits = 2)
-seq_result2 |>
-  head(5) |>
-  kable(digits = 2)
+```{r sequential-display-duration, echo=FALSE, fig.height=4, fig.width=6, fig.align="center"}
+duration_min <- min(seq_result1$duration, seq_result2$duration)
+duration_max <- max(seq_result1$duration, seq_result2$duration)
+hist(
+  x = seq_result1$duration,
+  col = palette()[4],
+  main = "Duration by enrollment strategy",
+  xlab = "Duration",
+  xlim = c(duration_min, duration_max),
+  ylab = "Number of simulations",
+  ylim = c(0, n_sim / 3)
+)
+hist(seq_result2$duration, col = palette()[7], add = TRUE)
+abline(v = mean(seq_result1$duration), lwd = 2, lty = "dashed")
+abline(v = mean(seq_result2$duration), lwd = 2, lty = "dashed")
+legend(
+  "top",
+  legend = c("Enrollment 1", "Enrollment 2"),
+  col = c(palette()[4], palette()[7]),
+  lty = c(1, 1)
+)
 ```
 
 ## Setting up a parallel backend
 
-If we instead, wanted to run more simulations for each enrollment, we can expect the time to run our simulations to increase.
-As we vary and increase the number of parameter inputs that we consider, we expect the simulation process to continue to increase in duration.
+If we increased the number of simulations for each enrollment, we can expect the time to run our simulations to increase.
+Furthermore, as we vary and increase the number of parameter inputs that we consider, we expect the simulation process to continue to increase in duration.
 To help combat the growing computational burden, we can run these simulations in parallel using the `multisession` backend available to us in `plan()`.
 
 We can adjust the default number of cores with the function `parallelly::availableCores()`.
@@ -163,12 +180,21 @@ plan(multisession, workers = 2)
 
 Once we have configured the backend details, we can execute the same code as before to automatically distribute the `n_sim` simulations across the available cores.
 
+*Note:* We do not have to worry about setting `data.table::setDTthreads(threads = 1)` for the parallel processes spawned by `sim_fixed_n()` below because {data.table} "automatically switches to single threaded mode upon fork" (from `?data.table::setDTthreads`).
+[^parallel-dt-caveats]
+
+[^parallel-dt-caveats]:
+This can get complex quick.
+The behavior of parallel computing is affected by your operating system (e.g. Windows) and editor (e.g. RStudio).
+If you need to perform accurate benchmarking, you will need to do your own due diligence.
+We recommend adding `data.table::setDTthreads(threads = 1)` to your `~/.Rprofile` to have the best chance of preventing {data.table} multithreading from affecting your benchmarking results.
+
 ```{r confirm-multisession}
 set.seed(1)
 
-start_sequential <- proc.time()
+start_parallel <- proc.time()
 
-seq_result1m <- sim_fixed_n(
+par_result1 <- sim_fixed_n(
   n_sim = n_sim,
   sample_size = 3000,
   target_event = 700,
@@ -176,7 +202,7 @@ seq_result1m <- sim_fixed_n(
   timing_type = 2 # Time until targeted event count achieved
 )
 
-seq_result2m <- sim_fixed_n(
+par_result2 <- sim_fixed_n(
   n_sim = n_sim,
   sample_size = 3000,
   target_event = 700,
@@ -184,14 +210,14 @@ seq_result2m <- sim_fixed_n(
   timing_type = 2 # Time until targeted event count achieved
 )
 
-duration_sequential <- proc.time() - start_sequential
+duration_parallel <- proc.time() - start_parallel
 ```
 
 ```{r time-parallel}
-print(duration_sequential)
+print(duration_parallel)
 ```
 
-We can see that the CPU time is `r sprintf("%.2f", duration_sequential[[1]])` and the elapsed time is `r sprintf("%.2f", duration_sequential[[3]])` seconds.
+We can see that the CPU time is `r sprintf("%.2f", duration_parallel[[1]])` and the elapsed time is `r sprintf("%.2f", duration_parallel[[3]])` seconds.
 The user time here appears to be drastically reduced because of how R keeps track of time; the time used by the parent process and not the children processes are reported for the user time.
 Therefore, we compare the elapsed time to see the real-world impact of the parallelization.
 
@@ -203,9 +229,9 @@ plan(sequential)
 
 We can also verify that the simulation results are identical because of setting a seed and that the backend type will not affect the results. Below, it is clear that the results from our sequential and multisession backends match completely.
 
-```{r compare-results, eval=FALSE}
-sum(seq_result1 != seq_result1m)
-sum(seq_result2 != seq_result2m)
+```{r compare-results}
+all.equal(seq_result1, par_result1)
+all.equal(seq_result2, par_result2)
 ```
 
 *Note:* A parallel implementation may not always be faster than a serial implementation.
@@ -258,7 +284,7 @@ set.seed(1)
 
 enroll_rates <- list(enroll_rate1, enroll_rate2)
 
-seq_resultc <- foreach::foreach(
+nested_result <- foreach::foreach(
   i = 1:2,
   .combine = "list",
   .options.future = list(seed = TRUE)

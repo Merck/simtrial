@@ -14,14 +14,14 @@ template:
     navbar-light-active-color: "#fff"
     dropdown-link-hover-color: "#fff"
     dropdown-link-hover-bg: "#00857c"
-  math-rendering: "katex"
+  math-rendering: "mathjax"
 
 footer:
   structure:
     left: [developed_by, built_with, legal]
     right: [blank]
   components:
-    legal: "<br>Copyright &copy; 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
+    legal: "<br>Copyright &copy; 2025 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"
 
 reference:
@@ -93,8 +93,12 @@ articles:
   - rmst
 - title: "Simulate fixed/group sequential designs"
   contents:
+  - sim_fixed_design_simple
+  - sim_gs_design_simple
+  - sim_fixed_design_custom
   - sim_gs_design_custom
   - parallel
+  - discrepancy-between-simtrial-and-survival
 - title: "NPH distribution approximations"
   contents:
   - arbitrary-hazard

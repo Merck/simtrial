@@ -1,11 +1,11 @@
 Package: simtrial
 Type: Package
 Title: Clinical Trial Simulation
-Version: 0.4.2
+Version: 1.0.0
 Authors@R: c(
     person("Keaven", "Anderson", email = "keaven_anderson@merck.com", role = c("aut")),
-    person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role =  c("ctb","cre")),
-    person("John", "Blischak", role = c("ctb")),
+    person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role =  c("aut","cre")),
+    person("John", "Blischak", role = c("aut")),
     person("Nan", "Xiao", role = c("ctb")),
     person("Yilong", "Zhang", role =  c("aut")),
     person("Jianxiao", "Yang", role = c("ctb")),
@@ -18,6 +18,7 @@ Authors@R: c(
     person("Heng", "Zhou", role = c("ctb")),
     person("Amin", "Shirazi", role = c("ctb")),
     person("Cole", "Manschot", role = c("ctb")),
+    person("Larry", "Leon", role = c("ctb")),
     person("Merck & Co., Inc., Rahway, NJ, USA and its affiliates", role = "cph")
     )
 Description: Provides some basic routines for simulating a
@@ -53,15 +54,17 @@ Suggests:
     dplyr,
     ggplot2,
     gsDesign,
-    gsDesign2 (>= 1.1.3),
+    gsDesign2 (>= 1.1.4),
     gt,
     knitr,
     rmarkdown,
     survMisc,
     survRM2,
-    testthat,
+    testthat (>= 3.0.0),
+    tibble,
     tidyr
 LinkingTo:
     Rcpp
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Config/testthat/edition: 3

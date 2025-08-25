@@ -20,17 +20,17 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com} [contributor]
+\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com}
 
 Authors:
 \itemize{
   \item Keaven Anderson \email{keaven_anderson@merck.com}
+  \item John Blischak
   \item Yilong Zhang
 }
 
 Other contributors:
 \itemize{
-  \item John Blischak [contributor]
   \item Nan Xiao [contributor]
   \item Jianxiao Yang [contributor]
   \item Lili Ling [contributor]
@@ -42,6 +42,7 @@ Other contributors:
   \item Heng Zhou [contributor]
   \item Amin Shirazi [contributor]
   \item Cole Manschot [contributor]
+  \item Larry Leon [contributor]
   \item Merck & Co., Inc., Rahway, NJ, USA and its affiliates [copyright holder]
 }
 

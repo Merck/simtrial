@@ -23,7 +23,9 @@ If length(n) > 1, the length is taken to be the number required.}
 \item{stratum}{A data frame with stratum specified in \code{stratum},
 probability (incidence) of each stratum in \code{p}.}
 
-\item{block}{Vector of treatments to be included in each block.}
+\item{block}{Vector of treatments to be included in each block. Also used to
+calculate the attribute "ratio" (for more details see the section Value
+below).}
 
 \item{enroll_rate}{Enrollment rates; see details and examples.}
 
@@ -36,17 +38,21 @@ note that treatments need to be the same as input in block.}
 \value{
 A data frame with the following variables for each observation:
 \itemize{
-\item \code{stratum}.
+\item \code{stratum}: Stratum for the observation.
 \item \code{enroll_time}: Enrollment time for the observation.
-\item \code{Treatment}: Treatment group; this will be one of the values
+\item \code{treatment}: Treatment group; this will be one of the values
 in the input \code{block}.
 \item \code{fail_time}: Failure time generated using \code{\link[=rpwexp]{rpwexp()}}.
 \item \code{dropout_time}: Dropout time generated using \code{\link[=rpwexp]{rpwexp()}}.
-\item \code{cte}: Calendar time of enrollment plot the minimum of
+\item \code{cte}: Calendar time of enrollment plus the minimum of
 failure time and dropout time.
 \item \code{fail}: Indicator that \code{cte} was set using failure time;
 i.e., 1 is a failure, 0 is a dropout.
 }
+
+The data frame also has the attribute "ratio", which is calculated as the
+number of "experimental" treatments divided by the number of "control"
+treatments from the input argument \code{block}.
 }
 \description{
 \code{sim_pw_surv()} enables simulation of a clinical trial with
