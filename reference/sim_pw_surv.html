@@ -154,27 +154,27 @@ treatments from the input argument <code>block</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 1</span></span></span>
 <span class="r-in"><span><span class="fu">sim_pw_surv</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment  fail_time dropout_time        cte fail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All  0.04593469 experimental  0.3408276     98.58106  0.3867623    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All  0.04842350      control 10.6974702    126.02694 10.7458937    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All  0.14582853      control 12.2867886    222.00638 12.4326171    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All  0.36172506 experimental 48.4943098   3940.42836 48.8560349    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All  0.37138895      control  5.5165464    747.72368  5.8879353    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All  0.43100250      control 46.7612306   1035.36115 47.1922331    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All  0.50269713 experimental  4.6297940    591.70021  5.1324911    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All  0.64269364 experimental 25.3045387   1074.12731 25.9472323    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All  0.77982087      control 12.3506497    280.66035 13.1304706    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All  0.79589330 experimental  8.2785049    460.90846  9.0743982    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All  0.81015489      control 27.5026277    159.48258 28.3127826    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All  0.89218614 experimental  1.6351292    480.78425  2.5273153    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All  1.00490722      control 24.6939029   2312.83176 25.6988101    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All  1.11772985      control  2.0823743    195.25467  3.2001042    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All  1.40185144 experimental 19.0080405     80.18976 20.4098919    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All  1.44496111 experimental  0.7551894    278.42173  2.2001505    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All  1.68591991      control  2.5583299    204.01239  4.2442498    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All  1.76044835 experimental 32.7148660   1376.63546 34.4753143    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All  1.94917066 experimental  0.1472751    176.17803  2.0964457    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All  1.98601442      control 10.4512454   2664.66156 12.4372598    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    stratum enroll_time    treatment  fail_time dropout_time       cte fail</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      All  0.02142839 experimental  0.3408276     98.58106  0.362256    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      All  0.02391720      control 10.6974702    126.02694 10.721387    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      All  0.12132222      control 12.2867886    222.00638 12.408111    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      All  0.33721875 experimental 48.4943098   3940.42836 48.831529    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      All  0.34688264      control  5.5165464    747.72368  5.863429    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      All  0.40649620      control 46.7612306   1035.36115 47.167727    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      All  0.47819083 experimental  4.6297940    591.70021  5.107985    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      All  0.61818734 experimental 25.3045387   1074.12731 25.922726    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      All  0.75531457      control 12.3506497    280.66035 13.105964    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     All  0.77138700 experimental  8.2785049    460.90846  9.049892    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     All  0.78564859      control 27.5026277    159.48258 28.288276    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     All  0.86767983 experimental  1.6351292    480.78425  2.502809    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     All  0.98040092      control 24.6939029   2312.83176 25.674304    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     All  1.09322355      control  2.0823743    195.25467  3.175598    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     All  1.37734513 experimental 19.0080405     80.18976 20.385386    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     All  1.42045481 experimental  0.7551894    278.42173  2.175644    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     All  1.66141361      control  2.5583299    204.01239  4.219743    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     All  1.73594205 experimental 32.7148660   1376.63546 34.450808    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19     All  1.92466435 experimental  0.1472751    176.17803  2.071939    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20     All  1.96150812      control 10.4512454   2664.66156 12.412754    1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># 3:1 randomization</span></span></span>

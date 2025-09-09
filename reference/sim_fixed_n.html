@@ -297,6 +297,1029 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49 Max(planned duration, event cut) 75.17856  10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 50    Max(min follow-up, event cut) 76.94235  10</span>
 <span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 5: Stratified design with two strata</span></span></span>
+<span class="r-in"><span><span class="fu">sim_fixed_n</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  n_sim <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">500</span>,</span></span>
+<span class="r-in"><span>  target_event <span class="op">=</span> <span class="fl">350</span>,</span></span>
+<span class="r-in"><span>  stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span>, <span class="st">"Biomarker-negative"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                       p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  enroll_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker positive"</span>, <span class="st">"Biomarker negative"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                           duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">12</span><span class="op">)</span>, rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">250</span> <span class="op">/</span> <span class="fl">12</span>, <span class="fl">250</span> <span class="op">/</span> <span class="fl">12</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fail_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Biomarker-negative"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="cn">Inf</span>, <span class="fl">3</span>, <span class="cn">Inf</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         fail_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">12</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.6</span>, <span class="fl">1</span>, <span class="fl">0.7</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         dropout_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  total_duration <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>  block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"experimental"</span>, <span class="st">"control"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  timing_type <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  rho_gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Backend uses sequential processing.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     method          parameter    estimate       se         z event       ln_hr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      WLR FH(rho=0, gamma=0) -23.0217533 8.752762 2.6302274   310 -0.30029344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      WLR FH(rho=0, gamma=0) -28.3774965 9.310166 3.0480120   350 -0.32682864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      WLR FH(rho=0, gamma=0) -23.9658317 8.782125 2.7289330   312 -0.31062740</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      WLR FH(rho=0, gamma=0) -28.3774965 9.310166 3.0480120   350 -0.32682864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      WLR FH(rho=0, gamma=0) -28.3774965 9.310166 3.0480120   350 -0.32682864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      WLR FH(rho=0, gamma=0) -28.0378878 9.106595 3.0788551   341 -0.33645614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      WLR FH(rho=0, gamma=0) -27.8651365 9.215376 3.0237657   350 -0.32623754</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      WLR FH(rho=0, gamma=0) -29.4918973 9.128929 3.2305978   343 -0.35213216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      WLR FH(rho=0, gamma=0) -27.8651365 9.215376 3.0237657   350 -0.32623754</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     WLR FH(rho=0, gamma=0) -27.8651365 9.215376 3.0237657   350 -0.32623754</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     WLR FH(rho=0, gamma=0) -19.9895259 8.582706 2.3290471   299 -0.27024389</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     WLR FH(rho=0, gamma=0) -28.6984044 9.269404 3.0960355   350 -0.33262732</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     WLR FH(rho=0, gamma=0) -22.9794888 8.798074 2.6118772   314 -0.29572618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     WLR FH(rho=0, gamma=0) -28.6984044 9.269404 3.0960355   350 -0.33262732</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     WLR FH(rho=0, gamma=0) -28.6984044 9.269404 3.0960355   350 -0.33262732</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     WLR FH(rho=0, gamma=0) -15.5450643 8.594257 1.8087735   300 -0.21024615</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     WLR FH(rho=0, gamma=0) -20.9736871 9.267135 2.2632333   350 -0.24370326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     WLR FH(rho=0, gamma=0) -14.4459088 8.566737 1.6862790   298 -0.19661125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19     WLR FH(rho=0, gamma=0) -20.9736871 9.267135 2.2632333   350 -0.24370326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20     WLR FH(rho=0, gamma=0) -20.9736871 9.267135 2.2632333   350 -0.24370326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21     WLR FH(rho=0, gamma=0) -35.7298623 8.956037 3.9894724   327 -0.44296572</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22     WLR FH(rho=0, gamma=0) -36.7020825 9.254444 3.9658873   350 -0.42531116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23     WLR FH(rho=0, gamma=0) -33.0845277 8.779541 3.7683664   314 -0.42699651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24     WLR FH(rho=0, gamma=0) -36.7020825 9.254444 3.9658873   350 -0.42531116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25     WLR FH(rho=0, gamma=0) -36.7020825 9.254444 3.9658873   350 -0.42531116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26     WLR FH(rho=0, gamma=0) -17.8702596 8.406896 2.1256668   290 -0.25207459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27     WLR FH(rho=0, gamma=0) -23.6940561 9.255954 2.5598719   350 -0.27574411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28     WLR FH(rho=0, gamma=0) -19.0565166 8.522547 2.2360118   298 -0.26159419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29     WLR FH(rho=0, gamma=0) -23.6940561 9.255954 2.5598719   350 -0.27574411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30     WLR FH(rho=0, gamma=0) -23.6940561 9.255954 2.5598719   350 -0.27574411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31     WLR FH(rho=0, gamma=0)  -7.0509413 9.054989 0.7786803   330 -0.08604742</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32     WLR FH(rho=0, gamma=0) -11.8554453 9.293781 1.2756321   350 -0.13742953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33     WLR FH(rho=0, gamma=0)  -6.5424439 8.878172 0.7369134   317 -0.08307238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34     WLR FH(rho=0, gamma=0) -11.8554453 9.293781 1.2756321   350 -0.13742953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35     WLR FH(rho=0, gamma=0) -11.8554453 9.293781 1.2756321   350 -0.13742953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36     WLR FH(rho=0, gamma=0) -34.8234744 8.872071 3.9250672   323 -0.43866266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37     WLR FH(rho=0, gamma=0) -34.7614655 9.230537 3.7659201   350 -0.40440234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38     WLR FH(rho=0, gamma=0) -34.6324995 9.004425 3.8461644   333 -0.42332034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39     WLR FH(rho=0, gamma=0) -34.7614655 9.230537 3.7659201   350 -0.40440234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40     WLR FH(rho=0, gamma=0) -34.7614655 9.230537 3.7659201   350 -0.40440234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41     WLR FH(rho=0, gamma=0) -30.7475093 8.820932 3.4857440   317 -0.39446809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42     WLR FH(rho=0, gamma=0) -33.5914493 9.255431 3.6293770   350 -0.39043498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43     WLR FH(rho=0, gamma=0) -30.0602424 8.778702 3.4242240   314 -0.38934144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44     WLR FH(rho=0, gamma=0) -33.5914493 9.255431 3.6293770   350 -0.39043498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45     WLR FH(rho=0, gamma=0) -33.5914493 9.255431 3.6293770   350 -0.39043498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46     WLR FH(rho=0, gamma=0) -27.3641388 8.796324 3.1108606   312 -0.35560770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47     WLR FH(rho=0, gamma=0) -31.5174359 9.281577 3.3956984   350 -0.36638432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48     WLR FH(rho=0, gamma=0) -23.0716170 8.627495 2.6741964   300 -0.31148253</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49     WLR FH(rho=0, gamma=0) -31.5174359 9.281577 3.3956984   350 -0.36638432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50     WLR FH(rho=0, gamma=0) -31.5174359 9.281577 3.3956984   350 -0.36638432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51     WLR FH(rho=0, gamma=0) -30.9110110 8.730481 3.5405852   311 -0.40528560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52     WLR FH(rho=0, gamma=0) -35.2405945 9.232274 3.8171086   350 -0.41168005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53     WLR FH(rho=0, gamma=0) -29.0115844 8.632358 3.3607947   304 -0.38895635</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54     WLR FH(rho=0, gamma=0) -35.2405945 9.232274 3.8171086   350 -0.41168005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55     WLR FH(rho=0, gamma=0) -35.2405945 9.232274 3.8171086   350 -0.41168005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56     WLR FH(rho=0, gamma=0) -48.1321495 8.975568 5.3625744   334 -0.59244381</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57     WLR FH(rho=0, gamma=0) -50.3345007 9.160127 5.4949564   350 -0.59276243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58     WLR FH(rho=0, gamma=0) -47.0829895 8.938771 5.2672775   331 -0.58452939</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59     WLR FH(rho=0, gamma=0) -50.3345007 9.160127 5.4949564   350 -0.59276243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60     WLR FH(rho=0, gamma=0) -50.3345007 9.160127 5.4949564   350 -0.59276243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61     WLR FH(rho=0, gamma=0) -43.3785589 9.052589 4.7918401   338 -0.52675920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62     WLR FH(rho=0, gamma=0) -42.3918526 9.196295 4.6096662   350 -0.49750894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63     WLR FH(rho=0, gamma=0) -40.8963942 8.928079 4.5806489   328 -0.51102684</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64     WLR FH(rho=0, gamma=0) -42.3918526 9.196295 4.6096662   350 -0.49750894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65     WLR FH(rho=0, gamma=0) -42.3918526 9.196295 4.6096662   350 -0.49750894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66     WLR FH(rho=0, gamma=0) -12.5335612 8.270098 1.5155274   275 -0.18303258</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67     WLR FH(rho=0, gamma=0) -25.7711264 9.287901 2.7746988   350 -0.29838922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68     WLR FH(rho=0, gamma=0) -21.3248269 8.962848 2.3792467   324 -0.26522039</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69     WLR FH(rho=0, gamma=0) -25.7711264 9.287901 2.7746988   350 -0.29838922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70     WLR FH(rho=0, gamma=0) -25.7711264 9.287901 2.7746988   350 -0.29838922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71     WLR FH(rho=0, gamma=0) -23.7379517 8.651410 2.7438247   304 -0.31632293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72     WLR FH(rho=0, gamma=0) -31.6025706 9.269531 3.4092955   350 -0.36635582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73     WLR FH(rho=0, gamma=0) -23.9287643 8.680196 2.7567079   306 -0.31670472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74     WLR FH(rho=0, gamma=0) -31.6025706 9.269531 3.4092955   350 -0.36635582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75     WLR FH(rho=0, gamma=0) -31.6025706 9.269531 3.4092955   350 -0.36635582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76     WLR FH(rho=0, gamma=0) -31.4735337 8.849698 3.5564529   318 -0.40052914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77     WLR FH(rho=0, gamma=0) -34.7754312 9.272737 3.7502876   350 -0.40214354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78     WLR FH(rho=0, gamma=0) -30.3728310 8.819829 3.4436985   316 -0.38907085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79     WLR FH(rho=0, gamma=0) -34.7754312 9.272737 3.7502876   350 -0.40214354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80     WLR FH(rho=0, gamma=0) -34.7754312 9.272737 3.7502876   350 -0.40214354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81     WLR FH(rho=0, gamma=0) -27.8521453 8.619937 3.2311308   303 -0.37311943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82     WLR FH(rho=0, gamma=0) -32.4552759 9.256665 3.5061522   350 -0.37629234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83     WLR FH(rho=0, gamma=0) -28.7017380 8.697853 3.2998645   308 -0.37761899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84     WLR FH(rho=0, gamma=0) -32.4552759 9.256665 3.5061522   350 -0.37629234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85     WLR FH(rho=0, gamma=0) -32.4552759 9.256665 3.5061522   350 -0.37629234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86     WLR FH(rho=0, gamma=0) -26.7882229 8.972136 2.9857129   327 -0.33405231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87     WLR FH(rho=0, gamma=0) -25.8232049 9.266517 2.7867219   350 -0.30097164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88     WLR FH(rho=0, gamma=0) -21.7179990 8.732339 2.4870771   308 -0.28592107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89     WLR FH(rho=0, gamma=0) -25.8232049 9.266517 2.7867219   350 -0.30097164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90     WLR FH(rho=0, gamma=0) -25.8232049 9.266517 2.7867219   350 -0.30097164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91     WLR FH(rho=0, gamma=0) -16.6543596 8.768618 1.8993141   311 -0.21624668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92     WLR FH(rho=0, gamma=0) -16.8725446 9.295078 1.8152127   350 -0.19475083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93     WLR FH(rho=0, gamma=0) -15.0244100 8.637306 1.7394787   302 -0.20102561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94     WLR FH(rho=0, gamma=0) -16.8725446 9.295078 1.8152127   350 -0.19475083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95     WLR FH(rho=0, gamma=0) -16.8725446 9.295078 1.8152127   350 -0.19475083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     WLR FH(rho=0, gamma=0) -16.2918506 8.721234 1.8680671   306 -0.21449591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     WLR FH(rho=0, gamma=0) -17.9933565 9.322070 1.9301889   350 -0.20706120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98     WLR FH(rho=0, gamma=0) -16.9317973 8.737864 1.9377502   307 -0.22211137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99     WLR FH(rho=0, gamma=0) -17.9933565 9.322070 1.9301889   350 -0.20706120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100    WLR FH(rho=0, gamma=0) -17.9933565 9.322070 1.9301889   350 -0.20706120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101    WLR FH(rho=0, gamma=0) -10.3222660 9.197303 1.1223144   339 -0.12209815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102    WLR FH(rho=0, gamma=0)  -9.8780180 9.337959 1.0578348   350 -0.11330337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103    WLR FH(rho=0, gamma=0) -10.9492989 9.209522 1.1889107   340 -0.12918058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104    WLR FH(rho=0, gamma=0)  -9.8780180 9.337959 1.0578348   350 -0.11330337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105    WLR FH(rho=0, gamma=0)  -9.8780180 9.337959 1.0578348   350 -0.11330337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106    WLR FH(rho=0, gamma=0) -32.5747303 8.786658 3.7072945   313 -0.42076185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107    WLR FH(rho=0, gamma=0) -35.0635997 9.270084 3.7824467   350 -0.40562808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108    WLR FH(rho=0, gamma=0) -31.8178125 8.561311 3.7164652   297 -0.43382629</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109    WLR FH(rho=0, gamma=0) -35.0635997 9.270084 3.7824467   350 -0.40562808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110    WLR FH(rho=0, gamma=0) -35.0635997 9.270084 3.7824467   350 -0.40562808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111    WLR FH(rho=0, gamma=0) -23.6761482 8.838287 2.6788165   318 -0.30253223</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112    WLR FH(rho=0, gamma=0) -29.9395274 9.248777 3.2371335   350 -0.34904631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113    WLR FH(rho=0, gamma=0) -23.3343687 8.783025 2.6567575   313 -0.30198262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114    WLR FH(rho=0, gamma=0) -29.9395274 9.248777 3.2371335   350 -0.34904631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115    WLR FH(rho=0, gamma=0) -29.9395274 9.248777 3.2371335   350 -0.34904631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116    WLR FH(rho=0, gamma=0) -36.8192707 8.749726 4.2080484   311 -0.48027125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117    WLR FH(rho=0, gamma=0) -39.7294708 9.221951 4.3081417   350 -0.46378294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118    WLR FH(rho=0, gamma=0) -35.9586301 8.739532 4.1144801   310 -0.47019131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119    WLR FH(rho=0, gamma=0) -39.7294708 9.221951 4.3081417   350 -0.46378294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120    WLR FH(rho=0, gamma=0) -39.7294708 9.221951 4.3081417   350 -0.46378294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121    WLR FH(rho=0, gamma=0) -21.4168275 8.697338 2.4624578   309 -0.28261292</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122    WLR FH(rho=0, gamma=0) -20.8402767 9.256274 2.2514757   350 -0.24256953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123    WLR FH(rho=0, gamma=0) -20.4934076 8.880617 2.3076558   323 -0.25921566</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124    WLR FH(rho=0, gamma=0) -20.8402767 9.256274 2.2514757   350 -0.24256953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125    WLR FH(rho=0, gamma=0) -20.8402767 9.256274 2.2514757   350 -0.24256953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126    WLR FH(rho=0, gamma=0) -33.9208613 8.812044 3.8493747   321 -0.43446252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127    WLR FH(rho=0, gamma=0) -38.7123697 9.189954 4.2124662   350 -0.45503180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128    WLR FH(rho=0, gamma=0) -32.7488326 8.778258 3.7306756   319 -0.42282777</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129    WLR FH(rho=0, gamma=0) -38.7123697 9.189954 4.2124662   350 -0.45503180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130    WLR FH(rho=0, gamma=0) -38.7123697 9.189954 4.2124662   350 -0.45503180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131    WLR FH(rho=0, gamma=0) -18.9542631 8.774471 2.1601602   313 -0.24548953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132    WLR FH(rho=0, gamma=0) -19.8637821 9.277379 2.1410984   350 -0.23012157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133    WLR FH(rho=0, gamma=0) -17.3763188 8.847982 1.9638737   318 -0.22132427</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134    WLR FH(rho=0, gamma=0) -19.8637821 9.277379 2.1410984   350 -0.23012157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135    WLR FH(rho=0, gamma=0) -19.8637821 9.277379 2.1410984   350 -0.23012157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136    WLR FH(rho=0, gamma=0) -16.7068083 8.785587 1.9016155   310 -0.21658268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137    WLR FH(rho=0, gamma=0) -17.0994488 9.332407 1.8322657   350 -0.19618393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138    WLR FH(rho=0, gamma=0) -17.6929966 8.855848 1.9978885   315 -0.22572172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139    WLR FH(rho=0, gamma=0) -17.0994488 9.332407 1.8322657   350 -0.19618393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140    WLR FH(rho=0, gamma=0) -17.0994488 9.332407 1.8322657   350 -0.19618393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141    WLR FH(rho=0, gamma=0) -42.3336521 9.010366 4.6983277   336 -0.51718957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142    WLR FH(rho=0, gamma=0) -40.3371501 9.186875 4.3907368   350 -0.47372737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143    WLR FH(rho=0, gamma=0) -41.6927465 8.841731 4.7154506   324 -0.52913913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144    WLR FH(rho=0, gamma=0) -40.3371501 9.186875 4.3907368   350 -0.47372737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145    WLR FH(rho=0, gamma=0) -40.3371501 9.186875 4.3907368   350 -0.47372737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146    WLR FH(rho=0, gamma=0) -19.4878321 8.581649 2.2708728   300 -0.26428285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147    WLR FH(rho=0, gamma=0) -26.7739246 9.297486 2.8796949   350 -0.30871866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148    WLR FH(rho=0, gamma=0) -22.0266202 8.770713 2.5113832   311 -0.28600656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149    WLR FH(rho=0, gamma=0) -26.7739246 9.297486 2.8796949   350 -0.30871866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150    WLR FH(rho=0, gamma=0) -26.7739246 9.297486 2.8796949   350 -0.30871866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151    WLR FH(rho=0, gamma=0)  -8.9493826 8.756184 1.0220642   308 -0.11668833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152    WLR FH(rho=0, gamma=0) -17.6073833 9.327134 1.8877592   350 -0.20232370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153    WLR FH(rho=0, gamma=0)  -7.9334211 8.712405 0.9105891   305 -0.10448944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154    WLR FH(rho=0, gamma=0) -17.6073833 9.327134 1.8877592   350 -0.20232370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155    WLR FH(rho=0, gamma=0) -17.6073833 9.327134 1.8877592   350 -0.20232370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156    WLR FH(rho=0, gamma=0) -17.7307987 8.544000 2.0752338   296 -0.24280771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157    WLR FH(rho=0, gamma=0) -27.0152820 9.253341 2.9195165   350 -0.31498273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158    WLR FH(rho=0, gamma=0) -22.3734300 8.691050 2.5743068   307 -0.29624047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159    WLR FH(rho=0, gamma=0) -27.0152820 9.253341 2.9195165   350 -0.31498273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160    WLR FH(rho=0, gamma=0) -27.0152820 9.253341 2.9195165   350 -0.31498273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161    WLR FH(rho=0, gamma=0) -32.8696136 8.733455 3.7636438   312 -0.42771575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162    WLR FH(rho=0, gamma=0) -37.5057092 9.213586 4.0706960   350 -0.43770216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163    WLR FH(rho=0, gamma=0) -31.0132488 8.657688 3.5821630   306 -0.41076403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164    WLR FH(rho=0, gamma=0) -37.5057092 9.213586 4.0706960   350 -0.43770216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165    WLR FH(rho=0, gamma=0) -37.5057092 9.213586 4.0706960   350 -0.43770216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166    WLR FH(rho=0, gamma=0) -33.6201811 8.820126 3.8117573   320 -0.43057178</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167    WLR FH(rho=0, gamma=0) -36.6146514 9.211397 3.9749291   350 -0.42909823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168    WLR FH(rho=0, gamma=0) -31.4428565 8.726440 3.6031713   313 -0.41136245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169    WLR FH(rho=0, gamma=0) -36.6146514 9.211397 3.9749291   350 -0.42909823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170    WLR FH(rho=0, gamma=0) -36.6146514 9.211397 3.9749291   350 -0.42909823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171    WLR FH(rho=0, gamma=0) -22.3080122 8.777709 2.5414390   312 -0.28985841</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172    WLR FH(rho=0, gamma=0) -29.0214100 9.315037 3.1155442   350 -0.33437028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173    WLR FH(rho=0, gamma=0) -22.7393646 8.761924 2.5952480   310 -0.29661595</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174    WLR FH(rho=0, gamma=0) -29.0214100 9.315037 3.1155442   350 -0.33437028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175    WLR FH(rho=0, gamma=0) -29.0214100 9.315037 3.1155442   350 -0.33437028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176    WLR FH(rho=0, gamma=0) -30.5296970 9.054633 3.3717210   332 -0.37017877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177    WLR FH(rho=0, gamma=0) -35.3351810 9.287386 3.8046422   350 -0.40703285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178    WLR FH(rho=0, gamma=0) -25.5615987 8.507535 3.0045834   294 -0.35127341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179    WLR FH(rho=0, gamma=0) -35.3351810 9.287386 3.8046422   350 -0.40703285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180    WLR FH(rho=0, gamma=0) -35.3351810 9.287386 3.8046422   350 -0.40703285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181    WLR FH(rho=0, gamma=0) -32.0886727 8.799964 3.6464551   315 -0.41235825</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182    WLR FH(rho=0, gamma=0) -38.8362794 9.248536 4.1991813   350 -0.45084618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183    WLR FH(rho=0, gamma=0) -28.3268145 8.621840 3.2854719   302 -0.37925699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184    WLR FH(rho=0, gamma=0) -38.8362794 9.248536 4.1991813   350 -0.45084618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185    WLR FH(rho=0, gamma=0) -38.8362794 9.248536 4.1991813   350 -0.45084618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186    WLR FH(rho=0, gamma=0) -36.5715225 8.884521 4.1163188   321 -0.46286662</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187    WLR FH(rho=0, gamma=0) -37.2892180 9.249808 4.0313505   350 -0.43341309</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188    WLR FH(rho=0, gamma=0) -33.2374803 8.677885 3.8301363   305 -0.44166833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189    WLR FH(rho=0, gamma=0) -37.2892180 9.249808 4.0313505   350 -0.43341309</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190    WLR FH(rho=0, gamma=0) -37.2892180 9.249808 4.0313505   350 -0.43341309</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191    WLR FH(rho=0, gamma=0) -12.4186226 8.743398 1.4203428   309 -0.16241111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192    WLR FH(rho=0, gamma=0) -12.7622574 9.302922 1.3718548   350 -0.14735013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193    WLR FH(rho=0, gamma=0) -12.4266822 8.743426 1.4212601   309 -0.16251495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194    WLR FH(rho=0, gamma=0) -12.7622574 9.302922 1.3718548   350 -0.14735013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195    WLR FH(rho=0, gamma=0) -12.7622574 9.302922 1.3718548   350 -0.14735013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196    WLR FH(rho=0, gamma=0) -15.5849030 8.585032 1.8153576   299 -0.21109104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197    WLR FH(rho=0, gamma=0) -18.7307870 9.273230 2.0198774   350 -0.21733600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198    WLR FH(rho=0, gamma=0) -16.8363504 8.786618 1.9161355   313 -0.21772362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199    WLR FH(rho=0, gamma=0) -18.7307870 9.273230 2.0198774   350 -0.21733600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200    WLR FH(rho=0, gamma=0) -18.7307870 9.273230 2.0198774   350 -0.21733600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 201    WLR FH(rho=0, gamma=0) -15.6966139 8.664844 1.8115287   306 -0.20903061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 202    WLR FH(rho=0, gamma=0) -24.4305155 9.281455 2.6321860   350 -0.28375303</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 203    WLR FH(rho=0, gamma=0) -20.5865948 8.932866 2.3045902   325 -0.25819613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 204    WLR FH(rho=0, gamma=0) -24.4305155 9.281455 2.6321860   350 -0.28375303</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 205    WLR FH(rho=0, gamma=0) -24.4305155 9.281455 2.6321860   350 -0.28375303</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 206    WLR FH(rho=0, gamma=0) -24.3701211 8.919225 2.7323138   323 -0.30695753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 207    WLR FH(rho=0, gamma=0) -25.8468992 9.271371 2.7878186   350 -0.30055863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 208    WLR FH(rho=0, gamma=0) -19.7051091 8.594537 2.2927482   299 -0.26725365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 209    WLR FH(rho=0, gamma=0) -25.8468992 9.271371 2.7878186   350 -0.30055863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 210    WLR FH(rho=0, gamma=0) -25.8468992 9.271371 2.7878186   350 -0.30055863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 211    WLR FH(rho=0, gamma=0) -20.7703108 8.896869 2.3345641   320 -0.26207417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 212    WLR FH(rho=0, gamma=0) -23.0593264 9.294166 2.4810540   350 -0.26635387</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 213    WLR FH(rho=0, gamma=0) -20.4188140 8.873175 2.3011847   318 -0.25905764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 214    WLR FH(rho=0, gamma=0) -23.0593264 9.294166 2.4810540   350 -0.26635387</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 215    WLR FH(rho=0, gamma=0) -23.0593264 9.294166 2.4810540   350 -0.26635387</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 216    WLR FH(rho=0, gamma=0)  -9.4581381 8.675215 1.0902482   302 -0.12571247</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 217    WLR FH(rho=0, gamma=0) -11.9191983 9.341722 1.2759102   350 -0.13658592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 218    WLR FH(rho=0, gamma=0)  -9.8116987 8.949088 1.0963909   321 -0.12255923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 219    WLR FH(rho=0, gamma=0) -11.9191983 9.341722 1.2759102   350 -0.13658592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 220    WLR FH(rho=0, gamma=0) -11.9191983 9.341722 1.2759102   350 -0.13658592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 221    WLR FH(rho=0, gamma=0) -24.2655590 8.766301 2.7680499   313 -0.31544161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 222    WLR FH(rho=0, gamma=0) -30.0543959 9.248263 3.2497341   350 -0.35064277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 223    WLR FH(rho=0, gamma=0) -25.6011591 9.038467 2.8324669   333 -0.31283343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 224    WLR FH(rho=0, gamma=0) -30.0543959 9.248263 3.2497341   350 -0.35064277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 225    WLR FH(rho=0, gamma=0) -30.0543959 9.248263 3.2497341   350 -0.35064277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 226    WLR FH(rho=0, gamma=0)  -6.1156459 8.794579 0.6953881   311 -0.07912088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 227    WLR FH(rho=0, gamma=0)  -4.9280980 9.284472 0.5307893   350 -0.05718337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 228    WLR FH(rho=0, gamma=0)  -5.5638383 8.877137 0.6267604   317 -0.07063383</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 229    WLR FH(rho=0, gamma=0)  -4.9280980 9.284472 0.5307893   350 -0.05718337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 230    WLR FH(rho=0, gamma=0)  -4.9280980 9.284472 0.5307893   350 -0.05718337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 231    WLR FH(rho=0, gamma=0) -24.9842532 8.648498 2.8888546   305 -0.33277908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 232    WLR FH(rho=0, gamma=0) -25.5842772 9.211499 2.7774281   350 -0.29976797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233    WLR FH(rho=0, gamma=0) -25.0610595 8.645572 2.8987162   305 -0.33402892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234    WLR FH(rho=0, gamma=0) -25.5842772 9.211499 2.7774281   350 -0.29976797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235    WLR FH(rho=0, gamma=0) -25.5842772 9.211499 2.7774281   350 -0.29976797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236    WLR FH(rho=0, gamma=0) -17.1997266 8.899854 1.9325854   320 -0.21716388</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237    WLR FH(rho=0, gamma=0) -19.5160802 9.305537 2.0972547   350 -0.22523687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 238    WLR FH(rho=0, gamma=0) -17.1671691 8.899786 1.9289417   320 -0.21675942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 239    WLR FH(rho=0, gamma=0) -19.5160802 9.305537 2.0972547   350 -0.22523687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 240    WLR FH(rho=0, gamma=0) -19.5160802 9.305537 2.0972547   350 -0.22523687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 241    WLR FH(rho=0, gamma=0) -10.0772762 8.816377 1.1430178   314 -0.12962775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 242    WLR FH(rho=0, gamma=0) -13.5566199 9.311732 1.4558645   350 -0.15629940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 243    WLR FH(rho=0, gamma=0) -11.8291282 8.674211 1.3637123   304 -0.15725195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 244    WLR FH(rho=0, gamma=0) -13.5566199 9.311732 1.4558645   350 -0.15629940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 245    WLR FH(rho=0, gamma=0) -13.5566199 9.311732 1.4558645   350 -0.15629940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 246    WLR FH(rho=0, gamma=0)  -9.9498381 8.727932 1.1399995   306 -0.13068069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 247    WLR FH(rho=0, gamma=0) -18.0787069 9.325042 1.9387265   350 -0.20807877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 248    WLR FH(rho=0, gamma=0)  -9.8474647 8.889298 1.1077888   317 -0.12466322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 249    WLR FH(rho=0, gamma=0) -18.0787069 9.325042 1.9387265   350 -0.20807877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 250    WLR FH(rho=0, gamma=0) -18.0787069 9.325042 1.9387265   350 -0.20807877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 251    WLR FH(rho=0, gamma=0) -27.5142853 8.743322 3.1468916   308 -0.36023023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 252    WLR FH(rho=0, gamma=0) -28.0374941 9.292246 3.0173000   350 -0.32369504</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 253    WLR FH(rho=0, gamma=0) -28.3328345 8.813664 3.2146488   313 -0.36502686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 254    WLR FH(rho=0, gamma=0) -28.0374941 9.292246 3.0173000   350 -0.32369504</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 255    WLR FH(rho=0, gamma=0) -28.0374941 9.292246 3.0173000   350 -0.32369504</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 256    WLR FH(rho=0, gamma=0)  -0.9220231 8.860248 0.1040629   315 -0.01174531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 257    WLR FH(rho=0, gamma=0)  -6.3006438 9.336686 0.6748266   350 -0.07230410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 258    WLR FH(rho=0, gamma=0)  -2.9711679 9.055844 0.3280940   329 -0.03623614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 259    WLR FH(rho=0, gamma=0)  -6.3006438 9.336686 0.6748266   350 -0.07230410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 260    WLR FH(rho=0, gamma=0)  -6.3006438 9.336686 0.6748266   350 -0.07230410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 261    WLR FH(rho=0, gamma=0) -15.8778352 8.829094 1.7983539   314 -0.20364340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 262    WLR FH(rho=0, gamma=0) -24.3996969 9.288402 2.6268994   350 -0.28274960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 263    WLR FH(rho=0, gamma=0) -18.1370497 8.976176 2.0205763   325 -0.22507115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 264    WLR FH(rho=0, gamma=0) -24.3996969 9.288402 2.6268994   350 -0.28274960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 265    WLR FH(rho=0, gamma=0) -24.3996969 9.288402 2.6268994   350 -0.28274960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 266    WLR FH(rho=0, gamma=0) -19.2808119 8.662191 2.2258585   305 -0.25739330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 267    WLR FH(rho=0, gamma=0) -24.0832111 9.287617 2.5930452   350 -0.27908474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 268    WLR FH(rho=0, gamma=0) -18.9093948 8.837163 2.1397584   318 -0.24228978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 269    WLR FH(rho=0, gamma=0) -24.0832111 9.287617 2.5930452   350 -0.27908474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 270    WLR FH(rho=0, gamma=0) -24.0832111 9.287617 2.5930452   350 -0.27908474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 271    WLR FH(rho=0, gamma=0) -22.1900697 8.855518 2.5057901   321 -0.28287832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 272    WLR FH(rho=0, gamma=0) -25.8986315 9.244533 2.8015079   350 -0.30299889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 273    WLR FH(rho=0, gamma=0) -22.8636630 8.897950 2.5695428   324 -0.28869416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 274    WLR FH(rho=0, gamma=0) -25.8986315 9.244533 2.8015079   350 -0.30299889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 275    WLR FH(rho=0, gamma=0) -25.8986315 9.244533 2.8015079   350 -0.30299889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 276    WLR FH(rho=0, gamma=0) -20.8540097 9.076966 2.2974648   335 -0.25280041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 277    WLR FH(rho=0, gamma=0) -19.4027897 9.261272 2.0950458   350 -0.22584098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 278    WLR FH(rho=0, gamma=0) -17.5286071 8.935616 1.9616563   324 -0.21922321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 279    WLR FH(rho=0, gamma=0) -19.4027897 9.261272 2.0950458   350 -0.22584098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 280    WLR FH(rho=0, gamma=0) -19.4027897 9.261272 2.0950458   350 -0.22584098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 281    WLR FH(rho=0, gamma=0) -23.6000777 8.609437 2.7411871   300 -0.31788291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 282    WLR FH(rho=0, gamma=0) -32.5110651 9.269880 3.5071723   350 -0.37657321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 283    WLR FH(rho=0, gamma=0) -24.2079712 8.623443 2.8072279   301 -0.32503602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 284    WLR FH(rho=0, gamma=0) -32.5110651 9.269880 3.5071723   350 -0.37657321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 285    WLR FH(rho=0, gamma=0) -32.5110651 9.269880 3.5071723   350 -0.37657321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 286    WLR FH(rho=0, gamma=0) -20.7983230 8.859960 2.3474510   318 -0.26438918</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 287    WLR FH(rho=0, gamma=0) -20.2144271 9.279368 2.1784271   350 -0.23403886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 288    WLR FH(rho=0, gamma=0) -21.2752964 8.876511 2.3968083   319 -0.26946334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 289    WLR FH(rho=0, gamma=0) -20.2144271 9.279368 2.1784271   350 -0.23403886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 290    WLR FH(rho=0, gamma=0) -20.2144271 9.279368 2.1784271   350 -0.23403886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 291    WLR FH(rho=0, gamma=0) -28.3693150 8.596777 3.2999945   299 -0.38379989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 292    WLR FH(rho=0, gamma=0) -32.6716177 9.283025 3.5195013   350 -0.37774753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 293    WLR FH(rho=0, gamma=0) -26.5955621 8.724288 3.0484508   308 -0.34883979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 294    WLR FH(rho=0, gamma=0) -32.6716177 9.283025 3.5195013   350 -0.37774753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 295    WLR FH(rho=0, gamma=0) -32.6716177 9.283025 3.5195013   350 -0.37774753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296    WLR FH(rho=0, gamma=0) -20.1023966 9.026632 2.2270096   330 -0.24670874</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297    WLR FH(rho=0, gamma=0) -16.1423656 9.262324 1.7427986   350 -0.18795404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298    WLR FH(rho=0, gamma=0) -19.7872376 9.036012 2.1898198   331 -0.24230264</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299    WLR FH(rho=0, gamma=0) -16.1423656 9.262324 1.7427986   350 -0.18795404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300    WLR FH(rho=0, gamma=0) -16.1423656 9.262324 1.7427986   350 -0.18795404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 301    WLR FH(rho=0, gamma=0) -21.2849101 8.837465 2.4084860   317 -0.27231364</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 302    WLR FH(rho=0, gamma=0) -27.9937093 9.260923 3.0227773   350 -0.32602460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 303    WLR FH(rho=0, gamma=0) -19.8043341 8.698733 2.2766919   306 -0.26150814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 304    WLR FH(rho=0, gamma=0) -27.9937093 9.260923 3.0227773   350 -0.32602460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 305    WLR FH(rho=0, gamma=0) -27.9937093 9.260923 3.0227773   350 -0.32602460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 306    WLR FH(rho=0, gamma=0) -38.0167975 8.672271 4.3837189   309 -0.50317572</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 307    WLR FH(rho=0, gamma=0) -38.8017148 9.209929 4.2130310   350 -0.45344774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 308    WLR FH(rho=0, gamma=0) -38.7382981 8.646009 4.4804833   307 -0.51619903</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 309    WLR FH(rho=0, gamma=0) -38.8017148 9.209929 4.2130310   350 -0.45344774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 310    WLR FH(rho=0, gamma=0) -38.8017148 9.209929 4.2130310   350 -0.45344774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 311    WLR FH(rho=0, gamma=0) -31.5500449 8.728973 3.6144053   312 -0.41218555</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 312    WLR FH(rho=0, gamma=0) -33.5707879 9.228675 3.6376608   350 -0.39173072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 313    WLR FH(rho=0, gamma=0) -31.2245920 8.799806 3.5483274   317 -0.40131080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 314    WLR FH(rho=0, gamma=0) -33.5707879 9.228675 3.6376608   350 -0.39173072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 315    WLR FH(rho=0, gamma=0) -33.5707879 9.228675 3.6376608   350 -0.39173072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 316    WLR FH(rho=0, gamma=0)  -8.0914921 8.610966 0.9396730   300 -0.10920134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 317    WLR FH(rho=0, gamma=0) -14.6185351 9.290948 1.5734169   350 -0.16965109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 318    WLR FH(rho=0, gamma=0)  -7.7090075 8.667948 0.8893694   304 -0.10267838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 319    WLR FH(rho=0, gamma=0) -14.6185351 9.290948 1.5734169   350 -0.16965109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 320    WLR FH(rho=0, gamma=0) -14.6185351 9.290948 1.5734169   350 -0.16965109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 321    WLR FH(rho=0, gamma=0) -28.3636428 8.679257 3.2679806   308 -0.37406447</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 322    WLR FH(rho=0, gamma=0) -36.5396329 9.217415 3.9641951   350 -0.42623585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 323    WLR FH(rho=0, gamma=0) -29.5475160 8.706788 3.3936184   310 -0.38724685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 324    WLR FH(rho=0, gamma=0) -36.5396329 9.217415 3.9641951   350 -0.42623585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 325    WLR FH(rho=0, gamma=0) -36.5396329 9.217415 3.9641951   350 -0.42623585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 326    WLR FH(rho=0, gamma=0) -27.3645461 8.532053 3.2072641   296 -0.37547819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 327    WLR FH(rho=0, gamma=0) -33.6722093 9.250005 3.6402369   350 -0.39185302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 328    WLR FH(rho=0, gamma=0) -28.1095050 8.963658 3.1359414   327 -0.34878440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 329    WLR FH(rho=0, gamma=0) -33.6722093 9.250005 3.6402369   350 -0.39185302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 330    WLR FH(rho=0, gamma=0) -33.6722093 9.250005 3.6402369   350 -0.39185302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 331    WLR FH(rho=0, gamma=0) -28.4810664 8.550020 3.3311113   302 -0.38928141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 332    WLR FH(rho=0, gamma=0) -34.1021208 9.198815 3.7072297   350 -0.40185339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 333    WLR FH(rho=0, gamma=0) -28.4518821 8.550155 3.3276454   302 -0.38888359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 334    WLR FH(rho=0, gamma=0) -34.1021208 9.198815 3.7072297   350 -0.40185339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 335    WLR FH(rho=0, gamma=0) -34.1021208 9.198815 3.7072297   350 -0.40185339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 336    WLR FH(rho=0, gamma=0) -19.0384150 8.773094 2.1700913   310 -0.24723023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 337    WLR FH(rho=0, gamma=0) -20.7336976 9.316450 2.2254934   350 -0.23843891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 338    WLR FH(rho=0, gamma=0) -18.1654084 8.801324 2.0639404   312 -0.23431749</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 339    WLR FH(rho=0, gamma=0) -20.7336976 9.316450 2.2254934   350 -0.23843891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 340    WLR FH(rho=0, gamma=0) -20.7336976 9.316450 2.2254934   350 -0.23843891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 341    WLR FH(rho=0, gamma=0) -36.2145719 8.641944 4.1905587   306 -0.48133479</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 342    WLR FH(rho=0, gamma=0) -44.8561430 9.221222 4.8644469   350 -0.52256152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 343    WLR FH(rho=0, gamma=0) -38.8078382 8.796943 4.4115140   318 -0.49735704</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 344    WLR FH(rho=0, gamma=0) -44.8561430 9.221222 4.8644469   350 -0.52256152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 345    WLR FH(rho=0, gamma=0) -44.8561430 9.221222 4.8644469   350 -0.52256152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 346    WLR FH(rho=0, gamma=0) -12.2370463 9.013367 1.3576553   327 -0.15065680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 347    WLR FH(rho=0, gamma=0) -14.9133697 9.321771 1.5998429   350 -0.17163540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 348    WLR FH(rho=0, gamma=0) -12.9371145 9.025338 1.4334217   328 -0.15885893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 349    WLR FH(rho=0, gamma=0) -14.9133697 9.321771 1.5998429   350 -0.17163540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 350    WLR FH(rho=0, gamma=0) -14.9133697 9.321771 1.5998429   350 -0.17163540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 351    WLR FH(rho=0, gamma=0) -23.7809786 8.649382 2.7494426   303 -0.31793423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 352    WLR FH(rho=0, gamma=0) -28.6753790 9.259018 3.0970216   350 -0.33394744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 353    WLR FH(rho=0, gamma=0) -24.3861385 8.464995 2.8808213   290 -0.34087875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 354    WLR FH(rho=0, gamma=0) -28.6753790 9.259018 3.0970216   350 -0.33394744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 355    WLR FH(rho=0, gamma=0) -28.6753790 9.259018 3.0970216   350 -0.33394744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 356    WLR FH(rho=0, gamma=0) -29.3242147 8.794466 3.3343942   311 -0.38056054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 357    WLR FH(rho=0, gamma=0) -31.9000598 9.298081 3.4308219   350 -0.36874470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 358    WLR FH(rho=0, gamma=0) -28.3440620 8.899254 3.1849931   319 -0.35862222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 359    WLR FH(rho=0, gamma=0) -31.9000598 9.298081 3.4308219   350 -0.36874470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 360    WLR FH(rho=0, gamma=0) -31.9000598 9.298081 3.4308219   350 -0.36874470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 361    WLR FH(rho=0, gamma=0) -35.3461314 9.005879 3.9247843   331 -0.43374106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 362    WLR FH(rho=0, gamma=0) -34.9733191 9.251655 3.7802230   350 -0.40585114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 363    WLR FH(rho=0, gamma=0) -31.6251472 8.791565 3.5972149   315 -0.40753805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 364    WLR FH(rho=0, gamma=0) -34.9733191 9.251655 3.7802230   350 -0.40585114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 365    WLR FH(rho=0, gamma=0) -34.9733191 9.251655 3.7802230   350 -0.40585114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 366    WLR FH(rho=0, gamma=0) -15.4347160 8.500415 1.8157602   291 -0.21384627</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 367    WLR FH(rho=0, gamma=0) -19.6433871 9.316694 2.1084074   350 -0.22632947</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 368    WLR FH(rho=0, gamma=0) -13.4272582 8.696195 1.5440382   305 -0.17754614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 369    WLR FH(rho=0, gamma=0) -19.6433871 9.316694 2.1084074   350 -0.22632947</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 370    WLR FH(rho=0, gamma=0) -19.6433871 9.316694 2.1084074   350 -0.22632947</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 371    WLR FH(rho=0, gamma=0) -18.7436663 8.623776 2.1734871   301 -0.25100528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 372    WLR FH(rho=0, gamma=0) -26.9020076 9.292129 2.8951392   350 -0.31023621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 373    WLR FH(rho=0, gamma=0) -19.2071688 8.610025 2.2307913   300 -0.25804102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 374    WLR FH(rho=0, gamma=0) -26.9020076 9.292129 2.8951392   350 -0.31023621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 375    WLR FH(rho=0, gamma=0) -26.9020076 9.292129 2.8951392   350 -0.31023621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 376    WLR FH(rho=0, gamma=0) -35.3111091 8.905870 3.9649255   325 -0.44253408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 377    WLR FH(rho=0, gamma=0) -36.1314376 9.229447 3.9148000   350 -0.42038790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 378    WLR FH(rho=0, gamma=0) -36.4462738 8.837660 4.1239734   320 -0.46411619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 379    WLR FH(rho=0, gamma=0) -36.1314376 9.229447 3.9148000   350 -0.42038790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 380    WLR FH(rho=0, gamma=0) -36.1314376 9.229447 3.9148000   350 -0.42038790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 381    WLR FH(rho=0, gamma=0) -16.6404970 8.273907 2.0112018   277 -0.24321935</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 382    WLR FH(rho=0, gamma=0) -29.9684548 9.273630 3.2315777   350 -0.34827060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 383    WLR FH(rho=0, gamma=0) -20.0382046 8.487676 2.3608587   292 -0.27841305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 384    WLR FH(rho=0, gamma=0) -29.9684548 9.273630 3.2315777   350 -0.34827060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 385    WLR FH(rho=0, gamma=0) -29.9684548 9.273630 3.2315777   350 -0.34827060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 386    WLR FH(rho=0, gamma=0) -10.1918884 8.802223 1.1578767   311 -0.13163622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 387    WLR FH(rho=0, gamma=0) -16.9915220 9.333177 1.8205507   350 -0.19524901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 388    WLR FH(rho=0, gamma=0)  -9.0809545 8.744116 1.0385217   307 -0.11883241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 389    WLR FH(rho=0, gamma=0) -16.9915220 9.333177 1.8205507   350 -0.19524901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 390    WLR FH(rho=0, gamma=0) -16.9915220 9.333177 1.8205507   350 -0.19524901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 391    WLR FH(rho=0, gamma=0) -32.7071203 8.767652 3.7304311   316 -0.42336530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 392    WLR FH(rho=0, gamma=0) -39.6991814 9.230717 4.3007688   350 -0.46295093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 393    WLR FH(rho=0, gamma=0) -32.2419684 8.584524 3.7558249   302 -0.43569144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 394    WLR FH(rho=0, gamma=0) -39.6991814 9.230717 4.3007688   350 -0.46295093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 395    WLR FH(rho=0, gamma=0) -39.6991814 9.230717 4.3007688   350 -0.46295093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 396    WLR FH(rho=0, gamma=0) -30.2340268 8.812418 3.4308435   315 -0.38811446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 397    WLR FH(rho=0, gamma=0) -37.1491710 9.250243 4.0160210   350 -0.43190231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 398    WLR FH(rho=0, gamma=0) -30.2214143 8.812557 3.4293581   315 -0.38794459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 399    WLR FH(rho=0, gamma=0) -37.1491710 9.250243 4.0160210   350 -0.43190231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 400    WLR FH(rho=0, gamma=0) -37.1491710 9.250243 4.0160210   350 -0.43190231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 401    WLR FH(rho=0, gamma=0) -26.1910959 8.388806 3.1221481   284 -0.37198839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 402    WLR FH(rho=0, gamma=0) -37.3801749 9.286799 4.0250873   350 -0.43194685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 403    WLR FH(rho=0, gamma=0) -26.2377712 8.520171 3.0794889   293 -0.36102236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 404    WLR FH(rho=0, gamma=0) -37.3801749 9.286799 4.0250873   350 -0.43194685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 405    WLR FH(rho=0, gamma=0) -37.3801749 9.286799 4.0250873   350 -0.43194685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 406    WLR FH(rho=0, gamma=0) -15.0210964 8.622376 1.7421064   300 -0.20192420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 407    WLR FH(rho=0, gamma=0) -21.5072036 9.290768 2.3149006   350 -0.24881469</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 408    WLR FH(rho=0, gamma=0) -16.2064261 8.679142 1.8672843   304 -0.21504560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 409    WLR FH(rho=0, gamma=0) -21.5072036 9.290768 2.3149006   350 -0.24881469</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 410    WLR FH(rho=0, gamma=0) -21.5072036 9.290768 2.3149006   350 -0.24881469</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 411    WLR FH(rho=0, gamma=0) -21.6514790 9.036693 2.3959515   328 -0.26526608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 412    WLR FH(rho=0, gamma=0) -20.4129303 9.314820 2.1914466   350 -0.23510330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 413    WLR FH(rho=0, gamma=0) -21.7186851 8.842200 2.4562536   314 -0.27818709</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 414    WLR FH(rho=0, gamma=0) -20.4129303 9.314820 2.1914466   350 -0.23510330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 415    WLR FH(rho=0, gamma=0) -20.4129303 9.314820 2.1914466   350 -0.23510330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 416    WLR FH(rho=0, gamma=0) -33.7249398 8.735209 3.8608052   311 -0.44157461</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 417    WLR FH(rho=0, gamma=0) -36.0879548 9.252835 3.9002052   350 -0.41967250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 418    WLR FH(rho=0, gamma=0) -33.6476039 8.637485 3.8955324   304 -0.45094498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 419    WLR FH(rho=0, gamma=0) -36.0879548 9.252835 3.9002052   350 -0.41967250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 420    WLR FH(rho=0, gamma=0) -36.0879548 9.252835 3.9002052   350 -0.41967250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 421    WLR FH(rho=0, gamma=0) -28.0598232 8.878232 3.1605194   319 -0.35651471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 422    WLR FH(rho=0, gamma=0) -32.8377892 9.272687 3.5413457   350 -0.38149191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 423    WLR FH(rho=0, gamma=0) -27.7304977 8.891535 3.1187527   320 -0.35115956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 424    WLR FH(rho=0, gamma=0) -32.8377892 9.272687 3.5413457   350 -0.38149191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 425    WLR FH(rho=0, gamma=0) -32.8377892 9.272687 3.5413457   350 -0.38149191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 426    WLR FH(rho=0, gamma=0) -16.8796636 8.652162 1.9509186   302 -0.22646932</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 427    WLR FH(rho=0, gamma=0) -21.7520137 9.290600 2.3412927   350 -0.25254519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 428    WLR FH(rho=0, gamma=0) -17.8883948 8.723562 2.0505838   307 -0.23608854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 429    WLR FH(rho=0, gamma=0) -21.7520137 9.290600 2.3412927   350 -0.25254519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 430    WLR FH(rho=0, gamma=0) -21.7520137 9.290600 2.3412927   350 -0.25254519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 431    WLR FH(rho=0, gamma=0) -30.7764712 8.720117 3.5293643   310 -0.40415776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 432    WLR FH(rho=0, gamma=0) -34.5457375 9.239966 3.7387300   350 -0.40258926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 433    WLR FH(rho=0, gamma=0) -29.5197099 8.641026 3.4162276   305 -0.39467379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 434    WLR FH(rho=0, gamma=0) -34.5457375 9.239966 3.7387300   350 -0.40258926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 435    WLR FH(rho=0, gamma=0) -34.5457375 9.239966 3.7387300   350 -0.40258926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 436    WLR FH(rho=0, gamma=0) -15.3083984 8.615245 1.7768964   302 -0.20610909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 437    WLR FH(rho=0, gamma=0) -18.6149864 9.291421 2.0034596   350 -0.21523088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 438    WLR FH(rho=0, gamma=0) -14.1780526 8.486168 1.6707249   292 -0.19677809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 439    WLR FH(rho=0, gamma=0) -18.6149864 9.291421 2.0034596   350 -0.21523088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 440    WLR FH(rho=0, gamma=0) -18.6149864 9.291421 2.0034596   350 -0.21523088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 441    WLR FH(rho=0, gamma=0) -37.6588438 8.588546 4.3847750   306 -0.50715388</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 442    WLR FH(rho=0, gamma=0) -48.2316074 9.136277 5.2791312   350 -0.57198040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 443    WLR FH(rho=0, gamma=0) -37.0505446 8.678654 4.2691578   312 -0.48823835</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 444    WLR FH(rho=0, gamma=0) -48.2316074 9.136277 5.2791312   350 -0.57198040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 445    WLR FH(rho=0, gamma=0) -48.2316074 9.136277 5.2791312   350 -0.57198040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 446    WLR FH(rho=0, gamma=0) -31.3178955 8.718445 3.5921423   310 -0.41064734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 447    WLR FH(rho=0, gamma=0) -31.3385454 9.234562 3.3936146   350 -0.36525270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 448    WLR FH(rho=0, gamma=0) -29.4467733 8.843447 3.3297847   319 -0.37487251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 449    WLR FH(rho=0, gamma=0) -31.3385454 9.234562 3.3936146   350 -0.36525270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 450    WLR FH(rho=0, gamma=0) -31.3385454 9.234562 3.3936146   350 -0.36525270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 451    WLR FH(rho=0, gamma=0) -20.7261096 8.994767 2.3042408   332 -0.25640419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 452    WLR FH(rho=0, gamma=0) -21.1788273 9.218017 2.2975470   350 -0.24929101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 453    WLR FH(rho=0, gamma=0) -20.5334548 8.944242 2.2957176   328 -0.25690650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 454    WLR FH(rho=0, gamma=0) -21.1788273 9.218017 2.2975470   350 -0.24929101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 455    WLR FH(rho=0, gamma=0) -21.1788273 9.218017 2.2975470   350 -0.24929101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 456    WLR FH(rho=0, gamma=0) -21.1948804 8.677903 2.4423964   304 -0.28093426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 457    WLR FH(rho=0, gamma=0) -28.7057042 9.293928 3.0886516   350 -0.33108930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 458    WLR FH(rho=0, gamma=0) -19.9158746 8.622416 2.3097788   300 -0.26736641</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 459    WLR FH(rho=0, gamma=0) -28.7057042 9.293928 3.0886516   350 -0.33108930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 460    WLR FH(rho=0, gamma=0) -28.7057042 9.293928 3.0886516   350 -0.33108930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 461    WLR FH(rho=0, gamma=0) -30.8026800 8.675805 3.5504119   308 -0.40643765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 462    WLR FH(rho=0, gamma=0) -33.8214777 9.220600 3.6680344   350 -0.39380522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 463    WLR FH(rho=0, gamma=0) -29.7109833 8.413522 3.5313371   290 -0.41707013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 464    WLR FH(rho=0, gamma=0) -33.8214777 9.220600 3.6680344   350 -0.39380522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 465    WLR FH(rho=0, gamma=0) -33.8214777 9.220600 3.6680344   350 -0.39380522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 466    WLR FH(rho=0, gamma=0) -14.8926212 8.956359 1.6627986   325 -0.18549373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 467    WLR FH(rho=0, gamma=0) -16.7094922 9.305772 1.7956052   350 -0.19278341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 468    WLR FH(rho=0, gamma=0) -15.3230804 8.914635 1.7188679   322 -0.19266225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 469    WLR FH(rho=0, gamma=0) -16.7094922 9.305772 1.7956052   350 -0.19278341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 470    WLR FH(rho=0, gamma=0) -16.7094922 9.305772 1.7956052   350 -0.19278341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 471    WLR FH(rho=0, gamma=0) -34.7381647 8.608903 4.0351441   305 -0.46975762</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 472    WLR FH(rho=0, gamma=0) -35.3079683 9.219775 3.8295910   350 -0.41391937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 473    WLR FH(rho=0, gamma=0) -33.0776295 8.493712 3.8943667   296 -0.45961010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 474    WLR FH(rho=0, gamma=0) -35.3079683 9.219775 3.8295910   350 -0.41391937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 475    WLR FH(rho=0, gamma=0) -35.3079683 9.219775 3.8295910   350 -0.41391937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 476    WLR FH(rho=0, gamma=0) -29.8788441 8.777301 3.4041040   315 -0.38712513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 477    WLR FH(rho=0, gamma=0) -38.5222224 9.228203 4.1744012   350 -0.45093611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 478    WLR FH(rho=0, gamma=0) -30.3654327 8.792151 3.4536978   316 -0.39217647</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 479    WLR FH(rho=0, gamma=0) -38.5222224 9.228203 4.1744012   350 -0.45093611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 480    WLR FH(rho=0, gamma=0) -38.5222224 9.228203 4.1744012   350 -0.45093611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 481    WLR FH(rho=0, gamma=0) -16.2464302 8.928742 1.8195653   322 -0.20359274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 482    WLR FH(rho=0, gamma=0) -13.3050575 9.295157 1.4313967   350 -0.15377723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 483    WLR FH(rho=0, gamma=0) -16.7710964 8.942694 1.8753965   323 -0.20952779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 484    WLR FH(rho=0, gamma=0) -13.3050575 9.295157 1.4313967   350 -0.15377723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 485    WLR FH(rho=0, gamma=0) -13.3050575 9.295157 1.4313967   350 -0.15377723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 486    WLR FH(rho=0, gamma=0) -34.0449216 9.116042 3.7346165   338 -0.40799397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 487    WLR FH(rho=0, gamma=0) -34.7017497 9.261516 3.7468756   350 -0.40241159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 488    WLR FH(rho=0, gamma=0) -30.4212672 8.889081 3.4223187   321 -0.38388611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 489    WLR FH(rho=0, gamma=0) -34.7017497 9.261516 3.7468756   350 -0.40241159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 490    WLR FH(rho=0, gamma=0) -34.7017497 9.261516 3.7468756   350 -0.40241159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 491    WLR FH(rho=0, gamma=0) -17.8836796 8.418139 2.1244221   286 -0.25249284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 492    WLR FH(rho=0, gamma=0) -25.8594765 9.302088 2.7799647   350 -0.29835075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 493    WLR FH(rho=0, gamma=0) -18.9827582 8.767904 2.1650280   311 -0.24663524</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 494    WLR FH(rho=0, gamma=0) -25.8594765 9.302088 2.7799647   350 -0.29835075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 495    WLR FH(rho=0, gamma=0) -25.8594765 9.302088 2.7799647   350 -0.29835075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 496    WLR FH(rho=0, gamma=0) -18.8356278 8.645086 2.1787671   302 -0.25193622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 497    WLR FH(rho=0, gamma=0) -23.5941053 9.281569 2.5420385   350 -0.27316591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 498    WLR FH(rho=0, gamma=0) -20.3968493 8.686215 2.3481862   305 -0.27033093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 499    WLR FH(rho=0, gamma=0) -23.5941053 9.281569 2.5420385   350 -0.27316591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 500    WLR FH(rho=0, gamma=0) -23.5941053 9.281569 2.5420385   350 -0.27316591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  cut duration sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   Planned duration 30.00000   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    Targeted events 34.56252   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  Minimum follow-up 30.26592   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Max(planned duration, event cut) 34.56252   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Max(min follow-up, event cut) 34.56252   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   Planned duration 30.00000   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Targeted events 31.32993   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Minimum follow-up 30.19554   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   Max(planned duration, event cut) 31.32993   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     Max(min follow-up, event cut) 31.32993   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                  Planned duration 30.00000   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                   Targeted events 36.44080   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 Minimum follow-up 31.44128   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  Max(planned duration, event cut) 36.44080   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     Max(min follow-up, event cut) 36.44080   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                  Planned duration 30.00000   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Targeted events 34.65063   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                 Minimum follow-up 29.90029   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  Max(planned duration, event cut) 34.65063   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20     Max(min follow-up, event cut) 34.65063   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                  Planned duration 30.00000   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                   Targeted events 33.46261   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                 Minimum follow-up 28.83239   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  Max(planned duration, event cut) 33.46261   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25     Max(min follow-up, event cut) 33.46261   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                  Planned duration 30.00000   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                   Targeted events 36.65492   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                 Minimum follow-up 30.98457   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  Max(planned duration, event cut) 36.65492   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30     Max(min follow-up, event cut) 36.65492   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                  Planned duration 30.00000   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32                   Targeted events 31.07340   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                 Minimum follow-up 28.80649   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34  Max(planned duration, event cut) 31.07340   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35     Max(min follow-up, event cut) 31.07340   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36                  Planned duration 30.00000   8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37                   Targeted events 33.95026   8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38                 Minimum follow-up 31.19859   8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  Max(planned duration, event cut) 33.95026   8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40     Max(min follow-up, event cut) 33.95026   8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41                  Planned duration 30.00000   9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42                   Targeted events 33.20459   9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43                 Minimum follow-up 29.69966   9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44  Max(planned duration, event cut) 33.20459   9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45     Max(min follow-up, event cut) 33.20459   9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46                  Planned duration 30.00000  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47                   Targeted events 34.49827  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48                 Minimum follow-up 28.50262  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49  Max(planned duration, event cut) 34.49827  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50     Max(min follow-up, event cut) 34.49827  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51                  Planned duration 30.00000  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52                   Targeted events 34.65074  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53                 Minimum follow-up 29.31876  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54  Max(planned duration, event cut) 34.65074  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55     Max(min follow-up, event cut) 34.65074  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56                  Planned duration 30.00000  12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57                   Targeted events 32.44983  12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58                 Minimum follow-up 29.65292  12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59  Max(planned duration, event cut) 32.44983  12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60     Max(min follow-up, event cut) 32.44983  12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61                  Planned duration 30.00000  13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62                   Targeted events 31.55883  13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63                 Minimum follow-up 28.91997  13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64  Max(planned duration, event cut) 31.55883  13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65     Max(min follow-up, event cut) 31.55883  13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66                  Planned duration 30.00000  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67                   Targeted events 35.79983  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68                 Minimum follow-up 33.72392  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69  Max(planned duration, event cut) 35.79983  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70     Max(min follow-up, event cut) 35.79983  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71                  Planned duration 30.00000  15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72                   Targeted events 35.03286  15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73                 Minimum follow-up 30.38550  15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  Max(planned duration, event cut) 35.03286  15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75     Max(min follow-up, event cut) 35.03286  15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76                  Planned duration 30.00000  16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77                   Targeted events 34.98842  16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78                 Minimum follow-up 29.75020  16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79  Max(planned duration, event cut) 34.98842  16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80     Max(min follow-up, event cut) 34.98842  16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81                  Planned duration 30.00000  17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82                   Targeted events 34.99259  17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83                 Minimum follow-up 30.60927  17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84  Max(planned duration, event cut) 34.99259  17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85     Max(min follow-up, event cut) 34.99259  17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86                  Planned duration 30.00000  18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87                   Targeted events 33.31031  18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88                 Minimum follow-up 28.31274  18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  Max(planned duration, event cut) 33.31031  18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90     Max(min follow-up, event cut) 33.31031  18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91                  Planned duration 30.00000  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92                   Targeted events 35.08991  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93                 Minimum follow-up 28.98224  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  Max(planned duration, event cut) 35.08991  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95     Max(min follow-up, event cut) 35.08991  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96                  Planned duration 30.00000  20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97                   Targeted events 36.42758  20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98                 Minimum follow-up 30.30389  20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  Max(planned duration, event cut) 36.42758  20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100    Max(min follow-up, event cut) 36.42758  20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101                 Planned duration 30.00000  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102                  Targeted events 31.24966  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103                Minimum follow-up 30.17003  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104 Max(planned duration, event cut) 31.24966  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105    Max(min follow-up, event cut) 31.24966  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106                 Planned duration 30.00000  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107                  Targeted events 35.50895  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108                Minimum follow-up 28.10047  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 Max(planned duration, event cut) 35.50895  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110    Max(min follow-up, event cut) 35.50895  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111                 Planned duration 30.00000  23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112                  Targeted events 32.53926  23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113                Minimum follow-up 29.50244  23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114 Max(planned duration, event cut) 32.53926  23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115    Max(min follow-up, event cut) 32.53926  23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116                 Planned duration 30.00000  24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117                  Targeted events 34.93207  24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118                Minimum follow-up 29.68265  24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119 Max(planned duration, event cut) 34.93207  24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120    Max(min follow-up, event cut) 34.93207  24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121                 Planned duration 30.00000  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122                  Targeted events 34.95328  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123                Minimum follow-up 31.35324  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124 Max(planned duration, event cut) 34.95328  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125    Max(min follow-up, event cut) 34.95328  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126                 Planned duration 30.00000  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127                  Targeted events 32.22708  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128                Minimum follow-up 29.50572  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129 Max(planned duration, event cut) 32.22708  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130    Max(min follow-up, event cut) 32.22708  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131                 Planned duration 30.00000  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132                  Targeted events 34.08638  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133                Minimum follow-up 30.70187  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134 Max(planned duration, event cut) 34.08638  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135    Max(min follow-up, event cut) 34.08638  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136                 Planned duration 30.00000  28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137                  Targeted events 33.57268  28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138                Minimum follow-up 30.35670  28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139 Max(planned duration, event cut) 33.57268  28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140    Max(min follow-up, event cut) 33.57268  28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141                 Planned duration 30.00000  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142                  Targeted events 31.76390  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143                Minimum follow-up 28.44688  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144 Max(planned duration, event cut) 31.76390  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145    Max(min follow-up, event cut) 31.76390  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146                 Planned duration 30.00000  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147                  Targeted events 35.52284  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148                Minimum follow-up 31.28813  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149 Max(planned duration, event cut) 35.52284  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150    Max(min follow-up, event cut) 35.52284  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151                 Planned duration 30.00000  31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152                  Targeted events 36.75499  31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153                Minimum follow-up 29.59861  31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154 Max(planned duration, event cut) 36.75499  31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155    Max(min follow-up, event cut) 36.75499  31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156                 Planned duration 30.00000  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157                  Targeted events 35.32287  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158                Minimum follow-up 30.87719  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159 Max(planned duration, event cut) 35.32287  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160    Max(min follow-up, event cut) 35.32287  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161                 Planned duration 30.00000  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162                  Targeted events 34.21867  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163                Minimum follow-up 28.99271  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164 Max(planned duration, event cut) 34.21867  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165    Max(min follow-up, event cut) 34.21867  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166                 Planned duration 30.00000  34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167                  Targeted events 32.81083  34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168                Minimum follow-up 29.61577  34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169 Max(planned duration, event cut) 32.81083  34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170    Max(min follow-up, event cut) 32.81083  34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171                 Planned duration 30.00000  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172                  Targeted events 35.08037  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173                Minimum follow-up 29.74254  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174 Max(planned duration, event cut) 35.08037  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175    Max(min follow-up, event cut) 35.08037  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176                 Planned duration 30.00000  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177                  Targeted events 31.99763  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178                Minimum follow-up 27.73686  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179 Max(planned duration, event cut) 31.99763  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180    Max(min follow-up, event cut) 31.99763  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181                 Planned duration 30.00000  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182                  Targeted events 35.13270  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183                Minimum follow-up 28.39063  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184 Max(planned duration, event cut) 35.13270  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185    Max(min follow-up, event cut) 35.13270  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186                 Planned duration 30.00000  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187                  Targeted events 33.15620  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188                Minimum follow-up 28.16147  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189 Max(planned duration, event cut) 33.15620  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190    Max(min follow-up, event cut) 33.15620  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191                 Planned duration 30.00000  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192                  Targeted events 33.15477  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193                Minimum follow-up 29.98781  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194 Max(planned duration, event cut) 33.15477  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195    Max(min follow-up, event cut) 33.15477  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196                 Planned duration 30.00000  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197                  Targeted events 35.32938  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198                Minimum follow-up 30.93153  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199 Max(planned duration, event cut) 35.32938  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200    Max(min follow-up, event cut) 35.32938  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 201                 Planned duration 30.00000  41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 202                  Targeted events 34.75173  41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 203                Minimum follow-up 31.36614  41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 204 Max(planned duration, event cut) 34.75173  41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 205    Max(min follow-up, event cut) 34.75173  41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 206                 Planned duration 30.00000  42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 207                  Targeted events 33.78014  42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 208                Minimum follow-up 27.71455  42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 209 Max(planned duration, event cut) 33.78014  42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 210    Max(min follow-up, event cut) 33.78014  42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 211                 Planned duration 30.00000  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 212                  Targeted events 33.92332  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 213                Minimum follow-up 29.67460  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 214 Max(planned duration, event cut) 33.92332  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 215    Max(min follow-up, event cut) 33.92332  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 216                 Planned duration 30.00000  44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 217                  Targeted events 35.00782  44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 218                Minimum follow-up 31.53494  44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 219 Max(planned duration, event cut) 35.00782  44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 220    Max(min follow-up, event cut) 35.00782  44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 221                 Planned duration 30.00000  45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 222                  Targeted events 32.69217  45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 223                Minimum follow-up 31.19296  45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 224 Max(planned duration, event cut) 32.69217  45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 225    Max(min follow-up, event cut) 32.69217  45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 226                 Planned duration 30.00000  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 227                  Targeted events 33.96500  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 228                Minimum follow-up 30.39167  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 229 Max(planned duration, event cut) 33.96500  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 230    Max(min follow-up, event cut) 33.96500  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 231                 Planned duration 30.00000  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 232                  Targeted events 35.09326  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233                Minimum follow-up 30.13249  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234 Max(planned duration, event cut) 35.09326  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235    Max(min follow-up, event cut) 35.09326  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236                 Planned duration 30.00000  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237                  Targeted events 33.46691  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 238                Minimum follow-up 29.99249  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 239 Max(planned duration, event cut) 33.46691  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 240    Max(min follow-up, event cut) 33.46691  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 241                 Planned duration 30.00000  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 242                  Targeted events 33.11491  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 243                Minimum follow-up 29.11094  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 244 Max(planned duration, event cut) 33.11491  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 245    Max(min follow-up, event cut) 33.11491  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 246                 Planned duration 30.00000  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 247                  Targeted events 34.73370  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 248                Minimum follow-up 31.10906  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 249 Max(planned duration, event cut) 34.73370  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 250    Max(min follow-up, event cut) 34.73370  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 251                 Planned duration 30.00000  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 252                  Targeted events 34.81528  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 253                Minimum follow-up 30.57508  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 254 Max(planned duration, event cut) 34.81528  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 255    Max(min follow-up, event cut) 34.81528  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 256                 Planned duration 30.00000  52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 257                  Targeted events 34.62794  52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 258                Minimum follow-up 31.18999  52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 259 Max(planned duration, event cut) 34.62794  52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 260    Max(min follow-up, event cut) 34.62794  52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 261                 Planned duration 30.00000  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 262                  Targeted events 34.06656  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 263                Minimum follow-up 31.30138  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 264 Max(planned duration, event cut) 34.06656  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 265    Max(min follow-up, event cut) 34.06656  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 266                 Planned duration 30.00000  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 267                  Targeted events 35.10337  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 268                Minimum follow-up 31.32082  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 269 Max(planned duration, event cut) 35.10337  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 270    Max(min follow-up, event cut) 35.10337  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 271                 Planned duration 30.00000  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 272                  Targeted events 33.08402  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 273                Minimum follow-up 30.35031  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 274 Max(planned duration, event cut) 33.08402  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 275    Max(min follow-up, event cut) 33.08402  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 276                 Planned duration 30.00000  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 277                  Targeted events 32.14236  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 278                Minimum follow-up 29.27245  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 279 Max(planned duration, event cut) 32.14236  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 280    Max(min follow-up, event cut) 32.14236  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 281                 Planned duration 30.00000  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 282                  Targeted events 34.93451  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 283                Minimum follow-up 30.10195  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 284 Max(planned duration, event cut) 34.93451  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 285    Max(min follow-up, event cut) 34.93451  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 286                 Planned duration 30.00000  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 287                  Targeted events 33.38745  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 288                Minimum follow-up 30.22551  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 289 Max(planned duration, event cut) 33.38745  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 290    Max(min follow-up, event cut) 33.38745  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 291                 Planned duration 30.00000  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 292                  Targeted events 34.95228  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 293                Minimum follow-up 30.65333  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 294 Max(planned duration, event cut) 34.95228  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 295    Max(min follow-up, event cut) 34.95228  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296                 Planned duration 30.00000  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297                  Targeted events 32.87052  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298                Minimum follow-up 30.32562  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299 Max(planned duration, event cut) 32.87052  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300    Max(min follow-up, event cut) 32.87052  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 301                 Planned duration 30.00000  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 302                  Targeted events 34.24457  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 303                Minimum follow-up 29.30889  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 304 Max(planned duration, event cut) 34.24457  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 305    Max(min follow-up, event cut) 34.24457  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 306                 Planned duration 30.00000  62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 307                  Targeted events 35.22550  62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 308                Minimum follow-up 29.93786  62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 309 Max(planned duration, event cut) 35.22550  62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 310    Max(min follow-up, event cut) 35.22550  62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 311                 Planned duration 30.00000  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 312                  Targeted events 33.82268  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 313                Minimum follow-up 30.43156  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 314 Max(planned duration, event cut) 33.82268  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 315    Max(min follow-up, event cut) 33.82268  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 316                 Planned duration 30.00000  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 317                  Targeted events 34.47059  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 318                Minimum follow-up 30.41514  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 319 Max(planned duration, event cut) 34.47059  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 320    Max(min follow-up, event cut) 34.47059  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 321                 Planned duration 30.00000  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 322                  Targeted events 35.20960  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 323                Minimum follow-up 30.13714  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 324 Max(planned duration, event cut) 35.20960  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 325    Max(min follow-up, event cut) 35.20960  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 326                 Planned duration 30.00000  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 327                  Targeted events 35.92377  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 328                Minimum follow-up 32.40457  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 329 Max(planned duration, event cut) 35.92377  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 330    Max(min follow-up, event cut) 35.92377  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 331                 Planned duration 30.00000  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 332                  Targeted events 35.65085  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 333                Minimum follow-up 30.06775  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 334 Max(planned duration, event cut) 35.65085  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 335    Max(min follow-up, event cut) 35.65085  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 336                 Planned duration 30.00000  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 337                  Targeted events 35.06020  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 338                Minimum follow-up 30.37774  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 339 Max(planned duration, event cut) 35.06020  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 340    Max(min follow-up, event cut) 35.06020  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 341                 Planned duration 30.00000  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 342                  Targeted events 35.08805  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 343                Minimum follow-up 32.06182  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 344 Max(planned duration, event cut) 35.08805  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 345    Max(min follow-up, event cut) 35.08805  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 346                 Planned duration 30.00000  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 347                  Targeted events 33.54823  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 348                Minimum follow-up 30.38074  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 349 Max(planned duration, event cut) 33.54823  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 350    Max(min follow-up, event cut) 33.54823  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 351                 Planned duration 30.00000  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 352                  Targeted events 34.47262  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 353                Minimum follow-up 29.08655  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 354 Max(planned duration, event cut) 34.47262  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 355    Max(min follow-up, event cut) 34.47262  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 356                 Planned duration 30.00000  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 357                  Targeted events 34.40623  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 358                Minimum follow-up 30.65888  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 359 Max(planned duration, event cut) 34.40623  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 360    Max(min follow-up, event cut) 34.40623  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 361                 Planned duration 30.00000  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 362                  Targeted events 31.57970  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 363                Minimum follow-up 28.33111  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 364 Max(planned duration, event cut) 31.57970  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 365    Max(min follow-up, event cut) 31.57970  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 366                 Planned duration 30.00000  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 367                  Targeted events 35.86374  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 368                Minimum follow-up 31.07454  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 369 Max(planned duration, event cut) 35.86374  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 370    Max(min follow-up, event cut) 35.86374  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 371                 Planned duration 30.00000  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 372                  Targeted events 34.79521  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 373                Minimum follow-up 29.95887  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 374 Max(planned duration, event cut) 34.79521  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 375    Max(min follow-up, event cut) 34.79521  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 376                 Planned duration 30.00000  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 377                  Targeted events 32.80305  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 378                Minimum follow-up 29.38033  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 379 Max(planned duration, event cut) 32.80305  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 380    Max(min follow-up, event cut) 32.80305  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 381                 Planned duration 30.00000  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 382                  Targeted events 38.39885  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 383                Minimum follow-up 31.65124  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 384 Max(planned duration, event cut) 38.39885  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 385    Max(min follow-up, event cut) 38.39885  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 386                 Planned duration 30.00000  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 387                  Targeted events 34.87496  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 388                Minimum follow-up 29.66380  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 389 Max(planned duration, event cut) 34.87496  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 390    Max(min follow-up, event cut) 34.87496  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 391                 Planned duration 30.00000  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 392                  Targeted events 33.95847  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 393                Minimum follow-up 28.89698  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 394 Max(planned duration, event cut) 33.95847  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 395    Max(min follow-up, event cut) 33.95847  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 396                 Planned duration 30.00000  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 397                  Targeted events 34.91475  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 398                Minimum follow-up 30.02777  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 399 Max(planned duration, event cut) 34.91475  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 400    Max(min follow-up, event cut) 34.91475  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 401                 Planned duration 30.00000  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 402                  Targeted events 37.03746  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 403                Minimum follow-up 31.02185  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 404 Max(planned duration, event cut) 37.03746  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 405    Max(min follow-up, event cut) 37.03746  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 406                 Planned duration 30.00000  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 407                  Targeted events 35.18807  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 408                Minimum follow-up 30.18952  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 409 Max(planned duration, event cut) 35.18807  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 410    Max(min follow-up, event cut) 35.18807  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 411                 Planned duration 30.00000  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 412                  Targeted events 31.91792  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 413                Minimum follow-up 28.76744  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 414 Max(planned duration, event cut) 31.91792  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 415    Max(min follow-up, event cut) 31.91792  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 416                 Planned duration 30.00000  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 417                  Targeted events 34.25827  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 418                Minimum follow-up 29.59276  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 419 Max(planned duration, event cut) 34.25827  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 420    Max(min follow-up, event cut) 34.25827  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 421                 Planned duration 30.00000  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 422                  Targeted events 34.13983  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 423                Minimum follow-up 30.05535  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 424 Max(planned duration, event cut) 34.13983  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 425    Max(min follow-up, event cut) 34.13983  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 426                 Planned duration 30.00000  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 427                  Targeted events 34.67392  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 428                Minimum follow-up 30.52656  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 429 Max(planned duration, event cut) 34.67392  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 430    Max(min follow-up, event cut) 34.67392  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 431                 Planned duration 30.00000  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 432                  Targeted events 34.10374  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 433                Minimum follow-up 29.31655  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 434 Max(planned duration, event cut) 34.10374  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 435    Max(min follow-up, event cut) 34.10374  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 436                 Planned duration 30.00000  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 437                  Targeted events 35.22186  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 438                Minimum follow-up 28.80527  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 439 Max(planned duration, event cut) 35.22186  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 440    Max(min follow-up, event cut) 35.22186  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 441                 Planned duration 30.00000  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 442                  Targeted events 34.40650  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 443                Minimum follow-up 30.46735  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 444 Max(planned duration, event cut) 34.40650  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 445    Max(min follow-up, event cut) 34.40650  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 446                 Planned duration 30.00000  90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 447                  Targeted events 33.09799  90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 448                Minimum follow-up 30.95716  90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 449 Max(planned duration, event cut) 33.09799  90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 450    Max(min follow-up, event cut) 33.09799  90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 451                 Planned duration 30.00000  91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 452                  Targeted events 31.97511  91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 453                Minimum follow-up 29.74051  91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 454 Max(planned duration, event cut) 31.97511  91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 455    Max(min follow-up, event cut) 31.97511  91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 456                 Planned duration 30.00000  92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 457                  Targeted events 35.49273  92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 458                Minimum follow-up 29.67250  92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 459 Max(planned duration, event cut) 35.49273  92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 460    Max(min follow-up, event cut) 35.49273  92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 461                 Planned duration 30.00000  93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 462                  Targeted events 34.59404  93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 463                Minimum follow-up 28.35316  93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 464 Max(planned duration, event cut) 34.59404  93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 465    Max(min follow-up, event cut) 34.59404  93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 466                 Planned duration 30.00000  94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 467                  Targeted events 32.20619  94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 468                Minimum follow-up 29.88147  94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 469 Max(planned duration, event cut) 32.20619  94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 470    Max(min follow-up, event cut) 32.20619  94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 471                 Planned duration 30.00000  95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 472                  Targeted events 35.40507  95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 473                Minimum follow-up 28.56254  95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 474 Max(planned duration, event cut) 35.40507  95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 475    Max(min follow-up, event cut) 35.40507  95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 476                 Planned duration 30.00000  96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 477                  Targeted events 33.61292  96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 478                Minimum follow-up 30.03990  96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 479 Max(planned duration, event cut) 33.61292  96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 480    Max(min follow-up, event cut) 33.61292  96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 481                 Planned duration 30.00000  97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 482                  Targeted events 33.18038  97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 483                Minimum follow-up 30.12015  97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 484 Max(planned duration, event cut) 33.18038  97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 485    Max(min follow-up, event cut) 33.18038  97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 486                 Planned duration 30.00000  98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 487                  Targeted events 31.71537  98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 488                Minimum follow-up 28.45155  98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 489 Max(planned duration, event cut) 31.71537  98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 490    Max(min follow-up, event cut) 31.71537  98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 491                 Planned duration 30.00000  99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 492                  Targeted events 36.84463  99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 493                Minimum follow-up 33.34436  99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 494 Max(planned duration, event cut) 36.84463  99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 495    Max(min follow-up, event cut) 36.84463  99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 496                 Planned duration 30.00000 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 497                  Targeted events 36.52875 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 498                Minimum follow-up 30.73208 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 499 Max(planned duration, event cut) 36.52875 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 500    Max(min follow-up, event cut) 36.52875 100</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
