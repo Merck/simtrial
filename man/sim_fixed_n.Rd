@@ -119,6 +119,26 @@ set.seed(2023)
 plan("multisession", workers = 2)
 sim_fixed_n(n_sim = 10)
 plan("sequential")
+
+# Example 5: Stratified design with two strata
+sim_fixed_n(
+  n_sim = 100,
+  sample_size = 500,
+  target_event = 350,
+  stratum = data.frame(stratum = c("Biomarker-positive", "Biomarker-negative"),
+                       p = c(0.5, 0.5)),
+  enroll_rate = data.frame(stratum = c("Biomarker positive", "Biomarker negative"),
+                           duration = c(12, 12), rate = c(250 / 12, 250 / 12)),
+  fail_rate = data.frame(stratum = c(rep("Biomarker-positive", 2), rep("Biomarker-negative", 2)),
+                         duration = c(3, Inf, 3, Inf),
+                         fail_rate = log(2) / c(12, 12, 8, 8),
+                         hr = c(1, 0.6, 1, 0.7),
+                         dropout_rate = rep(0.001, 4)),
+  total_duration = 30,
+  block = rep(c("experimental", "control"), 2),
+  timing_type = 1:5,
+  rho_gamma = data.frame(rho = 0, gamma = 0)
+  )
 }
 \dontshow{\}) # examplesIf}
 }
