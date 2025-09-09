@@ -1,3 +1,14 @@
+# simtrial 1.0.1
+
+## Statistical improvements
+
+- A example of stratified group sequential design is added for the `sim_gs_n()` function (#336, #343, thanks to @LittleBeannie).
+
+## Computational improvements
+
+- The `dplyr` syntax in `sim_gs_n()` is replaced with `data.table` syntax for better speed (#339, thanks to @jdblischak).
+- The `parallelelly` package version is temporarily downgraded to v1.44.0 for successful macOC build. (#341, #338, thanks to @jdblischak).
+
 # simtrial 1.0.0
 
 ## Statistical improvements
