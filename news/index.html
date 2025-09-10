@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,18 @@
       <small>Source: <a href="https://github.com/Merck/simtrial/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="simtrial-101">simtrial 1.0.1<a class="anchor" aria-label="anchor" href="#simtrial-101"></a></h2>
+<div class="section level3">
+<h3 id="statistical-improvements-1-0-1">Statistical improvements<a class="anchor" aria-label="anchor" href="#statistical-improvements-1-0-1"></a></h3>
+<ul><li>A example of stratified group sequential design is added for the <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> function (<a href="https://github.com/Merck/simtrial/issues/336" class="external-link">#336</a>, <a href="https://github.com/Merck/simtrial/issues/343" class="external-link">#343</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="computational-improvements-1-0-1">Computational improvements<a class="anchor" aria-label="anchor" href="#computational-improvements-1-0-1"></a></h3>
+<ul><li>The <code>dplyr</code> syntax in <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> is replaced with <code>data.table</code> syntax for better speed (<a href="https://github.com/Merck/simtrial/issues/339" class="external-link">#339</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+<li>The <code>parallelelly</code> package version is temporarily downgraded to v1.44.0 for successful macOC build. (<a href="https://github.com/Merck/simtrial/issues/341" class="external-link">#341</a>, <a href="https://github.com/Merck/simtrial/issues/338" class="external-link">#338</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="simtrial-100">simtrial 1.0.0<a class="anchor" aria-label="anchor" href="#simtrial-100"></a></h2><p class="text-muted">CRAN release: 2025-06-11</p>
 <div class="section level3">
