@@ -156,7 +156,7 @@
 #' # in each stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   target_event_per_stratum = c(100, 200)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200)
 #' )
 #' # Example 4b: Cut for analysis when there are at least 100 events
 #' # in the biomarker-positive population, but we don't have a requirement
@@ -173,7 +173,7 @@
 #' get_analysis_date(
 #'   simulated_data,
 #'   target_event_overall = 150,
-#'   target_event_per_stratum = c(100, NA)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 #' )
 #' # Example 4c: Cut for analysis when there are at least 100 events
 #' # in the biomarker-positive population, but we don't have a requirement
@@ -192,7 +192,7 @@
 #'   simulated_data,
 #'   planned_calendar_time = 24,
 #'   target_event_overall = 150,
-#'   target_event_per_stratum = c(100, NA)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 #' )
 #'
 #' # Example 5: Cut for analysis when there are at least 100 events
@@ -208,7 +208,7 @@
 #' # events, which arrives later.
 #' get_analysis_date(
 #'   simulated_data,
-#'   target_event_per_stratum = c(100, 200),
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200),
 #'   max_extension_for_target_event = 30
 #' )
 #'
@@ -330,11 +330,11 @@ get_analysis_date <- function(
   }
   # 2b: Reach targeted events per sub-population
   if (!all(is.na(target_event_per_stratum))) {
-    stratum <- unique(data$stratum)
-    cut_date2b <- vector(mode = "list", length = length(stratum))
+    stratum_value <- names(target_event_per_stratum)
+    cut_date2b <- vector(mode = "list", length = length(stratum_value))
     for (i in seq_along(target_event_per_stratum)) {
       cut_date2b[[i]] <- get_cut_date_by_event(
-        x = data[stratum == stratum[i], ],
+        x = data[stratum == stratum_value[i], ],
         event = target_event_per_stratum[i]
       )
     }
