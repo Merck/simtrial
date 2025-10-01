@@ -36,6 +36,9 @@ test_that("Cut by targeted event per stratum", {
   cut_data <- sim_data |> cut_data_by_date(cut_date)
   expect_true(sum(cut_data[which(cut_data$stratum == "Positive"), ]$event) >= 50)
   expect_true(sum(cut_data[which(cut_data$stratum == "Negative"), ]$event) >= 70)
+
+  # test 4
+  expect_error(sim_data |> get_analysis_date(target_event_per_stratum = c(50, 70)))
 })
 
 test_that("Cut by targeted sample size per stratum", {
@@ -71,8 +74,12 @@ test_that("Cut by targeted sample size per stratum", {
   expect_true(cut_data |> dplyr::filter(stratum == "Positive") |> nrow() >= 50)
 
   # test 3
-  cut_date <- sim_data |> get_analysis_date(target_event_per_stratum = c("Positive" = NA, "Negative" = 100))
+  cut_date <- sim_data |> get_analysis_date(min_n_per_stratum = c("Positive" = NA, "Negative" = 100),
+                                            min_followup = 6)
   cut_data <- sim_data |> cut_data_by_date(cut_date)
   expect_true(cut_data |> dplyr::filter(stratum == "Negative") |> nrow() >= 100)
+
+  # test 4
+  expect_error(sim_data |> get_analysis_date(min_n_per_stratum = c(50, 100)))
 })
 

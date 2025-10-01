@@ -318,15 +318,19 @@ get_analysis_date <- function(
 
   # check if target_event_per_stratum is a named vector
   if (!all(is.na(target_event_per_stratum))){
-    if(any(sort(names(target_event_per_stratum)) != sort(unique(data$stratum)))){
-      stop("`target_event_per_stratum` must be a named vector with same values as the data$stratum.")
+    if(is.null(names(target_event_per_stratum))) {
+      stop("`target_event_per_stratum` must be a named vector.")
+    } else if(any(sort(names(target_event_per_stratum)) != sort(unique(data$stratum)))) {
+      stop("`target_event_per_stratum` must be a named vector whose names match the values in data$stratum.")
     }
   }
 
   # check if min_n_per_stratum is a named vector
   if (!all(is.na(min_n_per_stratum))){
-    if(any(sort(names(min_n_per_stratum)) != sort(unique(data$stratum)))){
-      stop("`min_n_per_stratum` must be a named vector with same values as the data$stratum.")
+    if(is.null(names(min_n_per_stratum))) {
+      stop("`min_n_per_stratum` must be a named vector.")
+    } else if(any(sort(names(min_n_per_stratum)) != sort(unique(data$stratum)))){
+      stop("`min_n_per_stratum` must be a named vector whose names match the values in data$stratum.")
     }
   }
 
