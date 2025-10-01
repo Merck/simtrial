@@ -33,7 +33,7 @@
 #'   planned minimum time after the previous analysis.
 #' @param min_n_overall A numerical value specifying the
 #'   minimal overall sample size enrolled to kick off the analysis.
-#' @param min_n_per_stratum A numerical value specifying the
+#' @param min_n_per_stratum A named numerical value specifying the
 #'   minimal sample size enrolled per stratum to kick off the analysis.
 #' @param min_followup A numerical value specifying the
 #'   minimal follow-up time after specified enrollment fraction in
@@ -242,7 +242,7 @@
 #' # 200/160 patients enrolled in the biomarker-positive/negative stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   min_n_per_stratum = c(200, 160),
+#'   min_n_per_stratum =  c("Biomarker-negative" = 200, "Biomarker-positive" = 160),
 #'   min_followup = 12
 #' )
 #' # Example 7b: Cut for analysis when 12 months after at least 200 patients
@@ -253,7 +253,7 @@
 #' # 200 patients enrolled in the biomarker-positive stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   min_n_per_stratum = c(200, NA),
+#'   min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
 #'   min_followup = 12
 #' )
 #' # Example 7c: Cut for analysis when 12 months after at least 200 patients
@@ -267,7 +267,7 @@
 #' get_analysis_date(
 #'   simulated_data,
 #'   min_n_overall = n * 0.8,
-#'   min_n_per_stratum = c(200, NA),
+#'   min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
 #'   min_followup = 12
 #' )
 get_analysis_date <- function(
@@ -317,9 +317,16 @@ get_analysis_date <- function(
   }
 
   # check if target_event_per_stratum is a named vector
-  if (!is.null(target_event_per_stratum)){
-    if(all(names(target_event_per_stratum) == unique(data$stratum))){
+  if (!all(is.na(target_event_per_stratum))){
+    if(any(sort(names(target_event_per_stratum)) != sort(unique(data$stratum)))){
       stop("`target_event_per_stratum` must be a named vector with same values as the data$stratum.")
+    }
+  }
+
+  # check if min_n_per_stratum is a named vector
+  if (!all(is.na(min_n_per_stratum))){
+    if(any(sort(names(min_n_per_stratum)) != sort(unique(data$stratum)))){
+      stop("`min_n_per_stratum` must be a named vector with same values as the data$stratum.")
     }
   }
 
@@ -371,13 +378,15 @@ get_analysis_date <- function(
   # enrolled and 70% biomarker negative patients are enrolled
   if (!all(is.na(min_n_per_stratum))) {
     cut_date5b <- vector(mode = "list", length = length(min_n_per_stratum))
+    stratum_value <- names(min_n_per_stratum)
+
     for (i in seq_along(min_n_per_stratum)) {
       if (is.na(min_n_per_stratum[i])) {
         cut_date5b[[i]] <- NA
         next
       }
       data5b <- as.data.table(data)
-      data5b <- data5b[stratum == stratum[i], ]
+      data5b <- data5b[stratum == stratum_value[i], ]
       data5b <- data5b[order(enroll_time), ]
       data5b <- data5b[seq_len(pmin(min_n_per_stratum[i], .N)), ]
       cut_date5b[[i]] <- max(data5b$enroll_time)

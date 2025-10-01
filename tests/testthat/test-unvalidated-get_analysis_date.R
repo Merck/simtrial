@@ -81,7 +81,7 @@ test_that("min_n_per_stratum + min_followup", {
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    min_n_per_stratum = c(200, 160),
+    min_n_per_stratum = c("Biomarker-positive" = 200, "Biomarker-negative" = 160),
     min_followup = 12
   )
   expect_equal(observed, 27.3372780033387)
@@ -93,7 +93,7 @@ test_that("min_n_per_stratum + min_followup (requirement for only one stratum)",
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    min_n_per_stratum = c(200, NA),
+    min_n_per_stratum = c("Biomarker-positive" =  200, "Biomarker-negative" = NA),
     min_followup = 12
   )
   expect_equal(observed, 27.3372780033387)
@@ -108,7 +108,7 @@ test_that("min_n_overall + min_n_per_stratum + min_followup", {
   observed <- get_analysis_date(
     simulated_data,
     min_n_overall = n * 0.8,
-    min_n_per_stratum = c(200, NA),
+    min_n_per_stratum = c("Biomarker-positive" =  200, "Biomarker-negative" = NA),
     min_followup = 12
   )
   expect_equal(observed, 28.8252059780061)
