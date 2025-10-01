@@ -23,7 +23,7 @@
 #'   planned calendar time for the analysis.
 #' @param target_event_overall A numerical value specifying the
 #'   targeted events for the overall population.
-#' @param target_event_per_stratum A numerical vector specifying the
+#' @param target_event_per_stratum A named numerical vector specifying the
 #'   targeted events per stratum.
 #' @param max_extension_for_target_event A numerical value specifying the
 #'   maximum time extension to reach targeted events.
@@ -314,6 +314,13 @@ get_analysis_date <- function(
   # if user input `min_n_per_stratum` but sum of it > n_max, then output error message
   if (cond2 && sum(min_n_per_stratum, na.rm = TRUE) > n_max) {
     stop("`min_n_per_stratum` must be a sum of positive numbers less than or equal to the total sample size.")
+  }
+
+  # check if target_event_per_stratum is a named vector
+  if (!is.null(target_event_per_stratum)){
+    if(all(names(target_event_per_stratum) == unique(data$stratum))){
+      stop("`target_event_per_stratum` must be a named vector with same values as the data$stratum.")
+    }
   }
 
   data <- as.data.table(data)
