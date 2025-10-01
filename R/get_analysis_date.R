@@ -33,7 +33,7 @@
 #'   planned minimum time after the previous analysis.
 #' @param min_n_overall A numerical value specifying the
 #'   minimal overall sample size enrolled to kick off the analysis.
-#' @param min_n_per_stratum A named numerical value specifying the
+#' @param min_n_per_stratum A named numerical vector specifying the
 #'   minimal sample size enrolled per stratum to kick off the analysis.
 #' @param min_followup A numerical value specifying the
 #'   minimal follow-up time after specified enrollment fraction in

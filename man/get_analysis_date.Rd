@@ -41,7 +41,7 @@ planned minimum time after the previous analysis.}
 \item{min_n_overall}{A numerical value specifying the
 minimal overall sample size enrolled to kick off the analysis.}
 
-\item{min_n_per_stratum}{A named numerical value specifying the
+\item{min_n_per_stratum}{A named numerical vector specifying the
 minimal sample size enrolled per stratum to kick off the analysis.}
 
 \item{min_followup}{A numerical value specifying the
