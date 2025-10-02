@@ -26,7 +26,7 @@ planned calendar time for the analysis.}
 \item{target_event_overall}{A numerical value specifying the
 targeted events for the overall population.}
 
-\item{target_event_per_stratum}{A numerical vector specifying the
+\item{target_event_per_stratum}{A named numerical vector specifying the
 targeted events per stratum.}
 
 \item{max_extension_for_target_event}{A numerical value specifying the
@@ -41,7 +41,7 @@ planned minimum time after the previous analysis.}
 \item{min_n_overall}{A numerical value specifying the
 minimal overall sample size enrolled to kick off the analysis.}
 
-\item{min_n_per_stratum}{A numerical value specifying the
+\item{min_n_per_stratum}{A named numerical vector specifying the
 minimal sample size enrolled per stratum to kick off the analysis.}
 
 \item{min_followup}{A numerical value specifying the
@@ -166,7 +166,7 @@ get_analysis_date(
 # in each stratum.
 get_analysis_date(
   simulated_data,
-  target_event_per_stratum = c(100, 200)
+  target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200)
 )
 # Example 4b: Cut for analysis when there are at least 100 events
 # in the biomarker-positive population, but we don't have a requirement
@@ -183,7 +183,7 @@ get_analysis_date(
 get_analysis_date(
   simulated_data,
   target_event_overall = 150,
-  target_event_per_stratum = c(100, NA)
+  target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 )
 # Example 4c: Cut for analysis when there are at least 100 events
 # in the biomarker-positive population, but we don't have a requirement
@@ -202,7 +202,7 @@ get_analysis_date(
   simulated_data,
   planned_calendar_time = 24,
   target_event_overall = 150,
-  target_event_per_stratum = c(100, NA)
+  target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 )
 
 # Example 5: Cut for analysis when there are at least 100 events
@@ -218,7 +218,7 @@ get_analysis_date(
 # events, which arrives later.
 get_analysis_date(
   simulated_data,
-  target_event_per_stratum = c(100, 200),
+  target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200),
   max_extension_for_target_event = 30
 )
 
@@ -252,7 +252,7 @@ get_analysis_date(
 # 200/160 patients enrolled in the biomarker-positive/negative stratum.
 get_analysis_date(
   simulated_data,
-  min_n_per_stratum = c(200, 160),
+  min_n_per_stratum =  c("Biomarker-negative" = 200, "Biomarker-positive" = 160),
   min_followup = 12
 )
 # Example 7b: Cut for analysis when 12 months after at least 200 patients
@@ -263,7 +263,7 @@ get_analysis_date(
 # 200 patients enrolled in the biomarker-positive stratum.
 get_analysis_date(
   simulated_data,
-  min_n_per_stratum = c(200, NA),
+  min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
   min_followup = 12
 )
 # Example 7c: Cut for analysis when 12 months after at least 200 patients
@@ -277,7 +277,7 @@ get_analysis_date(
 get_analysis_date(
   simulated_data,
   min_n_overall = n * 0.8,
-  min_n_per_stratum = c(200, NA),
+  min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
   min_followup = 12
 )
 \dontshow{\}) # examplesIf}

@@ -32,7 +32,7 @@ test_that("target_event_per_stratum", {
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    target_event_per_stratum = c(100, 200)
+    target_event_per_stratum = c("Biomarker-negative" = 100, "Biomarker-positive" = 200)
   )
   expect_equal(observed, 30.7886529927995)
 })
@@ -44,7 +44,7 @@ test_that("target_event_overall + target_event_per_stratum", {
   observed <- get_analysis_date(
     simulated_data,
     target_event_overall = 150,
-    target_event_per_stratum = c(100, NA)
+    target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
   )
   expect_equal(observed, 18.3027216632238)
 })
@@ -55,7 +55,7 @@ test_that("target_event_per_stratum + max_extension_for_target_event", {
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    target_event_per_stratum = c(100, 200),
+    target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200),
     max_extension_for_target_event = 30
   )
   expect_equal(observed, 30)
@@ -81,7 +81,7 @@ test_that("min_n_per_stratum + min_followup", {
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    min_n_per_stratum = c(200, 160),
+    min_n_per_stratum = c("Biomarker-positive" = 200, "Biomarker-negative" = 160),
     min_followup = 12
   )
   expect_equal(observed, 27.3372780033387)
@@ -93,7 +93,7 @@ test_that("min_n_per_stratum + min_followup (requirement for only one stratum)",
   simulated_data <- test_get_analysis_date()$simulated_data
   observed <- get_analysis_date(
     simulated_data,
-    min_n_per_stratum = c(200, NA),
+    min_n_per_stratum = c("Biomarker-positive" =  200, "Biomarker-negative" = NA),
     min_followup = 12
   )
   expect_equal(observed, 27.3372780033387)
@@ -108,7 +108,7 @@ test_that("min_n_overall + min_n_per_stratum + min_followup", {
   observed <- get_analysis_date(
     simulated_data,
     min_n_overall = n * 0.8,
-    min_n_per_stratum = c(200, NA),
+    min_n_per_stratum = c("Biomarker-positive" =  200, "Biomarker-negative" = NA),
     min_followup = 12
   )
   expect_equal(observed, 28.8252059780061)
@@ -130,7 +130,7 @@ test_that("get_analysis_date() fails early with bad input", {
   expect_error(get_analysis_date(simulated_data, planned_calendar_time = -1))
 
   # Require positive number
-  expect_error(get_analysis_date(simulated_data, target_event_per_stratum = 0))
+  expect_error(get_analysis_date(simulated_data, target_event_per_stratum = c("Biomarker-positive" = 0, "Biomarker-negative" = -1)))
   expect_error(get_analysis_date(simulated_data, min_n_per_stratum = 0))
 
   # `min_n_overall` and `min_n_per_stratum` require `min_followup`.
@@ -183,7 +183,7 @@ test_that("get_analysis_date() fails early with bad input", {
   expect_error(
     get_analysis_date(
       simulated_data,
-      target_event_per_stratum = c(100.1, 200)
+      target_event_per_stratum = c("Biomarker-positive" = 100.1, "Biomarker-negative" = 200)
     ),
     "target_event_per_stratum must be a vector with only positive whole numbers and missing values"
   )

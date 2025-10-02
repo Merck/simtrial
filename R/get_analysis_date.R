@@ -23,7 +23,7 @@
 #'   planned calendar time for the analysis.
 #' @param target_event_overall A numerical value specifying the
 #'   targeted events for the overall population.
-#' @param target_event_per_stratum A numerical vector specifying the
+#' @param target_event_per_stratum A named numerical vector specifying the
 #'   targeted events per stratum.
 #' @param max_extension_for_target_event A numerical value specifying the
 #'   maximum time extension to reach targeted events.
@@ -33,7 +33,7 @@
 #'   planned minimum time after the previous analysis.
 #' @param min_n_overall A numerical value specifying the
 #'   minimal overall sample size enrolled to kick off the analysis.
-#' @param min_n_per_stratum A numerical value specifying the
+#' @param min_n_per_stratum A named numerical vector specifying the
 #'   minimal sample size enrolled per stratum to kick off the analysis.
 #' @param min_followup A numerical value specifying the
 #'   minimal follow-up time after specified enrollment fraction in
@@ -156,7 +156,7 @@
 #' # in each stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   target_event_per_stratum = c(100, 200)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200)
 #' )
 #' # Example 4b: Cut for analysis when there are at least 100 events
 #' # in the biomarker-positive population, but we don't have a requirement
@@ -173,7 +173,7 @@
 #' get_analysis_date(
 #'   simulated_data,
 #'   target_event_overall = 150,
-#'   target_event_per_stratum = c(100, NA)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 #' )
 #' # Example 4c: Cut for analysis when there are at least 100 events
 #' # in the biomarker-positive population, but we don't have a requirement
@@ -192,7 +192,7 @@
 #'   simulated_data,
 #'   planned_calendar_time = 24,
 #'   target_event_overall = 150,
-#'   target_event_per_stratum = c(100, NA)
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = NA)
 #' )
 #'
 #' # Example 5: Cut for analysis when there are at least 100 events
@@ -208,7 +208,7 @@
 #' # events, which arrives later.
 #' get_analysis_date(
 #'   simulated_data,
-#'   target_event_per_stratum = c(100, 200),
+#'   target_event_per_stratum = c("Biomarker-positive" = 100, "Biomarker-negative" = 200),
 #'   max_extension_for_target_event = 30
 #' )
 #'
@@ -242,7 +242,7 @@
 #' # 200/160 patients enrolled in the biomarker-positive/negative stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   min_n_per_stratum = c(200, 160),
+#'   min_n_per_stratum =  c("Biomarker-negative" = 200, "Biomarker-positive" = 160),
 #'   min_followup = 12
 #' )
 #' # Example 7b: Cut for analysis when 12 months after at least 200 patients
@@ -253,7 +253,7 @@
 #' # 200 patients enrolled in the biomarker-positive stratum.
 #' get_analysis_date(
 #'   simulated_data,
-#'   min_n_per_stratum = c(200, NA),
+#'   min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
 #'   min_followup = 12
 #' )
 #' # Example 7c: Cut for analysis when 12 months after at least 200 patients
@@ -267,7 +267,7 @@
 #' get_analysis_date(
 #'   simulated_data,
 #'   min_n_overall = n * 0.8,
-#'   min_n_per_stratum = c(200, NA),
+#'   min_n_per_stratum = c("Biomarker-negative" = 200, "Biomarker-positive" = NA),
 #'   min_followup = 12
 #' )
 get_analysis_date <- function(
@@ -316,6 +316,24 @@ get_analysis_date <- function(
     stop("`min_n_per_stratum` must be a sum of positive numbers less than or equal to the total sample size.")
   }
 
+  # check if target_event_per_stratum is a named vector
+  if (!all(is.na(target_event_per_stratum))){
+    if(is.null(names(target_event_per_stratum))) {
+      stop("`target_event_per_stratum` must be a named vector.")
+    } else if(any(sort(names(target_event_per_stratum)) != sort(unique(data$stratum)))) {
+      stop("`target_event_per_stratum` must be a named vector whose names match the values in data$stratum.")
+    }
+  }
+
+  # check if min_n_per_stratum is a named vector
+  if (!all(is.na(min_n_per_stratum))){
+    if(is.null(names(min_n_per_stratum))) {
+      stop("`min_n_per_stratum` must be a named vector.")
+    } else if(any(sort(names(min_n_per_stratum)) != sort(unique(data$stratum)))){
+      stop("`min_n_per_stratum` must be a named vector whose names match the values in data$stratum.")
+    }
+  }
+
   data <- as.data.table(data)
 
   # Cutting option 1: Planned calendar time for the analysis
@@ -330,11 +348,11 @@ get_analysis_date <- function(
   }
   # 2b: Reach targeted events per sub-population
   if (!all(is.na(target_event_per_stratum))) {
-    stratum <- unique(data$stratum)
-    cut_date2b <- vector(mode = "list", length = length(stratum))
+    stratum_value <- names(target_event_per_stratum)
+    cut_date2b <- vector(mode = "list", length = length(stratum_value))
     for (i in seq_along(target_event_per_stratum)) {
       cut_date2b[[i]] <- get_cut_date_by_event(
-        x = data[stratum == stratum[i], ],
+        x = data[stratum == stratum_value[i], ],
         event = target_event_per_stratum[i]
       )
     }
@@ -364,13 +382,15 @@ get_analysis_date <- function(
   # enrolled and 70% biomarker negative patients are enrolled
   if (!all(is.na(min_n_per_stratum))) {
     cut_date5b <- vector(mode = "list", length = length(min_n_per_stratum))
+    stratum_value <- names(min_n_per_stratum)
+
     for (i in seq_along(min_n_per_stratum)) {
       if (is.na(min_n_per_stratum[i])) {
         cut_date5b[[i]] <- NA
         next
       }
       data5b <- as.data.table(data)
-      data5b <- data5b[stratum == stratum[i], ]
+      data5b <- data5b[stratum == stratum_value[i], ]
       data5b <- data5b[order(enroll_time), ]
       data5b <- data5b[seq_len(pmin(min_n_per_stratum[i], .N)), ]
       cut_date5b[[i]] <- max(data5b$enroll_time)
