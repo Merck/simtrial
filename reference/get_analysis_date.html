@@ -35,7 +35,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Derive analysis date for interim/final analysis given multiple conditions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/v1.0.1/R/get_analysis_date.R" class="external-link"><code>R/get_analysis_date.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/main/R/get_analysis_date.R" class="external-link"><code>R/get_analysis_date.R</code></a></small>
       <div class="d-none name"><code>get_analysis_date.Rd</code></div>
     </div>
 
@@ -78,7 +78,7 @@ targeted events for the overall population.</p></dd>
 
 
 <dt id="arg-target-event-per-stratum">target_event_per_stratum<a class="anchor" aria-label="anchor" href="#arg-target-event-per-stratum"></a></dt>
-<dd><p>A numerical vector specifying the
+<dd><p>A named numerical vector specifying the
 targeted events per stratum.</p></dd>
 
 
@@ -103,7 +103,7 @@ minimal overall sample size enrolled to kick off the analysis.</p></dd>
 
 
 <dt id="arg-min-n-per-stratum">min_n_per_stratum<a class="anchor" aria-label="anchor" href="#arg-min-n-per-stratum"></a></dt>
-<dd><p>A numerical value specifying the
+<dd><p>A named numerical vector specifying the
 minimal sample size enrolled per stratum to kick off the analysis.</p></dd>
 
 
@@ -241,9 +241,9 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="co"># in each stratum.</span></span></span>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
-<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="fl">100</span>, <span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30.78865</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 59.1661</span>
 <span class="r-in"><span><span class="co"># Example 4b: Cut for analysis when there are at least 100 events</span></span></span>
 <span class="r-in"><span><span class="co"># in the biomarker-positive population, but we don't have a requirement</span></span></span>
 <span class="r-in"><span><span class="co"># for the biomarker-negative population. Additionally, we want to cut</span></span></span>
@@ -259,7 +259,7 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">150</span>,</span></span>
-<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="fl">100</span>, <span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18.30272</span>
 <span class="r-in"><span><span class="co"># Example 4c: Cut for analysis when there are at least 100 events</span></span></span>
@@ -279,7 +279,7 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
 <span class="r-in"><span>  planned_calendar_time <span class="op">=</span> <span class="fl">24</span>,</span></span>
 <span class="r-in"><span>  target_event_overall <span class="op">=</span> <span class="fl">150</span>,</span></span>
-<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="fl">100</span>, <span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 24</span>
 <span class="r-in"><span></span></span>
@@ -296,7 +296,7 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="co"># events, which arrives later.</span></span></span>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
-<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  target_event_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="fl">100</span>, <span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  max_extension_for_target_event <span class="op">=</span> <span class="fl">30</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30</span>
@@ -333,10 +333,10 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="co"># 200/160 patients enrolled in the biomarker-positive/negative stratum.</span></span></span>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
-<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">160</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="fl">200</span>, <span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="fl">160</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  min_followup <span class="op">=</span> <span class="fl">12</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27.33728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32.88461</span>
 <span class="r-in"><span><span class="co"># Example 7b: Cut for analysis when 12 months after at least 200 patients</span></span></span>
 <span class="r-in"><span><span class="co"># are enrolled in the biomarker positive population, but we don't have a</span></span></span>
 <span class="r-in"><span><span class="co"># specific requirement for the biomarker negative population.</span></span></span>
@@ -345,10 +345,10 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="co"># 200 patients enrolled in the biomarker-positive stratum.</span></span></span>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
-<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="fl">200</span>, <span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  min_followup <span class="op">=</span> <span class="fl">12</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27.33728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32.88461</span>
 <span class="r-in"><span><span class="co"># Example 7c: Cut for analysis when 12 months after at least 200 patients</span></span></span>
 <span class="r-in"><span><span class="co"># are enrolled in the biomarker-positive population, but we don't have a</span></span></span>
 <span class="r-in"><span><span class="co"># specific requirement for the biomarker-negative population. We also want</span></span></span>
@@ -360,10 +360,10 @@ Condition 4 and Condition 5, respectively.</p>
 <span class="r-in"><span><span class="fu">get_analysis_date</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">simulated_data</span>,</span></span>
 <span class="r-in"><span>  min_n_overall <span class="op">=</span> <span class="va">n</span> <span class="op">*</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  min_n_per_stratum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biomarker-negative"</span> <span class="op">=</span> <span class="fl">200</span>, <span class="st">"Biomarker-positive"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  min_followup <span class="op">=</span> <span class="fl">12</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 28.82521</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32.88461</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
