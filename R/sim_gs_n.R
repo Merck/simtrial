@@ -315,13 +315,6 @@ sim_gs_n <- function(
   additional_args <- list(...)
   weight <- if("weight" %in% names(additional_args)) {additional_args$weight}
   is_logrank <- identical(test, wlr) && identical(weight, fh(rho = 0, gamma = 0))
-
-  is_1sided <- if(!is.null(original_design) && all(original_design$bound$bound == "upper")) {
-    TRUE
-  } else if (!is.null(original_design) && !all(original_design$bound$bound == "upper")) {
-    FALSE
-  }
-
   if (!is.null(original_design) && !is_logrank){
     message("The updated bound is currently only provided for logrank test.")
   }
@@ -417,7 +410,7 @@ sim_gs_n <- function(
       # Add planned bounds
       planned_bounds <- as.data.table(original_design$bound)
       planned_bounds <- dcast(planned_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
-      if (is_1sided){
+      if (all(original_design$bound$bound == "upper")){
         setnames(planned_bounds, c("analysis", "planned_upper_bound"))
       } else {
         setnames(planned_bounds, c("analysis", "planned_lower_bound", "planned_upper_bound"))
