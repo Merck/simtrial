@@ -316,7 +316,11 @@ sim_gs_n <- function(
   weight <- if("weight" %in% names(additional_args)) {additional_args$weight}
   is_logrank <- identical(test, wlr) && identical(weight, fh(rho = 0, gamma = 0))
 
-  is_1sided <- if(!is.null(original_design) && all(original_design$bound$bound == "upper")) {TRUE}
+  is_1sided <- if(!is.null(original_design) && all(original_design$bound$bound == "upper")) {
+    TRUE
+  } else if (!is.null(original_design) && !all(original_design$bound$bound == "upper")) {
+    FALSE
+  }
 
   if (!is.null(original_design) && !is_logrank){
     message("The updated bound is currently only provided for logrank test.")
