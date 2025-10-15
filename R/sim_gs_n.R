@@ -410,7 +410,12 @@ sim_gs_n <- function(
       # Add planned bounds
       planned_bounds <- as.data.table(original_design$bound)
       planned_bounds <- dcast(planned_bounds, analysis ~ bound, fill = NA, drop = FALSE, value.var = "z")
-      setnames(planned_bounds, c("analysis", "planned_lower_bound", "planned_upper_bound"))
+      if (all(original_design$bound$bound == "upper")){
+        setnames(planned_bounds, c("analysis", "planned_upper_bound"))
+      } else {
+        setnames(planned_bounds, c("analysis", "planned_lower_bound", "planned_upper_bound"))
+      }
+
       # workaround for the fact that merge() moves the "by" column to be first
       final_column_order <- union(colnames(ans_1sim), colnames(planned_bounds))
       ans_1sim <- merge(ans_1sim, planned_bounds, all.x = TRUE, sort = FALSE)
