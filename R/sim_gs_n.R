@@ -37,8 +37,8 @@
 #'   Importantly, note that the simulated data set is always passed as the first
 #'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
-#'   examples. It can take a special value `"auto"`, which means to create cut
-#'   functions based on `original_design`.
+#'   examples. By default, the cut functions are created from `original_design`
+#'   if provided (if not, `cut` will be `NULL`).
 #' @param original_design A design object from the gsDesign2 package, which is required when users
 #' want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.
 #' @param ia_alpha_spending Spend alpha at interim analysis based on
@@ -303,7 +303,7 @@ sim_gs_n <- function(
     ),
     block = rep(c("experimental", "control"), 2),
     test = wlr,
-    cut = NULL,
+    cut = cut_from_design(original_design),
     original_design = NULL,
     ia_alpha_spending = c("min_planned_actual", "actual"),
     fa_alpha_spending = c("full_alpha", "info_frac"),
@@ -319,8 +319,6 @@ sim_gs_n <- function(
   if (!is.null(original_design) && !is_logrank){
     message("The updated bound is currently only provided for logrank test.")
   }
-
-  if (identical(cut, "auto")) cut <- auto_cut(original_design)
 
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
@@ -508,8 +506,9 @@ create_cut <- function(...) {
   }
 }
 
-# Create cut functions automatically from the design object
-auto_cut <- function(x) {
+# Create cut functions from the design object
+cut_from_design <- function(x) {
+  if (is.null(x)) return()
   k <- nrow(x$analysis)
   res <- lapply(seq_len(k), function(i) {
     if (is.null(x$input$analysis_time)) {
