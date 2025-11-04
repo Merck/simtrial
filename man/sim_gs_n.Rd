@@ -13,7 +13,7 @@ sim_gs_n(
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
   test = wlr,
-  cut = NULL,
+  cut = cut_from_design(original_design),
   original_design = NULL,
   ia_alpha_spending = c("min_planned_actual", "actual"),
   fa_alpha_spending = c("full_alpha", "info_frac"),
@@ -49,7 +49,8 @@ Importantly, note that the simulated data set is always passed as the first
 positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
-examples.}
+examples. By default, the cut functions are created from \code{original_design}
+if provided (if not, \code{cut} will be \code{NULL}).}
 
 \item{original_design}{A design object from the gsDesign2 package, which is required when users
 want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.}
