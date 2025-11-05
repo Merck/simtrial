@@ -50,7 +50,8 @@ positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
 examples. By default, the cut functions are created from \code{original_design}
-if provided (if not, \code{cut} will be \code{NULL}).}
+if provided (if not, users are required to provide the value of \code{cut} by
+\code{\link[=create_cut]{create_cut()}}).}
 
 \item{original_design}{A design object from the gsDesign2 package, which is required when users
 want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.}
