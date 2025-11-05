@@ -13,7 +13,7 @@ sim_gs_n(
     18), hr = c(0.9, 0.6), dropout_rate = rep(0.001, 2)),
   block = rep(c("experimental", "control"), 2),
   test = wlr,
-  cut = cut_from_design(original_design),
+  cut = NULL,
   original_design = NULL,
   ia_alpha_spending = c("min_planned_actual", "actual"),
   fa_alpha_spending = c("full_alpha", "info_frac"),

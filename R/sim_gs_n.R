@@ -303,7 +303,7 @@ sim_gs_n <- function(
     ),
     block = rep(c("experimental", "control"), 2),
     test = wlr,
-    cut = cut_from_design(original_design),
+    cut = NULL,
     original_design = NULL,
     ia_alpha_spending = c("min_planned_actual", "actual"),
     fa_alpha_spending = c("full_alpha", "info_frac"),
@@ -319,6 +319,9 @@ sim_gs_n <- function(
   if (!is.null(original_design) && !is_logrank){
     message("The updated bound is currently only provided for logrank test.")
   }
+
+  # Create cut functions from the original design (if provided) by default
+  if (missing(cut)) cut <- cut_from_design(original_design)
 
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
