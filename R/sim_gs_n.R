@@ -322,7 +322,8 @@ sim_gs_n <- function(
   }
 
   # Create cut functions from the original design (if provided) by default
-  if (missing(cut)) cut <- cut_from_design(original_design)
+  if (is.null(cut)) cut <- cut_from_design(original_design)
+  if (is.null(cut)) stop("Please provide the cutting for each analysis.")
 
   # parallel computation message for backends ----
   if (!is(plan(), "sequential")) {
