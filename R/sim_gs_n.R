@@ -515,15 +515,13 @@ create_cut <- function(...) {
 cut_from_design <- function(x) {
   if (is.null(x)) return()
   k <- nrow(x$analysis)
-  res <- lapply(seq_len(k), function(i) {
+  lapply(seq_len(k), function(i) {
     if (is.null(x$input$analysis_time)) {
       create_cut(target_event_overall = x$analysis$event[i])
     } else {
       create_cut(planned_calendar_time = x$analysis$time[i])
     }
   })
-  names(res) <- c(sprintf("ia%d", seq_len(k - 1)), "fa")
-  res
 }
 
 #' Create a cutting test function
