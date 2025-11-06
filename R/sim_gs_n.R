@@ -37,9 +37,9 @@
 #'   Importantly, note that the simulated data set is always passed as the first
 #'   positional argument to each test function provided.
 #' @param cut A list of cutting functions created by [create_cut()], see
-#'   examples. By default, the cut functions are created from `original_design`
-#'   if provided (if not, users are required to provide the value of `cut` by
-#'   [create_cut()]).
+#'   examples. Alternatively, if cut is \code{NULL} (the default) and a design
+#'   object is provided via the argument `original_design`, the cut functions
+#'   are automatically created from this object.
 #' @param original_design A design object from the gsDesign2 package, which is required when users
 #' want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.
 #' @param ia_alpha_spending Spend alpha at interim analysis based on
