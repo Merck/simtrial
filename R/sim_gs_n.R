@@ -511,7 +511,7 @@ create_cut <- function(...) {
   }
 }
 
-# Create cut functions from the design object
+# Create cut functions from the design object `x`, e.g., gsDesign2::gs_design_ahr()
 cut_from_design <- function(x) {
   if (is.null(x)) return()
   k <- nrow(x$analysis)
