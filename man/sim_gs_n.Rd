@@ -49,7 +49,9 @@ Importantly, note that the simulated data set is always passed as the first
 positional argument to each test function provided.}
 
 \item{cut}{A list of cutting functions created by \code{\link[=create_cut]{create_cut()}}, see
-examples.}
+examples. Alternatively, if cut is \code{NULL} (the default) and a design
+object is provided via the argument \code{original_design}, the cut functions
+are automatically created from this object.}
 
 \item{original_design}{A design object from the gsDesign2 package, which is required when users
 want to calculate updated bounds. The default is NULL leaving the updated bounds uncalculated.}
