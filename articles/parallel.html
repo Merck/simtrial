@@ -147,7 +147,7 @@ have varying durations and rates.</p>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="parallel_files/figure-html/enrollments-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="parallel_files/figure-html/enrollments-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
 <p>We see that <em>Enrollment 2</em> enrolls individuals more quickly
 than <em>Enrollment 1</em> at onset. Later, <em>Enrollment 1</em> will
 outpace <em>Enrollment 2</em> before eventually being overtaken again.
@@ -203,13 +203,13 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  10.413   0.053  10.469</span></span></code></pre></div>
-<p>We can see that the CPU time is 10.41 and the elapsed time is 10.47
+<span><span class="co">#&gt;  10.849   0.058  10.908</span></span></code></pre></div>
+<p>We can see that the CPU time is 10.85 and the elapsed time is 10.91
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
 enrollment 1, which is 131.2.</p>
-<p><img src="parallel_files/figure-html/sequential-display-duration-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="parallel_files/figure-html/sequential-display-duration-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="setting-up-a-parallel-backend">Setting up a parallel backend<a class="anchor" aria-label="anchor" href="#setting-up-a-parallel-backend"></a>
@@ -272,8 +272,8 @@ need to do your own due diligence. We recommend adding
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_parallel</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   2.228   0.025   9.026</span></span></code></pre></div>
-<p>We can see that the CPU time is 2.23 and the elapsed time is 9.03
+<span><span class="co">#&gt;   2.290   0.037   9.374</span></span></code></pre></div>
+<p>We can see that the CPU time is 2.29 and the elapsed time is 9.37
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
@@ -310,7 +310,7 @@ commonly available, we will not execute the below code herein. Consider
 that you have two accessible nodes, each with three cores (shown in the
 diagram below).</p>
 <div class="figure" style="text-align: center">
-<img src="figures/schema.png" alt="Available resource schematic." width="90%"><p class="caption">
+<img src="figures/schema.png" class="r-plt" alt="Available resource schematic." width="90%"><p class="caption">
 Available resource schematic.
 </p>
 </div>
@@ -383,7 +383,7 @@ resources.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Keaven Anderson, Yujie Zhao, John Blischak, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3. <br>Copyright © 2025 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p>Developed by Keaven Anderson, Yujie Zhao, John Blischak, Yilong Zhang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0. <br>Copyright © 2025 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
