@@ -23,7 +23,7 @@ The final block will be a partial block if \code{n} is not an exact multiple
 of the block length.
 }
 \examples{
-\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(dplyr)
 
 # Example 1

@@ -71,7 +71,7 @@ Default arguments are set up to allow very simple implementation of
 a non-proportional hazards assumption for an unstratified design.
 }
 \examples{
-\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(dplyr)
 
 # Example 1
