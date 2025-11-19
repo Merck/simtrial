@@ -1,5 +1,25 @@
 # Changelog
 
+## simtrial 1.0.2
+
+### Bug fixes
+
+- [`sim_gs_n()`](https://merck.github.io/simtrial/reference/sim_gs_n.md)
+  is updated to provide updated efficacy bound when it is one-sided
+  design ([\#348](https://github.com/Merck/simtrial/issues/348), thanks
+  to [@LittleBeannie](https://github.com/LittleBeannie)).
+- The cut date driven by stratified targeted events is fixed in
+  [`get_analysis_date()`](https://merck.github.io/simtrial/reference/get_analysis_date.md)
+  ([\#347](https://github.com/Merck/simtrial/issues/347), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+
+### Programming improvements
+
+- Added an internal helper function `cut_from_design()` to automatically
+  generate cuttings based on the design object
+  ([\#350](https://github.com/Merck/simtrial/issues/350), thanks to
+  [@yihui](https://github.com/yihui)).
+
 ## simtrial 1.0.1
 
 CRAN release: 2025-09-11

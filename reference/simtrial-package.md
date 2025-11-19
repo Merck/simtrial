@@ -58,5 +58,5 @@ Other contributors:
 
 - Larry Leon \[contributor\]
 
-- Merck & Co., Inc., Rahway, NJ, USA and its affiliates (02891sr49)
-  \[copyright holder\]
+- Merck & Co., Inc., Rahway, NJ, USA and its affiliates
+  ([ROR](https://ror.org/02891sr49)) \[copyright holder\]

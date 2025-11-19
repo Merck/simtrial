@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,19 @@
       <small>Source: <a href="https://github.com/Merck/simtrial/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.2" id="simtrial-102">simtrial 1.0.2<a class="anchor" aria-label="anchor" href="#simtrial-102"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-2"></a></h3>
+<ul><li>
+<code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> is updated to provide updated efficacy bound when it is one-sided design (<a href="https://github.com/Merck/simtrial/issues/348" class="external-link">#348</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>The cut date driven by stratified targeted events is fixed in <code><a href="../reference/get_analysis_date.html">get_analysis_date()</a></code> (<a href="https://github.com/Merck/simtrial/issues/347" class="external-link">#347</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="programming-improvements-1-0-2">Programming improvements<a class="anchor" aria-label="anchor" href="#programming-improvements-1-0-2"></a></h3>
+<ul><li>Added an internal helper function <code>cut_from_design()</code> to automatically generate cuttings based on the design object (<a href="https://github.com/Merck/simtrial/issues/350" class="external-link">#350</a>, thanks to <a href="https://github.com/yihui" class="external-link">@yihui</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="simtrial-101">simtrial 1.0.1<a class="anchor" aria-label="anchor" href="#simtrial-101"></a></h2><p class="text-muted">CRAN release: 2025-09-11</p>
 <div class="section level3">
