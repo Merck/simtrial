@@ -7,7 +7,7 @@
 
 ## Programming improvements
 
-- A helper function `cut_from_design()` is created to automatically generate cuttings based on the design object (#350, thanks to @yihui).
+- Added an internal helper function `cut_from_design()` to automatically generate cuttings based on the design object (#350, thanks to @yihui).
 
 # simtrial 1.0.1
 
