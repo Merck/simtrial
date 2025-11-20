@@ -489,11 +489,11 @@ sim_gs_n(
 #>   sim_id method          parameter analysis cut_date   n event   estimate
 #> 1      1    WLR FH(rho=0, gamma=0)        1 12.00002 421    90  -2.835018
 #> 2      1    WLR FH(rho=0, gamma=0)        2 23.99062 524   241  -9.823122
-#> 3      1    WLR FH(rho=0, gamma=0)        3 35.93242 524   320 -17.474021
+#> 3      1    WLR FH(rho=0, gamma=0)        3 35.93241 524   320 -17.474021
 #>         se         z     info info0 planned_lower_bound planned_upper_bound
 #> 1 4.742932 0.5977352 22.40000 22.50          -1.7052708            3.870248
 #> 2 7.760276 1.2658212 59.95021 60.25           0.9601286            2.356655
-#> 3 8.937393 1.9551587 79.38750 80.00           2.0047523            2.009758
+#> 3 8.937393 1.9551587 79.38750 80.00           2.0047521            2.009758
 #>   updated_lower_bound updated_upper_bound
 #> 1          -2.0109114            4.074501
 #> 2           0.9868377            2.356220
@@ -521,7 +521,7 @@ sim_gs_n(
 #>   sim_id method          parameter analysis cut_date   n event   estimate
 #> 1      1    WLR FH(rho=0, gamma=0)        1 11.95079 426    91  -1.846892
 #> 2      1    WLR FH(rho=0, gamma=0)        2 23.95510 496   211 -12.647993
-#> 3      1    WLR FH(rho=0, gamma=0)        3 35.96078 496   311 -19.050336
+#> 3      1    WLR FH(rho=0, gamma=0)        3 35.96077 496   311 -19.050336
 #>         se         z     info info0 planned_lower_bound planned_upper_bound
 #> 1 4.767196 0.3874169 22.72527 22.75           -2.319759                  NA
 #> 2 7.258625 1.7424778 52.22749 52.75                  NA            2.358356

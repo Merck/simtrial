@@ -19,6 +19,11 @@
   generate cuttings based on the design object
   ([\#350](https://github.com/Merck/simtrial/issues/350), thanks to
   [@yihui](https://github.com/yihui)).
+- Updated significant digits required for
+  [`sim_gs_n()`](https://merck.github.io/simtrial/reference/sim_gs_n.md)
+  test to verify the asymptotic theory from {gsDesign2}
+  ([\#355](https://github.com/Merck/simtrial/issues/355), thanks to
+  [@jdblischak](https://github.com/jdblischak)).
 
 ## simtrial 1.0.1
 
