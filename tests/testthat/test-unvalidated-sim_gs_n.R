@@ -706,6 +706,12 @@ test_that("Updating bounds changes the simulation results", {
   )
   observed <- run2[, c("planned_upper_bound", "planned_lower_bound",
                        "updated_upper_bound", "updated_lower_bound")]
+
+  # Only need to test to 6 significant digits to verify the asymptotic theory
+  # from gsDesign2
+  expected <- lapply(expected, function(x) signif(x, digits = 6))
+  observed <- lapply(observed, function(x) signif(x, digits = 6))
+
   expect_equal(observed, expected, ignore_attr = TRUE)
 })
 

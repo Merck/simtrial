@@ -8,6 +8,7 @@
 ## Programming improvements
 
 - Added an internal helper function `cut_from_design()` to automatically generate cuttings based on the design object (#350, thanks to @yihui).
+- Updated significant digits required for `sim_gs_n()` test to verify the asymptotic theory from {gsDesign2} (#355, thanks to @jdblischak).
 
 # simtrial 1.0.1
 
