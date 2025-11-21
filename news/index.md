@@ -2,6 +2,8 @@
 
 ## simtrial 1.0.2
 
+CRAN release: 2025-11-20
+
 ### Bug fixes
 
 - [`sim_gs_n()`](https://merck.github.io/simtrial/reference/sim_gs_n.md)

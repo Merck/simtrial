@@ -41,7 +41,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/Merck/simtrial/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/Merck/simtrial/blob/v1.0.2/DESCRIPTION)
 
 Anderson K, Zhao Y, Blischak J, Zhang Y (2025). *simtrial: Clinical
 Trial Simulation*. R package version 1.0.2,
