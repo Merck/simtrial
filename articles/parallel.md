@@ -144,10 +144,10 @@ waiting for the results.
 ``` r
 print(duration_sequential)
 #>    user  system elapsed 
-#>  10.692   0.062  10.754
+#>  12.781   0.026  12.808
 ```
 
-We can see that the CPU time is 10.69 and the elapsed time is 10.75
+We can see that the CPU time is 12.78 and the elapsed time is 12.81
 seconds. These provide our baseline for the computation time.
 
 As you may have anticipated, we see that for a lower number of events,
@@ -188,7 +188,7 @@ spawned by
 [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md)
 below because {data.table} “automatically switches to single threaded
 mode upon fork” (from
-[`?data.table::setDTthreads`](https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html)).
+[`?data.table::setDTthreads`](https://rdrr.io/pkg/data.table/man/openmp-utils.html)).
 [¹](#fn1)
 
 ``` r
@@ -220,10 +220,10 @@ duration_parallel <- proc.time() - start_parallel
 ``` r
 print(duration_parallel)
 #>    user  system elapsed 
-#>   2.278   0.021   9.665
+#>   2.294   0.051   9.798
 ```
 
-We can see that the CPU time is 2.28 and the elapsed time is 9.67
+We can see that the CPU time is 2.29 and the elapsed time is 9.80
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we

@@ -67,7 +67,7 @@
 Nan Xiao</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/v1.0.2/vignettes/parallel.Rmd" class="external-link"><code>vignettes/parallel.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/simtrial/blob/main/vignettes/parallel.Rmd" class="external-link"><code>vignettes/parallel.Rmd</code></a></small>
       <div class="d-none name"><code>parallel.Rmd</code></div>
     </div>
 
@@ -147,7 +147,7 @@ have varying durations and rates.</p>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="parallel_files/figure-html/enrollments-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="parallel_files/figure-html/enrollments-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>We see that <em>Enrollment 2</em> enrolls individuals more quickly
 than <em>Enrollment 1</em> at onset. Later, <em>Enrollment 1</em> will
 outpace <em>Enrollment 2</em> before eventually being overtaken again.
@@ -167,7 +167,7 @@ the runtime to the parallel run performed later in this vignette. If you
 were running simulations sequentially, you would want {data.table} to
 take advantage of parallel processing.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span>threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span>threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_sim</span> <span class="op">&lt;-</span> <span class="fl">200</span></span>
@@ -203,13 +203,13 @@ the “wall clock” time spent by the end user waiting for the results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_sequential</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  10.692   0.062  10.754</span></span></code></pre></div>
-<p>We can see that the CPU time is 10.69 and the elapsed time is 10.75
+<span><span class="co">#&gt;  12.781   0.026  12.808</span></span></code></pre></div>
+<p>We can see that the CPU time is 12.78 and the elapsed time is 12.81
 seconds. These provide our baseline for the computation time.</p>
 <p>As you may have anticipated, we see that for a lower number of
 events, enrollment 2 has a shorter average duration of 99.8 over that of
 enrollment 1, which is 131.2.</p>
-<p><img src="parallel_files/figure-html/sequential-display-duration-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="parallel_files/figure-html/sequential-display-duration-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="setting-up-a-parallel-backend">Setting up a parallel backend<a class="anchor" aria-label="anchor" href="#setting-up-a-parallel-backend"></a>
@@ -238,7 +238,7 @@ simulations across the available cores.</p>
 <code>data.table::setDTthreads(threads = 1)</code> for the parallel
 processes spawned by <code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> below because
 {data.table} “automatically switches to single threaded mode upon fork”
-(from <code><a href="https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">?data.table::setDTthreads</a></code>). <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This can get complex quick. The behavior of parallel
+(from <code><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">?data.table::setDTthreads</a></code>). <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This can get complex quick. The behavior of parallel
 computing is affected by your operating system (e.g. Windows) and editor
 (e.g. RStudio). If you need to perform accurate benchmarking, you will
 need to do your own due diligence. We recommend adding
@@ -272,8 +272,8 @@ need to do your own due diligence. We recommend adding
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">duration_parallel</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   2.278   0.021   9.665</span></span></code></pre></div>
-<p>We can see that the CPU time is 2.28 and the elapsed time is 9.67
+<span><span class="co">#&gt;   2.294   0.051   9.798</span></span></code></pre></div>
+<p>We can see that the CPU time is 2.29 and the elapsed time is 9.80
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
