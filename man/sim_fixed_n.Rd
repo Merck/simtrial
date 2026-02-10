@@ -80,6 +80,19 @@ for data cutoff:
 \item \code{5}: The maximum of targeted event count and minimum follow-up cuts
 (2 and 3).
 }
+
+For custom timing options beyond the 5 predefined ones above,
+see the \code{\link[=sim_pw_surv]{sim_pw_surv()}} function to generate time-to-event data
+and \code{\link[=get_analysis_date]{get_analysis_date()}} to calculate timing.
+Refer to \url{https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html}
+for a detailed tutorial.
+
+Beyond the logrank or weighted logrank (Fleming-Harrington) tests,
+the following are supported: RMST via \code{\link[=rmst]{rmst()}}, weighted logrank tests
+via \code{\link[=wlr]{wlr()}} (including Fleming-Harrington, Magirr-Burman, and Xu2017 weights),
+and MaxCombo test via \code{\link[=maxcombo]{maxcombo()}}.
+Refer to \url{https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html}
+for a detailed tutorial.
 }
 \examples{
 \dontshow{if (requireNamespace("dplyr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
