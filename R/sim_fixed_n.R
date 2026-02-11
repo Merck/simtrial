@@ -53,7 +53,7 @@
 #'   (2 and 3).
 #' 
 #' For custom timing options beyond the 5 predefined ones above,
-#' please use [sim_pw_surv()] function to generate time-to-event data
+#' please instead use [sim_pw_surv()] function to generate time-to-event data
 #' and [get_analysis_date()] to calculate timing.
 #' Refer to https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html
 #' for a detailed tutorial.
