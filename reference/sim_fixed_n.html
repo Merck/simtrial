@@ -141,7 +141,18 @@ for data cutoff:</p><ul><li><p><code>1</code>: Uses the planned study duration.<
 (1 and 2).</p></li>
 <li><p><code>5</code>: The maximum of targeted event count and minimum follow-up cuts
 (2 and 3).</p></li>
-</ul></div>
+</ul><p>For custom timing options beyond the 5 predefined ones above,
+please instead use <code><a href="sim_pw_surv.html">sim_pw_surv()</a></code> function to generate time-to-event data
+and <code><a href="get_analysis_date.html">get_analysis_date()</a></code> to calculate timing.
+Refer to the vignette on <a href="https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html">Custom Fixed Design Simulations</a>
+for a detailed tutorial.</p>
+<p>If you are doing a custom fixed design simulation, you are not limited to the logrank or weighted logrank (Fleming-Harrington) tests.
+The following are supported: RMST via <code><a href="rmst.html">rmst()</a></code>, weighted logrank tests
+via <code><a href="wlr.html">wlr()</a></code> (including Fleming-Harrington, Magirr-Burman, and Xu2017 weights),
+and MaxCombo test via <code><a href="maxcombo.html">maxcombo()</a></code>.
+Refer to the vignette on <a href="https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html">Custom Fixed Design Simulations</a>
+for a detailed tutorial.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
