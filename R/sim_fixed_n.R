@@ -58,8 +58,8 @@
 #' Refer to the vignette on [Custom Fixed Design Simulations](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html)
 #' for a detailed tutorial.
 #' 
-#' Beyond the logrank or weighted logrank (Fleming-Harrington) tests,
-#' the following are supported: RMST via [rmst()], weighted logrank tests
+#' If you are doing a custom fixed design simulation, you are not limited to the logrank or weighted logrank (Fleming-Harrington) tests.
+#' The following are supported: RMST via [rmst()], weighted logrank tests
 #' via [wlr()] (including Fleming-Harrington, Magirr-Burman, and Xu2017 weights),
 #' and MaxCombo test via [maxcombo()]. 
 #' Refer to the vignette on [Custom Fixed Design Simulations](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html)
