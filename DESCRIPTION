@@ -45,10 +45,9 @@ Suggests:
     ggplot2,
     bshazard,
     markdown,
-    survMisc,
+    nphRCT,
     gsDesign,
     stringr,
-    Matrix,
     covr
 Encoding: UTF-8
 LazyData: true
