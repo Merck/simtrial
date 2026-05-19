@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Convert enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format — to_sim_pw_surv"><meta name="description" content="to_sim_pw_surv() converts failure rates and dropout rates entered in
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Convert enrollment and failure rates from sim_fixed_n() to sim_pw_surv() format — to_sim_pw_surv"><meta name="description" content="to_sim_pw_surv() converts failure rates and dropout rates entered in
 the simpler format for sim_fixed_n() to that used for sim_pw_surv().
 The fail_rate argument for sim_fixed_n() requires enrollment rates,
 failure rates hazard ratios and dropout rates by stratum for a 2-arm trial,
@@ -149,19 +149,19 @@ and dropout rates by stratum and time period.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FH(rho=0, gamma=0)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.340246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -19.61966</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.972734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.949986</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.3356281</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.822979</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49.92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49.46734</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $info0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49.75</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

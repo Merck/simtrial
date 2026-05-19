@@ -1,6 +1,7 @@
 # Custom Fixed Design Simulations: A Tutorial on Writing Code from the Ground Up
 
 ``` r
+
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
@@ -83,6 +84,7 @@ The following lines of code will generate 500 subjects using equal
 randomization and an unstratified design.
 
 ``` r
+
 n_sim <- 100
 n <- 500
 stratum <- data.frame(stratum = "All", p = 1)
@@ -108,18 +110,19 @@ of failure time and dropout time ( `cte`), and an failure and dropout
 indicator (`fail = 1` is a failure, `fail = 0` is a dropout).
 
 ``` r
+
 uncut_data_a |> head() |> gt() |> tab_header("An Overview of Simulated TTE data")
 ```
 
-| An Overview of Simulated TTE data |             |              |            |              |            |      |
-|-----------------------------------|-------------|--------------|------------|--------------|------------|------|
-| stratum                           | enroll_time | treatment    | fail_time  | dropout_time | cte        | fail |
-| All                               | 0.04250966  | experimental | 1.1694497  | 6265.622     | 1.2119594  | 1    |
-| All                               | 0.15597253  | control      | 73.5774306 | 21706.085    | 73.7334032 | 1    |
-| All                               | 0.19363998  | experimental | 15.1356774 | 18096.246    | 15.3293174 | 1    |
-| All                               | 0.23882703  | control      | 1.9020241  | 20844.870    | 2.1408512  | 1    |
-| All                               | 0.27283752  | control      | 2.9475061  | 11058.946    | 3.2203437  | 1    |
-| All                               | 0.29362231  | experimental | 0.5490203  | 7004.398     | 0.8426426  | 1    |
+| An Overview of Simulated TTE data |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|
+| stratum | enroll_time | treatment | fail_time | dropout_time | cte | fail |
+| All | 0.04250966 | experimental | 1.1694497 | 6265.622 | 1.2119594 | 1 |
+| All | 0.15597253 | control | 73.5774306 | 21706.085 | 73.7334032 | 1 |
+| All | 0.19363998 | experimental | 15.1356774 | 18096.246 | 15.3293174 | 1 |
+| All | 0.23882703 | control | 1.9020241 | 20844.870 | 2.1408512 | 1 |
+| All | 0.27283752 | control | 2.9475061 | 11058.946 | 3.2203437 | 1 |
+| All | 0.29362231 | experimental | 0.5490203 | 7004.398 | 0.8426426 | 1 |
 
 ### Scenario b) Differential dropout rates
 
@@ -131,6 +134,7 @@ In contrast, the experimental group has a constant dropout rate of 0.001
 throughout the study.
 
 ``` r
+
 differential_dropout_rate <- data.frame(
   stratum = rep("All", 3), 
   period = c(1, 2, 1), 
@@ -156,6 +160,7 @@ for biomarker-negative subjects. The dropout rate is contently 0.001 for
 both strata over time.
 
 ``` r
+
 stratified_enroll_rate <- data.frame(
   stratum = c("Biomarker positive", "Biomarker negative"),
   rate = c(12, 12), 
@@ -203,6 +208,7 @@ is 7 with 3:2:2 randomization.
 We begin by setting up enrollment, failure and dropout rates.
 
 ``` r
+
 enroll_rate <- define_enroll_rate(rate = 12, duration = n / 12)
 
 three_arm_fail_rate <- data.frame(
@@ -236,6 +242,7 @@ For illustration purposes, we will focus on scenario b) for the
 following discussion.
 
 ``` r
+
 uncut_data <- uncut_data_b
 ```
 
@@ -252,6 +259,7 @@ whichever arrives later. This is equivalent to `timing_type = 4` in
 [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md).
 
 ``` r
+
 cut_date_a <- get_analysis_date(data = uncut_data,
                                 planned_calendar_time = 24,
                                 target_event_overall = 300)
@@ -262,6 +270,7 @@ follow-up 12 months. This is equivalent to `timing_type = 5` in
 [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md).
 
 ``` r
+
 cut_date_b <- get_analysis_date(data = uncut_data,
                                 min_followup = 12,
                                 target_event_overall = 300)
@@ -273,6 +282,7 @@ extension to reach targeted events of 24 months. This is not enabled in
 [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md).
 
 ``` r
+
 cut_date_c <- get_analysis_date(data = uncut_data,
                                 max_extension_for_target_event = 12,
                                 target_event_overall = 300)
@@ -284,6 +294,7 @@ enrolled in the overall population as below. This is not enabled in
 [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md).
 
 ``` r
+
 cut_date_d <- get_analysis_date(data = uncut_data,
                                 min_n_overall = 100 * 0.8,
                                 min_followup = 12)
@@ -295,6 +306,7 @@ For illustration purposes, we will focus on scenario d) for the
 following discussion.
 
 ``` r
+
 cut_date <- cut_date_d
 cat("The cutoff date is ", round(cut_date, 2))
 ```
@@ -302,6 +314,7 @@ cat("The cutoff date is ", round(cut_date, 2))
     ## The cutoff date is  20.19
 
 ``` r
+
 cut_data <- uncut_data |> cut_data_by_date(cut_date)
 cut_data |> head() |> gt() |> tab_header(paste0("An Overview of TTE data Cut at ", round(cut_date, 2), "Months"))
 ```
@@ -330,6 +343,7 @@ to make comparisons across tests. For demonstration purposes, we will
 aggregate all tests together.
 
 ``` r
+
 # Logrank test
 sim_res_lr <- cut_data |> wlr(weight = fh(rho = 0, gamma = 0))
 
@@ -370,6 +384,7 @@ The output of the tests mentioned above are lists including:
   instead, the p-value is reported (`sim_res_mc$p_value`).
 
 ``` r
+
 sim_res <- tribble(
   ~Method, ~Parameter, ~Z, ~Estimate, ~SE, ~`P value`,
   sim_res_lr$method, sim_res_lr$parameter, sim_res_lr$z, sim_res_lr$estimate, sim_res_lr$se, pnorm(-sim_res_lr$z),
@@ -384,16 +399,16 @@ sim_res <- tribble(
 sim_res |> gt() |> tab_header("One Simulation Results")
 ```
 
-| One Simulation Results |                                          |          |             |           |             |
-|------------------------|------------------------------------------|----------|-------------|-----------|-------------|
-| Method                 | Parameter                                | Z        | Estimate    | SE        | P value     |
-| WLR                    | FH(rho=0, gamma=0)                       | 1.788225 | -9.3460253  | 5.2264273 | 0.036869897 |
-| WLR                    | FH(rho=0, gamma=0.5)                     | 2.360073 | -6.8225888  | 2.8908376 | 0.009135661 |
-| WLR                    | MB(delay = Inf, max_weight = 2)          | 2.130368 | -16.9085058 | 7.9368946 | 0.016570624 |
-| WLR                    | Xu 2017 with first 3 months of 0 weights | 2.600908 | -11.0553977 | 4.2505921 | 0.004648873 |
-| RMST                   | 10                                       | 1.128125 | 0.5589405   | 0.4954596 | 0.129633491 |
-| milestone              | 10                                       | 1.940708 | 0.4501018   | 0.2319266 | 0.026146861 |
-| MaxCombo               | FH(0, 0) + FH(0, 0.5)                    | NA       | NA          | NA        | 0.012855297 |
+| One Simulation Results |  |  |  |  |  |
+|----|----|----|----|----|----|
+| Method | Parameter | Z | Estimate | SE | P value |
+| WLR | FH(rho=0, gamma=0) | 1.788225 | -9.3460253 | 5.2264273 | 0.036869897 |
+| WLR | FH(rho=0, gamma=0.5) | 2.360073 | -6.8225888 | 2.8908376 | 0.009135661 |
+| WLR | MB(delay = Inf, max_weight = 2) | 2.130368 | -16.9085058 | 7.9368946 | 0.016570624 |
+| WLR | Xu 2017 with first 3 months of 0 weights | 2.600908 | -11.0553977 | 4.2505921 | 0.004648873 |
+| RMST | 10 | 1.128125 | 0.5589405 | 0.4954596 | 0.129633491 |
+| milestone | 10 | 1.940708 | 0.4501018 | 0.2319266 | 0.026146861 |
+| MaxCombo | FH(0, 0) + FH(0, 0.5) | NA | NA | NA | 0.012855297 |
 
 ## Step 4: Perform the above single simulation repeatedly
 
@@ -402,6 +417,7 @@ which facilitates a single simulation run. The construction of
 `one_sim()` involves copying all the lines of code from Steps 1 to 3.
 
 ``` r
+
 one_sim <- function(sim_id = 1, 
                     # arguments from Step 1: design characteristic
                     n, stratum, enroll_rate, fail_rate, dropout_rate, block, 
@@ -452,6 +468,7 @@ computation. The following lines of code uses 2 workers to run 100
 simulations.
 
 ``` r
+
 set.seed(2025)
 
 plan("multisession", workers = 2)
@@ -497,18 +514,19 @@ Each row in the output corresponds to the simulation results for each
 testing method per each repeation.
 
 ``` r
+
 ans |> head() |> gt() |> tab_header("Overview Each Simulation results")
 ```
 
-| Overview Each Simulation results |           |                                          |           |             |            |            |
-|----------------------------------|-----------|------------------------------------------|-----------|-------------|------------|------------|
-| Sim ID                           | Method    | Parameter                                | Z         | Estimate    | SE         | P value    |
-| 1                                | WLR       | FH(rho=0, gamma=0)                       | 1.9005840 | -18.1176359 | 9.5326679  | 0.02867826 |
-| 1                                | WLR       | FH(rho=0, gamma=0.5)                     | 2.1478743 | -12.7153128 | 5.9199519  | 0.01586187 |
-| 1                                | WLR       | MB(delay = Inf, max_weight = 2)          | 2.0945611 | -32.4645715 | 15.4994626 | 0.01810501 |
-| 1                                | WLR       | Xu 2017 with first 3 months of 0 weights | 1.9926533 | -16.4165941 | 8.2385601  | 0.02314971 |
-| 1                                | RMST      | 10                                       | 0.7072865 | 0.2184929   | 0.3089170  | 0.23969421 |
-| 1                                | milestone | 10                                       | 0.9610773 | 0.1280086   | 0.1331928  | 0.16825665 |
+| Overview Each Simulation results |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|
+| Sim ID | Method | Parameter | Z | Estimate | SE | P value |
+| 1 | WLR | FH(rho=0, gamma=0) | 1.9005840 | -18.1176359 | 9.5326679 | 0.02867826 |
+| 1 | WLR | FH(rho=0, gamma=0.5) | 2.1478743 | -12.7153128 | 5.9199519 | 0.01586187 |
+| 1 | WLR | MB(delay = Inf, max_weight = 2) | 2.0945611 | -32.4645715 | 15.4994626 | 0.01810501 |
+| 1 | WLR | Xu 2017 with first 3 months of 0 weights | 1.9926533 | -16.4165941 | 8.2385601 | 0.02314971 |
+| 1 | RMST | 10 | 0.7072865 | 0.2184929 | 0.3089170 | 0.23969421 |
+| 1 | milestone | 10 | 0.9610773 | 0.1280086 | 0.1331928 | 0.16825665 |
 
 ## Step 5: Summarize simulations
 
@@ -519,6 +537,7 @@ calculation for the MaxCombo test differs from the other tests, as it
 does not report a Z-score.
 
 ``` r
+
 ans_non_mc <- ans |>
   filter(Method != "MaxCombo") |>
   group_by(Method, Parameter) %>% 
@@ -535,15 +554,15 @@ ans_non_mc |>
   tab_header("Summary from 100 simulations")
 ```
 
-| Summary from 100 simulations |                                          |       |
-|------------------------------|------------------------------------------|-------|
-| Method                       | Parameter                                | Power |
-| RMST                         | 10                                       | 0.06  |
-| WLR                          | FH(rho=0, gamma=0)                       | 0.39  |
-| WLR                          | FH(rho=0, gamma=0.5)                     | 0.53  |
-| WLR                          | MB(delay = Inf, max_weight = 2)          | 0.54  |
-| WLR                          | Xu 2017 with first 3 months of 0 weights | 0.48  |
-| milestone                    | 10                                       | 0.13  |
-| MaxCombo                     | FH(0, 0) + FH(0, 0.5)                    | 0.52  |
+| Summary from 100 simulations |  |  |
+|----|----|----|
+| Method | Parameter | Power |
+| RMST | 10 | 0.06 |
+| WLR | FH(rho=0, gamma=0) | 0.39 |
+| WLR | FH(rho=0, gamma=0.5) | 0.53 |
+| WLR | MB(delay = Inf, max_weight = 2) | 0.54 |
+| WLR | Xu 2017 with first 3 months of 0 weights | 0.48 |
+| milestone | 10 | 0.13 |
+| MaxCombo | FH(0, 0) + FH(0, 0.5) | 0.52 |
 
 ### References

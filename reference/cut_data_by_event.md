@@ -36,6 +36,6 @@ x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 table(x$event, x$treatment)
 #>    
 #>     control experimental
-#>   0      44           48
-#>   1      52           48
+#>   0      48           49
+#>   1      50           50
 ```

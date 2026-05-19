@@ -36,15 +36,15 @@ library(dplyr)
 # 2:1 randomization with block size 3, treatments "A" and "B"
 data.frame(x = 1:10) |> mutate(Treatment = randomize_by_fixed_block(block = c("A", "B", "B")))
 #>     x Treatment
-#> 1   1         B
+#> 1   1         A
 #> 2   2         B
-#> 3   3         A
-#> 4   4         A
-#> 5   5         B
+#> 3   3         B
+#> 4   4         B
+#> 5   5         A
 #> 6   6         B
 #> 7   7         B
-#> 8   8         A
-#> 9   9         B
+#> 8   8         B
+#> 9   9         A
 #> 10 10         A
 
 # Example 2
@@ -60,20 +60,20 @@ data.frame(stratum = c(rep("A", 10), rep("B", 10))) |>
 #>  2 A               1
 #>  3 A               0
 #>  4 A               0
-#>  5 A               1
+#>  5 A               0
 #>  6 A               0
-#>  7 A               0
+#>  7 A               1
 #>  8 A               1
-#>  9 A               1
+#>  9 A               0
 #> 10 A               0
 #> 11 B               1
 #> 12 B               0
-#> 13 B               1
-#> 14 B               0
-#> 15 B               0
+#> 13 B               0
+#> 14 B               1
+#> 15 B               1
 #> 16 B               1
 #> 17 B               0
-#> 18 B               1
-#> 19 B               1
+#> 18 B               0
+#> 19 B               0
 #> 20 B               0
 ```

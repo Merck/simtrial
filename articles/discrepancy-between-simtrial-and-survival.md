@@ -3,6 +3,7 @@
 ## Overview
 
 ``` r
+
 library(gsDesign)
 library(gsDesign2)
 library(dplyr)
@@ -59,6 +60,7 @@ user of simtrial that discrepancies can occur and how to resolve via
 desired.
 
 ``` r
+
 survival_at_24_months <- 0.35
 hr <- log(.35) / log(.25)
 control_median <- 12
@@ -97,6 +99,7 @@ scenarios <- tribble(
 ```
 
 ``` r
+
 fr <- scenarios |>
   group_by(Scenario) |>
   #  filter(Scenario == 2) |>
@@ -129,6 +132,7 @@ er <- mwlr$enroll_rate
 ## A scenario that generates a discrepancy
 
 ``` r
+
 set.seed(3219)
 
 dgm <- fr[c(14:17), ]
@@ -164,6 +168,7 @@ compare to score test of
 default `timefix = TRUE`\]).
 
 ``` r
+
 ss <- 395
 
 set.seed(8316951 + ss * 1000)
@@ -199,6 +204,7 @@ Verify that `timefix = FALSE` in
 [`wlr()`](https://merck.github.io/simtrial/reference/wlr.md):
 
 ``` r
+
 cph.score <- summary(coxph(
   Surv(tte, event) ~ treat,
   data = dfa,
@@ -218,6 +224,7 @@ Verify [`wlr()`](https://merck.github.io/simtrial/reference/wlr.md) and
 agree.
 
 ``` r
+
 Y <- dfa[, "tte"]
 Delta <- dfa[, "event"]
 
@@ -242,6 +249,7 @@ Where do they differ (`tte2` are times after
 [`aeqSurv()`](https://rdrr.io/pkg/survival/man/aeqSurv.html))?
 
 ``` r
+
 dfa <- dfa[order(dfa$tte2), ]
 
 id <- seq(1, nrow(dfa))
@@ -271,6 +279,7 @@ are identical:
 Also note that here ties do not have impact because in separate arms.
 
 ``` r
+
 # Check Cox with ties
 cox_breslow <- summary(coxph(Surv(tte, event) ~ treatment, data = dfa, ties = "breslow"))$conf.int
 cox_efron <- summary(coxph(Surv(tte, event) ~ treatment, data = dfa, ties = "efron"))$conf.int
@@ -280,6 +289,7 @@ cat("Cox Breslow and Efron hr (tte, timefix=TRUE):", c(cox_breslow[1], cox_efron
     ## Cox Breslow and Efron hr (tte, timefix=TRUE): 0.9657106 0.9657106
 
 ``` r
+
 # Here ties do not have impact because in separate arms
 cox_breslow <- summary(coxph(Surv(tte2, event2) ~ treatment, data = dfa, ties = "breslow", control = coxph.control(timefix = FALSE)))$conf.int
 cox_efron <- summary(coxph(Surv(tte2, event2) ~ treatment, data = dfa, ties = "efron", control = coxph.control(timefix = FALSE)))$conf.int
@@ -297,6 +307,7 @@ within the same treatment arm which generates difference between
 `"breslow"` and `"efron"` options for `ties`:
 
 ``` r
+
 # Create tie within treatment arm by changing treatment
 dfa3 <- dfa
 dfa3[19, "treat"] <- 1.0
@@ -311,6 +322,7 @@ cat("Cox Breslow and Efron hr (tte, timefix=TRUE)=", c(cox_breslow[1], cox_efron
 Same as
 
 ``` r
+
 cox_breslow <- summary(coxph(Surv(tte2, event2) ~ treat, data = dfa3, ties = "breslow", control = coxph.control(timefix = FALSE)))$conf.int
 cox_efron <- summary(coxph(Surv(tte2, event2) ~ treat, data = dfa3, ties = "efron", control = coxph.control(timefix = FALSE)))$conf.int
 cat("Cox Breslow and Efron hr (tte2, timefix=FALSE)=", c(cox_breslow[1], cox_efron[1]), "\n")

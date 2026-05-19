@@ -53,19 +53,19 @@ regular_logrank_test(trial_data_cut)
 #> [1] "FH(rho=0, gamma=0)"
 #> 
 #> $estimate
-#> [1] -16.60282
+#> [1] -15.13998
 #> 
 #> $se
-#> [1] 4.370912
+#> [1] 4.428528
 #> 
 #> $z
-#> [1] 3.798481
+#> [1] 3.418739
 #> 
 #> $info
-#> [1] 23.1828
+#> [1] 23.45745
 #> 
 #> $info0
-#> [1] 23.25
+#> [1] 23.5
 #> 
 
 # The results are the same as directly calling the function

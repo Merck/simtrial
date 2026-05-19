@@ -50,12 +50,14 @@ possible enrollments strategies. Both enrollments are piecewise, but
 have varying durations and rates.
 
 ``` r
+
 library(simtrial)
 library(future)
 library(doFuture)
 ```
 
 ``` r
+
 set.seed(1)
 
 n <- 5000
@@ -103,6 +105,7 @@ simulations sequentially, you would want {data.table} to take advantage
 of parallel processing.
 
 ``` r
+
 data.table::setDTthreads(threads = 1)
 set.seed(1)
 
@@ -142,12 +145,13 @@ elapsed time represents the “wall clock” time spent by the end user
 waiting for the results.
 
 ``` r
+
 print(duration_sequential)
 #>    user  system elapsed 
-#>  12.345   0.025  12.371
+#>  12.389   0.028  12.417
 ```
 
-We can see that the CPU time is 12.34 and the elapsed time is 12.37
+We can see that the CPU time is 12.39 and the elapsed time is 12.42
 seconds. These provide our baseline for the computation time.
 
 As you may have anticipated, we see that for a lower number of events,
@@ -173,6 +177,7 @@ default, but here we will use two. To initialize our backend, we change
 our plan.
 
 ``` r
+
 plan(multisession, workers = 2)
 ```
 
@@ -189,9 +194,10 @@ spawned by
 below because {data.table} “automatically switches to single threaded
 mode upon fork” (from
 [`?data.table::setDTthreads`](https://rdrr.io/pkg/data.table/man/openmp-utils.html)).
-[¹](#fn1)
+[^1]
 
 ``` r
+
 set.seed(1)
 
 start_parallel <- proc.time()
@@ -218,12 +224,13 @@ duration_parallel <- proc.time() - start_parallel
 ```
 
 ``` r
+
 print(duration_parallel)
 #>    user  system elapsed 
-#>   2.264   0.029   9.646
+#>   1.847   0.030   9.428
 ```
 
-We can see that the CPU time is 2.26 and the elapsed time is 9.65
+We can see that the CPU time is 1.85 and the elapsed time is 9.43
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
@@ -234,6 +241,7 @@ To change the implementation back to a sequential backend, we simply use
 what is below.
 
 ``` r
+
 plan(sequential)
 ```
 
@@ -243,6 +251,7 @@ Below, it is clear that the results from our sequential and multisession
 backends match completely.
 
 ``` r
+
 all.equal(seq_result1, par_result1)
 #> [1] TRUE
 all.equal(seq_result2, par_result2)
@@ -287,6 +296,7 @@ modification of the below code. We then implement our backend using a
 list that follows the hierarchy of the available resources.
 
 ``` r
+
 nodes <- c("n1", "n2")
 custom_cores <- function() {
   switch(Sys.info()[["nodename"]],
@@ -315,6 +325,7 @@ before using all available resources and return the same results as
 before.
 
 ``` r
+
 set.seed(1)
 
 enroll_rates <- list(enroll_rate1, enroll_rate2)
@@ -338,12 +349,11 @@ Then, we reset the `plan` to sequential to avoid accidentally continuing
 to execute later calls within these resources.
 
 ``` r
+
 plan(sequential)
 ```
 
-------------------------------------------------------------------------
-
-1.  This can get complex quick. The behavior of parallel computing is
+[^1]: This can get complex quick. The behavior of parallel computing is
     affected by your operating system (e.g. Windows) and editor
     (e.g. RStudio). If you need to perform accurate benchmarking, you
     will need to do your own due diligence. We recommend adding

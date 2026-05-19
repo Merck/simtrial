@@ -18,6 +18,7 @@ with the `mb_weight()` function.
 Packages used are as follows:
 
 ``` r
+
 library(simtrial)
 library(dplyr)
 library(survival)
@@ -36,6 +37,7 @@ Magirr and Burman (2019) delayed effect assumptions only in that they
 assume a hazard ratio of 0.5 after 6 months.
 
 ``` r
+
 study_duration <- 36
 sample_size <- 300
 enroll_rate <- data.frame(duration = 12, rate = 200 / 12)
@@ -54,6 +56,7 @@ Kaplan-Meier curves for the resulting dataset (red curve for
 experimental treatment, black for control):
 
 ``` r
+
 set.seed(7789)
 xpar <- to_sim_pw_surv(fail_rate)
 MBdelay <- sim_pw_surv(
@@ -87,6 +90,7 @@ and Burman (2019) test and set the time until maximum weight \\\tau\\
 with `delay = 6`.
 
 ``` r
+
 ZMB <- MBdelay |>
   wlr(weight = mb(delay = 6))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -99,6 +103,7 @@ Now we set the maximum weight to be 2 as in Magirr (2021) and set the
 the observed combined treatment Kaplan-Meier curve.
 
 ``` r
+
 ZMB <- MBdelay |>
   wlr(weight = mb(delay = Inf, w_max = 2))
 # Compute p-value of modestly weighted logrank of Magirr-Burman
@@ -115,6 +120,7 @@ w\_{\max})).\\
 and let \\\gamma=0, \rho = -1/2.\\
 
 ``` r
+
 w_max <- 2
 Z_modified_FH <- MBdelay |>
   counting_process(arm = "experimental") |>
@@ -143,6 +149,7 @@ the targeted sample size is reached. For failure rates, we consider the
 delayed treatment effect example of Magirr and Burman (2019).
 
 ``` r
+
 study_duration <- 5
 sample_size <- 2000
 enroll_duration <- .0001
@@ -165,6 +172,7 @@ Kaplan-Meier curves for the resulting dataset (red curve for
 experimental treatment, black for control):
 
 ``` r
+
 set.seed(7783)
 xpar <- to_sim_pw_surv(fail_rate)
 FHwn <- sim_pw_surv(
@@ -188,6 +196,7 @@ limited downweighting by follows, and a MaxCombo test with these
 component tests, we have p-value of:
 
 ``` r
+
 xx <- FHwn |>
   maxcombo(rho = c(0, 0, 1), gamma = c(0, 1, 1))
 xx
@@ -210,6 +219,7 @@ weight of 2. This requires generating weights and then computing the
 test.
 
 ``` r
+
 ZMB <- FHwn |>
   wlr(weight = mb(delay = 6, w_max = 2))
 
@@ -223,6 +233,7 @@ Results are quite similar to the results with greater down-weighting. We
 have p-value of
 
 ``` r
+
 xx <- FHwn |>
   maxcombo(rho = c(0, 0, .5), gamma = c(0, .5, .5))
 xx
@@ -255,8 +266,7 @@ an Old Perspective Needed?” *Pharmaceutical Statistics* 20 (3): 512–27.
 Magirr, Dominic, and Carl-Fredrik Burman. 2019. “Modestly Weighted
 Logrank Tests.” *Statistics in Medicine* 38 (20): 3782–90.
 
-Mukhopadhyay, Pralay, Jiabu Ye, Keaven M Anderson, Satrajit
-Roychoudhury, Eric H Rubin, Susan Halabi, and Richard J Chappell. 2022.
+Mukhopadhyay, Pralay, Jiabu Ye, Keaven M Anderson, et al. 2022.
 “Log-Rank Test Vs MaxCombo and Difference in Restricted Mean Survival
 Time Tests for Comparing Survival Under Nonproportional Hazards in
 Immuno-Oncology Trials: A Systematic Review and Meta-Analysis.” *JAMA

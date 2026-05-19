@@ -1,6 +1,7 @@
 # Simulate Fixed Designs with Ease via sim_fixed_n
 
 ``` r
+
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
@@ -48,6 +49,7 @@ ratio of 0.7 thereafter. There is an exponential dropout rate of 0.001
 over time.
 
 ``` r
+
 n_sim <- 100
 total_duration <- 36
 stratum <- data.frame(stratum = "All", p = 1)
@@ -68,6 +70,7 @@ specifically by using `sample_size <- x$analysis$n` and
 `target_event <- x$analysis$event`.
 
 ``` r
+
 x <- fixed_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate, 
                       alpha = 0.025, power = 0.85, ratio = 1, 
                       study_duration = total_duration) |> to_integer()
@@ -77,16 +80,17 @@ x |> summary() |> gt() |>
   fmt_number(columns = c(4, 5, 7), decimals = 2)
 ```
 
-| Sample Size and Targeted Events Based on AHR Method      |     |        |       |      |          |       |           |
-|----------------------------------------------------------|-----|--------|-------|------|----------|-------|-----------|
-| Fixed Design with 85% Power, One-sided 2.5% Type I error |     |        |       |      |          |       |           |
-| Design                                                   | N   | Events | Time  | AHR  | Bound    | alpha | Power     |
-| Average hazard ratio                                     | 516 | 295    | 36.01 | 0.70 | 1.959964 | 0.03  | 0.8504588 |
+| Sample Size and Targeted Events Based on AHR Method |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|
+| Fixed Design with 85% Power, One-sided 2.5% Type I error |  |  |  |  |  |  |  |
+| Design | N | Events | Time | AHR | Bound | alpha | Power |
+| Average hazard ratio | 516 | 295 | 36.01 | 0.70 | 1.959964 | 0.03 | 0.8504588 |
 
 Now we set the derived targeted sample size, enrollment rate, and event
 count from the above.
 
 ``` r
+
 sample_size <- x$analysis$n
 target_event <- x$analysis$event
 enroll_rate <- x$enroll_rate
@@ -127,6 +131,7 @@ Writing Code from the Ground
 Up”](https://merck.github.io/simtrial/articles/sim_fixed_design_custom.html).
 
 ``` r
+
 sim_res <- sim_fixed_n(
   n_sim = 2, # only use 2 simulations for initial run
   sample_size = sample_size, 
@@ -146,26 +151,27 @@ specified in `rho_gamma`. Here we have just run 2 simulated trials and
 see how the different cutoffs vary for the 2 trial instances.
 
 ``` r
+
 sim_res |>
   gt() |>
   tab_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
   fmt_number(columns = c(4, 5, 7), decimals = 2)
 ```
 
-| Tests for Each Simulation Result            |                    |           |      |      |       |       |                                  |          |     |
-|---------------------------------------------|--------------------|-----------|------|------|-------|-------|----------------------------------|----------|-----|
-| Logrank Test for Different Analysis Cutoffs |                    |           |      |      |       |       |                                  |          |     |
-| method                                      | parameter          | estimate  | se   | z    | event | ln_hr | cut                              | duration | sim |
-| WLR                                         | FH(rho=0, gamma=0) | -31.52010 | 8.38 | 3.76 | 287   | −0.45 | Planned duration                 | 36.00000 | 1   |
-| WLR                                         | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295   | −0.45 | Targeted events                  | 36.66316 | 1   |
-| WLR                                         | FH(rho=0, gamma=0) | -29.13247 | 8.25 | 3.53 | 278   | −0.43 | Minimum follow-up                | 35.20859 | 1   |
-| WLR                                         | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295   | −0.45 | Max(planned duration, event cut) | 36.66316 | 1   |
-| WLR                                         | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295   | −0.45 | Max(min follow-up, event cut)    | 36.66316 | 1   |
-| WLR                                         | FH(rho=0, gamma=0) | -31.88270 | 8.00 | 3.99 | 268   | −0.50 | Planned duration                 | 36.00000 | 2   |
-| WLR                                         | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295   | −0.54 | Targeted events                  | 38.32488 | 2   |
-| WLR                                         | FH(rho=0, gamma=0) | -34.29092 | 8.23 | 4.17 | 283   | −0.51 | Minimum follow-up                | 37.47843 | 2   |
-| WLR                                         | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295   | −0.54 | Max(planned duration, event cut) | 38.32488 | 2   |
-| WLR                                         | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295   | −0.54 | Max(min follow-up, event cut)    | 38.32488 | 2   |
+| Tests for Each Simulation Result |  |  |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|----|
+| Logrank Test for Different Analysis Cutoffs |  |  |  |  |  |  |  |  |  |
+| method | parameter | estimate | se | z | event | ln_hr | cut | duration | sim |
+| WLR | FH(rho=0, gamma=0) | -31.52010 | 8.38 | 3.76 | 287 | −0.45 | Planned duration | 36.00000 | 1 |
+| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Targeted events | 36.66316 | 1 |
+| WLR | FH(rho=0, gamma=0) | -29.13247 | 8.25 | 3.53 | 278 | −0.43 | Minimum follow-up | 35.20859 | 1 |
+| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Max(planned duration, event cut) | 36.66316 | 1 |
+| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Max(min follow-up, event cut) | 36.66316 | 1 |
+| WLR | FH(rho=0, gamma=0) | -31.88270 | 8.00 | 3.99 | 268 | −0.50 | Planned duration | 36.00000 | 2 |
+| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Targeted events | 38.32488 | 2 |
+| WLR | FH(rho=0, gamma=0) | -34.29092 | 8.23 | 4.17 | 283 | −0.51 | Minimum follow-up | 37.47843 | 2 |
+| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Max(planned duration, event cut) | 38.32488 | 2 |
+| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Max(min follow-up, event cut) | 38.32488 | 2 |
 
 ## Step 3: Summarize simulations
 
@@ -173,6 +179,7 @@ Now we run 100 simulated trials and summarize the results by how data is
 cutoff for analysis.
 
 ``` r
+
 sim_res <- sim_fixed_n(
   n_sim = n_sim,
   sample_size = sample_size, 
@@ -191,6 +198,7 @@ approximate the targeted power well and have a similar average duration
 and mean number of events.
 
 ``` r
+
 sim_res |>
   group_by(cut) |>
   summarize(`Simulated Power` = mean(z > qnorm(1 - 0.025)), 
@@ -204,20 +212,21 @@ sim_res |>
   fmt_number(columns = c(2:4), decimals = 2)
 ```
 
-| Summary of 100 simulations by 5 different analysis cutoff methods |                 |             |               |             |                 |
-|-------------------------------------------------------------------|-----------------|-------------|---------------|-------------|-----------------|
-| Tested by logrank                                                 |                 |             |               |             |                 |
-| cut                                                               | Simulated Power | Mean events | Mean duration | Sample size | Targeted events |
-| Max(min follow-up, event cut)                                     | 0.85            | 299.35      | 36.39         | 516         | 295             |
-| Max(planned duration, event cut)                                  | 0.85            | 301.54      | 36.59         | 516         | 295             |
-| Minimum follow-up                                                 | 0.84            | 291.57      | 35.78         | 516         | 295             |
-| Planned duration                                                  | 0.84            | 294.74      | 36.00         | 516         | 295             |
-| Targeted events                                                   | 0.85            | 295.00      | 36.00         | 516         | 295             |
+| Summary of 100 simulations by 5 different analysis cutoff methods |  |  |  |  |  |
+|----|----|----|----|----|----|
+| Tested by logrank |  |  |  |  |  |
+| cut | Simulated Power | Mean events | Mean duration | Sample size | Targeted events |
+| Max(min follow-up, event cut) | 0.85 | 299.35 | 36.39 | 516 | 295 |
+| Max(planned duration, event cut) | 0.85 | 301.54 | 36.59 | 516 | 295 |
+| Minimum follow-up | 0.84 | 291.57 | 35.78 | 516 | 295 |
+| Planned duration | 0.84 | 294.74 | 36.00 | 516 | 295 |
+| Targeted events | 0.85 | 295.00 | 36.00 | 516 | 295 |
 
 We can also do things like summarize distribution of event counts at the
 planned study duration. We can see the event count varies a fair amount.
 
 ``` r
+
 hist(sim_res$event[sim_res$cut == "Planned duration"], 
      breaks = 10,
      main = "Distribution of Event Counts at Planned Study Duration",
@@ -230,6 +239,7 @@ We also evaluate the distribution of the trial duration when analysis is
 performed when the targeted events are achieved.
 
 ``` r
+
 plot(density(sim_res$duration[sim_res$cut == "Targeted events"]), 
      main = "Trial Duration Smoothed Density",
      xlab = "Trial duration when Targeted Event Count is Observed")

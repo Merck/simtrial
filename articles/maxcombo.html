@@ -18,8 +18,8 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Computing p-values for Fleming-Harrington weighted logrank tests and the MaxCombo test">
@@ -90,12 +90,11 @@ treatment is favored.</p>
 <p>The MaxCombo test has been posed as the maximum of multiple
 Fleming-Harrington weighted logrank tests (<span class="citation">Harrington and Fleming (1982)</span>, <span class="citation">Fleming and Harrington (2011)</span>). Combination
 tests looking at a maximum of selected tests in this class have also
-been proposed; see <span class="citation">Lee (2007)</span>, <span class="citation">Roychoudhury et al. (2021)</span>, and <span class="citation">Lin et al. (2020)</span>. The Fleming-Harrington class
-is indexed by the parameters <span class="math inline">\(\rho \geq
-0\)</span> and <span class="math inline">\(\gamma \geq 0\)</span>. We
-will denote these as FH(<span class="math inline">\(\rho,
-\gamma\)</span>). This class includes the logrank test as FH(0, 0).
-Other tests of interest here include:</p>
+been proposed; see <span class="citation">Lee (2007)</span>, <span class="citation">Roychoudhury et al. (2021)</span>, and <span class="citation"><span class="nocase">Lin et al.</span> (2020)</span>.
+The Fleming-Harrington class is indexed by the parameters <span class="math inline">\(\rho \geq 0\)</span> and <span class="math inline">\(\gamma \geq 0\)</span>. We will denote these as
+FH(<span class="math inline">\(\rho, \gamma\)</span>). This class
+includes the logrank test as FH(0, 0). Other tests of interest here
+include:</p>
 <ul>
 <li>FH(0, 1): a test that down-weights early events</li>
 <li>FH(1, 0): a test that down-weights late events</li>
@@ -1701,8 +1700,8 @@ after 75 events.</p>
 </div>
 <p>Now we can analyze this data. We begin with <code>s</code> to show
 how this can be done in a single line. In this case, we use the 4 test
-combination suggested in <span class="citation">Lin et al.
-(2020)</span>, <span class="citation">Roychoudhury et al.
+combination suggested in <span class="citation"><span class="nocase">Lin
+et al.</span> (2020)</span>, <span class="citation">Roychoudhury et al.
 (2021)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op">|&gt;</span></span>
@@ -2850,7 +2849,7 @@ cutoffs.</p>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-FH2011" class="csl-entry">
 Fleming, Thomas R, and David P Harrington. 2011. <em>Counting Processes
 and Survival Analysis</em>. Vol. 169. John Wiley &amp; Sons.
@@ -2871,11 +2870,10 @@ the Weighted Log-Rank Statistics.”</span> <em>Computational Statistics
 &amp; Data Analysis</em> 51 (12): 6557–64.
 </div>
 <div id="ref-NPHWGSimulation" class="csl-entry">
-Lin, Ray S, Ji Lin, Satrajit Roychoudhury, Keaven M Anderson, Tianle Hu,
-Bo Huang, Larry F Leon, et al. 2020. <span>“Alternative Analysis Methods
-for Time to Event Endpoints Under Nonproportional Hazards: A Comparative
-Analysis.”</span> <em>Statistics in Biopharmaceutical Research</em> 12
-(2): 187–98.
+<span class="nocase">Lin, Ray S, Ji Lin, Satrajit Roychoudhury, et
+al.</span> 2020. <span>“Alternative Analysis Methods for Time to Event
+Endpoints Under Nonproportional Hazards: A Comparative Analysis.”</span>
+<em>Statistics in Biopharmaceutical Research</em> 12 (2): 187–98.
 </div>
 <div id="ref-NPHWGDesign" class="csl-entry">
 Roychoudhury, Satrajit, Keaven M Anderson, Jiabu Ye, and Pralay

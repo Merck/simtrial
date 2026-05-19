@@ -35,24 +35,24 @@ is also attached.
 # cut at calendar time 5 after start of randomization
 sim_pw_surv(n = 20) |> cut_data_by_date(5)
 #>          tte event stratum    treatment
-#> 1  4.8763169     0     All experimental
-#> 2  4.8703586     0     All experimental
-#> 3  2.2070735     1     All      control
-#> 4  0.1173257     1     All      control
-#> 5  4.6605109     0     All experimental
-#> 6  4.5461906     0     All      control
-#> 7  4.5116372     0     All      control
-#> 8  4.0148199     0     All experimental
-#> 9  3.8905856     0     All experimental
-#> 10 3.7668601     0     All      control
-#> 11 3.6986976     0     All experimental
-#> 12 3.6716565     0     All      control
-#> 13 3.5130873     0     All experimental
-#> 14 3.2754677     0     All      control
-#> 15 1.1770995     1     All      control
-#> 16 3.2343190     0     All experimental
-#> 17 3.1307312     0     All experimental
-#> 18 2.9814824     0     All experimental
-#> 19 2.9608820     0     All      control
-#> 20 0.3731280     1     All      control
+#> 1  4.9395907     0     All experimental
+#> 2  4.9016804     0     All experimental
+#> 3  4.8969831     0     All      control
+#> 4  1.3334936     1     All      control
+#> 5  2.0027721     1     All      control
+#> 6  4.5875256     0     All      control
+#> 7  4.4638424     0     All experimental
+#> 8  4.4578842     0     All experimental
+#> 9  4.4278710     0     All experimental
+#> 10 4.2711045     0     All experimental
+#> 11 4.2480365     0     All      control
+#> 12 0.5260723     1     All      control
+#> 13 4.0991628     0     All experimental
+#> 14 3.6023455     0     All      control
+#> 15 3.4781111     0     All      control
+#> 16 3.3543856     0     All experimental
+#> 17 3.2862231     0     All experimental
+#> 18 3.2591821     0     All      control
+#> 19 3.1006128     0     All experimental
+#> 20 2.2070735     1     All      control
 ```

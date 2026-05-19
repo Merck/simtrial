@@ -68,6 +68,6 @@ y <- cut_data_by_date(x, cut_date = d)
 table(y$stratum, y$event)
 #>           
 #>             0  1
-#>   Negative 50 44
-#>   Positive 34 50
+#>   Negative 49 45
+#>   Positive 37 50
 ```

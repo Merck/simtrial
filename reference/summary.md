@@ -96,16 +96,16 @@ simulation <- sim_gs_n(
 bound <- gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound
 simulation |> summary(bound = bound)
 #>   analysis    sim_n sim_event sim_time sim_upper_prob
-#> 1        1 356.6667        97 11.87400             NA
-#> 2        2 505.0000       305 24.66698              1
-#> 3        3 505.0000       405 37.58585             NA
+#> 1        1 353.6667        97 12.29699             NA
+#> 2        2 505.0000       305 23.90850      0.6666667
+#> 3        3 505.0000       405 35.79231      1.0000000
 
 # Summarize simulation and compare with the planned design
 simulation |> summary(design = design)
 #>   analysis asy_upper_prob sim_upper_prob sim_event    sim_n sim_time asy_time
-#> 1        1   0.0001486592             NA        97 356.6667 11.87400       12
-#> 2        2   0.5723210881              1       305 505.0000 24.66698       24
-#> 3        3   0.8999997572             NA       405 505.0000 37.58585       36
+#> 1        1   0.0001486592             NA        97 353.6667 12.29699       12
+#> 2        2   0.5723210881      0.6666667       305 505.0000 23.90850       24
+#> 3        3   0.8999997572      1.0000000       405 505.0000 35.79231       36
 #>      asy_n asy_event
 #> 1 353.0464  96.77449
 #> 2 504.3520 304.00970

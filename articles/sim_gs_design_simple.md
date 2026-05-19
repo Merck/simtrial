@@ -1,6 +1,7 @@
 # Simulate Group Sequential Designs with Ease via sim_gs_n
 
 ``` r
+
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
@@ -50,6 +51,7 @@ sim_fixed_n](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.h
 The total sample size is derived for 90% power.
 
 ``` r
+
 stratum <- data.frame(stratum = "All", p = 1)
 block <- rep(c("experimental", "control"), 2)
 # enrollment rate will be updated later, 
@@ -74,24 +76,28 @@ eff_bound <- x$bound$z[x$bound$bound == "upper"]
 ```
 
 ``` r
+
 cat(paste("The total sample size is ", sample_size, "\n", sep = ''))
 ```
 
     ## The total sample size is 362
 
 ``` r
+
 cat("The number of events at IA1, IA2 and FA are:", event, "\n")
 ```
 
     ## The number of events at IA1, IA2 and FA are: 106 227 287
 
 ``` r
+
 cat("The efficacy bounds at IA1, IA2 and FA are:", round(eff_bound, 3), "\n")
 ```
 
     ## The efficacy bounds at IA1, IA2 and FA are: 3.508 2.269 2.023
 
 ``` r
+
 cat("Targeted analysis times:", round(x$analysis$time, 1), "\n")
 ```
 
@@ -101,6 +107,7 @@ Now we get the updated planned enrollment rate from the design to
 achieve the above targeted sample size.
 
 ``` r
+
 enroll_rate <- x$enroll_rate
 enroll_rate
 ```
@@ -119,6 +126,7 @@ methods are available at [reference page of
 `simtrial`](https://merck.github.io/simtrial/reference/index.html#compute-p-values-test-statistics).
 
 ``` r
+
 # Example for logrank
 weight <- fh(rho = 0, gamma = 0)
 test <- wlr
@@ -148,6 +156,7 @@ analysis cut when 106, 227, 287 events occur. **In this event-driven
 approach, there is no need to update the efficacy boundary.**
 
 ``` r
+
 ia1_cut <- create_cut(target_event_overall = event[1])
 ia2_cut <- create_cut(target_event_overall = event[2])
 fa_cut <- create_cut(target_event_overall = event[3])
@@ -178,6 +187,7 @@ In this vignette, we use the event-driven cut from above for
 illustrative purposes.
 
 ``` r
+
 ia1_cut <- create_cut(
   planned_calendar_time = round(x$analysis$time[1]), 
   target_event_overall = x$analysis$event[1],
@@ -207,6 +217,7 @@ utilizes a parallel computing backend, which helps reduce the running
 time.
 
 ``` r
+
 n_sim <- 100 # Number of simulated trials
 sim_res <- sim_gs_n(
   n_sim = n_sim,
@@ -224,19 +235,20 @@ column is the test statistic for the logrank test (estimate / se). The
 under the alternate and null hypotheses, respectively.
 
 ``` r
+
 sim_res |> head(n = 6) |> gt() |> tab_header("Overview Each Simulation results") |>
   fmt_number(columns = c(5, 8:12), decimals = 2)
 ```
 
-| Overview Each Simulation results |        |                    |          |          |     |       |          |      |      |       |       |
-|----------------------------------|--------|--------------------|----------|----------|-----|-------|----------|------|------|-------|-------|
-| sim_id                           | method | parameter          | analysis | cut_date | n   | event | estimate | se   | z    | info  | info0 |
-| 1                                | WLR    | FH(rho=0, gamma=0) | 1        | 12.53    | 362 | 106   | −4.00    | 5.13 | 0.78 | 26.46 | 26.50 |
-| 1                                | WLR    | FH(rho=0, gamma=0) | 2        | 24.68    | 362 | 227   | −23.11   | 7.46 | 3.10 | 55.82 | 56.75 |
-| 1                                | WLR    | FH(rho=0, gamma=0) | 3        | 35.99    | 362 | 287   | −36.82   | 8.27 | 4.45 | 70.68 | 71.75 |
-| 2                                | WLR    | FH(rho=0, gamma=0) | 1        | 12.19    | 348 | 106   | −5.20    | 5.15 | 1.01 | 26.26 | 26.50 |
-| 2                                | WLR    | FH(rho=0, gamma=0) | 2        | 24.66    | 362 | 227   | −8.33    | 7.53 | 1.11 | 56.50 | 56.75 |
-| 2                                | WLR    | FH(rho=0, gamma=0) | 3        | 37.57    | 362 | 287   | −18.96   | 8.44 | 2.24 | 71.11 | 71.75 |
+| Overview Each Simulation results |  |  |  |  |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|----|----|----|
+| sim_id | method | parameter | analysis | cut_date | n | event | estimate | se | z | info | info0 |
+| 1 | WLR | FH(rho=0, gamma=0) | 1 | 12.53 | 362 | 106 | −4.00 | 5.13 | 0.78 | 26.46 | 26.50 |
+| 1 | WLR | FH(rho=0, gamma=0) | 2 | 24.68 | 362 | 227 | −23.11 | 7.46 | 3.10 | 55.82 | 56.75 |
+| 1 | WLR | FH(rho=0, gamma=0) | 3 | 35.99 | 362 | 287 | −36.82 | 8.27 | 4.45 | 70.68 | 71.75 |
+| 2 | WLR | FH(rho=0, gamma=0) | 1 | 12.19 | 348 | 106 | −5.20 | 5.15 | 1.01 | 26.26 | 26.50 |
+| 2 | WLR | FH(rho=0, gamma=0) | 2 | 24.66 | 362 | 227 | −8.33 | 7.53 | 1.11 | 56.50 | 56.75 |
+| 2 | WLR | FH(rho=0, gamma=0) | 3 | 37.57 | 362 | 287 | −18.96 | 8.44 | 2.24 | 71.11 | 71.75 |
 
 ## Step 3: Summarize simulations
 
@@ -244,6 +256,7 @@ With the 100 simulations provided, users can summarize the simulated
 power and compare it to the target power of 90% as follows:
 
 ``` r
+
 sim_res |>
   left_join(data.frame(analysis = 1:3, eff_bound = eff_bound)) |>
   group_by(analysis) |>
@@ -256,12 +269,12 @@ sim_res |>
   fmt_number(columns = 3:5, decimals = 2)
 ```
 
-| Summary of 100 simulations |           |          |                 |                  |
-|----------------------------|-----------|----------|-----------------|------------------|
-| analysis                   | Mean time | sd(time) | Simulated power | Asymptotic power |
-| 1                          | 12.0      | 0.79     | 0.03            | 0.01             |
-| 2                          | 23.8      | 1.53     | 0.66            | 0.66             |
-| 3                          | 35.7      | 2.04     | 0.87            | 0.90             |
+| Summary of 100 simulations |  |  |  |  |
+|----|----|----|----|----|
+| analysis | Mean time | sd(time) | Simulated power | Asymptotic power |
+| 1 | 12.0 | 0.79 | 0.03 | 0.01 |
+| 2 | 23.8 | 1.53 | 0.66 | 0.66 |
+| 3 | 35.7 | 2.04 | 0.87 | 0.90 |
 
 ### References
 

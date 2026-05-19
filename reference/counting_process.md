@@ -107,5 +107,5 @@ y <- cut_data_by_event(x, 150) |> counting_process(arm = "experimental")
 # Weighted logrank test (Z-value and 1-sided p-value)
 z <- sum(y$o_minus_e) / sqrt(sum(y$var_o_minus_e))
 c(z, pnorm(z))
-#> [1] -3.5701616116  0.0001783805
+#> [1] -3.808578e+00  6.988404e-05
 ```

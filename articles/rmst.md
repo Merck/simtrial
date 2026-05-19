@@ -69,6 +69,7 @@ interval for \\\text{RMST}\\ can be calculated as \\ \left\[
 standard normal distribution.
 
 ``` r
+
 # Simulate NPH data from the piecewise model
 library(simtrial)
 # Table display
@@ -76,6 +77,7 @@ library(gt)
 ```
 
 ``` r
+
 data(ex1_delayed_effect)
 data_single_arm <- ex1_delayed_effect[ex1_delayed_effect$trt == 1, ]
 simtrial:::rmst_single_arm(
@@ -107,6 +109,7 @@ z\_{\alpha/2}\sqrt{\hat{\sigma}\_1^2 + \hat{\sigma}\_2^2}, \\\\
 \right\]. \\
 
 ``` r
+
 tau <- 10
 
 data(ex1_delayed_effect)
@@ -145,6 +148,7 @@ validation of
 [`simtrial::rmst()`](https://merck.github.io/simtrial/reference/rmst.md).
 
 ``` r
+
 verify <- survRM2::rmst2(
   time = ex1_delayed_effect$month,
   status = ex1_delayed_effect$evntd,
@@ -166,5 +170,5 @@ Randomized Trials with a Time-to-Event Outcome.” *BMC Medical Research
 Methodology* 13 (1): 1–15.
 
 Uno, Hajime, Lu Tian, Miki Horiguchi, Angel Cronin, Chakib Battioui, and
-James Bell. 2022. “survRM2: Comparing Restricted Mean Survival Time.”
+James Bell. 2022. *survRM2: Comparing Restricted Mean Survival Time*.
 <https://CRAN.R-project.org/package=survRM2>.

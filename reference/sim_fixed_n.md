@@ -150,8 +150,8 @@ mean(x$z <= qnorm(.025))
 # Example 2: WLR with FH(0,1) ----
 sim_fixed_n(n_sim = 1, timing_type = 1, rho_gamma = data.frame(rho = 0, gamma = 1))
 #> Backend uses sequential processing.
-#>   method          parameter    estimate       se          z event      ln_hr
-#> 1    WLR FH(rho=0, gamma=1) -0.03587586 1.351219 0.02655074   103 -0.1042096
+#>   method          parameter  estimate      se        z event      ln_hr
+#> 1    WLR FH(rho=0, gamma=1) -1.608741 1.14817 1.401136    90 -0.2204257
 #>                cut duration sim
 #> 1 Planned duration       30   1
 # Get power approximation

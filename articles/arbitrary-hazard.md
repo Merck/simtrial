@@ -1,6 +1,7 @@
 # Approximating an arbitrary hazard function
 
 ``` r
+
 library(simtrial)
 library(ggplot2)
 library(dplyr)
@@ -11,6 +12,7 @@ This vignette uses the bshazard package. If it is not on CRAN, you can
 install it with
 
 ``` r
+
 remotes::install_github("cran/bshazard")
 ```
 
@@ -19,6 +21,7 @@ a trial with an arbitrary distribution. We begin by showing hazard rates
 that can be used to approximate this distribution.
 
 ``` r
+
 set.seed(123)
 
 dloglogis <- function(x, alpha = 1, beta = 4) {
@@ -49,6 +52,7 @@ over the first half year at an even rate of 500 per year. We assume that
 observations are censored at an exponential rate of about 5% per year.
 
 ``` r
+
 tx <- "Log-logistic"
 enroll_rate <- data.frame(duration = .5, rate = 500)
 dropout_rate <- data.frame(
@@ -76,6 +80,7 @@ x <- sim_pw_surv(
 We assume the entire study lasts 3 years
 
 ``` r
+
 y <- x |> cut_data_by_date(3)
 head(y)
 #>         tte event stratum    treatment
@@ -90,8 +95,11 @@ head(y)
 Now we estimate a Kaplan-Meier curve.
 
 ``` r
+
 fit <- survfit(Surv(tte, event) ~ 1, data = y)
 plot(fit, mark = "|")
+#> Warning in plot.survfit(fit, mark = "|"): the mark option is deprecated, use
+#> mark.time=TRUE along with pch for the character
 ```
 
 ![](arbitrary-hazard_files/figure-html/unnamed-chunk-7-1.png)
@@ -100,10 +108,12 @@ Finally, we plot the estimated hazard rate and its confidence interval
 as a function of time. We overlay the actual rates in red.
 
 ``` r
+
 fit <- bshazard::bshazard(Surv(tte, event) ~ 1, data = y, nk = 120)
 ```
 
 ``` r
+
 plot(fit, conf.int = TRUE, xlab = "Time", xlim = c(0, 3), ylim = c(0, 2.5), lwd = 2)
 lines(x = times, y = (xx |> mutate(Time = lag(cumsum(duration), default = 0)))$rate, col = 2)
 ```

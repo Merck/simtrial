@@ -8,6 +8,7 @@ for time-to-event endpoints.
 The easiest way to get simtrial is to install from CRAN:
 
 ``` r
+
 install.packages("simtrial")
 ```
 
@@ -15,6 +16,7 @@ Alternatively, to use a new feature or get a bug fix, you can install
 the development version of simtrial from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("Merck/simtrial")
 ```

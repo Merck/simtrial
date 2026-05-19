@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Cut a dataset for analysis at a specified date — cut_data_by_date"><meta name="description" content="Cut a dataset for analysis at a specified date"><meta property="og:description" content="Cut a dataset for analysis at a specified date"><meta property="og:image" content="https://merck.github.io/simtrial/logo.png"></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Cut a dataset for analysis at a specified date — cut_data_by_date"><meta name="description" content="Cut a dataset for analysis at a specified date"><meta property="og:description" content="Cut a dataset for analysis at a specified date"><meta property="og:image" content="https://merck.github.io/simtrial/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -75,26 +75,26 @@ the data frame is <code>tte_data</code>, and the attribute <code>ratio</code> ge
 <span class="r-in"><span><span class="co"># cut at calendar time 5 after start of randomization</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">cut_data_by_date</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          tte event stratum    treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  4.8763169     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  4.8703586     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2.2070735     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.1173257     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  4.6605109     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  4.5461906     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.5116372     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  4.0148199     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  3.8905856     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 3.7668601     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 3.6986976     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 3.6716565     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 3.5130873     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 3.2754677     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.1770995     1     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 3.2343190     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 3.1307312     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.9814824     0     All experimental</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.9608820     0     All      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.3731280     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  4.9395907     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  4.9016804     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.8969831     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.3334936     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.0027721     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  4.5875256     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.4638424     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  4.4578842     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  4.4278710     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 4.2711045     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 4.2480365     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.5260723     1     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 4.0991628     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 3.6023455     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 3.4781111     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 3.3543856     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 3.2862231     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 3.2591821     0     All      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 3.1006128     0     All experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.2070735     1     All      control</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

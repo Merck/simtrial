@@ -44,6 +44,7 @@ A gt table summarizing the simulation results.
 ## Examples
 
 ``` r
+
 # Parameters for enrollment
 enroll_rampup_duration <- 4 # Duration for enrollment ramp up
 enroll_duration <- 16 # Total enrollment duration
@@ -105,51 +106,3 @@ simulation |>
 
 Summary of simulation results by WLR tests
 ```
-
-Weighted by FH(rho=0, gamma=0.5)
-
-analysis
-
-Time
-
-N
-
-Event
-
-Crossing probability
-
-1
-
-12.14286
-
-356
-
-97
-
-NA
-
-2
-
-24.71662
-
-505
-
-305
-
-0.6666667
-
-3
-
-36.84514
-
-505
-
-405
-
-1.0000000
-
-\# Summarize simulations and compare with the planned design simulation
-\|\> [summary](https://rdrr.io/r/base/summary.html)(design = design)
-\|\> simtrial::as_gt()
-
-[TABLE]

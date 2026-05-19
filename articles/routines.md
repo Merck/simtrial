@@ -48,6 +48,7 @@ The package could be extended in many ways in the future, including:
 - Poisson mixture or other survival distribution generation
 
 ``` r
+
 library(simtrial)
 library(gt)
 library(dplyr)
@@ -61,6 +62,7 @@ string repeated twice in each block and three other strings appearing
 once each.
 
 ``` r
+
 randomize_by_fixed_block(n = 10, block = c("A", "Dog", "Cat", "Cat"))
 #>  [1] "A"   "Dog" "Cat" "Cat" "Dog" "Cat" "A"   "Cat" "Cat" "Dog"
 ```
@@ -68,6 +70,7 @@ randomize_by_fixed_block(n = 10, block = c("A", "Dog", "Cat", "Cat"))
 More normally, with a default of blocks of size four:
 
 ``` r
+
 randomize_by_fixed_block(n = 20)
 #>  [1] 0 0 1 1 1 0 0 1 0 1 0 1 1 0 0 1 1 1 0 0
 ```
@@ -80,6 +83,7 @@ final rate is extended as long as needed to generate the specified
 number of observations.
 
 ``` r
+
 rpwexp_enroll(
   n = 20,
   enroll_rate = data.frame(
@@ -99,6 +103,7 @@ observations is generated with piecewise exponential failure times. For
 a large number of observations, a log-plot of the time-to-failure
 
 ``` r
+
 x <- rpwexp(
   10000,
   fail_rate = data.frame(
@@ -137,6 +142,7 @@ First we set up input variables to make the later call to
 more straightforward to read.
 
 ``` r
+
 stratum <- data.frame(stratum = c("Negative", "Positive"), p = c(.5, .5))
 
 block <- c(rep("control", 2), rep("experimental", 2))
@@ -160,6 +166,7 @@ dropout_rate <- data.frame(
 ```
 
 ``` r
+
 x <- sim_pw_surv(
   n = 400,
   stratum = stratum,
@@ -195,6 +202,7 @@ and censoring from `x` that are after the `cut_date` are censored at the
 specified `cut_date`.
 
 ``` r
+
 y <- cut_data_by_date(x, cut_date = 5)
 
 head(y) |>
@@ -216,6 +224,7 @@ observed in the Positive stratum we can use the `get_cut_date_by_event`
 function as follows:
 
 ``` r
+
 cut50Positive <- get_cut_date_by_event(filter(x, stratum == "Positive"), 50)
 y50Positive <- cut_data_by_date(x, cut50Positive)
 
@@ -234,6 +243,7 @@ all event times are included in the cut - with no indication of an
 error.
 
 ``` r
+
 y150 <- cut_data_by_event(x, 150)
 table(y150$event, y150$treatment)
 #>    
@@ -252,6 +262,7 @@ format. The counting process format is further discussed in the next
 section where we compute a weighted logrank test.
 
 ``` r
+
 ten150 <- counting_process(y150, arm = "experimental")
 
 head(ten150) |>
@@ -259,14 +270,14 @@ head(ten150) |>
   fmt_number(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
 ```
 
-| stratum  | event_total | event_trt | tte  | n_risk_total | n_risk_trt | s         | o_minus_e | var_o_minus_e |
-|----------|-------------|-----------|------|--------------|------------|-----------|-----------|---------------|
-| Negative | 1           | 0         | 0.06 | 124          | 62         | 1.0000000 | −0.50     | 0.25          |
-| Negative | 1           | 1         | 0.06 | 123          | 62         | 0.9919355 | 0.50      | 0.25          |
-| Negative | 1           | 1         | 0.15 | 122          | 61         | 0.9838710 | 0.50      | 0.25          |
-| Negative | 1           | 0         | 0.15 | 121          | 60         | 0.9758065 | −0.50     | 0.25          |
-| Negative | 1           | 1         | 0.23 | 120          | 60         | 0.9677419 | 0.50      | 0.25          |
-| Negative | 1           | 0         | 0.27 | 119          | 59         | 0.9596774 | −0.50     | 0.25          |
+| stratum | event_total | event_trt | tte | n_risk_total | n_risk_trt | s | o_minus_e | var_o_minus_e |
+|----|----|----|----|----|----|----|----|----|
+| Negative | 1 | 0 | 0.06 | 124 | 62 | 1.0000000 | −0.50 | 0.25 |
+| Negative | 1 | 1 | 0.06 | 123 | 62 | 0.9919355 | 0.50 | 0.25 |
+| Negative | 1 | 1 | 0.15 | 122 | 61 | 0.9838710 | 0.50 | 0.25 |
+| Negative | 1 | 0 | 0.15 | 121 | 60 | 0.9758065 | −0.50 | 0.25 |
+| Negative | 1 | 1 | 0.23 | 120 | 60 | 0.9677419 | 0.50 | 0.25 |
+| Negative | 1 | 0 | 0.27 | 119 | 59 | 0.9596774 | −0.50 | 0.25 |
 
 ## Logrank and weighted logrank testing
 
@@ -287,6 +298,7 @@ To generate a stratified logrank test and a corresponding one-sided
 p-value, we simply do the following:
 
 ``` r
+
 z <- with(ten150, sum(o_minus_e) / sqrt(sum(var_o_minus_e)))
 c(z, pnorm(z))
 #> [1] -2.505355629  0.006116416
@@ -296,6 +308,7 @@ A Fleming-Harrington \\\rho=1\\, \\\gamma=2\\ is nearly as simple. We
 again compute a z-statistic and its corresponding one-sided p-value.
 
 ``` r
+
 xx <- mutate(ten150, w = s * (1 - s)^2)
 z <- with(xx, sum(o_minus_e * w) / sum(sqrt(var_o_minus_e * w^2)))
 c(z, pnorm(z))
@@ -306,6 +319,7 @@ For Fleming-Harrington tests, a routine has been built to do these tests
 for you:
 
 ``` r
+
 fh00 <- y150 |> wlr(weight = fh(rho = 0, gamma = 0))
 fh01 <- y150 |> wlr(weight = fh(rho = 0, gamma = 1))
 fh10 <- y150 |> wlr(weight = fh(rho = 1, gamma = 0))
@@ -350,6 +364,7 @@ defaults; we have also used these more stringent parameters in the
 example in the help file.
 
 ``` r
+
 y150 |>
   maxcombo(rho = c(0, 0, 1, 1), gamma = c(0, 1, 0, 1))
 #> $method
@@ -376,6 +391,7 @@ than for
 [`sim_pw_surv()`](https://merck.github.io/simtrial/reference/sim_pw_surv.md).
 
 ``` r
+
 stratum <- data.frame(stratum = "All", p = 1)
 enroll_rate <- data.frame(
   duration = c(2, 2, 10),
@@ -402,6 +418,7 @@ Now we simulate a trial 2 times and cut data for analysis based on
 5.  the maximum of 2 and 3.
 
 ``` r
+
 sim_fixed_n(
   n_sim = 2, # Number of simulations
   sample_size = 500, # Trial sample size
@@ -419,18 +436,18 @@ sim_fixed_n(
 #> Backend uses sequential processing.
 ```
 
-| method | parameter          | estimate   | se       | z    | event | ln_hr | cut                              | duration | sim |
-|--------|--------------------|------------|----------|------|-------|-------|----------------------------------|----------|-----|
-| WLR    | FH(rho=0, gamma=0) | -2.993631  | 5.496021 | 0.54 | 121   | −0.10 | Planned duration                 | 30.00    | 1   |
-| WLR    | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350   | −0.40 | Targeted events                  | 64.89    | 1   |
-| WLR    | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375   | −0.41 | Minimum follow-up                | 71.75    | 1   |
-| WLR    | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350   | −0.40 | Max(planned duration, event cut) | 64.89    | 1   |
-| WLR    | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375   | −0.41 | Max(min follow-up, event cut)    | 71.75    | 1   |
-| WLR    | FH(rho=0, gamma=0) | -17.318876 | 4.922279 | 3.52 | 99    | −0.73 | Planned duration                 | 30.00    | 2   |
-| WLR    | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350   | −0.44 | Targeted events                  | 65.91    | 2   |
-| WLR    | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371   | −0.42 | Minimum follow-up                | 73.50    | 2   |
-| WLR    | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350   | −0.44 | Max(planned duration, event cut) | 65.91    | 2   |
-| WLR    | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371   | −0.42 | Max(min follow-up, event cut)    | 73.50    | 2   |
+| method | parameter | estimate | se | z | event | ln_hr | cut | duration | sim |
+|----|----|----|----|----|----|----|----|----|----|
+| WLR | FH(rho=0, gamma=0) | -2.993631 | 5.496021 | 0.54 | 121 | −0.10 | Planned duration | 30.00 | 1 |
+| WLR | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350 | −0.40 | Targeted events | 64.89 | 1 |
+| WLR | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375 | −0.41 | Minimum follow-up | 71.75 | 1 |
+| WLR | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350 | −0.40 | Max(planned duration, event cut) | 64.89 | 1 |
+| WLR | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375 | −0.41 | Max(min follow-up, event cut) | 71.75 | 1 |
+| WLR | FH(rho=0, gamma=0) | -17.318876 | 4.922279 | 3.52 | 99 | −0.73 | Planned duration | 30.00 | 2 |
+| WLR | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350 | −0.44 | Targeted events | 65.91 | 2 |
+| WLR | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371 | −0.42 | Minimum follow-up | 73.50 | 2 |
+| WLR | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350 | −0.44 | Max(planned duration, event cut) | 65.91 | 2 |
+| WLR | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371 | −0.42 | Max(min follow-up, event cut) | 73.50 | 2 |
 
 If you look carefully, you should be asking why the cutoff with the
 planned number of events is so different than the other data cutoff
@@ -438,6 +455,7 @@ methods. To explain, we note that generally you will want `sample_size`
 above to match the enrollment specified in `enroll_rate`:
 
 ``` r
+
 enroll_rate |> summarize(
   "Targeted enrollment based on input enrollment rates" = sum(duration * rate)
 )
@@ -454,6 +472,7 @@ duration of the trial is taken as 30 months as specified in
 `total_duration`. The targeted minimum follow-up is
 
 ``` r
+
 total_duration <- 30 # From above
 total_duration - sum(enroll_rate$duration)
 #> [1] 16

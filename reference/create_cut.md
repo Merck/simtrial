@@ -42,5 +42,5 @@ cutting <- create_cut(
 
 # Cut the trial data
 cutting(trial_data)
-#> [1] 77.87317
+#> [1] 79.83332
 ```

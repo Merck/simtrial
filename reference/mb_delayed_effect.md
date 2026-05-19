@@ -76,7 +76,7 @@ mb_delayed_effect |>
 #> 3 0.9312916 0.9579831 1.0000000
 #> 
 #> $p_value
-#> [1] 0.01104817
+#> [1] 0.01104234
 #> 
 
 # Generate another dataset
