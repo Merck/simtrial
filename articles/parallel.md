@@ -148,10 +148,10 @@ waiting for the results.
 
 print(duration_sequential)
 #>    user  system elapsed 
-#>  12.749   0.055  12.808
+#>  12.927   0.045  12.974
 ```
 
-We can see that the CPU time is 12.75 and the elapsed time is 12.81
+We can see that the CPU time is 12.93 and the elapsed time is 12.97
 seconds. These provide our baseline for the computation time.
 
 As you may have anticipated, we see that for a lower number of events,
@@ -227,10 +227,10 @@ duration_parallel <- proc.time() - start_parallel
 
 print(duration_parallel)
 #>    user  system elapsed 
-#>   2.129   0.019  10.364
+#>   2.123   0.022  10.885
 ```
 
-We can see that the CPU time is 2.13 and the elapsed time is 10.36
+We can see that the CPU time is 2.12 and the elapsed time is 10.89
 seconds. The user time here appears to be drastically reduced because of
 how R keeps track of time; the time used by the parent process and not
 the children processes are reported for the user time. Therefore, we
