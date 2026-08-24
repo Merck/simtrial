@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   arbitrary-hazard: arbitrary-hazard.html
@@ -13,7 +13,7 @@ articles:
   sim_fixed_design_simple: sim_fixed_design_simple.html
   sim_gs_design_simple: sim_gs_design_simple.html
   workflow: workflow.html
-last_built: 2026-07-01T16:30Z
+last_built: 2026-08-24T18:11Z
 urls:
   reference: https://merck.github.io/simtrial/reference
   article: https://merck.github.io/simtrial/articles
