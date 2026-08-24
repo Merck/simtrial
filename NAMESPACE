@@ -32,31 +32,39 @@ export(sim_pw_surv)
 export(to_sim_pw_surv)
 export(wlr)
 importFrom(Rcpp,sourceCpp)
-importFrom(data.table,":=")
-importFrom(data.table,.N)
-importFrom(data.table,.SD)
-importFrom(data.table,as.data.table)
-importFrom(data.table,data.table)
-importFrom(data.table,dcast)
-importFrom(data.table,fifelse)
-importFrom(data.table,frankv)
-importFrom(data.table,last)
-importFrom(data.table,merge.data.table)
-importFrom(data.table,rbindlist)
-importFrom(data.table,setDF)
-importFrom(data.table,setDT)
-importFrom(data.table,setcolorder)
-importFrom(data.table,setnames)
-importFrom(data.table,setorderv)
-importFrom(data.table,uniqueN)
+importFrom(data.table,
+  ":=",
+  .N,
+  .SD,
+  as.data.table,
+  data.table,
+  dcast,
+  fifelse,
+  frankv,
+  last,
+  merge.data.table,
+  rbindlist,
+  setDF,
+  setDT,
+  setcolorder,
+  setnames,
+  setorderv,
+  uniqueN
+)
 importFrom(doFuture,"%dofuture%")
-importFrom(future,nbrOfWorkers)
-importFrom(future,plan)
+importFrom(future,
+  nbrOfWorkers,
+  plan
+)
 importFrom(methods,is)
-importFrom(mvtnorm,GenzBretz)
-importFrom(mvtnorm,pmvnorm)
-importFrom(survival,Surv)
-importFrom(survival,is.Surv)
-importFrom(survival,strata)
-importFrom(survival,survfit)
+importFrom(mvtnorm,
+  GenzBretz,
+  pmvnorm
+)
+importFrom(survival,
+  Surv,
+  is.Surv,
+  strata,
+  survfit
+)
 useDynLib(simtrial, .registration = TRUE)
