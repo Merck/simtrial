@@ -72,14 +72,14 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for one-sided de
   observed <- simulation |> summary(design = design)
   expected <- data.frame(
     analysis = c(1, 2, 3),
-    asy_upper_prob = c(0.00014865936645545522, 0.5723215057363614, 0.9000000002116888),
+    asy_upper_prob = design$bound$probability,
     sim_upper_prob = c(NA, 1, NA),
     sim_event = c(97, 305, 405),
     sim_n = c(369.3333333333333, 505, 505),
     sim_time = c(12.877359569828519, 24.990283397668506, 37.20491262038222),
-    asy_time = c(12, 24, 36),
-    asy_n = c(353.04671034431556, 504.3524433490222, 504.3524433490222),
-    asy_event = c(96.77457617908364, 304.00996193840484, 404.14196474655887)
+    asy_time = design$analysis$time,
+    asy_n = design$analysis$n,
+    asy_event = design$analysis$event
   ) |>
     structure(
       class = c("simtrial_gs_wlr", "data.frame"),
@@ -162,16 +162,16 @@ test_that("summary.simtrial_gs_wlr() returns consistent results for two-sided de
   observed <- simulation |> summary(design = design)
   expected <- data.frame(
     analysis = c(1, 2, 3),
-    asy_upper_prob = c(0.00016250401737420353, 0.6011019363189855, 0.9000000001924918),
-    asy_lower_prob = c(0.0007883883873094952, 0.05707064419933058, 0.10004018006137042),
+    asy_upper_prob = design$bound$probability[design$bound$bound == "upper"],
+    asy_lower_prob = design$bound$probability[design$bound$bound == "lower"],
     sim_upper_prob = c(NA, 0.6666666666666666, 1),
     sim_lower_prob = rep(NA_real_, 3L),
     sim_event = c(103, 323, 429),
     sim_n = c(366.6666666666667, 535, 535),
     sim_time = c(12.363838412468121, 24.374413483785986, 36.116791896100885),
-    asy_time = c(12, 24, 36),
-    asy_n = c(374.08958620608826, 534.4136945801262, 534.4136945801262),
-    asy_event = c(102.54269505243633, 322.13006815203613, 428.2303047466704)
+    asy_time = design$analysis$time,
+    asy_n = design$analysis$n,
+    asy_event = design$analysis$event
   ) |>
     structure(
       compare_with_design = "yes",
