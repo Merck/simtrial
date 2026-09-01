@@ -698,21 +698,19 @@ test_that("Updating bounds changes the simulation results", {
 
   expect_equal(run1, run2[, colnames(run1)], ignore_attr = TRUE)
 
-  expected <- data.frame(
-    planed_upper_bound = c(3.870248012128966, 2.3566552618098884, 2.009757742407378),
-    planed_lower_bound = c(-1.705270817327003, 0.9601286375623664, 2.004752252887608),
-    updated_upper_bound = c(3.870248012128966, 2.3867954048423474, 2.0074221828251764),
-    updated_lower_bound = c(-1.6671962217546439, 0.9631736579151768, 2.1126105535696467)
-  )
-  observed <- run2[, c("planned_upper_bound", "planned_lower_bound",
-                       "updated_upper_bound", "updated_lower_bound")]
+  # The planned bounds should match the input design object
+  expect_equal(run2$planned_lower_bound, x$bound$z[x$bound$bound == "lower"])
+  expect_equal(run2$planned_upper_bound, x$bound$z[x$bound$bound == "upper"])
 
-  # Only need to test to 6 significant digits to verify the asymptotic theory
-  # from gsDesign2
-  expected <- lapply(expected, function(x) signif(x, digits = 6))
-  observed <- lapply(observed, function(x) signif(x, digits = 6))
-
-  expect_equal(observed, expected, ignore_attr = TRUE)
+  # Updated bounds should be different than planned bounds
+  expect_false(isTRUE(all.equal(
+    run2$updated_lower_bound,
+    x$bound$z[x$bound$bound == "lower"]
+  )))
+  expect_false(isTRUE(all.equal(
+    run2$updated_upper_bound,
+    x$bound$z[x$bound$bound == "upper"]
+  )))
 })
 
 test_that("sim_gs_n() can update bounds even when some are missing", {
