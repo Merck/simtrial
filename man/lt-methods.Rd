@@ -25,7 +25,7 @@
 An \code{lt_tbl} object summarizing the simulation results.
 }
 \description{
-S3 method for \code{\link[lt:lt]{lt()}} that converts a group sequential simulation summary
+S3 method for \code{\link[=lt]{lt()}} that converts a group sequential simulation summary
 (a \code{simtrial_gs_wlr} object returned by \code{\link[=summary]{summary()}}) into a formatted lt
 table. This is the lightweight replacement for the deprecated \code{\link[=as_gt]{as_gt()}}.
 }

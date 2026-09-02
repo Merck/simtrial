@@ -27,15 +27,15 @@ as_gt(x, ...)
 A gt table.
 
 A gt table summarizing the simulation results. This method is
-deprecated; use \code{\link[lt:lt]{lt()}} instead. It still returns a \code{gt_tbl} object for one
+deprecated; use \code{\link[=lt]{lt()}} instead. It still returns a \code{gt_tbl} object for one
 release and requires \pkg{gt} to be installed.
 }
 \description{
-\code{as_gt()} is deprecated in favor of \code{\link[lt:lt]{lt()}}, which produces a lightweight
+\code{as_gt()} is deprecated in favor of \code{\link[=lt]{lt()}}, which produces a lightweight
 HTML table without the heavy \pkg{gt} dependency. \code{as_gt()} is kept for one
 release so existing code that customizes the output with \pkg{gt} functions
 keeps working; it still returns a \code{gt_tbl} object and requires \pkg{gt} to be
-installed. New code should use \code{\link[lt:lt]{lt()}}; see \link[gsDesign:lt-methods]{lt-methods} for details.
+installed. New code should use \code{\link[=lt]{lt()}}; see \link{lt-methods} for details.
 }
 \examples{
 
@@ -99,5 +99,5 @@ simulation |>
   simtrial::as_gt()
 }
 \seealso{
-\code{\link[lt:lt]{lt()}}, \link[gsDesign:lt-methods]{lt-methods}
+\code{\link[=lt]{lt()}}, \link{lt-methods}
 }
