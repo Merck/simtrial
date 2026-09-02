@@ -13,7 +13,7 @@ vignette: >
 library(gsDesign)
 library(gsDesign2)
 library(dplyr)
-library(gt)
+library(lt)
 library(simtrial)
 library(tidyr)
 library(survival)

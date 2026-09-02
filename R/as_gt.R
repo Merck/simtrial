@@ -18,14 +18,37 @@
 
 #' Convert summary table to a gt object
 #'
+#' `as_gt()` is deprecated in favor of [lt()], which produces a lightweight
+#' HTML table without the heavy \pkg{gt} dependency. `as_gt()` is kept for one
+#' release so existing code that customizes the output with \pkg{gt} functions
+#' keeps working; it still returns a `gt_tbl` object and requires \pkg{gt} to be
+#' installed. New code should use [lt()]; see [lt-methods] for details.
+#'
 #' @param x A summary object of a fixed or group sequential design.
 #' @param ... Additional arguments (not used).
 #'
 #' @return A gt table.
 #'
+#' @seealso [lt()], [lt-methods]
+#'
 #' @export
 as_gt <- function(x, ...) {
+  .Deprecated("lt", package = "simtrial",
+    msg = paste(
+      "as_gt() is deprecated and will be removed in a future release;",
+      "please use lt() instead."
+    ))
   UseMethod("as_gt", x)
+}
+
+# stop with an informative message when gt is not installed, since it is only
+# a suggested (optional) dependency now that as_gt() is deprecated
+assert_gt_installed <- function() {
+  if (!requireNamespace("gt", quietly = TRUE)) stop(
+    "The 'gt' package is required by the deprecated as_gt(); ",
+    "install it with install.packages('gt'), or use lt() instead.",
+    call. = FALSE
+  )
 }
 
 
@@ -34,7 +57,9 @@ as_gt <- function(x, ...) {
 #' @param subtitle Subtitle of the gt table.
 #' @param ... Additional parameters (not used).
 #'
-#' @return A gt table summarizing the simulation results.
+#' @return A gt table summarizing the simulation results. This method is
+#'   deprecated; use [lt()] instead. It still returns a `gt_tbl` object for one
+#'   release and requires \pkg{gt} to be installed.
 #' @export
 #' @rdname as_gt
 #'
@@ -101,6 +126,8 @@ as_gt <- function(x, ...) {
 as_gt.simtrial_gs_wlr <- function(x,
                                   title = "Summary of simulation results by WLR tests",
                                   subtitle = NULL, ...){
+  assert_gt_installed()
+
   # get the default subtitle
   if (is.null(subtitle)) {
     subtitle <- paste0("Weighted by ", attributes(x)$method)

@@ -1,5 +1,9 @@
 # simtrial 1.0.2
 
+## Major changes
+
+- The heavy **gt** dependency is replaced by the lightweight **lt** package for rendering summary tables (#371). The `lt()` generic is re-exported so `summary()` output can be rendered with `lt()` after only loading simtrial. `as_gt()` is deprecated but kept for one release; it still returns a `gt_tbl` object and now requires the suggested **gt** package to be installed.
+
 ## Bug fixes
 
 - `sim_gs_n()` is updated to provide updated efficacy bound when it is one-sided design (#348, thanks to @LittleBeannie).

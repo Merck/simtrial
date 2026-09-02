@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- requireNamespace("gt", quietly = TRUE) &&
+run <- requireNamespace("lt", quietly = TRUE) &&
   requireNamespace("survRM2", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
@@ -94,8 +94,6 @@ where $\alpha$ is a predefined significant level, and $z_{\alpha/2}$ is the uppe
 ```{r, message=FALSE, warning=FALSE}
 # Simulate NPH data from the piecewise model
 library(simtrial)
-# Table display
-library(gt)
 ```
 
 ```{r}
@@ -105,7 +103,7 @@ simtrial:::rmst_single_arm(
   time_var = data_single_arm$month,
   event_var = data_single_arm$evntd,
   tau = 10
-) |> gt()
+) |> lt()
 ```
 
 ## Estimation of RMST differences in 2 arms at a single time point
