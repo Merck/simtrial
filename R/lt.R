@@ -109,6 +109,13 @@ lt.simtrial_gs_wlr <- function(data,
                                subtitle = NULL, ...){
   x <- data
 
+  # The raw output of sim_gs_n() also carries the "simtrial_gs_wlr" class but is
+  # not a summary (it lacks the attributes added by summary()). In that case fall
+  # back to a plain lt table, mirroring how bare gt() used to render it.
+  if (is.null(attributes(x)$compare_with_design)) {
+    return(lt::lt(as.data.frame(x), ...))
+  }
+
   # get the default subtitle
   if (is.null(subtitle)) {
     subtitle <- paste0("Weighted by ", attributes(x)$method)
