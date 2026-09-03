@@ -103,7 +103,7 @@ fr <- scenarios |>
   select(-x_rate) |>
   filter(Period > 0, Scenario > 0) |>
   ungroup()
-fr |> lt() |> lt_format(columns = names(fr)[sapply(fr, is.numeric)], decimals = 2)
+fr |> lt()
 
 fr <- fr |> mutate(fail_rate = rate, dropout_rate = 0.001, stratum = "All")
 
