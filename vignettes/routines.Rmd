@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- requireNamespace("dplyr", quietly = TRUE) &&
-  requireNamespace("lt", quietly = TRUE)
+run <- requireNamespace("dplyr", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 
