@@ -133,20 +133,23 @@ lt.simtrial_gs_wlr <- function(data,
     design_type <- attributes(x)$design_type
 
     # lt has no tidyselect, so enumerate the columns of each spanner explicitly.
-    # Spanned columns must be contiguous, which is ensured by the lt_move() calls
-    # below (mirroring gt::cols_move() in as_gt()).
-    time_cols <- grep("_time$", names(x), value = TRUE)
-    event_cols <- grep("_event$", names(x), value = TRUE)
-    n_cols <- grep("_n$", names(x), value = TRUE)
-    upper_cols <- grep("_upper_prob$", names(x), value = TRUE)
-    lower_cols <- grep("_lower_prob$", names(x), value = TRUE)
+    # The columns must be listed in the same paired order (asymptotic before
+    # simulated) that lt_move() lays them out below, because lt matches a
+    # spanner to the visual position of its first column and then spans the
+    # next length(columns) columns; listing them in any other order would
+    # misalign the spanners (and silently drop later ones).
+    time_cols <- c("asy_time", "sim_time")
+    n_cols <- c("asy_n", "sim_n")
+    event_cols <- c("asy_event", "sim_event")
+    upper_cols <- c("asy_upper_prob", "sim_upper_prob")
+    lower_cols <- c("asy_lower_prob", "sim_lower_prob")
 
     # build an lt table as return, moving the paired asymptotic/simulated columns
     # right after `analysis` so each spanner covers a contiguous block
     ans <- as.data.frame(x) |>
       lt::lt() |>
       lt::lt_move(
-        columns = c("asy_time", "sim_time", "asy_n", "sim_n", "asy_event", "sim_event"),
+        columns = c(time_cols, n_cols, event_cols),
         after = "analysis")
 
     # for a two-sided design, keep the efficacy (upper) and futility (lower)
@@ -154,7 +157,7 @@ lt.simtrial_gs_wlr <- function(data,
     if (design_type == "two-sided") {
       ans <- ans |>
         lt::lt_move(
-          columns = c("asy_upper_prob", "sim_upper_prob", "asy_lower_prob", "sim_lower_prob"),
+          columns = c(upper_cols, lower_cols),
           after = "sim_event")
     }
 
