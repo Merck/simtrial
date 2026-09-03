@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- requireNamespace("lt", quietly = TRUE) &&
-  requireNamespace("survRM2", quietly = TRUE)
+run <- requireNamespace("survRM2", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 
