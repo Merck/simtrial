@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-run <- requireNamespace("dplyr", quietly = TRUE) &&
-  requireNamespace("gt", quietly = TRUE)
+run <- requireNamespace("dplyr", quietly = TRUE)
 knitr::opts_chunk$set(eval = run)
 ```
 
@@ -48,7 +47,7 @@ The package could be extended in many ways in the future, including:
 
 ```{r, message=FALSE, warning=FALSE}
 library(simtrial)
-library(gt)
+library(lt)
 library(dplyr)
 ```
 
@@ -143,8 +142,8 @@ x <- sim_pw_surv(
 )
 
 head(x) |>
-  gt() |>
-  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
 
 ## Cutting data for analysis
@@ -157,8 +156,8 @@ Observations enrolled after the input `cut_date` are deleted and events and cens
 y <- cut_data_by_date(x, cut_date = 5)
 
 head(y) |>
-  gt() |>
-  fmt_number(columns = "tte", decimals = 2)
+  lt() |>
+  lt_format(columns = "tte", decimals = 2)
 ```
 
 For instance, if we wish to cut the entire dataset when 50 events are observed in the Positive stratum we can use the `get_cut_date_by_event` function as follows:
@@ -186,8 +185,8 @@ The counting process format is further discussed in the next section where we co
 ten150 <- counting_process(y150, arm = "experimental")
 
 head(ten150) |>
-  gt() |>
-  fmt_number(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
 ```
 
 ## Logrank and weighted logrank testing
@@ -282,8 +281,8 @@ sim_fixed_n(
   timing_type = 1:5, # Use all possible data cutoff methods
   rho_gamma = rho_gamma # FH test(s) to use; in this case, logrank
 ) |>
-  gt() |>
-  fmt_number(columns = c("ln_hr", "z", "duration"))
+  lt() |>
+  lt_format(columns = c("ln_hr", "z", "duration"))
 ```
 
 If you look carefully, you should be asking why the cutoff with the planned number of events is so different than the other data cutoff methods.

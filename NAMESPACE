@@ -3,6 +3,7 @@
 S3method(as_gt,fixed_design)
 S3method(as_gt,gs_design)
 S3method(as_gt,simtrial_gs_wlr)
+S3method(lt::lt,simtrial_gs_wlr)
 S3method(summary,simtrial_gs_wlr)
 S3method(wlr,counting_process)
 S3method(wlr,default)
@@ -18,6 +19,7 @@ export(fh)
 export(fit_pwexp)
 export(get_analysis_date)
 export(get_cut_date_by_event)
+export(lt)
 export(maxcombo)
 export(mb)
 export(milestone)
@@ -56,6 +58,7 @@ importFrom(future,
   nbrOfWorkers,
   plan
 )
+importFrom(lt,lt)
 importFrom(methods,is)
 importFrom(mvtnorm,
   GenzBretz,

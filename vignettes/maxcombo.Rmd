@@ -51,7 +51,7 @@ When more than one test is chosen the correlation between tests is computed as s
 library(simtrial)
 library(knitr)
 library(dplyr)
-library(gt)
+library(lt)
 ```
 
 ```{r}
@@ -64,8 +64,8 @@ x <- sim_fixed_n(
 )
 
 x |>
-  gt() |>
-  fmt_number(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
 ```
 
 ### Generating data with `sim_pw_surv()`
@@ -80,8 +80,8 @@ s <- sim_pw_surv(n = 100)
 
 s |>
   head() |>
-  gt() |>
-  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
 
 Once generated, we need to cut the data for analysis. Here we cut after 75 events.
@@ -91,8 +91,8 @@ x <- s |> cut_data_by_event(75)
 
 x |>
   head() |>
-  gt() |>
-  fmt_number(columns = "tte", decimals = 2)
+  lt() |>
+  lt_format(columns = "tte", decimals = 2)
 ```
 
 Now we can analyze this data. We begin with `s` to show how this can be done in a single line.
@@ -127,7 +127,7 @@ In this case we use the small `aml` dataset from the survival package.
 library(survival)
 aml |>
   head() |>
-  gt()
+  lt()
 ```
 
 We rename variables and create a stratum variable as follows:
@@ -145,7 +145,7 @@ x <- aml |> transmute(
 
 x |>
   head() |>
-  gt()
+  lt()
 ```
 Now we analyze the data with a MaxCombo with the logrank and FH(0, 1) and compute a $p$-value.
 

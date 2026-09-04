@@ -12,7 +12,7 @@ vignette: >
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
-library(gt)
+library(lt)
 library(doFuture)
 library(tibble)
 set.seed(2025)
@@ -64,7 +64,7 @@ uncut_data_a <- sim_pw_surv(n = n, stratum = stratum, block = block,
 
 The output of `sim_pw_surv()` is subject-level observations, including stratum, enrollment time for the observation, treatment group the observation is randomized to, failure time, dropout time, calendar time of enrollment plot the minimum of failure time and dropout time (  `cte`), and an failure and dropout indicator (`fail = 1` is a failure, `fail = 0` is a dropout).
 ```{r}
-uncut_data_a |> head() |> gt() |> tab_header("An Overview of Simulated TTE data")
+uncut_data_a |> head() |> lt() |> lt_header("An Overview of Simulated TTE data")
 ```
 
 ## Scenario b) Differential dropout rates
@@ -208,7 +208,7 @@ cut_date <- cut_date_d
 cat("The cutoff date is ", round(cut_date, 2))
 
 cut_data <- uncut_data |> cut_data_by_date(cut_date)
-cut_data |> head() |> gt() |> tab_header(paste0("An Overview of TTE data Cut at ", round(cut_date, 2), "Months"))
+cut_data |> head() |> lt() |> lt_header(paste0("An Overview of TTE data Cut at ", round(cut_date, 2), "Months"))
 ```
 
 # Step 3: Run tests
@@ -258,7 +258,7 @@ sim_res <- tribble(
   sim_res_mc$method, sim_res_mc$parameter, NA, NA, NA, sim_res_mc$p_value
   ) 
 
-sim_res |> gt() |> tab_header("One Simulation Results")
+sim_res |> lt() |> lt_header("One Simulation Results")
 ```
 
 
@@ -354,7 +354,7 @@ plan("sequential")
 The output from the parallel computation resembles the output of `sim_fix_n()` described in the vignette [Simulate Fixed Designs with Ease via sim_fixed_n](https://merck.github.io/simtrial/articles/sim_fixed_design_simple.html). Each row in the output corresponds to the simulation results for each testing method per each repeation. 
 
 ```{r}
-ans |> head() |> gt() |> tab_header("Overview Each Simulation results")
+ans |> head() |> lt() |> lt_header("Overview Each Simulation results")
 ```
 
 # Step 5: Summarize simulations
@@ -374,8 +374,8 @@ ans_mc <- ans |>
 
 ans_non_mc |>
   union(ans_mc) |>
-  gt() |>
-  tab_header("Summary from 100 simulations")
+  lt() |>
+  lt_header("Summary from 100 simulations")
 ```
 
 
