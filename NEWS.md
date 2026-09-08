@@ -12,6 +12,8 @@
 
 - Hardened `sim_gs_n()` and `summary.simtrial_gs_wlr()` tests against upstream **gsDesign2** changes (#368, #369, thanks to @jdblischak).
 
+# simtrial 1.0.2
+
 ## Bug fixes
 
 - `sim_gs_n()` is updated to provide updated efficacy bound when it is one-sided design (#348, thanks to @LittleBeannie).
