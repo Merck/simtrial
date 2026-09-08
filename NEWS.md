@@ -1,8 +1,16 @@
-# simtrial 1.0.2
+# simtrial 1.1.0
 
 ## Major changes
 
-- The heavy **gt** dependency is replaced by the lightweight **lt** package for rendering summary tables (#371). The `lt()` generic is re-exported so `summary()` output can be rendered with `lt()` after only loading simtrial. `as_gt()` is deprecated but kept for one release; it still returns a `gt_tbl` object and now requires the suggested **gt** package to be installed.
+- The heavy **gt** dependency is replaced by the lightweight **lt** package for rendering summary tables. The `lt()` generic is re-exported so `summary()` output can be rendered with `lt()` after only loading simtrial. `as_gt()` is deprecated but kept for one release; it still returns a `gt_tbl` object and now requires the suggested **gt** package to be installed. (#371, thanks to @yihui)
+
+## Documentation
+
+- Expanded the details for `sim_fixed_n()` and updated vignettes for the current package interface (#358, thanks to @LittleBeannie).
+
+## Tests
+
+- Hardened `sim_gs_n()` and `summary.simtrial_gs_wlr()` tests against upstream **gsDesign2** changes (#368, #369, thanks to @jdblischak).
 
 ## Bug fixes
 
