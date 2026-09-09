@@ -136,6 +136,8 @@ Expectations for future development include:
 
 - [`summary(`*`<simtrial_gs_wlr>`*`)`](https://merck.github.io/simtrial/reference/summary.md)
   : Summary of group sequential simulations.
+- [`lt(`*`<simtrial_gs_wlr>`*`)`](https://merck.github.io/simtrial/reference/lt-methods.md)
+  : Create an lt table from a simulation summary
 - [`as_gt()`](https://merck.github.io/simtrial/reference/as_gt.md) :
   Convert summary table to a gt object
 

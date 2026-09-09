@@ -1,5 +1,42 @@
 # Changelog
 
+## simtrial 1.1.0
+
+CRAN release: 2026-09-09
+
+### Major changes
+
+- The heavy **gt** dependency is replaced by the lightweight **lt**
+  package for rendering summary tables. The
+  [`lt()`](https://rdrr.io/pkg/lt/man/lt.html) generic is re-exported so
+  [`summary()`](https://rdrr.io/r/base/summary.html) output can be
+  rendered with [`lt()`](https://rdrr.io/pkg/lt/man/lt.html) after only
+  loading simtrial.
+  [`as_gt()`](https://merck.github.io/simtrial/reference/as_gt.md) is
+  deprecated but kept for one release; it still returns a `gt_tbl`
+  object and now requires the suggested **gt** package to be installed.
+  ([\#371](https://github.com/Merck/simtrial/issues/371), thanks to
+  [@yihui](https://github.com/yihui))
+
+### Documentation
+
+- Expanded the details for
+  [`sim_fixed_n()`](https://merck.github.io/simtrial/reference/sim_fixed_n.md)
+  and updated vignettes for the current package interface
+  ([\#358](https://github.com/Merck/simtrial/issues/358), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+
+### Tests
+
+- Hardened
+  [`sim_gs_n()`](https://merck.github.io/simtrial/reference/sim_gs_n.md)
+  and
+  [`summary.simtrial_gs_wlr()`](https://merck.github.io/simtrial/reference/summary.md)
+  tests against upstream **gsDesign2** changes
+  ([\#368](https://github.com/Merck/simtrial/issues/368),
+  [\#369](https://github.com/Merck/simtrial/issues/369), thanks to
+  [@jdblischak](https://github.com/jdblischak)).
+
 ## simtrial 1.0.2
 
 CRAN release: 2025-11-20

@@ -5,7 +5,7 @@
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
-library(gt)
+library(lt)
 
 set.seed(2027)
 ```
@@ -74,17 +74,11 @@ specifically by using `sample_size <- x$analysis$n` and
 x <- fixed_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate, 
                       alpha = 0.025, power = 0.85, ratio = 1, 
                       study_duration = total_duration) |> to_integer()
-x |> summary() |> gt() |> 
-  tab_header(title = "Sample Size and Targeted Events Based on AHR Method", 
+x |> summary() |> lt() |> 
+  lt_header(title = "Sample Size and Targeted Events Based on AHR Method", 
              subtitle = "Fixed Design with 85% Power, One-sided 2.5% Type I error") |>
-  fmt_number(columns = c(4, 5, 7), decimals = 2)
+  lt_format(columns = c(4, 5, 7), decimals = 2)
 ```
-
-| Sample Size and Targeted Events Based on AHR Method |  |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|----|
-| Fixed Design with 85% Power, One-sided 2.5% Type I error |  |  |  |  |  |  |  |
-| Design | N | Events | Time | AHR | Bound | alpha | Power |
-| Average hazard ratio | 516 | 295 | 36.01 | 0.70 | 1.959964 | 0.03 | 0.8504588 |
 
 Now we set the derived targeted sample size, enrollment rate, and event
 count from the above.
@@ -153,25 +147,10 @@ see how the different cutoffs vary for the 2 trial instances.
 ``` r
 
 sim_res |>
-  gt() |>
-  tab_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
-  fmt_number(columns = c(4, 5, 7), decimals = 2)
+  lt() |>
+  lt_header("Tests for Each Simulation Result", subtitle = "Logrank Test for Different Analysis Cutoffs") |>
+  lt_format(columns = c(4, 5, 7), decimals = 2)
 ```
-
-| Tests for Each Simulation Result |  |  |  |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|----|----|----|
-| Logrank Test for Different Analysis Cutoffs |  |  |  |  |  |  |  |  |  |
-| method | parameter | estimate | se | z | event | ln_hr | cut | duration | sim |
-| WLR | FH(rho=0, gamma=0) | -31.52010 | 8.38 | 3.76 | 287 | −0.45 | Planned duration | 36.00000 | 1 |
-| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Targeted events | 36.66316 | 1 |
-| WLR | FH(rho=0, gamma=0) | -29.13247 | 8.25 | 3.53 | 278 | −0.43 | Minimum follow-up | 35.20859 | 1 |
-| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Max(planned duration, event cut) | 36.66316 | 1 |
-| WLR | FH(rho=0, gamma=0) | -32.12426 | 8.49 | 3.78 | 295 | −0.45 | Max(min follow-up, event cut) | 36.66316 | 1 |
-| WLR | FH(rho=0, gamma=0) | -31.88270 | 8.00 | 3.99 | 268 | −0.50 | Planned duration | 36.00000 | 2 |
-| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Targeted events | 38.32488 | 2 |
-| WLR | FH(rho=0, gamma=0) | -34.29092 | 8.23 | 4.17 | 283 | −0.51 | Minimum follow-up | 37.47843 | 2 |
-| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Max(planned duration, event cut) | 38.32488 | 2 |
-| WLR | FH(rho=0, gamma=0) | -38.09785 | 8.40 | 4.54 | 295 | −0.54 | Max(min follow-up, event cut) | 38.32488 | 2 |
 
 ## Step 3: Summarize simulations
 
@@ -206,21 +185,11 @@ sim_res |>
             `Mean duration` = mean(duration)) |>
   mutate(`Sample size` = sample_size,
          `Targeted events` = target_event) |>
-  gt() |>
-  tab_header(title = "Summary of 100 simulations by 5 different analysis cutoff methods",
+  lt() |>
+  lt_header(title = "Summary of 100 simulations by 5 different analysis cutoff methods",
              subtitle = "Tested by logrank") |>
-  fmt_number(columns = c(2:4), decimals = 2)
+  lt_format(columns = c(2:4), decimals = 2)
 ```
-
-| Summary of 100 simulations by 5 different analysis cutoff methods |  |  |  |  |  |
-|----|----|----|----|----|----|
-| Tested by logrank |  |  |  |  |  |
-| cut | Simulated Power | Mean events | Mean duration | Sample size | Targeted events |
-| Max(min follow-up, event cut) | 0.85 | 299.35 | 36.39 | 516 | 295 |
-| Max(planned duration, event cut) | 0.85 | 301.54 | 36.59 | 516 | 295 |
-| Minimum follow-up | 0.84 | 291.57 | 35.78 | 516 | 295 |
-| Planned duration | 0.84 | 294.74 | 36.00 | 516 | 295 |
-| Targeted events | 0.85 | 295.00 | 36.00 | 516 | 295 |
 
 We can also do things like summarize distribution of event counts at the
 planned study duration. We can see the event count varies a fair amount.

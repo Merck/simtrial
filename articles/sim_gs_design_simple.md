@@ -5,7 +5,7 @@
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
-library(gt)
+library(lt)
 
 set.seed(2025)
 ```
@@ -236,19 +236,9 @@ under the alternate and null hypotheses, respectively.
 
 ``` r
 
-sim_res |> head(n = 6) |> gt() |> tab_header("Overview Each Simulation results") |>
-  fmt_number(columns = c(5, 8:12), decimals = 2)
+sim_res |> head(n = 6) |> lt() |> lt_header("Overview Each Simulation results") |>
+  lt_format(columns = c(5, 8:12), decimals = 2)
 ```
-
-| Overview Each Simulation results |  |  |  |  |  |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|----|----|----|----|----|
-| sim_id | method | parameter | analysis | cut_date | n | event | estimate | se | z | info | info0 |
-| 1 | WLR | FH(rho=0, gamma=0) | 1 | 12.53 | 362 | 106 | −4.00 | 5.13 | 0.78 | 26.46 | 26.50 |
-| 1 | WLR | FH(rho=0, gamma=0) | 2 | 24.68 | 362 | 227 | −23.11 | 7.46 | 3.10 | 55.82 | 56.75 |
-| 1 | WLR | FH(rho=0, gamma=0) | 3 | 35.99 | 362 | 287 | −36.82 | 8.27 | 4.45 | 70.68 | 71.75 |
-| 2 | WLR | FH(rho=0, gamma=0) | 1 | 12.19 | 348 | 106 | −5.20 | 5.15 | 1.01 | 26.26 | 26.50 |
-| 2 | WLR | FH(rho=0, gamma=0) | 2 | 24.66 | 362 | 227 | −8.33 | 7.53 | 1.11 | 56.50 | 56.75 |
-| 2 | WLR | FH(rho=0, gamma=0) | 3 | 37.57 | 362 | 287 | −18.96 | 8.44 | 2.24 | 71.11 | 71.75 |
 
 ## Step 3: Summarize simulations
 
@@ -263,18 +253,11 @@ sim_res |>
   summarize(`Mean time` = mean(cut_date), `sd(time)` = sd(cut_date), `Simulated power` = mean(z >= eff_bound)) |>
   ungroup() |>
   mutate(`Asymptotic power` = x$bound$probability[x$bound$bound == "upper"]) |>
-  gt() |>
-  tab_header("Summary of 100 simulations") |> 
-  fmt_number(columns = 2, decimals = 1) |>
-  fmt_number(columns = 3:5, decimals = 2)
+  lt() |>
+  lt_header("Summary of 100 simulations") |> 
+  lt_format(columns = 2, decimals = 1) |>
+  lt_format(columns = 3:5, decimals = 2)
 ```
-
-| Summary of 100 simulations |  |  |  |  |
-|----|----|----|----|----|
-| analysis | Mean time | sd(time) | Simulated power | Asymptotic power |
-| 1 | 12.0 | 0.79 | 0.03 | 0.01 |
-| 2 | 23.8 | 1.53 | 0.66 | 0.66 |
-| 3 | 35.7 | 2.04 | 0.87 | 0.90 |
 
 ### References
 

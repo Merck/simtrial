@@ -1,23 +1,18 @@
-# Convert summary table to a gt object
+# Create an lt table from a simulation summary
 
-`as_gt()` is deprecated in favor of
-[`lt()`](https://rdrr.io/pkg/lt/man/lt.html), which produces a
-lightweight HTML table without the heavy gt dependency. `as_gt()` is
-kept for one release so existing code that customizes the output with gt
-functions keeps working; it still returns a `gt_tbl` object and requires
-gt to be installed. New code should use
-[`lt()`](https://rdrr.io/pkg/lt/man/lt.html); see
-[lt-methods](https://merck.github.io/simtrial/reference/lt-methods.md)
-for details.
+S3 method for [`lt()`](https://rdrr.io/pkg/lt/man/lt.html) that converts
+a group sequential simulation summary (a `simtrial_gs_wlr` object
+returned by [`summary()`](https://rdrr.io/r/base/summary.html)) into a
+formatted lt table. This is the lightweight replacement for the
+deprecated
+[`as_gt()`](https://merck.github.io/simtrial/reference/as_gt.md).
 
 ## Usage
 
 ``` r
-as_gt(x, ...)
-
 # S3 method for class 'simtrial_gs_wlr'
-as_gt(
-  x,
+lt(
+  data,
   title = "Summary of simulation results by WLR tests",
   subtitle = NULL,
   ...
@@ -26,36 +21,30 @@ as_gt(
 
 ## Arguments
 
-- x:
+- data:
 
-  A object returned by
+  A summary object returned by
   [`summary()`](https://rdrr.io/r/base/summary.html).
-
-- ...:
-
-  Additional parameters (not used).
 
 - title:
 
-  Title of the gt table.
+  Title of the lt table.
 
 - subtitle:
 
-  Subtitle of the gt table.
+  Subtitle of the lt table.
+
+- ...:
+
+  Additional arguments (not used).
 
 ## Value
 
-A gt table.
-
-A gt table summarizing the simulation results. This method is
-deprecated; use [`lt()`](https://rdrr.io/pkg/lt/man/lt.html) instead. It
-still returns a `gt_tbl` object for one release and requires gt to be
-installed.
+An `lt_tbl` object summarizing the simulation results.
 
 ## See also
 
-[`lt()`](https://rdrr.io/pkg/lt/man/lt.html),
-[lt-methods](https://merck.github.io/simtrial/reference/lt-methods.md)
+[`as_gt()`](https://merck.github.io/simtrial/reference/as_gt.md)
 
 ## Examples
 
@@ -114,12 +103,10 @@ simulation <- sim_gs_n(
 # Summarize simulations
 simulation |>
  summary(bound = gsDesign::gsDesign(k = 3, test.type = 1, sfu = gsDesign::sfLDOF)$upper$bound) |>
- simtrial::as_gt()
-#> Warning: as_gt() is deprecated and will be removed in a future release; please use lt() instead.
+ lt()
 
-
-  
-
-
-Summary of simulation results by WLR tests
+# Summarize simulations and compare with the planned design
+simulation |>
+  summary(design = design) |>
+  lt()
 ```

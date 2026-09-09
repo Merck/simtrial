@@ -50,7 +50,7 @@ The package could be extended in many ways in the future, including:
 ``` r
 
 library(simtrial)
-library(gt)
+library(lt)
 library(dplyr)
 ```
 
@@ -177,18 +177,9 @@ x <- sim_pw_surv(
 )
 
 head(x) |>
-  gt() |>
-  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
-
-| stratum  | enroll_time | treatment    | fail_time | dropout_time | cte   | fail |
-|----------|-------------|--------------|-----------|--------------|-------|------|
-| Negative | 0.02        | control      | 0.56      | 27.24        | 0.58  | 1    |
-| Negative | 0.69        | experimental | 3.32      | 1,893.19     | 4.01  | 1    |
-| Negative | 0.80        | control      | 1.16      | 820.85       | 1.96  | 1    |
-| Positive | 1.07        | control      | 5.68      | 112.63       | 6.75  | 1    |
-| Negative | 1.13        | experimental | 64.98     | 2,670.46     | 66.11 | 1    |
-| Negative | 1.14        | experimental | 8.19      | 531.96       | 9.34  | 1    |
 
 ## Cutting data for analysis
 
@@ -206,18 +197,9 @@ specified `cut_date`.
 y <- cut_data_by_date(x, cut_date = 5)
 
 head(y) |>
-  gt() |>
-  fmt_number(columns = "tte", decimals = 2)
+  lt() |>
+  lt_format(columns = "tte", decimals = 2)
 ```
-
-| tte  | event | stratum  | treatment    |
-|------|-------|----------|--------------|
-| 0.56 | 1     | Negative | control      |
-| 3.32 | 1     | Negative | experimental |
-| 1.16 | 1     | Negative | control      |
-| 3.93 | 0     | Positive | control      |
-| 3.87 | 0     | Negative | experimental |
-| 3.86 | 0     | Negative | experimental |
 
 For instance, if we wish to cut the entire dataset when 50 events are
 observed in the Positive stratum we can use the `get_cut_date_by_event`
@@ -266,18 +248,9 @@ section where we compute a weighted logrank test.
 ten150 <- counting_process(y150, arm = "experimental")
 
 head(ten150) |>
-  gt() |>
-  fmt_number(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("tte", "o_minus_e", "var_o_minus_e"), decimals = 2)
 ```
-
-| stratum | event_total | event_trt | tte | n_risk_total | n_risk_trt | s | o_minus_e | var_o_minus_e |
-|----|----|----|----|----|----|----|----|----|
-| Negative | 1 | 0 | 0.06 | 124 | 62 | 1.0000000 | −0.50 | 0.25 |
-| Negative | 1 | 1 | 0.06 | 123 | 62 | 0.9919355 | 0.50 | 0.25 |
-| Negative | 1 | 1 | 0.15 | 122 | 61 | 0.9838710 | 0.50 | 0.25 |
-| Negative | 1 | 0 | 0.15 | 121 | 60 | 0.9758065 | −0.50 | 0.25 |
-| Negative | 1 | 1 | 0.23 | 120 | 60 | 0.9677419 | 0.50 | 0.25 |
-| Negative | 1 | 0 | 0.27 | 119 | 59 | 0.9596774 | −0.50 | 0.25 |
 
 ## Logrank and weighted logrank testing
 
@@ -377,7 +350,7 @@ y150 |>
 #> [1] -2.505356 -2.066904 -2.427569 -2.375459
 #> 
 #> $p_value
-#> [1] 0.0125865
+#> [1] 0.01264465
 ```
 
 ## Simplification for 2-arm trials
@@ -431,23 +404,10 @@ sim_fixed_n(
   timing_type = 1:5, # Use all possible data cutoff methods
   rho_gamma = rho_gamma # FH test(s) to use; in this case, logrank
 ) |>
-  gt() |>
-  fmt_number(columns = c("ln_hr", "z", "duration"))
+  lt() |>
+  lt_format(columns = c("ln_hr", "z", "duration"))
 #> Backend uses sequential processing.
 ```
-
-| method | parameter | estimate | se | z | event | ln_hr | cut | duration | sim |
-|----|----|----|----|----|----|----|----|----|----|
-| WLR | FH(rho=0, gamma=0) | -2.993631 | 5.496021 | 0.54 | 121 | −0.10 | Planned duration | 30.00 | 1 |
-| WLR | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350 | −0.40 | Targeted events | 64.89 | 1 |
-| WLR | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375 | −0.41 | Minimum follow-up | 71.75 | 1 |
-| WLR | FH(rho=0, gamma=0) | -34.168255 | 9.280556 | 3.68 | 350 | −0.40 | Max(planned duration, event cut) | 64.89 | 1 |
-| WLR | FH(rho=0, gamma=0) | -38.109119 | 9.562882 | 3.99 | 375 | −0.41 | Max(min follow-up, event cut) | 71.75 | 1 |
-| WLR | FH(rho=0, gamma=0) | -17.318876 | 4.922279 | 3.52 | 99 | −0.73 | Planned duration | 30.00 | 2 |
-| WLR | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350 | −0.44 | Targeted events | 65.91 | 2 |
-| WLR | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371 | −0.42 | Minimum follow-up | 73.50 | 2 |
-| WLR | FH(rho=0, gamma=0) | -37.749178 | 9.190180 | 4.11 | 350 | −0.44 | Max(planned duration, event cut) | 65.91 | 2 |
-| WLR | FH(rho=0, gamma=0) | -38.404129 | 9.452228 | 4.06 | 371 | −0.42 | Max(min follow-up, event cut) | 73.50 | 2 |
 
 If you look carefully, you should be asking why the cutoff with the
 planned number of events is so different than the other data cutoff

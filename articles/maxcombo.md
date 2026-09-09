@@ -51,7 +51,7 @@ enrollment and the date at which the targeted event count was reached.
 library(simtrial)
 library(knitr)
 library(dplyr)
-library(gt)
+library(lt)
 ```
 
 ``` r
@@ -66,15 +66,9 @@ x <- sim_fixed_n(
 #> Backend uses sequential processing.
 
 x |>
-  gt() |>
-  fmt_number(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("ln_hr", "z", "duration", "v1", "v2", "v3"), decimals = 2)
 ```
-
-| method | parameter | estimate | se | z | p_value | v1 | v2 | v3 | event | ln_hr | cut | duration | sim |
-|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-| MaxCombo | FH(0, 0) + FH(0, 1) + FH(1, 1) | \- | \- | −4.06 | 3.70532e-07 | 1.00 | 0.85 | 0.93 | 350 | −0.44 | Max(min follow-up, event cut) | 77.17 | 1 |
-| MaxCombo | FH(0, 0) + FH(0, 1) + FH(1, 1) | \- | \- | −4.04 | 3.70532e-07 | 0.85 | 1.00 | 0.94 | 350 | −0.44 | Max(min follow-up, event cut) | 77.17 | 1 |
-| MaxCombo | FH(0, 0) + FH(0, 1) + FH(1, 1) | \- | \- | −4.95 | 3.70532e-07 | 0.93 | 0.94 | 1.00 | 350 | −0.44 | Max(min follow-up, event cut) | 77.17 | 1 |
 
 ### Generating data with `sim_pw_surv()`
 
@@ -90,18 +84,9 @@ s <- sim_pw_surv(n = 100)
 
 s |>
   head() |>
-  gt() |>
-  fmt_number(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
+  lt() |>
+  lt_format(columns = c("enroll_time", "fail_time", "dropout_time", "cte"), decimals = 2)
 ```
-
-| stratum | enroll_time | treatment    | fail_time | dropout_time | cte   | fail |
-|---------|-------------|--------------|-----------|--------------|-------|------|
-| All     | 0.02        | experimental | 23.29     | 1,287.17     | 23.32 | 1    |
-| All     | 0.14        | control      | 6.96      | 306.66       | 7.10  | 1    |
-| All     | 0.25        | control      | 16.96     | 1,761.75     | 17.21 | 1    |
-| All     | 0.28        | experimental | 3.32      | 1,650.14     | 3.60  | 1    |
-| All     | 0.46        | control      | 19.08     | 787.98       | 19.53 | 1    |
-| All     | 0.46        | experimental | 39.67     | 50.64        | 40.13 | 1    |
 
 Once generated, we need to cut the data for analysis. Here we cut after
 75 events.
@@ -112,18 +97,9 @@ x <- s |> cut_data_by_event(75)
 
 x |>
   head() |>
-  gt() |>
-  fmt_number(columns = "tte", decimals = 2)
+  lt() |>
+  lt_format(columns = "tte", decimals = 2)
 ```
-
-| tte   | event | stratum | treatment    |
-|-------|-------|---------|--------------|
-| 23.29 | 1     | All     | experimental |
-| 6.96  | 1     | All     | control      |
-| 16.96 | 1     | All     | control      |
-| 3.32  | 1     | All     | experimental |
-| 19.08 | 1     | All     | control      |
-| 33.29 | 0     | All     | experimental |
 
 Now we can analyze this data. We begin with `s` to show how this can be
 done in a single line. In this case, we use the 4 test combination
@@ -146,7 +122,7 @@ z
 #> [1] -2.511925 -2.907093 -1.899871 -3.119549
 #> 
 #> $p_value
-#> [1] 0.00204688
+#> [1] 0.002119251
 ```
 
 Suppose we want the \\p\\-value just based on the logrank and FH(0, 1)
@@ -187,17 +163,8 @@ use the small `aml` dataset from the survival package.
 library(survival)
 aml |>
   head() |>
-  gt()
+  lt()
 ```
-
-| time | status | x          |
-|------|--------|------------|
-| 9    | 1      | Maintained |
-| 13   | 1      | Maintained |
-| 13   | 0      | Maintained |
-| 18   | 1      | Maintained |
-| 23   | 1      | Maintained |
-| 28   | 0      | Maintained |
 
 We rename variables and create a stratum variable as follows:
 
@@ -215,17 +182,8 @@ x <- aml |> transmute(
 
 x |>
   head() |>
-  gt()
+  lt()
 ```
-
-| tte | event | stratum | treatment    |
-|-----|-------|---------|--------------|
-| 9   | 1     | All     | experimental |
-| 13  | 1     | All     | experimental |
-| 13  | 0     | All     | experimental |
-| 18  | 1     | All     | experimental |
-| 23  | 1     | All     | experimental |
-| 28  | 0     | All     | experimental |
 
 Now we analyze the data with a MaxCombo with the logrank and FH(0, 1)
 and compute a \\p\\-value.

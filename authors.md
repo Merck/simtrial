@@ -41,16 +41,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/Merck/simtrial/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/Merck/simtrial/blob/v1.1.0/DESCRIPTION)
 
 Anderson K, Zhao Y, Blischak J, Zhang Y (2026). *simtrial: Clinical
-Trial Simulation*. R package version 1.0.2,
+Trial Simulation*. R package version 1.1.0,
 <https://merck.github.io/simtrial/>.
 
     @Manual{,
       title = {simtrial: Clinical Trial Simulation},
       author = {Keaven Anderson and Yujie Zhao and John Blischak and Yilong Zhang},
       year = {2026},
-      note = {R package version 1.0.2},
+      note = {R package version 1.1.0},
       url = {https://merck.github.io/simtrial/},
     }

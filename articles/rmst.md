@@ -72,8 +72,6 @@ standard normal distribution.
 
 # Simulate NPH data from the piecewise model
 library(simtrial)
-# Table display
-library(gt)
 ```
 
 ``` r
@@ -84,12 +82,8 @@ simtrial:::rmst_single_arm(
   time_var = data_single_arm$month,
   event_var = data_single_arm$evntd,
   tau = 10
-) |> gt()
+) |> lt()
 ```
-
-| cutoff_time | group        | rmst     | variance   | std       | lcl      | ucl      | event |
-|-------------|--------------|----------|------------|-----------|----------|----------|-------|
-| 10          | Single Group | 6.495175 | 0.05711322 | 0.2389837 | 6.026776 | 6.963575 | 127   |
 
 ### Estimation of RMST differences in 2 arms at a single time point
 

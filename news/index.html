@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">simtrial</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,9 +35,24 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/Merck/simtrial/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/Merck/simtrial/blob/v1.1.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="simtrial-110">simtrial 1.1.0<a class="anchor" aria-label="anchor" href="#simtrial-110"></a></h2><p class="text-muted">CRAN release: 2026-09-09</p>
+<div class="section level3">
+<h3 id="major-changes-1-1-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-1-1-0"></a></h3>
+<ul><li>The heavy <strong>gt</strong> dependency is replaced by the lightweight <strong>lt</strong> package for rendering summary tables. The <code><a href="https://rdrr.io/pkg/lt/man/lt.html" class="external-link">lt()</a></code> generic is re-exported so <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> output can be rendered with <code><a href="https://rdrr.io/pkg/lt/man/lt.html" class="external-link">lt()</a></code> after only loading simtrial. <code><a href="../reference/as_gt.html">as_gt()</a></code> is deprecated but kept for one release; it still returns a <code>gt_tbl</code> object and now requires the suggested <strong>gt</strong> package to be installed. (<a href="https://github.com/Merck/simtrial/issues/371" class="external-link">#371</a>, thanks to <a href="https://github.com/yihui" class="external-link">@yihui</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-1-0"></a></h3>
+<ul><li>Expanded the details for <code><a href="../reference/sim_fixed_n.html">sim_fixed_n()</a></code> and updated vignettes for the current package interface (<a href="https://github.com/Merck/simtrial/issues/358" class="external-link">#358</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="tests-1-1-0">Tests<a class="anchor" aria-label="anchor" href="#tests-1-1-0"></a></h3>
+<ul><li>Hardened <code><a href="../reference/sim_gs_n.html">sim_gs_n()</a></code> and <code><a href="../reference/summary.html">summary.simtrial_gs_wlr()</a></code> tests against upstream <strong>gsDesign2</strong> changes (<a href="https://github.com/Merck/simtrial/issues/368" class="external-link">#368</a>, <a href="https://github.com/Merck/simtrial/issues/369" class="external-link">#369</a>, thanks to <a href="https://github.com/jdblischak" class="external-link">@jdblischak</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="simtrial-102">simtrial 1.0.2<a class="anchor" aria-label="anchor" href="#simtrial-102"></a></h2><p class="text-muted">CRAN release: 2025-11-20</p>
 <div class="section level3">

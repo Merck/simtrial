@@ -5,7 +5,7 @@
 library(gsDesign2)
 library(simtrial)
 library(dplyr)
-library(gt)
+library(lt)
 library(doFuture)
 library(tibble)
 set.seed(2025)
@@ -111,18 +111,8 @@ indicator (`fail = 1` is a failure, `fail = 0` is a dropout).
 
 ``` r
 
-uncut_data_a |> head() |> gt() |> tab_header("An Overview of Simulated TTE data")
+uncut_data_a |> head() |> lt() |> lt_header("An Overview of Simulated TTE data")
 ```
-
-| An Overview of Simulated TTE data |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|
-| stratum | enroll_time | treatment | fail_time | dropout_time | cte | fail |
-| All | 0.04250966 | experimental | 1.1694497 | 6265.622 | 1.2119594 | 1 |
-| All | 0.15597253 | control | 73.5774306 | 21706.085 | 73.7334032 | 1 |
-| All | 0.19363998 | experimental | 15.1356774 | 18096.246 | 15.3293174 | 1 |
-| All | 0.23882703 | control | 1.9020241 | 20844.870 | 2.1408512 | 1 |
-| All | 0.27283752 | control | 2.9475061 | 11058.946 | 3.2203437 | 1 |
-| All | 0.29362231 | experimental | 0.5490203 | 7004.398 | 0.8426426 | 1 |
 
 ### Scenario b) Differential dropout rates
 
@@ -311,23 +301,13 @@ cut_date <- cut_date_d
 cat("The cutoff date is ", round(cut_date, 2))
 ```
 
-    ## The cutoff date is  20.19
+    ## The cutoff date is  20.15
 
 ``` r
 
 cut_data <- uncut_data |> cut_data_by_date(cut_date)
-cut_data |> head() |> gt() |> tab_header(paste0("An Overview of TTE data Cut at ", round(cut_date, 2), "Months"))
+cut_data |> head() |> lt() |> lt_header(paste0("An Overview of TTE data Cut at ", round(cut_date, 2), "Months"))
 ```
-
-| An Overview of TTE data Cut at 20.19Months |       |         |              |
-|--------------------------------------------|-------|---------|--------------|
-| tte                                        | event | stratum | treatment    |
-| 19.288154                                  | 1     | All     | control      |
-| 20.029362                                  | 0     | All     | experimental |
-| 5.400825                                   | 1     | All     | control      |
-| 8.723331                                   | 1     | All     | experimental |
-| 19.860289                                  | 0     | All     | control      |
-| 4.589687                                   | 1     | All     | experimental |
 
 ## Step 3: Run tests
 
@@ -396,19 +376,8 @@ sim_res <- tribble(
   sim_res_mc$method, sim_res_mc$parameter, NA, NA, NA, sim_res_mc$p_value
   ) 
 
-sim_res |> gt() |> tab_header("One Simulation Results")
+sim_res |> lt() |> lt_header("One Simulation Results")
 ```
-
-| One Simulation Results |  |  |  |  |  |
-|----|----|----|----|----|----|
-| Method | Parameter | Z | Estimate | SE | P value |
-| WLR | FH(rho=0, gamma=0) | 1.788225 | -9.3460253 | 5.2264273 | 0.036869897 |
-| WLR | FH(rho=0, gamma=0.5) | 2.360073 | -6.8225888 | 2.8908376 | 0.009135661 |
-| WLR | MB(delay = Inf, max_weight = 2) | 2.130368 | -16.9085058 | 7.9368946 | 0.016570624 |
-| WLR | Xu 2017 with first 3 months of 0 weights | 2.600908 | -11.0553977 | 4.2505921 | 0.004648873 |
-| RMST | 10 | 1.128125 | 0.5589405 | 0.4954596 | 0.129633491 |
-| milestone | 10 | 1.940708 | 0.4501018 | 0.2319266 | 0.026146861 |
-| MaxCombo | FH(0, 0) + FH(0, 0.5) | NA | NA | NA | 0.012855297 |
 
 ## Step 4: Perform the above single simulation repeatedly
 
@@ -515,18 +484,8 @@ testing method per each repeation.
 
 ``` r
 
-ans |> head() |> gt() |> tab_header("Overview Each Simulation results")
+ans |> head() |> lt() |> lt_header("Overview Each Simulation results")
 ```
-
-| Overview Each Simulation results |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|
-| Sim ID | Method | Parameter | Z | Estimate | SE | P value |
-| 1 | WLR | FH(rho=0, gamma=0) | 1.9005840 | -18.1176359 | 9.5326679 | 0.02867826 |
-| 1 | WLR | FH(rho=0, gamma=0.5) | 2.1478743 | -12.7153128 | 5.9199519 | 0.01586187 |
-| 1 | WLR | MB(delay = Inf, max_weight = 2) | 2.0945611 | -32.4645715 | 15.4994626 | 0.01810501 |
-| 1 | WLR | Xu 2017 with first 3 months of 0 weights | 1.9926533 | -16.4165941 | 8.2385601 | 0.02314971 |
-| 1 | RMST | 10 | 0.7072865 | 0.2184929 | 0.3089170 | 0.23969421 |
-| 1 | milestone | 10 | 0.9610773 | 0.1280086 | 0.1331928 | 0.16825665 |
 
 ## Step 5: Summarize simulations
 
@@ -550,19 +509,8 @@ ans_mc <- ans |>
 
 ans_non_mc |>
   union(ans_mc) |>
-  gt() |>
-  tab_header("Summary from 100 simulations")
+  lt() |>
+  lt_header("Summary from 100 simulations")
 ```
-
-| Summary from 100 simulations |  |  |
-|----|----|----|
-| Method | Parameter | Power |
-| RMST | 10 | 0.06 |
-| WLR | FH(rho=0, gamma=0) | 0.39 |
-| WLR | FH(rho=0, gamma=0.5) | 0.53 |
-| WLR | MB(delay = Inf, max_weight = 2) | 0.54 |
-| WLR | Xu 2017 with first 3 months of 0 weights | 0.48 |
-| milestone | 10 | 0.13 |
-| MaxCombo | FH(0, 0) + FH(0, 0.5) | 0.52 |
 
 ### References
