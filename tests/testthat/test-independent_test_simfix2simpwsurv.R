@@ -87,7 +87,7 @@ test_that("fail_rate must be smaller than 1 and positive", {
   expect_gt(min(fail_rate$fail_rate), 0)
 })
 
-test_that("hr must be postiive", {
+test_that("hr must be positive", {
   res <- test_simfix2simpwsurv()
   fail_rate <- res$fail_rate
 
