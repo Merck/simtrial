@@ -34,7 +34,7 @@ The process for simulating via
 [`sim_gs_n()`](https://merck.github.io/simtrial/reference/sim_gs_n.md)
 is outlined in Steps 1 to 3 below.
 
-## Step 1: Define design paramaters
+## Step 1: Define design parameters
 
 To run simulations for a group sequential design, several design
 characteristics are required. The following code creates a design for an
@@ -54,17 +54,17 @@ The total sample size is derived for 90% power.
 
 stratum <- data.frame(stratum = "All", p = 1)
 block <- rep(c("experimental", "control"), 2)
-# enrollment rate will be updated later, 
+# enrollment rate will be updated later,
 # multiplied by a constant to get targeted power
 enroll_rate <- data.frame(stratum = "All", rate = 1, duration = 12)
 fail_rate <- data.frame(stratum = "All",
-                        duration = c(3, Inf), fail_rate = log(2) / 10, 
+                        duration = c(3, Inf), fail_rate = log(2) / 10,
                         hr = c(1, 0.6), dropout_rate = 0.001)
 # Derive design using the average hazard ratio method
 x <- gs_design_ahr(enroll_rate = enroll_rate, fail_rate = fail_rate,
                    analysis_time = c(12, 24, 36), alpha = 0.025, beta = 0.1,
                    # spending function for upper bound
-                   upper = gs_spending_bound, 
+                   upper = gs_spending_bound,
                    upar = list(sf = gsDesign::sfLDOF, total_spend = 0.025),
                    # Fixed lower bound
                    lower = gs_b,
@@ -189,14 +189,14 @@ illustrative purposes.
 ``` r
 
 ia1_cut <- create_cut(
-  planned_calendar_time = round(x$analysis$time[1]), 
+  planned_calendar_time = round(x$analysis$time[1]),
   target_event_overall = x$analysis$event[1],
   max_extension_for_target_event = 16)
 
 ia2_cut <- create_cut(
   planned_calendar_time = round(x$analysis$time[2]),
   target_event_overall = x$analysis$event[2],
-  min_time_after_previous_analysis = 10, 
+  min_time_after_previous_analysis = 10,
   max_extension_for_target_event = 28)
 
 fa_cut <- create_cut(
@@ -254,7 +254,7 @@ sim_res |>
   ungroup() |>
   mutate(`Asymptotic power` = x$bound$probability[x$bound$bound == "upper"]) |>
   lt() |>
-  lt_header("Summary of 100 simulations") |> 
+  lt_header("Summary of 100 simulations") |>
   lt_format(columns = 2, decimals = 1) |>
   lt_format(columns = 3:5, decimals = 2)
 ```

@@ -94,7 +94,7 @@ there is no need to input the <code>ratio</code>, as simtrial gets the <code>rat
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>A formula to specify the columns that contain the
 time-to-event, event, treatment, and stratum variables. Only used by the
-default S3 method because the other classes aleady have the required column
+default S3 method because the other classes already have the required column
 names. For stratified designs, the formula should have the form <code>Surv(tte, event) ~ treatment + strata(stratum)</code>, where <code>tte</code>, <code>event</code>, <code>treatment</code>,
 and <code>stratum</code> are the column names from <code>data</code> with the time-to-event
 measurement, event status, treatment group, and stratum, respectively. For
@@ -159,7 +159,7 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-in"><span><span class="co"># ---------------------- #</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_pw_surv.html">sim_pw_surv</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cut_data_by_event.html">cut_data_by_event</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 1A: WLR test with FH wights</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1A: WLR test with FH weights</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
@@ -205,7 +205,7 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.793488</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 1B: WLR test with MB wights</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1B: WLR test with MB weights</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="mb.html">mb</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fl">4</span>, w_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
@@ -229,7 +229,7 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 36.4915</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 1C: WLR test with early zero wights</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1C: WLR test with early zero weights</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="early_zero.html">early_zero</a></span><span class="op">(</span>early_period <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>
@@ -383,7 +383,7 @@ $$z = \sum_i X_i/\sqrt{\sum_i V_i}.$$</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15.27192</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># If users don't provide the randomization ratio, we will calculate the emperical ratio</span></span></span>
+<span class="r-in"><span><span class="co"># If users don't provide the randomization ratio, we will calculate the empirical ratio</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">wlr</span><span class="op">(</span>weight <span class="op">=</span> <span class="fu"><a href="fh.html">fh</a></span><span class="op">(</span>rho <span class="op">=</span> <span class="fl">0</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WLR"</span>

@@ -70,7 +70,7 @@ wlr(data, weight, return_variance = FALSE, ratio = NULL, formula = NULL)
 
   A formula to specify the columns that contain the time-to-event,
   event, treatment, and stratum variables. Only used by the default S3
-  method because the other classes aleady have the required column
+  method because the other classes already have the required column
   names. For stratified designs, the formula should have the form
   `Surv(tte, event) ~ treatment + strata(stratum)`, where `tte`,
   `event`, `treatment`, and `stratum` are the column names from `data`
@@ -149,7 +149,7 @@ method (`parameter`), point estimate of the treatment effect
 # ---------------------- #
 x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 
-# Example 1A: WLR test with FH wights
+# Example 1A: WLR test with FH weights
 x |> wlr(weight = fh(rho = 0, gamma = 0.5))
 #> $method
 #> [1] "WLR"
@@ -195,7 +195,7 @@ x |> wlr(weight = fh(rho = 0, gamma = 0.5), return_variance = TRUE)
 #> [1] 6.793488
 #> 
 
-# Example 1B: WLR test with MB wights
+# Example 1B: WLR test with MB weights
 x |> wlr(weight = mb(delay = 4, w_max = 2))
 #> $method
 #> [1] "WLR"
@@ -219,7 +219,7 @@ x |> wlr(weight = mb(delay = 4, w_max = 2))
 #> [1] 36.4915
 #> 
 
-# Example 1C: WLR test with early zero wights
+# Example 1C: WLR test with early zero weights
 x |> wlr(weight = early_zero(early_period = 4))
 #> $method
 #> [1] "WLR"
@@ -373,7 +373,7 @@ x |>
 #> [1] 15.27192
 #> 
 
-# If users don't provide the randomization ratio, we will calculate the emperical ratio
+# If users don't provide the randomization ratio, we will calculate the empirical ratio
 x |> wlr(weight = fh(rho = 0, gamma = 0.5))
 #> $method
 #> [1] "WLR"
