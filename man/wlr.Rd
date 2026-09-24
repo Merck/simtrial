@@ -46,7 +46,7 @@ there is no need to input the \code{ratio}, as simtrial gets the \code{ratio} vi
 
 \item{formula}{A formula to specify the columns that contain the
 time-to-event, event, treatment, and stratum variables. Only used by the
-default S3 method because the other classes aleady have the required column
+default S3 method because the other classes already have the required column
 names. For stratified designs, the formula should have the form \code{Surv(tte, event) ~ treatment + strata(stratum)}, where \code{tte}, \code{event}, \code{treatment},
 and \code{stratum} are the column names from \code{data} with the time-to-event
 measurement, event status, treatment group, and stratum, respectively. For
@@ -110,14 +110,14 @@ The stratified Fleming-Harrington weighted logrank test is then computed as:
 # ---------------------- #
 x <- sim_pw_surv(n = 200) |> cut_data_by_event(100)
 
-# Example 1A: WLR test with FH wights
+# Example 1A: WLR test with FH weights
 x |> wlr(weight = fh(rho = 0, gamma = 0.5))
 x |> wlr(weight = fh(rho = 0, gamma = 0.5), return_variance = TRUE)
 
-# Example 1B: WLR test with MB wights
+# Example 1B: WLR test with MB weights
 x |> wlr(weight = mb(delay = 4, w_max = 2))
 
-# Example 1C: WLR test with early zero wights
+# Example 1C: WLR test with early zero weights
 x |> wlr(weight = early_zero(early_period = 4))
 
 # Example 1D
@@ -145,7 +145,7 @@ x |>
   counting_process(arm = "experimental") |>
   wlr(weight = fh(rho = 0, gamma = 0.5), ratio = 2)
 
-# If users don't provide the randomization ratio, we will calculate the emperical ratio
+# If users don't provide the randomization ratio, we will calculate the empirical ratio
 x |> wlr(weight = fh(rho = 0, gamma = 0.5))
 
 x |>
