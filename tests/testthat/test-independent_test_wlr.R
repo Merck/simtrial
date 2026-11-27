@@ -250,12 +250,55 @@ test_that("wlr() with early_zero_weight on stratified data", {
   tmp <- basec |> dplyr::mutate(
     weight = dplyr::if_else(
       stratum == "Biomarker-negative",
-      dplyr::if_else(tte < 4, 0, log(0.8)),
-      dplyr::if_else(tte < 3, 0, log(0.7))
+      dplyr::if_else(tte < 4, 0, -log(0.8)),
+      dplyr::if_else(tte < 3, 0, -log(0.7))
     )
   )
   z <- -sum(tmp$o_minus_e * tmp$weight) / sqrt(sum(tmp$weight^2 * tmp$var_o_minus_e))
   expected <- z
 
   expect_equal(observed, expected)
+})
+
+# Stratified, early_zero_weight, sign of z ----
+# With the same delay and HR in every stratum, the stratified weights are a
+# positive constant after the delay, so z should match the unstratified-style
+# early zero statistic computed from events after the delay.
+test_that("wlr() with stratified early_zero_weight keeps the sign convention of z", {
+  set.seed(123456)
+
+  n <- 500
+  stratum <- c("Biomarker-positive", "Biomarker-negative")
+  prevalence_ratio <- c(0.6, 0.4)
+  enroll_rate <- gsDesign2::define_enroll_rate(
+    stratum = rep(stratum, each = 2),
+    duration = c(2, 10, 2, 10),
+    rate = c(c(1, 4) * prevalence_ratio[1], c(1, 4) * prevalence_ratio[2])
+  )
+  enroll_rate$rate <- enroll_rate$rate * n / sum(enroll_rate$duration * enroll_rate$rate)
+  fail_rate <- gsDesign2::define_fail_rate(
+    stratum = rep(stratum, each = 2),
+    duration = c(3, 1000, 3, 1000),
+    fail_rate = c(log(2) / c(10, 10, 8, 8)),
+    hr = c(1, 0.6, 1, 0.6),
+    dropout_rate = 0.01
+  )
+  temp <- to_sim_pw_surv(fail_rate)
+  base <- sim_pw_surv(
+    n = n,
+    stratum = data.frame(stratum = stratum, p = prevalence_ratio),
+    block = c("control", "control", "experimental", "experimental"),
+    enroll_rate = enroll_rate,
+    fail_rate = temp$fail_rate,
+    dropout_rate = temp$dropout_rate
+  ) |> cut_data_by_event(250)
+  basec <- base |> counting_process(arm = "experimental")
+
+  observed <- (base |> wlr(weight = early_zero(early_period = 3, fail_rate = fail_rate)))$z
+
+  tmp <- basec |> dplyr::filter(tte >= 3)
+  expected <- -sum(tmp$o_minus_e) / sqrt(sum(tmp$var_o_minus_e))
+
+  expect_equal(observed, expected)
+  expect_gt(observed, 0)
 })

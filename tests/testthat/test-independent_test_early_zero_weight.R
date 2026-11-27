@@ -163,8 +163,8 @@ test_that("early_zero_weight() with stratified data when fail_rate is correctly 
   observed <- output$weight
   expected <- dplyr::if_else(
     output$stratum == "Biomarker-negative",
-    dplyr::if_else(output$tte < 4, 0, log(0.8)),
-    dplyr::if_else(output$tte < 3, 0, log(0.7))
+    dplyr::if_else(output$tte < 4, 0, -log(0.8)),
+    dplyr::if_else(output$tte < 3, 0, -log(0.7))
   )
   expect_equal(observed, expected)
 })
